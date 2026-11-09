@@ -2,6 +2,23 @@
 
 _Last updated: 2026-11-09_
 
+## 🎨 New look (latest update)
+- **Party-game style:** bold purple gradient with drifting shapes, a chunky rounded game font, and 3D buttons that press down.
+- **Home screen:** three big buttons.
+  - **Host a Game**
+  - **Party Mode:** a darker box with a lock that glows when you hover over it or press it. It reads "Sips & shots, drinking challenges, spicy questions & more".
+  - **Join a Game**
+- **Name and animal:** now set in the lobby while you wait. Everyone starts with a fun name like "Frog 39".
+- **Gold coins** replace tokens. They spin, count up and pop "+N" when you earn them. Earning is deliberately slow so they feel rare: 25 / 15 / 10 / 5 coins for 1st / 2nd / 3rd / everyone else, +1 per correct call, ×2 for Premium.
+- **Animation everywhere:**
+  - "ROUND N" slams onto the screen, and the fighters slide in on tilted cards.
+  - The wheel has blinking marquee bulbs, a clicking pointer and confetti when it lands.
+  - Betting has a countdown ring, with a red pulsing edge in the last 10 seconds.
+  - The bet reveal shows vote bars growing.
+  - Question cards flip in.
+  - Results: confetti on a win, beer rain and a dizzy avatar on a DRINK, and live standings.
+  - The podium does a drumroll reveal.
+
 ## ✅ Done and playable
 - **Full game loop:** lobby → VS screen → spinning wheel (category + difficulty) → 30-second betting, with the red last-10-seconds countdown and No Vote → bet reveal → challenge → result → podium after the last round.
 - **Fair player picking:** everyone gets a turn whenever the number of rounds allows it, and nobody gets more than one turn ahead of anyone else. Checked by a 10,000-game simulation.
@@ -24,7 +41,7 @@ _Last updated: 2026-11-09_
   - Premium hosts: unlimited players, any number of rounds, category on/off toggles.
   - Room features follow the host.
 - **Animal avatars:** 21 cartoon blob animals (Cat, Dog, Frog and Bear free), 28 colors including Gold, Galaxy, Rainbow and Glow, and 24 hats, glasses, outfits and hand items. They react: happy on a win, dizzy and green on DRINK, sweating while being bet on.
-- **Tokens:** earned by placing in games (2× for Premium) and spent to unlock items.
+- **Gold coins:** earned by placing in games (2× for Premium) and spent to unlock animals, colors and accessories.
 - **Awards:** Oracle, Underdog Whisperer, Giant Slayer, Chaos Agent, Iron Liver.
 - **Online play code:** works across browser tabs today, and over the internet as soon as Supabase keys are added.
 - **Database design** for Supabase, including the security rules: `supabase/migrations/0001_initial.sql`.

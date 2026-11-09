@@ -1,12 +1,14 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
+import Animated, { FadeOut, ZoomIn, SlideInRight, FadeIn } from 'react-native-reanimated';
 import { useRoom } from '@/net/RoomProvider';
 import { Lobby } from '@/room/Lobby';
-import { BetsReveal, Betting, Challenge, Matchup, Result, Spin } from '@/room/Phases';
+import { BetsReveal, Betting, Challenge, Matchup, Result, Spin, myResultTint } from '@/room/Phases';
 import { Podium } from '@/room/Podium';
 import { Body, Button, Dim, H1, Screen } from '@/ui/kit';
+import { Bob } from '@/ui/motion';
 
-/** One screen for the whole game; it shows whatever phase the host's state is in. */
+/** One screen for the whole game; each phase animates in as the host's state changes. */
 export default function Room() {
   const { state, myId, leaveRoom } = useRoom();
   const [waitedLong, setWaitedLong] = useState(false);
@@ -23,8 +25,10 @@ export default function Room() {
 
   if (!state) {
     return (
-      <Screen style={{ justifyContent: 'center' }}>
-        <H1 style={{ textAlign: 'center' }}>Joining…</H1>
+      <Screen style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Bob amount={10} duration={500}>
+          <H1>Joining…</H1>
+        </Bob>
         {waitedLong && <Dim style={{ textAlign: 'center' }}>Can't find that room. Check the code and that the host has the lobby open.</Dim>}
         <Button label="Back" variant="ghost" onPress={back} />
       </Screen>
@@ -63,9 +67,25 @@ export default function Room() {
     }
   })();
 
+  const tint =
+    state.phase === 'result'
+      ? myResultTint(state, myId)
+      : state.settings.mode === 'party' && (state.phase === 'lobby' || state.phase === 'podium')
+        ? 'party'
+        : undefined;
+  const entering =
+    state.phase === 'matchup' ? ZoomIn.duration(350) : state.phase === 'lobby' ? FadeIn.duration(300) : SlideInRight.duration(320);
+
   return (
-    <Screen scroll style={{ flexGrow: 1 }}>
-      {content}
+    <Screen scroll style={{ flexGrow: 1 }} tint={tint}>
+      <Animated.View
+        key={`${state.phase}-${state.round?.number ?? 0}`}
+        entering={entering}
+        exiting={FadeOut.duration(150)}
+        style={{ flexGrow: 1 }}
+      >
+        {content}
+      </Animated.View>
     </Screen>
   );
 }

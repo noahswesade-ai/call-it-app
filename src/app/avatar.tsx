@@ -13,6 +13,9 @@ import {
 import type { AvatarLoadout } from '@/game/types';
 import { useProfile } from '@/state/profile';
 import { Button, Dim, H1, Row, Screen, Segmented, tap, theme } from '@/ui/kit';
+import { Coin, CoinCounter } from '@/ui/Coin';
+import { Bob, PopIn } from '@/ui/motion';
+import { fonts } from '@/ui/theme';
 
 type Tab = 'animal' | 'color' | AccessorySlot;
 
@@ -81,7 +84,7 @@ export default function AvatarEditor() {
     tap();
     if (!item.key || item.price === 0 || owns(item.key)) return equip(item.id);
     if (profile.tokens < item.price) {
-      notify('Not enough tokens', `${item.label} costs ${item.price} 🪙. You have ${profile.tokens}. Win games or visit the shop to earn more.`);
+      notify('Not enough coins', `${item.label} costs ${item.price} coins. You have ${profile.tokens}. Win games or visit the shop to get more.`);
       return;
     }
     if (buy(item.key, item.price)) equip(item.id);
@@ -91,14 +94,18 @@ export default function AvatarEditor() {
     <Screen>
       <Row style={{ justifyContent: 'space-between' }}>
         <H1>Your animal</H1>
-        <Text style={styles.tokens}>🪙 {profile.tokens}</Text>
+        <CoinCounter coins={profile.tokens} onPress={() => router.push('/shop')} />
       </Row>
       <View style={{ alignItems: 'center' }}>
-        <AnimalAvatar avatar={profile.avatar} size={150} mood="happy" />
+        <PopIn key={`${profile.avatar.animal}-${profile.avatar.color}-${profile.avatar.head}-${profile.avatar.face}-${profile.avatar.outfit}-${profile.avatar.hand}`} from={0.7}>
+          <Bob amount={6} duration={900}>
+            <AnimalAvatar avatar={profile.avatar} size={150} mood="happy" />
+          </Bob>
+        </PopIn>
         <TextInput
           value={name}
           onChangeText={setName}
-          onBlur={() => name.trim() && update({ name: name.trim() })}
+          onBlur={() => name.trim() && update({ name: name.trim(), namedByUser: true })}
           maxLength={16}
           style={styles.name}
         />
@@ -125,17 +132,23 @@ export default function AvatarEditor() {
                 {item.label}
               </Text>
               <Text style={[styles.cellSub, !owned && { color: theme.accent }]}>
-                {equipped ? 'Equipped' : owned ? item.sub ?? 'Owned' : `🔒 ${item.price}`}
+                {equipped ? '✓ Equipped' : owned ? item.sub ?? 'Owned' : ''}
               </Text>
+              {!owned && (
+                <Row style={{ gap: 3 }}>
+                  <Coin size={16} />
+                  <Text style={styles.price}>{item.price}</Text>
+                </Row>
+              )}
             </Pressable>
           );
         })}
       </ScrollView>
-      <Dim style={{ textAlign: 'center' }}>Locked items cost tokens. Tap one to unlock it.</Dim>
+      <Dim style={{ textAlign: 'center' }}>Win games to earn gold coins, then unlock new looks.</Dim>
       <Button
         label="Done"
         onPress={() => {
-          if (name.trim()) update({ name: name.trim() });
+          if (name.trim()) update({ name: name.trim(), namedByUser: true });
           router.back();
         }}
       />
@@ -145,17 +158,18 @@ export default function AvatarEditor() {
 
 const styles = StyleSheet.create({
   tokens: { color: theme.accent, fontWeight: '900', fontSize: 18 },
-  name: { color: theme.text, fontSize: 24, fontWeight: '900', textAlign: 'center', minWidth: 200, padding: 4 },
+  name: { color: theme.text, fontSize: 26, fontFamily: fonts.display, textAlign: 'center', minWidth: 200, padding: 4 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, justifyContent: 'center', paddingBottom: 12 },
   cell: {
     width: 98,
     alignItems: 'center',
-    backgroundColor: theme.card,
-    borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 18,
     paddingVertical: 8,
     borderWidth: 3,
     borderColor: 'transparent',
   },
-  cellLabel: { color: theme.text, fontWeight: '800', fontSize: 13 },
-  cellSub: { color: theme.dim, fontSize: 12, fontWeight: '700' },
+  cellLabel: { color: theme.text, fontFamily: fonts.display, fontSize: 14 },
+  price: { color: theme.accent, fontFamily: fonts.display, fontSize: 14 },
+  cellSub: { color: theme.dim, fontSize: 12, fontFamily: fonts.bodySemi },
 });

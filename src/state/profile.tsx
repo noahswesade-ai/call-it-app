@@ -13,6 +13,8 @@ import type { AvatarLoadout } from '@/game/types';
 export interface Profile {
   id: string;
   name: string;
+  /** False until the player picks their own name (the lobby nudges them). */
+  namedByUser: boolean;
   avatar: AvatarLoadout;
   tokens: number;
   owned: string[];
@@ -36,11 +38,15 @@ function storageKey(): string {
 const KEY = storageKey();
 
 function newProfile(): Profile {
+  const avatar = randomStarterAvatar();
+  const animal = ANIMAL_BY_ID[avatar.animal]?.name ?? 'Player';
   return {
     id: randomId(),
-    name: '',
-    avatar: randomStarterAvatar(),
-    tokens: 100, // a small welcome gift
+    // A fun starter name; players rename themselves in the lobby.
+    name: `${animal} ${10 + Math.floor(Math.random() * 90)}`,
+    namedByUser: false,
+    avatar,
+    tokens: 50, // a small welcome gift — coins should feel rare
     owned: [...FREE_ITEMS],
     premium: false,
     partyTrialUsed: false,
@@ -50,10 +56,14 @@ function newProfile(): Profile {
   };
 }
 
-/** Tokens for one finished game (PLAN.md §5). Premium earns double. */
+/**
+ * Coins for one finished game. Kept deliberately scarce so unlocks feel earned:
+ * a Common animal (400) takes roughly 15–25 games for a free player.
+ * Premium earns double.
+ */
 export function tokensForGame(rank: number, correctBets: number, premium: boolean): number {
-  const place = rank === 1 ? 50 : rank === 2 ? 35 : rank === 3 ? 25 : 10;
-  return (place + correctBets * 2) * (premium ? 2 : 1);
+  const place = rank === 1 ? 25 : rank === 2 ? 15 : rank === 3 ? 10 : 5;
+  return (place + correctBets) * (premium ? 2 : 1);
 }
 
 interface ProfileApi {
@@ -76,7 +86,10 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     AsyncStorage.getItem(KEY)
       .then((raw) => {
-        if (raw) setProfile({ ...newProfile(), ...JSON.parse(raw) });
+        if (!raw) return;
+        const saved = JSON.parse(raw) as Partial<Profile>;
+        // Profiles from before starter names: a saved name was chosen by the player.
+        setProfile({ ...newProfile(), namedByUser: !!saved.name, ...saved });
       })
       .finally(() => setLoaded(true));
   }, []);

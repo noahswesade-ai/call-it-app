@@ -4,7 +4,8 @@ import { AnimalAvatar, type Mood } from '@/avatar/AnimalAvatar';
 import type { GameState } from '@/game/engine';
 import type { Player } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
-import { theme } from '@/ui/kit';
+import { Bob } from '@/ui/motion';
+import { colors, fonts } from '@/ui/theme';
 
 /** Milliseconds left in the current timed phase, corrected for the host's clock. */
 export function useTimeLeft(endsAt: number | undefined): number {
@@ -12,7 +13,7 @@ export function useTimeLeft(endsAt: number | undefined): number {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     if (endsAt === undefined) return;
-    const t = setInterval(() => setNow(Date.now()), 200);
+    const t = setInterval(() => setNow(Date.now()), 100);
     return () => clearInterval(t);
   }, [endsAt]);
   if (endsAt === undefined) return 0;
@@ -29,18 +30,27 @@ export function PlayerBadge({
   mood,
   label,
   color,
+  bob,
 }: {
   player?: Player;
   size?: number;
   mood?: Mood;
   label?: string;
   color?: string;
+  bob?: boolean;
 }) {
   if (!player) return null;
+  const avatar = <AnimalAvatar avatar={player.avatar} size={size} mood={mood} />;
   return (
     <View style={{ alignItems: 'center', width: size + 24 }}>
-      <AnimalAvatar avatar={player.avatar} size={size} mood={mood} />
-      <Text style={[styles.name, color ? { color } : null, { fontSize: size > 90 ? 20 : 13 }]} numberOfLines={1}>
+      {bob ? (
+        <Bob amount={Math.max(3, size / 16)} duration={800 + (player.id.charCodeAt(0) % 5) * 120} delay={(player.id.charCodeAt(1) % 7) * 90}>
+          {avatar}
+        </Bob>
+      ) : (
+        avatar
+      )}
+      <Text style={[styles.name, color ? { color } : null, { fontSize: size > 90 ? 22 : 14 }]} numberOfLines={1}>
         {player.premium ? '👑 ' : ''}
         {player.name}
       </Text>
@@ -50,6 +60,6 @@ export function PlayerBadge({
 }
 
 const styles = StyleSheet.create({
-  name: { color: theme.text, fontWeight: '900', textAlign: 'center' },
-  label: { color: theme.dim, fontSize: 12, fontWeight: '700' },
+  name: { color: colors.white, fontFamily: fonts.display, textAlign: 'center' },
+  label: { color: colors.gold, fontSize: 12, fontFamily: fonts.bodyBold },
 });

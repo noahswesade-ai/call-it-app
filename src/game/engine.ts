@@ -26,7 +26,7 @@ export const DURATIONS = {
   betting: 30000,
   bettingPressure: 10000, // the final 10s of betting turn red
   betsReveal: 4000,
-  result: 6000,
+  result: 9000,
 } as const;
 
 export const FREE_MAX_PLAYERS = 10;

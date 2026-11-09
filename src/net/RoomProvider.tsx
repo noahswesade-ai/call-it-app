@@ -27,7 +27,7 @@ interface RoomApi {
   connection?: Connection;
   /** Add this to Date.now() to get the host's clock. */
   clockOffset: number;
-  hostRoom: (opts: { practiceBots?: number }) => string;
+  hostRoom: (opts: { practiceBots?: number; mode?: 'classic' | 'party' }) => string;
   joinRoom: (code: string) => void;
   leaveRoom: () => void;
   dispatch: (action: Action) => void;
@@ -143,9 +143,10 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   );
 
   const hostRoom = useCallback(
-    ({ practiceBots }: { practiceBots?: number }) => {
+    ({ practiceBots, mode = 'classic' }: { practiceBots?: number; mode?: 'classic' | 'party' }) => {
       const code = roomCode();
-      let game = createGame({ code, host: me(true), settings: defaultSettings(), bank: ALL_QUESTIONS });
+      const settings = { ...defaultSettings(), mode, categories: availableCategories(mode, false) };
+      let game = createGame({ code, host: me(true), settings, bank: ALL_QUESTIONS });
       botsRef.current = new Set();
       if (practiceBots) {
         for (let i = 0; i < practiceBots; i++) {

@@ -10,27 +10,32 @@ import {
   type TextStyle,
   type ViewStyle,
 } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
+import { Background } from './Background';
+import { A_COLOR as A, B_COLOR as B, colors, fonts } from './theme';
+import { bounce } from '@/ui/motion';
 
+export const A_COLOR = A;
+export const B_COLOR = B;
+
+/** Legacy names used across screens, mapped onto the new palette. */
 export const theme = {
-  bg: '#1A1033',
-  bg2: '#25174A',
-  card: '#2F1F5C',
-  cardHi: '#3B2873',
-  text: '#FFFFFF',
-  dim: '#B9AEDB',
-  accent: '#FFD23F',
-  pink: '#FF4F9A',
-  blue: '#3BC9FF',
-  green: '#2EDB8B',
-  red: '#FF4D5E',
-  ink: '#2B2340',
-  radius: 18,
+  bg: colors.bgBottom,
+  bg2: 'rgba(20,4,40,0.45)',
+  card: colors.card,
+  cardHi: 'rgba(255,255,255,0.18)',
+  text: colors.white,
+  dim: colors.dim,
+  accent: colors.gold,
+  pink: colors.pink,
+  blue: colors.cyan,
+  green: colors.green,
+  red: colors.red,
+  ink: colors.ink,
+  radius: 22,
 };
-
-export const A_COLOR = '#FF4F9A';
-export const B_COLOR = '#3BC9FF';
 
 export function tap(style: 'light' | 'medium' | 'heavy' = 'light') {
   const map = {
@@ -45,26 +50,45 @@ export function Screen({
   children,
   scroll = false,
   style,
+  tint,
 }: {
   children: React.ReactNode;
   scroll?: boolean;
   style?: StyleProp<ViewStyle>;
+  tint?: 'red' | 'green' | 'party';
 }) {
   return (
-    <SafeAreaView style={styles.safe}>
-      {scroll ? (
-        <ScrollView contentContainerStyle={[styles.content, style]} keyboardShouldPersistTaps="handled">
-          {children}
-        </ScrollView>
-      ) : (
-        <View style={[styles.content, { flex: 1 }, style]}>{children}</View>
-      )}
-    </SafeAreaView>
+    <View style={{ flex: 1, backgroundColor: colors.bgBottom }}>
+      <Background tint={tint} />
+      <SafeAreaView style={{ flex: 1 }}>
+        {scroll ? (
+          <ScrollView contentContainerStyle={[styles.content, style]} keyboardShouldPersistTaps="handled">
+            {children}
+          </ScrollView>
+        ) : (
+          <View style={[styles.content, { flex: 1 }, style]}>{children}</View>
+        )}
+      </SafeAreaView>
+    </View>
   );
 }
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'a' | 'b';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'a' | 'b' | 'green' | 'cyan';
 
+const VARIANTS: Record<Variant, { face: string; lip: string; text: string }> = {
+  primary: { face: colors.gold, lip: colors.goldLip, text: colors.ink },
+  secondary: { face: colors.violet, lip: colors.violetLip, text: colors.white },
+  ghost: { face: 'transparent', lip: 'transparent', text: colors.white },
+  danger: { face: colors.red, lip: colors.redLip, text: colors.white },
+  a: { face: colors.pink, lip: colors.pinkLip, text: colors.white },
+  b: { face: colors.cyan, lip: colors.cyanLip, text: colors.ink },
+  green: { face: colors.green, lip: colors.greenLip, text: colors.ink },
+  cyan: { face: colors.cyan, lip: colors.cyanLip, text: colors.ink },
+};
+
+const LIP = 6;
+
+/** Chunky 3D game button: the face sinks onto its darker lip when pressed. */
 export function Button({
   label,
   onPress,
@@ -74,6 +98,8 @@ export function Button({
   style,
   small,
   icon,
+  subtitle,
+  big,
 }: {
   label: string;
   onPress?: () => void;
@@ -83,46 +109,64 @@ export function Button({
   style?: StyleProp<ViewStyle>;
   small?: boolean;
   icon?: string;
+  subtitle?: string;
+  big?: boolean;
 }) {
-  const bg = {
-    primary: theme.accent,
-    secondary: theme.cardHi,
-    ghost: 'transparent',
-    danger: theme.red,
-    a: A_COLOR,
-    b: B_COLOR,
-  }[variant];
-  const fg = variant === 'primary' || variant === 'b' ? theme.ink : theme.text;
+  const v = VARIANTS[variant];
+  const press = useSharedValue(0);
+  const faceStyle = useAnimatedStyle(() => ({ transform: [{ translateY: press.value * (LIP - 1) }] }));
+  const ghost = variant === 'ghost';
+  const lip = small ? 4 : LIP;
+
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityLabel={label}
+      onPressIn={() => {
+        if (disabled) return;
+        press.value = withTiming(1, { duration: 60 });
+      }}
+      onPressOut={() => {
+        press.value = bounce(0);
+      }}
       onPress={() => {
         if (disabled || loading) return;
-        tap();
+        tap('medium');
         onPress?.();
       }}
-      style={({ pressed }) => [
-        styles.button,
-        small && styles.buttonSmall,
-        { backgroundColor: bg, opacity: disabled ? 0.4 : 1, transform: [{ scale: pressed ? 0.97 : 1 }] },
-        variant === 'ghost' && { borderWidth: 2, borderColor: theme.cardHi },
-        style,
-      ]}
+      style={[{ opacity: disabled ? 0.45 : 1 }, style]}
     >
-      {loading ? (
-        <ActivityIndicator color={fg} />
-      ) : (
-        <Text style={[styles.buttonText, small && { fontSize: 15 }, { color: fg }]}>
-          {icon ? `${icon}  ` : ''}
-          {label}
-        </Text>
-      )}
+      <View style={[styles.lip, { backgroundColor: v.lip, borderRadius: small ? 16 : 22, paddingBottom: ghost ? 0 : lip }]}>
+        <Animated.View
+          style={[
+            styles.face,
+            small && styles.faceSmall,
+            big && styles.faceBig,
+            { backgroundColor: v.face, borderRadius: small ? 16 : 22 },
+            ghost && styles.ghost,
+            faceStyle,
+          ]}
+        >
+          {loading ? (
+            <ActivityIndicator color={v.text} />
+          ) : (
+            <>
+              <Text style={[styles.buttonText, small && { fontSize: 16 }, big && { fontSize: 28 }, { color: v.text }]}>
+                {icon ? `${icon} ` : ''}
+                {label}
+              </Text>
+              {subtitle ? <Text style={[styles.subtitle, { color: v.text }]}>{subtitle}</Text> : null}
+            </>
+          )}
+          {!ghost && <View style={styles.shine} pointerEvents="none" />}
+        </Animated.View>
+      </View>
     </Pressable>
   );
 }
 
-export function Card({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) {
-  return <View style={[styles.card, style]}>{children}</View>;
+export function Card({ children, style, white }: { children: React.ReactNode; style?: StyleProp<ViewStyle>; white?: boolean }) {
+  return <View style={[styles.card, white && styles.cardWhite, style]}>{children}</View>;
 }
 
 export function H1({ children, style }: { children: React.ReactNode; style?: StyleProp<TextStyle> }) {
@@ -141,7 +185,7 @@ export function Dim({ children, style }: { children: React.ReactNode; style?: St
   return <Text style={[styles.dim, style]}>{children}</Text>;
 }
 
-export function Pill({ label, color = theme.cardHi, textColor = theme.text }: { label: string; color?: string; textColor?: string }) {
+export function Pill({ label, color = 'rgba(255,255,255,0.18)', textColor = colors.white }: { label: string; color?: string; textColor?: string }) {
   return (
     <View style={[styles.pill, { backgroundColor: color }]}>
       <Text style={[styles.pillText, { color: textColor }]}>{label}</Text>
@@ -166,6 +210,12 @@ export function Toggle({
   locked?: boolean;
   hint?: string;
 }) {
+  const x = useSharedValue(value && !locked ? 1 : 0);
+  React.useEffect(() => {
+    x.value = bounce(value && !locked ? 1 : 0);
+  }, [value, locked, x]);
+  const knob = useAnimatedStyle(() => ({ transform: [{ translateX: x.value * 24 }] }));
+  const track = useAnimatedStyle(() => ({ backgroundColor: x.value > 0.5 ? colors.green : 'rgba(255,255,255,0.2)' }));
   return (
     <Pressable
       onPress={() => {
@@ -183,9 +233,9 @@ export function Toggle({
         </Text>
         {hint ? <Text style={[styles.dim, { fontSize: 13 }]}>{hint}</Text> : null}
       </View>
-      <View style={[styles.switch, value && !locked && { backgroundColor: theme.green }]}>
-        <View style={[styles.knob, value && !locked && { alignSelf: 'flex-end' }]} />
-      </View>
+      <Animated.View style={[styles.switch, track]}>
+        <Animated.View style={[styles.knob, knob]} />
+      </Animated.View>
     </Pressable>
   );
 }
@@ -212,9 +262,9 @@ export function Segmented<T extends string | number>({
               tap();
               onChange(o.value);
             }}
-            style={[styles.segmentItem, active && { backgroundColor: theme.accent }]}
+            style={[styles.segmentItem, active && styles.segmentActive]}
           >
-            <Text style={[styles.segmentText, active && { color: theme.ink }]}>
+            <Text style={[styles.segmentText, active && { color: colors.ink }]}>
               {locked && !active ? '🔒 ' : ''}
               {o.label}
             </Text>
@@ -226,30 +276,50 @@ export function Segmented<T extends string | number>({
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: theme.bg },
-  content: { padding: 20, gap: 14, maxWidth: 560, width: '100%', alignSelf: 'center' },
-  button: {
-    minHeight: 56,
-    borderRadius: theme.radius,
+  content: { padding: 18, gap: 14, maxWidth: 560, width: '100%', alignSelf: 'center' },
+  lip: {},
+  face: {
+    minHeight: 58,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
-    borderBottomWidth: 4,
-    borderBottomColor: 'rgba(0,0,0,0.25)',
+    paddingVertical: 10,
+    overflow: 'hidden',
+    transform: [{ translateY: 0 }],
   },
-  buttonSmall: { minHeight: 42, paddingHorizontal: 14, borderRadius: 14, borderBottomWidth: 3 },
-  buttonText: { fontSize: 18, fontWeight: '800' },
-  card: { backgroundColor: theme.card, borderRadius: theme.radius, padding: 16, gap: 10 },
-  h1: { color: theme.text, fontSize: 34, fontWeight: '900', letterSpacing: -0.5 },
-  h2: { color: theme.text, fontSize: 22, fontWeight: '800' },
-  body: { color: theme.text, fontSize: 16, lineHeight: 22 },
-  dim: { color: theme.dim, fontSize: 15, lineHeight: 20 },
+  faceSmall: { minHeight: 42, paddingHorizontal: 14, paddingVertical: 6 },
+  faceBig: { minHeight: 84 },
+  ghost: { borderWidth: 2.5, borderColor: 'rgba(255,255,255,0.35)' },
+  shine: { position: 'absolute', top: 4, left: 12, right: 12, height: 8, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.28)' },
+  buttonText: { fontSize: 22, fontFamily: fonts.display, letterSpacing: 0.3 },
+  subtitle: { fontSize: 14, fontFamily: fonts.bodySemi, opacity: 0.85, marginTop: 2, textAlign: 'center' },
+  card: { backgroundColor: colors.card, borderRadius: 24, padding: 16, gap: 10, borderWidth: 1.5, borderColor: colors.cardBorder },
+  cardWhite: {
+    backgroundColor: colors.white,
+    borderColor: 'transparent',
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 0,
+    shadowOffset: { width: 0, height: 6 },
+  },
+  h1: {
+    color: colors.white,
+    fontSize: 38,
+    fontFamily: fonts.display,
+    textShadowColor: 'rgba(0,0,0,0.35)',
+    textShadowOffset: { width: 0, height: 3 },
+    textShadowRadius: 0,
+  },
+  h2: { color: colors.white, fontSize: 24, fontFamily: fonts.display },
+  body: { color: colors.white, fontSize: 17, lineHeight: 23, fontFamily: fonts.bodySemi },
+  dim: { color: colors.dim, fontSize: 15, lineHeight: 20, fontFamily: fonts.body },
   pill: { paddingHorizontal: 12, paddingVertical: 5, borderRadius: 99, alignSelf: 'flex-start' },
-  pillText: { fontSize: 13, fontWeight: '800' },
+  pillText: { fontSize: 14, fontFamily: fonts.display, letterSpacing: 0.3 },
   toggleRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 6 },
-  switch: { width: 52, height: 30, borderRadius: 15, backgroundColor: theme.cardHi, padding: 3, justifyContent: 'center' },
+  switch: { width: 54, height: 30, borderRadius: 15, padding: 3, justifyContent: 'center' },
   knob: { width: 24, height: 24, borderRadius: 12, backgroundColor: '#fff' },
-  segment: { flexDirection: 'row', backgroundColor: theme.bg2, borderRadius: 14, padding: 4, gap: 4 },
-  segmentItem: { flex: 1, paddingVertical: 10, borderRadius: 10, alignItems: 'center' },
-  segmentText: { color: theme.text, fontWeight: '800', fontSize: 15 },
+  segment: { flexDirection: 'row', backgroundColor: 'rgba(20,4,40,0.45)', borderRadius: 16, padding: 4, gap: 4 },
+  segmentItem: { flex: 1, paddingVertical: 10, borderRadius: 12, alignItems: 'center' },
+  segmentActive: { backgroundColor: colors.gold },
+  segmentText: { color: colors.white, fontFamily: fonts.display, fontSize: 16 },
 });

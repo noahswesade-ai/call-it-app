@@ -1,33 +1,95 @@
 import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { CATEGORY_BY_ID, DIFFICULTY_LABEL } from '@/content/categories';
 import { wheelSlices } from '@/content/picker';
-import { DURATIONS, host, isFinalRound, pendingBettors, type GameState } from '@/game/engine';
+import { DURATIONS, host, isFinalRound, pendingBettors, rankings, type GameState } from '@/game/engine';
 import type { Outcome, Pick } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
-import { A_COLOR, B_COLOR, Body, Button, Card, Dim, H1, H2, Pill, Row, tap, theme } from '@/ui/kit';
+import { useCountUp } from '@/ui/Coin';
+import { Confetti } from '@/ui/Confetti';
+import { Button, Dim, Pill, Row, tap } from '@/ui/kit';
+import { Bob, PopIn, Pulse, Shake, SlideIn, Wobble } from '@/ui/motion';
+import { A_COLOR, A_LIP, B_COLOR, B_LIP, colors, fonts } from '@/ui/theme';
+import { CountdownRing, DangerVignette, EmojiRain, GrowBar, Slam, Sunburst } from './fx';
 import { PlayerBadge, playerById, useTimeLeft } from './shared';
 import { Wheel } from './Wheel';
-
-function Challengers({ state, moodA, moodB, size = 110 }: { state: GameState; moodA?: any; moodB?: any; size?: number }) {
-  const [a, b] = state.round!.challengers;
-  return (
-    <Row style={{ justifyContent: 'center', gap: 4 }}>
-      <PlayerBadge player={playerById(state, a)} size={size} mood={moodA} color={A_COLOR} />
-      <Text style={styles.vs}>VS</Text>
-      <PlayerBadge player={playerById(state, b)} size={size} mood={moodB} color={B_COLOR} />
-    </Row>
-  );
-}
+import { bounce } from '@/ui/motion';
 
 function RoundHeader({ state }: { state: GameState }) {
   const r = state.round!;
   return (
     <Row style={{ justifyContent: 'space-between' }}>
-      <Pill label={`Round ${r.number} / ${state.settings.rounds}`} />
-      {isFinalRound(state) && <Pill label="🔥 FINAL ROUND · ×2" color={theme.red} />}
+      <Pill label={`ROUND ${r.number} / ${state.settings.rounds}`} color="rgba(20,4,40,0.55)" />
+      {isFinalRound(state) && (
+        <Pulse scale={1.08} duration={450}>
+          <Pill label="🔥 FINAL ROUND · ×2" color={colors.red} />
+        </Pulse>
+      )}
     </Row>
+  );
+}
+
+function CategoryLine({ state }: { state: GameState }) {
+  const r = state.round!;
+  const c = CATEGORY_BY_ID[r.category];
+  return (
+    <Row style={{ justifyContent: 'center' }}>
+      <PopIn>
+        <Pill label={`${c.emoji} ${c.label.toUpperCase()}`} color={c.color} textColor={colors.ink} />
+      </PopIn>
+      <PopIn delay={120}>
+        <Pill label={DIFFICULTY_LABEL[r.question.difficulty].toUpperCase()} color="rgba(20,4,40,0.55)" />
+      </PopIn>
+    </Row>
+  );
+}
+
+/** One challenger on a colored, tilted panel. */
+function Fighter({ state, id, side, size = 120, mood }: { state: GameState; id: string; side: 'A' | 'B'; size?: number; mood?: any }) {
+  const p = playerById(state, id);
+  const color = side === 'A' ? A_COLOR : B_COLOR;
+  return (
+    <View style={[styles.fighter, { backgroundColor: color, transform: [{ rotate: side === 'A' ? '-4deg' : '4deg' }] }]}>
+      <Bob amount={5} duration={700} delay={side === 'A' ? 0 : 200}>
+        {p && <AnimalAvatar avatar={p.avatar} size={size} mood={mood} />}
+      </Bob>
+      <Text style={styles.fighterName} numberOfLines={1}>
+        {p?.premium ? '👑 ' : ''}
+        {p?.name}
+      </Text>
+    </View>
+  );
+}
+
+function VsBadge({ delay = 300 }: { delay?: number }) {
+  return (
+    <PopIn delay={delay} from={0}>
+      <Wobble deg={8} duration={400}>
+        <View style={styles.vs}>
+          <Text style={styles.vsText}>VS</Text>
+        </View>
+      </Wobble>
+    </PopIn>
+  );
+}
+
+function FaceOff({ state, size = 110, moodFor }: { state: GameState; size?: number; moodFor?: (id: string) => any }) {
+  const [a, b] = state.round!.challengers;
+  return (
+    <View style={styles.faceoff}>
+      <SlideIn from="left" distance={220} style={{ flex: 1 }}>
+        <Fighter state={state} id={a} side="A" size={size} mood={moodFor?.(a)} />
+      </SlideIn>
+      <View style={styles.vsWrap}>
+        <VsBadge />
+      </View>
+      <SlideIn from="right" distance={220} style={{ flex: 1 }}>
+        <Fighter state={state} id={b} side="B" size={size} mood={moodFor?.(b)} />
+      </SlideIn>
+    </View>
   );
 }
 
@@ -35,14 +97,27 @@ export function Matchup({ state }: { state: GameState }) {
   const { myId } = useRoom();
   const r = state.round!;
   const mine = r.challengers.includes(myId);
+  const final = isFinalRound(state);
   useEffect(() => {
-    if (mine) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => {});
+    Haptics.notificationAsync(mine ? Haptics.NotificationFeedbackType.Warning : Haptics.NotificationFeedbackType.Success).catch(() => {});
   }, [mine]);
   return (
-    <View style={styles.center}>
-      <RoundHeader state={state} />
-      <H1 style={{ textAlign: 'center' }}>{mine ? "🔥 You're up!" : 'Next face-off'}</H1>
-      <Challengers state={state} moodA={r.challengers[0] === myId ? 'nervous' : undefined} moodB={r.challengers[1] === myId ? 'nervous' : undefined} />
+    <View style={styles.stage}>
+      <View style={{ alignItems: 'center', justifyContent: 'center', height: 150 }}>
+        <Sunburst size={420} color={final ? 'rgba(255,71,87,0.18)' : 'rgba(255,255,255,0.07)'} />
+        <Slam text={final ? '🔥 FINAL ROUND 🔥' : `ROUND ${r.number}`} size={final ? 44 : 64} color={final ? colors.gold : colors.white} />
+        <SlideIn from="bottom" delay={500}>
+          <Text style={styles.subHead}>{final ? 'Double points. Double sips.' : `of ${state.settings.rounds}`}</Text>
+        </SlideIn>
+      </View>
+      <FaceOff state={state} moodFor={(id) => (id === myId ? 'nervous' : undefined)} />
+      {mine && (
+        <PopIn delay={900}>
+          <Pulse scale={1.1} duration={400}>
+            <Text style={styles.youreUp}>⚡ YOU'RE UP! ⚡</Text>
+          </Pulse>
+        </PopIn>
+      )}
     </View>
   );
 }
@@ -51,8 +126,11 @@ export function Spin({ state }: { state: GameState }) {
   const r = state.round!;
   const h = host(state);
   return (
-    <View style={styles.center}>
+    <View style={styles.stage}>
       <RoundHeader state={state} />
+      <SlideIn from="top" distance={30}>
+        <Text style={styles.spinTitle}>Spinning for a challenge…</Text>
+      </SlideIn>
       <Wheel
         slices={wheelSlices(state.settings.categories)}
         landOn={r.slice}
@@ -65,14 +143,41 @@ export function Spin({ state }: { state: GameState }) {
   );
 }
 
-function CategoryLine({ state }: { state: GameState }) {
-  const r = state.round!;
-  const c = CATEGORY_BY_ID[r.category];
+/** Big tappable card for one challenger during betting. */
+function PickCard({ state, id, side, onPick, chosen, disabled }: { state: GameState; id: string; side: 'A' | 'B'; onPick: () => void; chosen?: boolean; disabled?: boolean }) {
+  const p = playerById(state, id);
+  const press = useSharedValue(0);
+  const face = useAnimatedStyle(() => ({ transform: [{ translateY: press.value * 6 }] }));
+  const color = side === 'A' ? A_COLOR : B_COLOR;
+  const lip = side === 'A' ? A_LIP : B_LIP;
   return (
-    <Row style={{ justifyContent: 'center' }}>
-      <Pill label={`${c.emoji} ${c.label}`} color={c.color} textColor={theme.ink} />
-      <Pill label={DIFFICULTY_LABEL[r.question.difficulty]} />
-    </Row>
+    <Pressable
+      style={{ flex: 1 }}
+      disabled={disabled}
+      onPressIn={() => (press.value = withTiming(1, { duration: 60 }))}
+      onPressOut={() => (press.value = bounce(0))}
+      onPress={onPick}
+      accessibilityRole="button"
+      accessibilityLabel={`Call ${p?.name}`}
+    >
+      <View style={[styles.pickLip, { backgroundColor: lip }]}>
+        <Animated.View style={[styles.pickFace, { backgroundColor: color }, face]}>
+          <Bob amount={4} duration={600} delay={side === 'A' ? 0 : 300}>
+            {p && <AnimalAvatar avatar={p.avatar} size={100} mood="nervous" />}
+          </Bob>
+          <Text style={styles.pickName} numberOfLines={1}>
+            {p?.name}
+          </Text>
+          {chosen && (
+            <View style={StyleSheet.absoluteFill}>
+              <PopIn from={2.2} style={styles.stampWrap}>
+                <Text style={styles.stamp}>CALLED IT!</Text>
+              </PopIn>
+            </View>
+          )}
+        </Animated.View>
+      </View>
+    </Pressable>
   );
 }
 
@@ -93,81 +198,150 @@ export function Betting({ state }: { state: GameState }) {
     lastSec.current = secs;
   }, [secs, pressure, canBet, myBet]);
 
-  const voted = r.bettors.length - pendingBettors(state).length;
+  const voted = r.bettors.filter((id) => id in r.bets);
   const bet = (pick: Pick) => {
-    tap('medium');
+    tap('heavy');
     dispatch({ type: 'bet', playerId: myId, pick, now: Date.now() });
   };
   const [a, b] = r.challengers;
+  const isChallenger = r.challengers.includes(myId);
+  const waitingOnMe = canBet && !myBet;
 
   return (
-    <View style={[styles.center, pressure && styles.pressure]}>
+    <View style={styles.stage}>
+      <DangerVignette active={pressure && waitingOnMe} />
       <RoundHeader state={state} />
       <CategoryLine state={state} />
-      <Text style={[styles.timer, pressure && { color: theme.red }]}>{secs}</Text>
-      {canBet && !myBet ? (
+      <View style={{ alignItems: 'center' }}>
+        <Shake trigger={pressure ? secs : 0} strength={pressure ? 6 : 0}>
+          <CountdownRing msLeft={left} total={DURATIONS.betting} danger={pressure} size={pressure ? 130 : 116} />
+        </Shake>
+      </View>
+
+      {canBet ? (
         <>
-          <H2 style={{ textAlign: 'center' }}>Who wins? Call it!</H2>
-          <Row style={{ justifyContent: 'center', gap: 12 }}>
-            <Pressable style={[styles.pick, { borderColor: A_COLOR }]} onPress={() => bet('A')} accessibilityRole="button">
-              <PlayerBadge player={playerById(state, a)} size={96} color={A_COLOR} />
-            </Pressable>
-            <Pressable style={[styles.pick, { borderColor: B_COLOR }]} onPress={() => bet('B')} accessibilityRole="button">
-              <PlayerBadge player={playerById(state, b)} size={96} color={B_COLOR} />
-            </Pressable>
+          <SlideIn from="bottom" distance={20}>
+            <Text style={styles.callIt}>{myBet ? (myBet === 'NONE' ? 'Sitting this one out…' : 'Locked in! 🔒') : 'WHO WINS? CALL IT!'}</Text>
+          </SlideIn>
+          <Row style={{ gap: 12, alignItems: 'stretch' }}>
+            <SlideIn from="left" distance={160} style={{ flex: 1 }}>
+              <PickCard state={state} id={a} side="A" onPick={() => bet('A')} chosen={myBet === 'A'} disabled={!!myBet} />
+            </SlideIn>
+            <SlideIn from="right" distance={160} style={{ flex: 1 }}>
+              <PickCard state={state} id={b} side="B" onPick={() => bet('B')} chosen={myBet === 'B'} disabled={!!myBet} />
+            </SlideIn>
           </Row>
-          <Button
-            label={state.settings.mode === 'party' ? 'No Vote (costs 1 sip)' : 'No Vote'}
-            variant="ghost"
-            onPress={() => bet('NONE')}
-          />
+          {!myBet && (
+            <SlideIn from="bottom" delay={250}>
+              <Button small variant="ghost" label={state.settings.mode === 'party' ? 'No Vote (costs 1 sip 🍺)' : 'No Vote'} onPress={() => bet('NONE')} />
+            </SlideIn>
+          )}
         </>
       ) : (
         <>
-          <Challengers state={state} size={90} moodA={r.challengers[0] === myId ? 'nervous' : undefined} moodB={r.challengers[1] === myId ? 'nervous' : undefined} />
-          <H2 style={{ textAlign: 'center' }}>
-            {myBet
-              ? myBet === 'NONE'
-                ? 'You sat this one out'
-                : `You called ${playerById(state, myBet === 'A' ? a : b)?.name}!`
-              : r.challengers.includes(myId)
-                ? 'Bets are coming in…'
-                : 'Bets are coming in…'}
-          </H2>
-          <Dim style={{ textAlign: 'center' }}>
-            {voted} / {r.bettors.length} have called it
-          </Dim>
+          <FaceOff state={state} size={92} moodFor={(id) => (id === myId ? 'nervous' : undefined)} />
+          <Pulse scale={1.05} duration={700}>
+            <Text style={styles.callIt}>{isChallenger ? '😬 The room is betting on you…' : 'Bets are coming in…'}</Text>
+          </Pulse>
         </>
+      )}
+
+      <View style={{ alignItems: 'center', gap: 6 }}>
+        <Text style={styles.votedLabel}>
+          {voted.length} / {r.bettors.length} CALLED IT
+        </Text>
+        <Row style={{ flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
+          {voted.map((id) => {
+            const p = playerById(state, id);
+            return p ? (
+              <PopIn key={id} from={0}>
+                <AnimalAvatar avatar={p.avatar} size={34} mood="happy" />
+              </PopIn>
+            ) : null;
+          })}
+        </Row>
+      </View>
+    </View>
+  );
+}
+
+function PercentLabel({ pct, color }: { pct: number; color: string }) {
+  const shown = useCountUp(pct, 1000);
+  return <Text style={[styles.pct, { color }]}>{shown}%</Text>;
+}
+
+export function BetsReveal({ state }: { state: GameState }) {
+  const r = state.round!;
+  const side = (pick: 'A' | 'B') => r.bettors.filter((id) => r.bets[id] === pick).map((id) => playerById(state, id)!).filter(Boolean);
+  const none = r.bettors.filter((id) => !r.bets[id] || r.bets[id] === 'NONE').map((id) => playerById(state, id)!).filter(Boolean);
+  const total = side('A').length + side('B').length;
+  const pct = (n: number) => (total === 0 ? 0 : Math.round((n / total) * 100));
+
+  return (
+    <View style={styles.stage}>
+      <RoundHeader state={state} />
+      <Slam text="THE ROOM HAS SPOKEN" size={34} />
+      <Row style={{ alignItems: 'flex-start', gap: 10 }}>
+        {(['A', 'B'] as const).map((p, i) => {
+          const color = p === 'A' ? A_COLOR : B_COLOR;
+          const backers = side(p);
+          return (
+            <View key={p} style={{ flex: 1, alignItems: 'center', gap: 8 }}>
+              <SlideIn from={p === 'A' ? 'left' : 'right'} distance={120}>
+                <PlayerBadge player={playerById(state, r.challengers[i])} size={92} color={color} bob />
+              </SlideIn>
+              <PercentLabel pct={pct(backers.length)} color={color} />
+              <GrowBar pct={pct(backers.length)} color={color} delay={200} />
+              <View style={styles.stack}>
+                {backers.map((pl, j) => (
+                  <SlideIn key={pl.id} from="top" distance={50} delay={400 + j * 140}>
+                    <AnimalAvatar avatar={pl.avatar} size={40} mood="happy" />
+                    <Text style={styles.backerName} numberOfLines={1}>
+                      {pl.name}
+                    </Text>
+                  </SlideIn>
+                ))}
+              </View>
+            </View>
+          );
+        })}
+      </Row>
+      {none.length > 0 && (
+        <SlideIn from="bottom" delay={800}>
+          <Dim style={{ textAlign: 'center' }}>🙈 No Vote: {none.map((p) => p.name).join(', ')}</Dim>
+        </SlideIn>
       )}
     </View>
   );
 }
 
-export function BetsReveal({ state }: { state: GameState }) {
-  const r = state.round!;
-  const side = (pick: 'A' | 'B') => r.bettors.filter((id) => r.bets[id] === pick).map((id) => playerById(state, id)!);
-  const none = r.bettors.filter((id) => !r.bets[id] || r.bets[id] === 'NONE').map((id) => playerById(state, id)!);
-  const total = side('A').length + side('B').length;
-  const pct = (n: number) => (total === 0 ? 0 : Math.round((n / total) * 100));
+/** The white question card flips in like a game-show card. */
+function QuestionCard({ text, hint }: { text: string; hint?: string }) {
+  const flip = useSharedValue(90);
+  useEffect(() => {
+    flip.value = bounce(0);
+  }, [flip]);
+  const st = useAnimatedStyle(() => ({ transform: [{ perspective: 800 }, { rotateX: `${flip.value}deg` }] }));
   return (
-    <View style={styles.center}>
-      <RoundHeader state={state} />
-      <H2 style={{ textAlign: 'center' }}>The room has spoken</H2>
-      <Row style={{ alignItems: 'flex-start', justifyContent: 'center', gap: 8 }}>
-        {(['A', 'B'] as const).map((p, i) => (
-          <View key={p} style={{ flex: 1, alignItems: 'center', gap: 6 }}>
-            <PlayerBadge player={playerById(state, r.challengers[i])} size={90} color={p === 'A' ? A_COLOR : B_COLOR} />
-            <Text style={[styles.pct, { color: p === 'A' ? A_COLOR : B_COLOR }]}>{pct(side(p).length)}%</Text>
-            <View style={styles.stack}>
-              {side(p).map((pl) => (
-                <PlayerBadge key={pl.id} player={pl} size={34} />
-              ))}
-            </View>
-          </View>
-        ))}
-      </Row>
-      {none.length > 0 && <Dim style={{ textAlign: 'center' }}>No Vote: {none.map((p) => p.name).join(', ')}</Dim>}
-    </View>
+    <Animated.View style={[styles.qCard, st]}>
+      <Text style={styles.question}>{text}</Text>
+      {hint ? <Text style={styles.qHint}>{hint}</Text> : null}
+    </Animated.View>
+  );
+}
+
+function AnswerReveal({ answer }: { answer: string }) {
+  const flip = useSharedValue(-90);
+  useEffect(() => {
+    flip.value = bounce(0);
+    tap('heavy');
+  }, [flip]);
+  const st = useAnimatedStyle(() => ({ transform: [{ perspective: 800 }, { rotateY: `${flip.value}deg` }] }));
+  return (
+    <Animated.View style={[styles.answerCard, st]}>
+      <Text style={styles.answerLabel}>ANSWER</Text>
+      <Text style={styles.answer}>{answer}</Text>
+    </Animated.View>
   );
 }
 
@@ -186,6 +360,12 @@ export function Challenge({ state }: { state: GameState }) {
   const prompt = q.prompt.replace(/\{S\}/g, subject?.name ?? 'them');
   const answer = q.type === 'SUBJECT_JUDGED' ? r.subjectAnswer : q.answer;
   const judgeName = playerById(state, r.judgeId)?.name ?? 'the host';
+  const hint =
+    q.type === 'SPOKEN_CLOSEST'
+      ? 'Both shout a number. Closest wins!'
+      : q.type === 'SPOKEN_EXACT'
+        ? 'First to shout the right answer wins!'
+        : undefined;
 
   const judge = (outcome: Outcome) => {
     tap('heavy');
@@ -197,91 +377,132 @@ export function Challenge({ state }: { state: GameState }) {
     <View style={{ gap: 14 }}>
       <RoundHeader state={state} />
       <CategoryLine state={state} />
-      <Challengers state={state} size={72} />
-      <Card style={{ backgroundColor: theme.cardHi }}>
-        <Text style={styles.question}>{prompt}</Text>
-        {q.type === 'SPOKEN_CLOSEST' && <Dim>Both say a number out loud. Closest wins.</Dim>}
-        {q.type === 'SPOKEN_EXACT' && <Dim>First to say the right answer out loud wins.</Dim>}
-      </Card>
+      <Row style={{ justifyContent: 'center', gap: 6 }}>
+        <SlideIn from="left">
+          <PlayerBadge player={playerById(state, a)} size={64} color={A_COLOR} bob />
+        </SlideIn>
+        <VsBadge delay={150} />
+        <SlideIn from="right">
+          <PlayerBadge player={playerById(state, b)} size={64} color={B_COLOR} bob />
+        </SlideIn>
+      </Row>
+      <QuestionCard text={prompt} hint={hint} />
 
       {isSubject && (
-        <Card>
-          <H2>🤫 You're the subject</H2>
-          {r.subjectAnswer ? (
-            <Body>Your secret answer: {r.subjectAnswer}. Judge who got closest!</Body>
-          ) : (
-            <>
-              <Dim>Type the real answer secretly before they guess.</Dim>
-              <TextInput
-                value={subjectDraft}
-                onChangeText={setSubjectDraft}
-                placeholder="Your real answer"
-                placeholderTextColor={theme.dim}
-                style={styles.input}
-              />
-              <Button
-                label="Lock it in"
-                disabled={!subjectDraft.trim()}
-                onPress={() => dispatch({ type: 'subjectAnswer', playerId: myId, answer: subjectDraft.trim() })}
-              />
-            </>
-          )}
-        </Card>
+        <SlideIn from="bottom" delay={300}>
+          <View style={styles.panel}>
+            <Text style={styles.panelTitle}>🤫 It's about you!</Text>
+            {r.subjectAnswer ? (
+              <Text style={styles.panelBody}>Your secret answer: {r.subjectAnswer}. You judge who got closest!</Text>
+            ) : (
+              <>
+                <Text style={styles.panelBody}>Type the real answer secretly before they guess.</Text>
+                <TextInput value={subjectDraft} onChangeText={setSubjectDraft} placeholder="Your real answer" placeholderTextColor="#8E7CC3" style={styles.input} />
+                <Button
+                  label="🔒 Lock it in"
+                  disabled={!subjectDraft.trim()}
+                  onPress={() => dispatch({ type: 'subjectAnswer', playerId: myId, answer: subjectDraft.trim() })}
+                />
+              </>
+            )}
+          </View>
+        </SlideIn>
       )}
 
-      {r.answerShownToAll && answer && (
-        <Card style={{ backgroundColor: theme.green }}>
-          <Text style={[styles.question, { color: theme.ink }]}>Answer: {answer}</Text>
-        </Card>
-      )}
+      {r.answerShownToAll && answer && !canJudge && <AnswerReveal answer={answer} />}
 
       {canJudge ? (
-        <Card>
-          <H2>{isJudge ? '⚖️ You judge this round' : `⚖️ ${judgeName} judges · host override`}</H2>
-          {answer !== undefined || q.answer ? (
-            revealed ? (
-              <>
-                <Text style={styles.answer}>{answer ?? '—'}</Text>
-                {!r.answerShownToAll && (
-                  <Button small variant="secondary" label="Show on all screens" onPress={() => dispatch({ type: 'showAnswerToAll' })} />
-                )}
-              </>
-            ) : (
+        <SlideIn from="bottom" delay={350}>
+          <View style={styles.panel}>
+            <Text style={styles.panelTitle}>{isJudge ? '⚖️ You’re the judge' : `⚖️ ${judgeName} judges · you can override`}</Text>
+            {(answer !== undefined || q.answer) &&
+              (revealed ? (
+                <>
+                  <AnswerReveal answer={answer ?? '—'} />
+                  {!r.answerShownToAll && <Button small variant="secondary" label="📣 Show on everyone's screen" onPress={() => dispatch({ type: 'showAnswerToAll' })} />}
+                </>
+              ) : (
+                <Pulse scale={1.03} duration={800}>
+                  <Button
+                    variant="secondary"
+                    label="👁️ Reveal answer"
+                    subtitle="Only you can see it"
+                    disabled={q.type === 'SUBJECT_JUDGED' && !r.subjectAnswer}
+                    onPress={() => setRevealed(true)}
+                  />
+                </Pulse>
+              ))}
+            {q.type === 'SUBJECT_JUDGED' && !r.subjectAnswer && <Dim>Waiting for {subject?.name} to lock in their answer…</Dim>}
+            {q.type === 'TURN_BASED' && (
               <Button
-                variant="secondary"
-                label="👁️ Reveal answer"
-                disabled={q.type === 'SUBJECT_JUDGED' && !r.subjectAnswer}
-                onPress={() => setRevealed(true)}
+                small
+                variant="ghost"
+                label={stallStart !== undefined && stallLeft > 0 ? `⏱️ ${Math.ceil(stallLeft / 1000)}…` : '⏱️ Start 5s stall timer'}
+                onPress={() => setStallStart(Date.now())}
               />
-            )
-          ) : null}
-          {q.type === 'SUBJECT_JUDGED' && !r.subjectAnswer && <Dim>Waiting for {subject?.name} to lock in their answer…</Dim>}
-          {q.type === 'TURN_BASED' && (
-            <Button
-              small
-              variant="ghost"
-              label={stallStart !== undefined && stallLeft > 0 ? `⏱️ ${Math.ceil(stallLeft / 1000)}s` : '⏱️ Start 5s stall timer'}
-              onPress={() => setStallStart(Date.now())}
-            />
-          )}
-          <Body>Who won?</Body>
-          <Row>
-            <Button style={{ flex: 1 }} variant="a" label={playerById(state, a)?.name ?? 'A'} onPress={() => judge('A')} />
-            <Button style={{ flex: 1 }} variant="b" label={playerById(state, b)?.name ?? 'B'} onPress={() => judge('B')} />
-          </Row>
-          <Button small variant="ghost" label="Draw" onPress={() => judge('DRAW')} />
-        </Card>
+            )}
+            <Text style={styles.whoWon}>WHO WON?</Text>
+            <Row>
+              <Button style={{ flex: 1 }} variant="a" label={playerById(state, a)?.name ?? 'A'} onPress={() => judge('A')} />
+              <Button style={{ flex: 1 }} variant="b" label={playerById(state, b)?.name ?? 'B'} onPress={() => judge('B')} />
+            </Row>
+            <Button small variant="ghost" label="🤝 Draw" onPress={() => judge('DRAW')} />
+          </View>
+        </SlideIn>
       ) : (
-        <Dim style={{ textAlign: 'center' }}>{judgeName} is judging…</Dim>
+        <Pulse scale={1.04} duration={800}>
+          <Text style={styles.waitText}>⚖️ {judgeName} is judging…</Text>
+        </Pulse>
       )}
 
       {isHost && (
-        <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Row style={{ justifyContent: 'center', flexWrap: 'wrap', gap: 8 }}>
           <Button small variant="ghost" label="Skip round" onPress={() => dispatch({ type: 'skipRound', now: Date.now() })} />
           <Button small variant="ghost" label={`Swap ${playerById(state, a)?.name}`} onPress={() => dispatch({ type: 'swapChallenger', out: a, now: Date.now() })} />
           <Button small variant="ghost" label={`Swap ${playerById(state, b)?.name}`} onPress={() => dispatch({ type: 'swapChallenger', out: b, now: Date.now() })} />
         </Row>
       )}
+    </View>
+  );
+}
+
+/** Per-player result kind, used to tint the whole screen. */
+export function myResultTint(state: GameState, myId: string): 'green' | 'red' | undefined {
+  const s = state.round?.score?.perPlayer[myId];
+  if (!s) return undefined;
+  if (s.points > 0) return 'green';
+  if (state.settings.mode === 'party' && (s.sips > 0 || s.shot)) return 'red';
+  return undefined;
+}
+
+function Standings({ state }: { state: GameState }) {
+  const rows = rankings(state).slice(0, 5);
+  const max = Math.max(1, ...rows.map((r) => r.totals.points));
+  const lastRound = state.round?.score?.perPlayer ?? {};
+  return (
+    <View style={styles.panel}>
+      <Text style={styles.panelTitle}>📊 Standings</Text>
+      {rows.map((r, i) => (
+        <SlideIn key={r.player.id} from="right" delay={500 + i * 110} distance={80}>
+          <Row style={{ gap: 8 }}>
+            <Text style={styles.rankNum}>{r.rank}</Text>
+            <AnimalAvatar avatar={r.player.avatar} size={34} mood={i === 0 ? 'happy' : undefined} />
+            <View style={{ flex: 1, gap: 3 }}>
+              <Row style={{ justifyContent: 'space-between' }}>
+                <Text style={styles.rowName} numberOfLines={1}>
+                  {i === 0 && r.totals.points > 0 ? '👑 ' : ''}
+                  {r.player.name}
+                </Text>
+                <Text style={styles.rowVal}>
+                  {r.totals.points} pts
+                  {lastRound[r.player.id]?.points ? <Text style={{ color: colors.green }}>  +{lastRound[r.player.id].points}</Text> : null}
+                </Text>
+              </Row>
+              <GrowBar pct={(r.totals.points / max) * 100} color={i === 0 ? colors.gold : colors.violet} height={8} delay={600 + i * 110} />
+            </View>
+          </Row>
+        </SlideIn>
+      ))}
     </View>
   );
 }
@@ -294,78 +515,190 @@ export function Result({ state }: { state: GameState }) {
   const party = state.settings.mode === 'party';
   const winnerId = r.outcome === 'A' ? r.challengers[0] : r.outcome === 'B' ? r.challengers[1] : undefined;
   const me = playerById(state, myId);
+  const left = useTimeLeft(state.phaseEndsAt);
 
   useEffect(() => {
     if (!mine) return;
-    const good = mine.points > 0;
-    Haptics.notificationAsync(good ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error).catch(() => {});
+    Haptics.notificationAsync(mine.points > 0 ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error).catch(() => {});
   }, [mine]);
 
   let headline = '';
   let sub = '';
-  let bg: string = theme.card;
-  let mood: 'happy' | 'drink' | 'neutral' = 'neutral';
+  let kind: 'win' | 'drink' | 'loss' | 'neutral' = 'neutral';
   if (!mine) {
-    headline = r.outcome === 'DRAW' ? "It's a draw!" : `${playerById(state, winnerId)?.name} wins!`;
+    headline = r.outcome === 'DRAW' ? "IT'S A DRAW!" : `${playerById(state, winnerId)?.name} WINS!`;
   } else if (mine.points > 0) {
-    headline = `WIN +${mine.points}`;
-    sub = mine.result === 'betWin' && score.multiplier > 1 ? `Underdog bonus ×${score.multiplier}!` : mine.result === 'challengerWin' ? 'You won the face-off!' : 'You called it!';
-    bg = theme.green;
-    mood = 'happy';
+    kind = 'win';
+    headline = `+${mine.points}`;
+    sub = mine.result === 'betWin' && score.multiplier > 1 ? `🐶 UNDERDOG BONUS ×${score.multiplier}!` : mine.result === 'challengerWin' ? 'You won the face-off!' : 'You called it!';
   } else if (party && (mine.sips > 0 || mine.shot)) {
-    headline = mine.shot ? 'TAKE A SHOT!' : `DRINK! ${mine.sips} sip${mine.sips === 1 ? '' : 's'}`;
-    sub = mine.result === 'noVote' ? 'That’s the No Vote tax' : mine.result === 'draw' ? 'A draw means both challengers drink' : score.multiplier > 1 ? `Huge upset ×${score.multiplier}!` : '';
-    bg = theme.red;
-    mood = 'drink';
+    kind = 'drink';
+    headline = mine.shot ? 'SHOT!' : `DRINK ${mine.sips}`;
+    sub =
+      mine.result === 'noVote'
+        ? 'That’s the No Vote tax 🍺'
+        : mine.result === 'draw'
+          ? 'Draws mean both challengers drink'
+          : score.multiplier > 1
+            ? `Massive upset ×${score.multiplier}! 😱`
+            : mine.sips === 1
+              ? 'One sip. Bottoms up!'
+              : 'Sips. Bottoms up!';
   } else {
-    headline = mine.result === 'noVote' ? 'No Vote' : mine.result === 'draw' ? 'Draw' : 'LOSS';
-    sub = '+0';
-    bg = theme.cardHi;
+    kind = 'loss';
+    headline = mine.result === 'noVote' ? 'NO VOTE' : mine.result === 'draw' ? 'DRAW' : 'MISSED IT';
+    sub = '+0 this round';
   }
 
   return (
     <View style={{ gap: 14 }}>
+      {kind === 'win' && <Confetti count={70} />}
+      {kind === 'drink' && <EmojiRain emoji={mine?.shot ? '🥃' : '🍺'} count={16} />}
       <RoundHeader state={state} />
-      <Card style={{ backgroundColor: bg, alignItems: 'center', paddingVertical: 28 }}>
-        {me && mine && <PlayerBadge player={me} size={120} mood={mood} />}
-        <Text style={[styles.big, bg !== theme.card && bg !== theme.cardHi && { color: theme.ink }]}>{headline}</Text>
-        {sub ? <Text style={[styles.subBig, bg !== theme.card && bg !== theme.cardHi && { color: theme.ink }]}>{sub}</Text> : null}
-      </Card>
-      <Card>
-        <H2>{r.outcome === 'DRAW' ? 'Draw' : `🏆 ${playerById(state, winnerId)?.name} won the round`}</H2>
-        {state.players.map((p) => {
-          const s = score.perPlayer[p.id];
-          if (!s) return null;
-          return (
-            <Row key={p.id} style={{ justifyContent: 'space-between' }}>
-              <Text style={styles.rowName}>{p.name}</Text>
-              <Text style={styles.rowVal}>
-                {s.points > 0 ? `+${s.points}` : '+0'}
-                {party && s.sips > 0 ? `  🍺 ${s.sips}` : ''}
-                {s.shot ? '  🥃 shot' : ''}
-              </Text>
+      <View style={{ alignItems: 'center', justifyContent: 'center', minHeight: 260 }}>
+        <Sunburst size={440} color={kind === 'win' ? 'rgba(255,255,255,0.14)' : kind === 'drink' ? 'rgba(255,220,120,0.12)' : 'rgba(255,255,255,0.05)'} />
+        {me && mine && (
+          <PopIn from={0.2}>
+            {kind === 'drink' ? (
+              <Wobble deg={10} duration={300}>
+                <AnimalAvatar avatar={me.avatar} size={130} mood="drink" />
+              </Wobble>
+            ) : kind === 'loss' ? (
+              <Shake trigger={1} strength={12}>
+                <AnimalAvatar avatar={me.avatar} size={130} mood="nervous" />
+              </Shake>
+            ) : (
+              <Bob amount={8} duration={400}>
+                <AnimalAvatar avatar={me.avatar} size={130} mood="happy" />
+              </Bob>
+            )}
+          </PopIn>
+        )}
+        <Slam text={headline} size={kind === 'neutral' ? 40 : 62} color={kind === 'win' ? colors.gold : kind === 'drink' ? colors.white : colors.white} delay={150} />
+        {sub ? (
+          <SlideIn from="bottom" delay={450}>
+            <Text style={styles.resultSub}>{sub}</Text>
+          </SlideIn>
+        ) : null}
+      </View>
+
+      <SlideIn from="bottom" delay={350}>
+        <View style={styles.winnerBanner}>
+          <Text style={styles.winnerText}>{r.outcome === 'DRAW' ? '🤝 Draw!' : `🏆 ${playerById(state, winnerId)?.name} won the face-off`}</Text>
+        </View>
+      </SlideIn>
+
+      {party && (
+        <SlideIn from="bottom" delay={450}>
+          <View style={styles.panel}>
+            <Text style={styles.panelTitle}>🍺 Drink up</Text>
+            <Row style={{ flexWrap: 'wrap', gap: 8 }}>
+              {state.players
+                .filter((p) => (score.perPlayer[p.id]?.sips ?? 0) > 0 || score.perPlayer[p.id]?.shot)
+                .map((p, i) => (
+                  <PopIn key={p.id} delay={600 + i * 90}>
+                    <View style={styles.drinkChip}>
+                      <AnimalAvatar avatar={p.avatar} size={28} mood="drink" />
+                      <Text style={styles.drinkText}>
+                        {p.name} {score.perPlayer[p.id].shot ? '🥃 shot' : `×${score.perPlayer[p.id].sips}`}
+                      </Text>
+                    </View>
+                  </PopIn>
+                ))}
             </Row>
-          );
-        })}
-      </Card>
-      {isHost && <Button label={isFinalRound(state) ? 'See final results' : 'Next round'} onPress={() => dispatch({ type: 'next', now: Date.now() })} />}
+          </View>
+        </SlideIn>
+      )}
+
+      <Standings state={state} />
+
+      {isHost ? (
+        <Button
+          variant="green"
+          label={isFinalRound(state) ? '🏆 Final results' : `Next round ▶ (${Math.ceil(left / 1000)})`}
+          onPress={() => dispatch({ type: 'next', now: Date.now() })}
+        />
+      ) : (
+        <Dim style={{ textAlign: 'center' }}>Next round in {Math.ceil(left / 1000)}…</Dim>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  center: { gap: 16, alignItems: 'stretch', justifyContent: 'center', flexGrow: 1, borderRadius: 24, padding: 4 },
-  vs: { color: theme.accent, fontSize: 28, fontWeight: '900', marginHorizontal: 4 },
-  timer: { color: theme.text, fontSize: 64, fontWeight: '900', textAlign: 'center' },
-  pressure: { backgroundColor: 'rgba(255,77,94,0.18)' },
-  pick: { borderWidth: 4, borderRadius: 24, padding: 10, backgroundColor: theme.card },
-  pct: { fontSize: 32, fontWeight: '900' },
-  stack: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' },
-  question: { color: theme.text, fontSize: 22, fontWeight: '800', lineHeight: 30 },
-  answer: { color: theme.accent, fontSize: 24, fontWeight: '900' },
-  input: { backgroundColor: theme.bg2, color: theme.text, fontSize: 18, padding: 12, borderRadius: 12 },
-  big: { color: theme.text, fontSize: 40, fontWeight: '900', textAlign: 'center' },
-  subBig: { color: theme.text, fontSize: 18, fontWeight: '800', textAlign: 'center' },
-  rowName: { color: theme.text, fontSize: 16, fontWeight: '700' },
-  rowVal: { color: theme.dim, fontSize: 16, fontWeight: '800' },
+  stage: { gap: 16, flexGrow: 1, justifyContent: 'center' },
+  subHead: { color: colors.dim, fontFamily: fonts.display, fontSize: 18, textAlign: 'center' },
+  faceoff: { flexDirection: 'row', alignItems: 'center' },
+  fighter: {
+    alignItems: 'center',
+    borderRadius: 26,
+    paddingVertical: 14,
+    paddingHorizontal: 6,
+    borderBottomWidth: 7,
+    borderBottomColor: 'rgba(0,0,0,0.25)',
+  },
+  fighterName: { color: colors.white, fontFamily: fonts.display, fontSize: 22, textShadowColor: 'rgba(0,0,0,0.3)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
+  vsWrap: { width: 0, alignItems: 'center', zIndex: 3 },
+  vs: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: colors.gold,
+    borderWidth: 4,
+    borderColor: colors.ink,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  vsText: { color: colors.ink, fontFamily: fonts.display, fontSize: 28 },
+  youreUp: { color: colors.gold, fontFamily: fonts.display, fontSize: 34, textAlign: 'center', textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 0 },
+  spinTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 24, textAlign: 'center' },
+  callIt: { color: colors.white, fontFamily: fonts.display, fontSize: 28, textAlign: 'center' },
+  pickLip: { borderRadius: 26, paddingBottom: 7 },
+  pickFace: { borderRadius: 26, alignItems: 'center', paddingVertical: 16, paddingHorizontal: 6, overflow: 'hidden' },
+  pickName: { color: colors.white, fontFamily: fonts.display, fontSize: 24, textShadowColor: 'rgba(0,0,0,0.3)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
+  stampWrap: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  stamp: {
+    color: colors.white,
+    backgroundColor: colors.green,
+    fontFamily: fonts.display,
+    fontSize: 24,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 10,
+    borderWidth: 3,
+    borderColor: colors.ink,
+    overflow: 'hidden',
+    transform: [{ rotate: '-12deg' }],
+  },
+  votedLabel: { color: colors.dim, fontFamily: fonts.display, fontSize: 15, letterSpacing: 1 },
+  pct: { fontSize: 44, fontFamily: fonts.display },
+  stack: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4 },
+  backerName: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 11, textAlign: 'center', maxWidth: 52 },
+  qCard: {
+    backgroundColor: colors.white,
+    borderRadius: 24,
+    padding: 22,
+    gap: 8,
+    borderBottomWidth: 8,
+    borderBottomColor: '#C9B8F0',
+  },
+  question: { color: colors.ink, fontSize: 26, fontFamily: fonts.display, lineHeight: 32, textAlign: 'center' },
+  qHint: { color: '#6B5A99', fontSize: 15, fontFamily: fonts.bodySemi, textAlign: 'center' },
+  answerCard: { backgroundColor: colors.green, borderRadius: 20, padding: 14, alignItems: 'center', borderBottomWidth: 6, borderBottomColor: colors.greenLip },
+  answerLabel: { color: colors.ink, fontFamily: fonts.display, fontSize: 14, letterSpacing: 2, opacity: 0.7 },
+  answer: { color: colors.ink, fontSize: 28, fontFamily: fonts.display, textAlign: 'center' },
+  panel: { backgroundColor: 'rgba(20,4,40,0.55)', borderRadius: 24, padding: 16, gap: 10, borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.15)' },
+  panelTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 22 },
+  panelBody: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 16 },
+  whoWon: { color: colors.gold, fontFamily: fonts.display, fontSize: 18, letterSpacing: 1.5, textAlign: 'center' },
+  waitText: { color: colors.white, fontFamily: fonts.display, fontSize: 20, textAlign: 'center' },
+  input: { backgroundColor: colors.white, color: colors.ink, fontSize: 18, fontFamily: fonts.bodySemi, padding: 12, borderRadius: 12 },
+  resultSub: { color: colors.white, fontSize: 20, fontFamily: fonts.display, textAlign: 'center' },
+  winnerBanner: { backgroundColor: colors.gold, borderRadius: 18, paddingVertical: 10, alignItems: 'center', borderBottomWidth: 5, borderBottomColor: colors.goldLip },
+  winnerText: { color: colors.ink, fontFamily: fonts.display, fontSize: 20 },
+  drinkChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(255,71,87,0.3)', borderRadius: 99, paddingRight: 10, paddingLeft: 3, paddingVertical: 2 },
+  drinkText: { color: colors.white, fontFamily: fonts.display, fontSize: 15 },
+  rankNum: { color: colors.gold, fontFamily: fonts.display, fontSize: 20, width: 20, textAlign: 'center' },
+  rowName: { color: colors.white, fontSize: 16, fontFamily: fonts.display, flexShrink: 1 },
+  rowVal: { color: colors.dim, fontSize: 15, fontFamily: fonts.display },
 });
