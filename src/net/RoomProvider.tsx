@@ -211,8 +211,16 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         stateRef.current = s;
         setState(s);
       });
-      transport.sendAction({ action: { type: 'join', player: me(false) }, from: profile.id });
-      transport.requestState();
+      // Keep asking to join until the host's phone has us in the room. A host who
+      // briefly switched apps (e.g. to text the code) misses one-off messages.
+      const ask = () => {
+        if (isHostRef.current || transportRef.current !== transport) return clearInterval(retry);
+        if (stateRef.current?.players.some((p) => p.id === profile.id)) return;
+        transport.sendAction({ action: { type: 'join', player: me(false) }, from: profile.id });
+        transport.requestState();
+      };
+      ask();
+      const retry = setInterval(ask, 2000);
     },
     [me, profile.id, attachHostHandlers],
   );

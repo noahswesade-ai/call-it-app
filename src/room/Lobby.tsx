@@ -1,5 +1,6 @@
 import * as Clipboard from 'expo-clipboard';
 import * as Linking from 'expo-linking';
+import { Platform } from 'react-native';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -17,6 +18,18 @@ import { Body, Button, Card, Dim, H2, Row, Segmented, Toggle, tap } from '@/ui/k
 import { Bob, PopIn, Pulse, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { PlayerBadge } from './shared';
+
+/**
+ * Link that opens the Join screen with the room code filled in. On the web it keeps
+ * the site's sub-path (e.g. /call-it-app on GitHub Pages), which expo-linking drops.
+ */
+export function inviteLink(code: string): string {
+  if (Platform.OS === 'web' && typeof window !== 'undefined') {
+    const base = window.location.pathname.replace(/\/(room|join|avatar|shop|paywall|welcome)?\/?$/, '');
+    return `${window.location.origin}${base}/join?code=${code}`;
+  }
+  return Linking.createURL('/join', { queryParams: { code } });
+}
 
 export function AgeGate({ visible, onConfirm, onCancel }: { visible: boolean; onConfirm: () => void; onCancel: () => void }) {
   return (
@@ -166,7 +179,7 @@ export function Lobby({ state }: { state: GameState }) {
 
   const guestNeedsAgeGate = !isHost && s.mode === 'party' && !profile.ageConfirmed;
   const pool = challengerPool(state);
-  const link = Linking.createURL('/join', { queryParams: { code: state.code } });
+  const link = inviteLink(state.code);
   const ready = pool.length >= 2;
 
   return (

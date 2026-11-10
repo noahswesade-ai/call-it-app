@@ -6,7 +6,7 @@ import { Lobby } from '@/room/Lobby';
 import { BetsReveal, Betting, Challenge, Matchup, Result, Spin, UnderdogOverlay, myResultTint } from '@/room/Phases';
 import { Podium } from '@/room/Podium';
 import { TimerBar } from '@/room/TimerBar';
-import { isFinalRound, phaseDuration } from '@/game/engine';
+import { canJoin, isFinalRound, phaseDuration } from '@/game/engine';
 import { Body, Button, Dim, H1, Screen } from '@/ui/kit';
 import { Bob } from '@/ui/motion';
 
@@ -38,7 +38,7 @@ export default function Room() {
   }
 
   const inRoom = state.players.some((p) => p.id === myId);
-  if (!inRoom && state.phase === 'lobby' && waitedLong) {
+  if (!inRoom && state.phase === 'lobby' && waitedLong && !canJoin(state)) {
     return (
       <Screen style={{ justifyContent: 'center' }}>
         <H1 style={{ textAlign: 'center' }}>Room is full</H1>
