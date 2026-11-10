@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
@@ -19,8 +19,8 @@ import { Bob, PopIn, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { bounce } from '@/ui/motion';
 
-const LOGO = ['C', 'a', 'l', 'l', ' ', 'I', 't', '!'];
-const LOGO_COLORS = [colors.gold, colors.pink, colors.cyan, colors.green, '', colors.gold, colors.pink, colors.cyan];
+const LOGO = ['U', 'n', 'd', 'e', 'r', 'd', 'o', 'g'];
+const LOGO_COLORS = [colors.gold, colors.pink, colors.cyan, colors.green, colors.gold, colors.pink, colors.cyan, colors.green];
 
 function Logo() {
   return (
@@ -125,6 +125,7 @@ export default function Home() {
   const [ageGate, setAgeGate] = useState(false);
 
   if (!loaded) return <Screen>{null}</Screen>;
+  if (!profile.seenIntro) return <Redirect href="/welcome" />;
 
   const locked = !profile.premium;
   const trialAvailable = !profile.premium && !profile.partyTrialUsed;
@@ -143,14 +144,16 @@ export default function Home() {
   return (
     <Screen scroll style={{ flexGrow: 1, justifyContent: 'space-between' }}>
       <View style={styles.topBar}>
-        <View />
+        <Pressable onPress={() => router.push('/welcome')} style={styles.help} accessibilityRole="button" accessibilityLabel="How to play">
+          <Text style={styles.helpText}>?</Text>
+        </Pressable>
         <CoinCounter coins={profile.tokens} onPress={() => router.push('/shop')} />
       </View>
 
       <View style={{ alignItems: 'center', gap: 6 }}>
         <Logo />
         <SlideIn from="bottom" delay={400}>
-          <Text style={styles.tagline}>Face off. Call the winner. Bragging rights on the line.</Text>
+          <Text style={styles.tagline}>Call the long shot. Win big. 🐶 ×3</Text>
         </SlideIn>
         <AnimalParade />
       </View>
@@ -178,7 +181,7 @@ export default function Home() {
 
       <Pressable
         onPress={() => {
-          hostRoom({ practiceBots: 4 });
+          hostRoom({ practiceBots: 6 });
           router.push('/room');
         }}
         style={{ alignSelf: 'center', padding: 8 }}
@@ -200,11 +203,22 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+  help: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(20,4,40,0.55)',
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  helpText: { color: colors.white, fontFamily: fonts.display, fontSize: 22 },
   topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   logoRow: { flexDirection: 'row', alignItems: 'flex-end', marginTop: 8 },
   logoLetter: {
     fontFamily: fonts.display,
-    fontSize: 72,
+    fontSize: 60,
     textShadowColor: colors.ink,
     textShadowOffset: { width: 0, height: 5 },
     textShadowRadius: 0,

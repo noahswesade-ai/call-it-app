@@ -118,11 +118,14 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       applyLocal({ type: 'subjectAnswer', playerId: r.subjectId, answer: '(a bot — the host judges)' });
     }
     if (state.phase === 'betting') {
+      const favorite: 'A' | 'B' = Math.random() < 0.5 ? 'A' : 'B';
       for (const id of r.bettors) {
         if (!botsRef.current.has(id)) continue;
         const delay = 1500 + Math.random() * 9000;
+        // Like a real crowd, bots mostly pile onto this round's favorite,
+        // which regularly creates an Underdog.
         const roll = Math.random();
-        const pick = roll < 0.1 ? 'NONE' : roll < 0.55 ? 'A' : 'B';
+        const pick = roll < 0.06 ? 'NONE' : roll < 0.84 ? favorite : favorite === 'A' ? 'B' : 'A';
         botTimers.current.push(
           setTimeout(() => applyLocal({ type: 'bet', playerId: id, pick, now: Date.now() }), delay),
         );

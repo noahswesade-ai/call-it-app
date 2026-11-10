@@ -1,4 +1,4 @@
-import { scoreRound, type RoundScoreInput } from '../scoring';
+import { scoreRound, underdogSide, type RoundScoreInput } from '../scoring';
 import type { Pick } from '../types';
 
 function bets(spec: string): { bettors: string[]; bets: Record<string, Pick> } {
@@ -24,9 +24,36 @@ function run(spec: string, overrides: Partial<RoundScoreInput> = {}) {
   });
 }
 
-describe('scoreRound — points', () => {
-  it('gives the winning challenger +1 and correct bettors +1 on a normal split', () => {
-    const s = run('AABB');
+describe('underdogSide', () => {
+  it('is the side with 25% or less of the side-picking bettors', () => {
+    const s = bets('ABBB');
+    expect(underdogSide(s.bettors, s.bets)).toBe('A');
+    const t = bets('AAAAB');
+    expect(underdogSide(t.bettors, t.bets)).toBe('B');
+  });
+  it('does not exist on a close split', () => {
+    const s = bets('AABB');
+    expect(underdogSide(s.bettors, s.bets)).toBeUndefined();
+    const t = bets('ABBBB'.slice(0, 4) + 'A'); // 2 of 5 = 40%
+    expect(underdogSide(t.bettors, t.bets)).toBeUndefined();
+  });
+  it('needs at least 4 bettors picking a side; No Votes do not count', () => {
+    const s = bets('ABB');
+    expect(underdogSide(s.bettors, s.bets)).toBeUndefined();
+    const t = bets('ABB--');
+    expect(underdogSide(t.bettors, t.bets)).toBeUndefined();
+    const u = bets('ABBB--');
+    expect(underdogSide(u.bettors, u.bets)).toBe('A');
+  });
+  it('a challenger nobody backed is the Underdog', () => {
+    const s = bets('BBBB');
+    expect(underdogSide(s.bettors, s.bets)).toBe('A');
+  });
+});
+
+describe('Classic mode — Underdog ×3 on points', () => {
+  it('normal round: winner +1, correct bettors +1', () => {
+    const s = run('AABB', { mode: 'classic' });
     expect(s.multiplier).toBe(1);
     expect(s.perPlayer.ca).toMatchObject({ result: 'challengerWin', points: 1 });
     expect(s.perPlayer.cb).toMatchObject({ result: 'challengerLoss', points: 0 });
@@ -34,39 +61,34 @@ describe('scoreRound — points', () => {
     expect(s.perPlayer.b2.points).toBe(0);
   });
 
-  it('underdog bonus: ≤25% backing → +2 for correct bettors', () => {
-    const s = run('ABBB'); // 1/4 = 25%
-    expect(s.winnerShare).toBe(0.25);
-    expect(s.multiplier).toBe(2);
-    expect(s.perPlayer.b0.points).toBe(2);
-  });
-
-  it('severe underdog: ≤10% backing → +3', () => {
-    const s = run('ABBBBBBBBBB'); // 1/11 ≈ 9%
+  it('Underdog wins: everyone who backed them gets 3', () => {
+    const s = run('ABBB', { mode: 'classic' });
+    expect(s.underdog).toBe('A');
     expect(s.multiplier).toBe(3);
     expect(s.perPlayer.b0.points).toBe(3);
+    expect(s.perPlayer.b1.points).toBe(0);
   });
 
-  it('nobody backed the winner → ×3 drinks for everyone who picked the loser', () => {
-    const s = run('BBBB');
-    expect(s.winnerShare).toBe(0);
-    expect(s.multiplier).toBe(3);
-    expect(s.perPlayer.b0.sips).toBe(3);
+  it('Underdog loses: no multiplier', () => {
+    const s = run('ABBB', { mode: 'classic', outcome: 'B' });
+    expect(s.underdog).toBe('A');
+    expect(s.multiplier).toBe(1);
+    expect(s.perPlayer.b1.points).toBe(1);
   });
 
-  it('no multiplier with fewer than 4 side-picking bettors', () => {
-    expect(run('ABB').multiplier).toBe(1);
-    expect(run('ABBB-').multiplier).toBe(2); // No Votes don't count toward the 4
-    expect(run('ABB--').multiplier).toBe(1);
+  it('Classic mode never has sips', () => {
+    const s = run('ABBB-', { mode: 'classic' });
+    for (const p of Object.values(s.perPlayer)) expect(p.sips).toBe(0);
   });
 
-  it('No Votes are excluded from the underdog %', () => {
-    const s = run('ABBB---');
-    expect(s.winnerShare).toBe(0.25);
+  it('final round doubles everything, including the Underdog bonus', () => {
+    const s = run('ABBB', { mode: 'classic', isFinalRound: true });
+    expect(s.perPlayer.ca.points).toBe(2);
+    expect(s.perPlayer.b0.points).toBe(6);
   });
 });
 
-describe('scoreRound — Party drinks', () => {
+describe('Party mode — Underdog ×3 on sips', () => {
   it('wrong bet = 1 sip, No Vote = 1 sip, loser = host setting', () => {
     const s = run('AAB-');
     expect(s.perPlayer.b2.sips).toBe(1);
@@ -75,20 +97,22 @@ describe('scoreRound — Party drinks', () => {
     expect(s.perPlayer.ca.sips).toBe(0);
   });
 
-  it('wrong bettors drink 2 when the winner had ≤25%', () => {
-    expect(run('ABBB').perPlayer.b1.sips).toBe(2);
+  it('Underdog wins: everyone who bet against them drinks 3, backers still get 1 point', () => {
+    const s = run('ABBB');
+    expect(s.multiplier).toBe(3);
+    expect(s.perPlayer.b1.sips).toBe(3);
+    expect(s.perPlayer.b3.sips).toBe(3);
+    expect(s.perPlayer.b0).toMatchObject({ points: 1, sips: 0 });
   });
 
-  it('Classic mode never has sips', () => {
-    const s = run('ABBB-', { mode: 'classic' });
-    for (const p of Object.values(s.perPlayer)) expect(p.sips).toBe(0);
+  it('No Vote is not multiplied', () => {
+    const s = run('ABBB-');
+    expect(s.perPlayer.b4.sips).toBe(1);
   });
 
-  it('final round doubles points and sips', () => {
+  it('final round doubles sips (Underdog: 6)', () => {
     const s = run('ABBB-', { isFinalRound: true });
-    expect(s.perPlayer.ca.points).toBe(2);
-    expect(s.perPlayer.b0.points).toBe(4);
-    expect(s.perPlayer.b1.sips).toBe(4);
+    expect(s.perPlayer.b1.sips).toBe(6);
     expect(s.perPlayer.b4.sips).toBe(2);
     expect(s.perPlayer.cb.sips).toBe(4);
   });
@@ -96,7 +120,7 @@ describe('scoreRound — Party drinks', () => {
   it('final-round shot house rule replaces the loser’s sips with a shot', () => {
     const s = run('AABB', { isFinalRound: true, finalShotRule: true });
     expect(s.perPlayer.cb).toMatchObject({ sips: 0, shot: true });
-    expect(s.perPlayer.b2.sips).toBe(2); // bettors still doubled
+    expect(s.perPlayer.b2.sips).toBe(2);
   });
 
   it('draw: nobody scores, both challengers drink the loser amount', () => {
@@ -104,7 +128,7 @@ describe('scoreRound — Party drinks', () => {
     expect(s.perPlayer.ca).toMatchObject({ result: 'draw', points: 0, sips: 2 });
     expect(s.perPlayer.cb).toMatchObject({ result: 'draw', points: 0, sips: 2 });
     expect(s.perPlayer.b0).toMatchObject({ points: 0, sips: 0 });
-    expect(s.perPlayer.b2.sips).toBe(1); // No Vote still drinks
+    expect(s.perPlayer.b2.sips).toBe(1);
   });
 
   it('a missing bet (timer ran out) counts as No Vote', () => {

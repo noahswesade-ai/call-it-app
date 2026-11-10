@@ -5,7 +5,7 @@ import * as Haptics from 'expo-haptics';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { CATEGORY_BY_ID, DIFFICULTY_LABEL } from '@/content/categories';
 import { wheelSlices } from '@/content/picker';
-import { DURATIONS, host, isFinalRound, pendingBettors, rankings, type GameState } from '@/game/engine';
+import { currentUnderdog, DURATIONS, host, isFinalRound, pendingBettors, rankings, type GameState } from '@/game/engine';
 import type { Outcome, Pick } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
 import { useCountUp } from '@/ui/Coin';
@@ -16,6 +16,8 @@ import { A_COLOR, A_LIP, B_COLOR, B_LIP, colors, fonts } from '@/ui/theme';
 import { CountdownRing, DangerVignette, EmojiRain, GrowBar, Slam, Sunburst } from './fx';
 import { PlayerBadge, playerById, useTimeLeft } from './shared';
 import { Wheel } from './Wheel';
+import { UnderdogAlert, UnderdogTag, UnderdogVictory } from './Underdog';
+import { Modal } from 'react-native';
 import { bounce } from '@/ui/motion';
 
 function RoundHeader({ state }: { state: GameState }) {
@@ -217,6 +219,7 @@ export function Betting({ state }: { state: GameState }) {
           <CountdownRing msLeft={left} total={DURATIONS.betting} danger={pressure} size={pressure ? 130 : 116} />
         </Shake>
       </View>
+      <Text style={styles.dogHint}>🐶 Back the long shot: 25% or less = UNDERDOG ×3</Text>
 
       {canBet ? (
         <>
@@ -276,9 +279,21 @@ export function BetsReveal({ state }: { state: GameState }) {
   const none = r.bettors.filter((id) => !r.bets[id] || r.bets[id] === 'NONE').map((id) => playerById(state, id)!).filter(Boolean);
   const total = side('A').length + side('B').length;
   const pct = (n: number) => (total === 0 ? 0 : Math.round((n / total) * 100));
+  const dog = currentUnderdog(state);
+  const dogPlayer = dog ? playerById(state, r.challengers[dog === 'A' ? 0 : 1]) : undefined;
 
   return (
     <View style={styles.stage}>
+      {dog && dogPlayer && (
+        <Modal visible transparent animationType="none">
+          <UnderdogAlert
+            underdog={dogPlayer}
+            share={side(dog).length / Math.max(1, total)}
+            backers={side(dog)}
+            mode={state.settings.mode}
+          />
+        </Modal>
+      )}
       <RoundHeader state={state} />
       <Slam text="THE ROOM HAS SPOKEN" size={34} />
       <Row style={{ alignItems: 'flex-start', gap: 10 }}>
@@ -290,6 +305,7 @@ export function BetsReveal({ state }: { state: GameState }) {
               <SlideIn from={p === 'A' ? 'left' : 'right'} distance={120}>
                 <PlayerBadge player={playerById(state, r.challengers[i])} size={92} color={color} bob />
               </SlideIn>
+              {dog === p && <UnderdogTag mode={state.settings.mode} />}
               <PercentLabel pct={pct(backers.length)} color={color} />
               <GrowBar pct={pct(backers.length)} color={color} delay={200} />
               <View style={styles.stack}>
@@ -360,6 +376,7 @@ export function Challenge({ state }: { state: GameState }) {
   const prompt = q.prompt.replace(/\{S\}/g, subject?.name ?? 'them');
   const answer = q.type === 'SUBJECT_JUDGED' ? r.subjectAnswer : q.answer;
   const judgeName = playerById(state, r.judgeId)?.name ?? 'the host';
+  const dog = currentUnderdog(state);
   const hint =
     q.type === 'SPOKEN_CLOSEST'
       ? 'Both shout a number. Closest wins!'
@@ -378,12 +395,14 @@ export function Challenge({ state }: { state: GameState }) {
       <RoundHeader state={state} />
       <CategoryLine state={state} />
       <Row style={{ justifyContent: 'center', gap: 6 }}>
-        <SlideIn from="left">
+        <SlideIn from="left" style={{ alignItems: 'center', gap: 4 }}>
           <PlayerBadge player={playerById(state, a)} size={64} color={A_COLOR} bob />
+          {dog === 'A' && <UnderdogTag mode={state.settings.mode} />}
         </SlideIn>
         <VsBadge delay={150} />
-        <SlideIn from="right">
+        <SlideIn from="right" style={{ alignItems: 'center', gap: 4 }}>
           <PlayerBadge player={playerById(state, b)} size={64} color={B_COLOR} bob />
+          {dog === 'B' && <UnderdogTag mode={state.settings.mode} />}
         </SlideIn>
       </Row>
       <QuestionCard text={prompt} hint={hint} />
@@ -540,7 +559,7 @@ export function Result({ state }: { state: GameState }) {
         : mine.result === 'draw'
           ? 'Draws mean both challengers drink'
           : score.multiplier > 1
-            ? `Massive upset ×${score.multiplier}! 😱`
+            ? `🐶 Underdog won · ×${score.multiplier} sips! 😱`
             : mine.sips === 1
               ? 'One sip. Bottoms up!'
               : 'Sips. Bottoms up!';
@@ -582,11 +601,15 @@ export function Result({ state }: { state: GameState }) {
         ) : null}
       </View>
 
-      <SlideIn from="bottom" delay={350}>
-        <View style={styles.winnerBanner}>
-          <Text style={styles.winnerText}>{r.outcome === 'DRAW' ? '🤝 Draw!' : `🏆 ${playerById(state, winnerId)?.name} won the face-off`}</Text>
-        </View>
-      </SlideIn>
+      {score.multiplier > 1 ? (
+        <UnderdogVictory name={playerById(state, winnerId)?.name ?? ''} mode={state.settings.mode} />
+      ) : (
+        <SlideIn from="bottom" delay={350}>
+          <View style={styles.winnerBanner}>
+            <Text style={styles.winnerText}>{r.outcome === 'DRAW' ? '🤝 Draw!' : `🏆 ${playerById(state, winnerId)?.name} won the face-off`}</Text>
+          </View>
+        </SlideIn>
+      )}
 
       {party && (
         <SlideIn from="bottom" delay={450}>
@@ -670,6 +693,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     transform: [{ rotate: '-12deg' }],
   },
+  dogHint: { color: colors.gold, fontFamily: fonts.bodyBold, fontSize: 14, textAlign: 'center' },
   votedLabel: { color: colors.dim, fontFamily: fonts.display, fontSize: 15, letterSpacing: 1 },
   pct: { fontSize: 44, fontFamily: fonts.display },
   stack: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4 },

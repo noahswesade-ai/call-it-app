@@ -1,6 +1,6 @@
 import type { AvatarLoadout, Category, GameSettings, Outcome, Pick, Player, Question, Rng, WheelSlice } from './types';
 import { pairKey, pickChallengers, pickSubject } from './selection';
-import { scoreRound, type RoundScore } from './scoring';
+import { scoreRound, underdogSide, type RoundScore } from './scoring';
 import { spin } from '@/content/picker';
 
 /**
@@ -26,6 +26,8 @@ export const DURATIONS = {
   betting: 30000,
   bettingPressure: 10000, // the final 10s of betting turn red
   betsReveal: 4000,
+  /** Extra time on the reveal so the Underdog Alert can play out. */
+  underdogReveal: 7500,
   result: 9000,
 } as const;
 
@@ -159,6 +161,12 @@ export function pendingBettors(state: GameState): string[] {
   const r = state.round;
   if (!r) return [];
   return r.bettors.filter((id) => !(id in r.bets));
+}
+
+/** Which challenger is the Underdog in the current round's bets ('A' | 'B'), if any. */
+export function currentUnderdog(state: GameState): 'A' | 'B' | undefined {
+  const r = state.round;
+  return r ? underdogSide(r.bettors, r.bets) : undefined;
 }
 
 export function inPressure(state: GameState, now: number): boolean {
@@ -308,7 +316,11 @@ function advance(state: GameState, now: number, rng: Rng): GameState {
       }
       return { ...state, phase: 'betting', phaseEndsAt: now + DURATIONS.betting };
     case 'betting':
-      return { ...state, phase: 'betsReveal', phaseEndsAt: now + DURATIONS.betsReveal };
+      return {
+        ...state,
+        phase: 'betsReveal',
+        phaseEndsAt: now + (currentUnderdog(state) ? DURATIONS.underdogReveal : DURATIONS.betsReveal),
+      };
     case 'betsReveal':
       return { ...state, phase: 'challenge', phaseEndsAt: undefined };
     case 'result':

@@ -21,6 +21,8 @@ export interface Profile {
   premium: boolean;
   partyTrialUsed: boolean;
   ageConfirmed: boolean;
+  /** True once the first-launch "how to play" screen has been closed. */
+  seenIntro: boolean;
   gamesPlayed: number;
   gamesWon: number;
 }
@@ -51,6 +53,7 @@ function newProfile(): Profile {
     premium: false,
     partyTrialUsed: false,
     ageConfirmed: false,
+    seenIntro: false,
     gamesPlayed: 0,
     gamesWon: 0,
   };

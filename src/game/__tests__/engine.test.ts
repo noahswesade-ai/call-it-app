@@ -1,6 +1,6 @@
 import { ALL_QUESTIONS } from '@/content/questions';
 import { availableCategories } from '@/content/categories';
-import { createGame, DURATIONS, FREE_MAX_PLAYERS, inPressure, rankings, reduce, type GameState } from '../engine';
+import { createGame, currentUnderdog, DURATIONS, FREE_MAX_PLAYERS, inPressure, rankings, reduce, type GameState } from '../engine';
 import { seededRng } from '../rng';
 import type { GameSettings, Player } from '../types';
 
@@ -188,5 +188,21 @@ describe('engine', () => {
     for (let i = 2; i < cats.length; i++) {
       expect(cats[i] === cats[i - 1] && cats[i] === cats[i - 2]).toBe(false);
     }
+  });
+});
+
+describe('Underdog reveal', () => {
+  it('gives the reveal extra time when an Underdog appears', () => {
+    const rng = seededRng(4);
+    let g = reduce(newGame(6, { mode: 'classic' }), { type: 'start', now: 0 }, rng);
+    g = reduce(g, { type: 'next', now: 1 }, rng);
+    g = reduce(g, { type: 'next', now: 2 }, rng);
+    expect(g.phase).toBe('betting');
+    const [first, ...rest] = g.round!.bettors;
+    g = reduce(g, { type: 'bet', playerId: first, pick: 'A', now: 3 }, rng);
+    for (const id of rest) g = reduce(g, { type: 'bet', playerId: id, pick: 'B', now: 3 }, rng);
+    expect(g.phase).toBe('betsReveal');
+    expect(currentUnderdog(g)).toBe('A');
+    expect(g.phaseEndsAt).toBe(3 + DURATIONS.underdogReveal);
   });
 });

@@ -11,7 +11,7 @@ export function broadcastAvailable(): boolean {
 }
 
 export function createBroadcastTransport(code: string): RoomTransport {
-  const channel = new (globalThis as any).BroadcastChannel(`callit-room-${code}`) as {
+  const channel = new (globalThis as any).BroadcastChannel(`underdog-room-${code}`) as {
     postMessage: (e: Envelope) => void;
     onmessage: ((e: { data: Envelope }) => void) | null;
     close: () => void;

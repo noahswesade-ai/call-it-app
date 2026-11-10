@@ -1,16 +1,22 @@
 import type { Mode, Outcome, Pick } from './types';
 
 /**
- * Points and drinks for one round (PLAN.md §2).
+ * Points and drinks for one round — built around the game's signature rule:
  *
- * "Underdog %" = share of bettors who backed the winner, counting only bettors
- * who picked a side (No Votes excluded). Multipliers apply only when at least
- * MIN_BETTORS_FOR_MULTIPLIER bettors picked a side.
+ *   THE UNDERDOG ×3
+ *   When bets are revealed, if one challenger is backed by UNDERDOG_THRESHOLD
+ *   (25%) or less of the bettors who picked a side, that challenger is the
+ *   Underdog. If the Underdog then wins, the round is worth ×3:
+ *     - Classic: everyone who backed the Underdog gets 3 points instead of 1.
+ *     - Party:   everyone who bet against the Underdog drinks 3 sips instead of 1.
+ *
+ * Share is counted only among bettors who picked a side (No Votes excluded), and
+ * the Underdog only exists when at least MIN_BETTORS_FOR_UNDERDOG picked a side.
  */
 
-export const MIN_BETTORS_FOR_MULTIPLIER = 4;
-export const UNDERDOG_THRESHOLD = 0.25; // ≤25% → ×2
-export const SEVERE_UNDERDOG_THRESHOLD = 0.1; // ≤10% → ×3
+export const MIN_BETTORS_FOR_UNDERDOG = 4;
+export const UNDERDOG_THRESHOLD = 0.25;
+export const UNDERDOG_MULTIPLIER = 3;
 
 export type PlayerRoundResult =
   | 'challengerWin'
@@ -44,7 +50,9 @@ export interface RoundScore {
   perPlayer: Record<string, PlayerRoundScore>;
   /** Share (0–1) of side-picking bettors who backed the winner; undefined on a draw or with no bets. */
   winnerShare?: number;
-  /** 1, 2 or 3. */
+  /** Which challenger was the Underdog when bets were revealed, if any. */
+  underdog?: 'A' | 'B';
+  /** 3 when the Underdog won, otherwise 1. */
   multiplier: number;
   votesA: number;
   votesB: number;
@@ -64,11 +72,14 @@ export function voteTally(bettors: string[], bets: Record<string, Pick | undefin
   return { votesA, votesB, noVotes };
 }
 
-export function multiplierFor(winnerShare: number | undefined, sidePickers: number): number {
-  if (winnerShare === undefined || sidePickers < MIN_BETTORS_FOR_MULTIPLIER) return 1;
-  if (winnerShare <= SEVERE_UNDERDOG_THRESHOLD) return 3;
-  if (winnerShare <= UNDERDOG_THRESHOLD) return 2;
-  return 1;
+/** The Underdog side for these bets, or undefined if there isn't one. */
+export function underdogSide(bettors: string[], bets: Record<string, Pick | undefined>): 'A' | 'B' | undefined {
+  const { votesA, votesB } = voteTally(bettors, bets);
+  const total = votesA + votesB;
+  if (total < MIN_BETTORS_FOR_UNDERDOG) return undefined;
+  if (votesA / total <= UNDERDOG_THRESHOLD) return 'A';
+  if (votesB / total <= UNDERDOG_THRESHOLD) return 'B';
+  return undefined;
 }
 
 export function scoreRound(input: RoundScoreInput): RoundScore {
@@ -77,12 +88,16 @@ export function scoreRound(input: RoundScoreInput): RoundScore {
   const final = isFinalRound ? 2 : 1;
   const { votesA, votesB, noVotes } = voteTally(bettors, bets);
   const sidePickers = votesA + votesB;
+  const underdog = underdogSide(bettors, bets);
 
   let winnerShare: number | undefined;
   if (outcome !== 'DRAW' && sidePickers > 0) {
     winnerShare = (outcome === 'A' ? votesA : votesB) / sidePickers;
   }
-  const multiplier = multiplierFor(winnerShare, sidePickers);
+  const multiplier = underdog && outcome === underdog ? UNDERDOG_MULTIPLIER : 1;
+  // Classic multiplies the winners' points; Party multiplies the losers' sips.
+  const pointMult = party ? 1 : multiplier;
+  const sipMult = party ? multiplier : 1;
 
   const perPlayer: Record<string, PlayerRoundScore> = {};
   const [a, b] = challengers;
@@ -111,11 +126,11 @@ export function scoreRound(input: RoundScoreInput): RoundScore {
     } else if (outcome === 'DRAW') {
       perPlayer[id] = { result: 'draw', points: 0, sips: 0, shot: false };
     } else if (pick === outcome) {
-      perPlayer[id] = { result: 'betWin', points: multiplier * final, sips: 0, shot: false };
+      perPlayer[id] = { result: 'betWin', points: pointMult * final, sips: 0, shot: false };
     } else {
-      perPlayer[id] = { result: 'betLoss', points: 0, sips: party ? multiplier * final : 0, shot: false };
+      perPlayer[id] = { result: 'betLoss', points: 0, sips: party ? sipMult * final : 0, shot: false };
     }
   }
 
-  return { perPlayer, winnerShare, multiplier, votesA, votesB, noVotes };
+  return { perPlayer, winnerShare, underdog, multiplier, votesA, votesB, noVotes };
 }

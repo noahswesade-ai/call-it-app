@@ -1,8 +1,19 @@
-# Call It! — Progress
+# Underdog — Progress
 
 _Last updated: 2026-11-09_
 
-## 🎨 New look (latest update)
+## 🐶 Underdog update (latest)
+- **Renamed to Underdog** (app name, home logo, app IDs `com.underdoggame.party`).
+- **Signature rule, Underdog ×3:** when bets are revealed, a challenger backed by 25% or less of the room (with at least 4 bettors picking a side) is the Underdog. If they win:
+  - Classic: their backers score **×3**.
+  - Party: everyone who bet against them drinks **×3**.
+  - This replaces the old 2× / 3× tiers.
+- **Underdog Alert:** a full-screen takeover with sirens, flashes, the underdog's glowing card, a giant pulsing ×3, the rule, the brave callers and raining 🐶. The reveal stays up longer so it can play.
+- The Underdog then carries a pulsing tag through the challenge, and a gold "THE UNDERDOG WON!" banner celebrates if they win.
+- **How to play:** shown the first time the app opens. Five picture steps with very few words, and an ✕ in the top right that goes to the home screen. You can reopen it with the **?** on the home screen.
+- Practice mode now has 6 bots that pile onto a favorite like real crowds do, so Underdogs show up often.
+
+## 🎨 New look
 - **Party-game style:** bold purple gradient with drifting shapes, a chunky rounded game font, and 3D buttons that press down.
 - **Home screen:** three big buttons.
   - **Host a Game**
@@ -24,7 +35,7 @@ _Last updated: 2026-11-09_
 - **Fair player picking:** everyone gets a turn whenever the number of rounds allows it, and nobody gets more than one turn ahead of anyone else. Checked by a 10,000-game simulation.
 - **Scoring and drinks**, exactly as in PLAN.md:
   - +1 for winners and correct bets
-  - underdog bonus ×2 / ×3 (only with 4 or more bettors)
+  - Underdog ×3 (only with 4 or more bettors; see above)
   - Party mode: 1 sip for a wrong bet or a No Vote; the loser drinks what the host set (1–3)
   - the final round doubles everything
   - optional "loser takes a shot" final-round rule

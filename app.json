@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "Call It!",
-    "slug": "call-it",
+    "name": "Underdog",
+    "slug": "underdog",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.callit.party"
+      "bundleIdentifier": "com.underdoggame.party"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +18,7 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.callit.party"
+      "package": "com.underdoggame.party"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -27,7 +27,7 @@
       "expo-router",
       "expo-font"
     ],
-    "scheme": "callit",
+    "scheme": "underdog",
     "experiments": {
       "typedRoutes": false
     }

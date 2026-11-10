@@ -1,4 +1,4 @@
-# Call It!
+# Underdog
 
 Head-to-head party betting game for iOS and Android (Expo + Supabase).
 

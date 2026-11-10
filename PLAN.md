@@ -1,4 +1,6 @@
-# Head-to-Head Party Game — Full App Plan (v2)
+# Underdog — Full App Plan (v2)
+
+> Renamed from the working title "Call It!" on 2026-11-10. The signature rule is now a single **Underdog ×3**: if 25% or less of the room backs a challenger and they win, believers score ×3 (Classic) or doubters drink ×3 (Party).
 *(Based on your three notebook pages plus your answers to three rounds of questions, 2026-11-09.)*
 
 ## Context
