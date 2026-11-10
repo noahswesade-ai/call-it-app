@@ -285,8 +285,6 @@ function finishRound(state: GameState, outcome: Outcome, now: number): GameState
     bets: r.bets,
     outcome,
     isFinalRound: isFinalRound(state),
-    loserSips: state.settings.loserSips,
-    finalShotRule: state.settings.finalShotRule,
   });
 
   const totals = { ...state.totals };

@@ -15,8 +15,6 @@ function settings(extra: Partial<GameSettings> = {}): GameSettings {
     mode: 'party',
     spicy: false,
     rounds: 10,
-    loserSips: 2,
-    finalShotRule: false,
     categories: availableCategories('party', false),
     ...extra,
   };

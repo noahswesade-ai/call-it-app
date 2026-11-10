@@ -44,8 +44,6 @@ export function defaultSettings(): GameSettings {
     mode: 'classic',
     spicy: false,
     rounds: 10,
-    loserSips: 2,
-    finalShotRule: false,
     categories: availableCategories('classic', false),
   };
 }

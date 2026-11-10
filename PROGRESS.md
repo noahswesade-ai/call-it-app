@@ -2,7 +2,19 @@
 
 _Last updated: 2026-11-09_
 
-## 🎨 Real art and economy update (latest)
+## 👓 Fit and rules update (latest)
+- **Every accessory is fitted to every animal.** A tool (`tools/fit_accessories.py`) measures each animal's eyes, head and chin, then places all 47 accessories on all 22 animals individually. All 1,034 combinations were checked on contact sheets.
+  - Headphones: the band goes behind the head and the ear cups sit at the sides, so the face stays visible.
+  - Necklaces, scarves and collars hang from behind the chin.
+  - Hats can never slide down over the eyes.
+- **Royal Crown** is Premium-only: it can't be bought with coins and unlocks automatically with Premium.
+- **Drinks are fixed** (no host setting any more):
+  - 1 sip for a wrong call, losing the face-off, a No Vote or a draw.
+  - 3 sips when the Underdog wins.
+  - Doubled in the final round.
+- Normal mode shows nothing about drinking.
+
+## 🎨 Real art and economy update
 - **Your avatar art** is in the game: 22 animals, each with neutral, happy and sad faces, plus 47 wearable accessories in five slots (head, eyes, face, neck, ears).
   - Faces follow the game: neutral when choosing, happy when winning, sad when losing, drinking or being the Underdog.
   - Skipped because they can't go on a head-only avatar: the gloves, the glowing wristband and the astronaut helmet.

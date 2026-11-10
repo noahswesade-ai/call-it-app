@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { ANIMAL_BY_ID, FREE_ITEMS, randomStarterAvatar, sanitizeLoadout } from '@/avatar/catalog';
+import { ACCESSORY_BY_ID, ANIMAL_BY_ID, FREE_ITEMS, randomStarterAvatar, sanitizeLoadout } from '@/avatar/catalog';
 import { randomId } from '@/game/rng';
 import type { AvatarLoadout } from '@/game/types';
 
@@ -115,7 +115,14 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   }, [profile, loaded]);
 
   const update = useCallback((patch: Partial<Profile>) => setProfile((p) => ({ ...p, ...patch })), []);
-  const owns = useCallback((key: string) => profile.owned.includes(key), [profile.owned]);
+  const owns = useCallback(
+    (key: string) => {
+      // Premium-only items (the Royal Crown) come with Premium and can't be bought.
+      if (key.startsWith('accessory:') && ACCESSORY_BY_ID[key.slice(10)]?.premiumOnly) return profile.premium;
+      return profile.owned.includes(key);
+    },
+    [profile.owned, profile.premium],
+  );
 
   const buy = useCallback(
     (key: string, price: number) => {

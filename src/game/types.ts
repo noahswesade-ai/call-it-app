@@ -80,9 +80,6 @@ export interface GameSettings {
   spicy: boolean;
   rounds: number;
   /** Sips the losing challenger drinks (Party mode), 1–3. */
-  loserSips: 1 | 2 | 3;
-  /** House rule: in the final round the loser takes a shot instead of doubled sips. */
-  finalShotRule: boolean;
   /** Categories that can appear on the wheel. */
   categories: Category[];
 }

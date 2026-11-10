@@ -218,17 +218,10 @@ export function Lobby({ state }: { state: GameState }) {
             {s.mode === 'party' && (
               <>
                 <Toggle label="🌶️ Spicy questions" hint="Cheeky dating & confession challenges" value={s.spicy} onChange={(v) => applyMode('party', v)} />
-                <Body>Loser drinks</Body>
-                <Segmented<1 | 2 | 3>
-                  options={[
-                    { value: 1, label: '1 sip' },
-                    { value: 2, label: '2 sips' },
-                    { value: 3, label: '3 sips' },
-                  ]}
-                  value={s.loserSips}
-                  onChange={(v) => set({ loserSips: v })}
-                />
-                <Toggle label="Final round: loser takes a shot" hint="Instead of double sips" value={s.finalShotRule} onChange={(v) => set({ finalShotRule: v })} />
+                <View style={styles.sipRules}>
+                  <Text style={styles.sipRulesText}>🍺 Wrong call or losing the face-off = 1 sip</Text>
+                  <Text style={styles.sipRulesText}>🐶 Underdog wins = 3 sips · 🔥 Final round = ×2</Text>
+                </View>
               </>
             )}
             <Toggle
@@ -371,6 +364,8 @@ const styles = StyleSheet.create({
   },
   nameStatic: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   nameText: { color: colors.white, fontFamily: fonts.display, fontSize: 26, flexShrink: 1 },
+  sipRules: { backgroundColor: 'rgba(0,0,0,0.25)', borderRadius: 14, padding: 10, gap: 2 },
+  sipRulesText: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 14 },
   count: { color: colors.gold, fontFamily: fonts.display, fontSize: 20 },
   players: { flexDirection: 'row', flexWrap: 'wrap', gap: 4 },
   cats: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },

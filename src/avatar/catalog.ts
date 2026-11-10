@@ -88,7 +88,9 @@ export interface AccessoryDef {
   price: number;
   /** Party-themed (drinking/adult) — only shown after the 18+ age check. */
   adult?: boolean;
-  /** Fine placement tweaks: scale and vertical nudge (fractions of avatar size). */
+  /** Can't be bought with coins: unlocked automatically by buying Premium. */
+  premiumOnly?: boolean;
+  /** Legacy placement hints — placement now comes from src/avatar/fit.json. */
   scale?: number;
   dy?: number;
 }
@@ -98,7 +100,7 @@ const acc = (
   name: string,
   slot: AccessorySlot,
   tier: Tier,
-  extra: Partial<Pick<AccessoryDef, 'adult' | 'scale' | 'dy'>> = {},
+  extra: Partial<Pick<AccessoryDef, 'adult' | 'premiumOnly' | 'scale' | 'dy'>> = {},
 ): AccessoryDef => ({ id, name, slot, tier, price: ACCESSORY_PRICE[tier], ...extra });
 
 export const ACCESSORIES: AccessoryDef[] = [
@@ -119,7 +121,7 @@ export const ACCESSORIES: AccessoryDef[] = [
   acc('laurel', 'Laurel Wreath', 'head', 'epic', { scale: 1.0, dy: 0.06 }),
   acc('mohawk', 'Mohawk', 'head', 'epic', { scale: 0.95, dy: -0.04 }),
   acc('rainbowwig', 'Rainbow Wig', 'head', 'epic', { scale: 1.15, dy: 0.04 }),
-  acc('crown', 'Royal Crown', 'head', 'legendary', { scale: 0.85 }),
+  acc('crown', 'Royal Crown', 'head', 'legendary', { premiumOnly: true }),
   acc('tiara', 'Tiara', 'head', 'legendary', { scale: 0.8, dy: 0.04 }),
   // ── Eyes ──
   acc('roundglasses', 'Round Glasses', 'eyes', 'common'),

@@ -44,7 +44,8 @@ Accessories cost less than animals. They're impulse buys and a collection to com
 | Common | 150 | Beanie, Party Hat, Red Bow, Bunny Ears, Round Glasses, Mustache, Bow Tie, Striped Tie, Scarf |
 | Rare | 400 | Top Hat, Pirate Hat, Headphones, Heart and Star Glasses, Hero Mask, Monocle, Santa Beard, Pearls, Hoops |
 | Epic | 900 | Wizard Hat, Devil Horns, Halo, Laurel, Mohawk, Rainbow Wig, Cyber Visor, Masquerade, Gem Collar, Nose Ring |
-| Legendary | 2,000 | Royal Crown, Tiara, Gold Chain, Diamond Studs |
+| Legendary | 2,000 | Tiara, Gold Chain, Diamond Studs |
+| Premium only | (not for sale) | **Royal Crown**: comes with Premium, so a crown in the lobby means a Premium player |
 
 **Party collection (18+):** only shown after the age check, so it also nudges players toward Party mode.
 - Rare: Poker Visor, Cat-Eye Shades, Feather Boa, Lucky Dice Earrings.

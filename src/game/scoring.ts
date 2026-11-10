@@ -11,8 +11,9 @@ import type { Mode, Outcome, Pick } from './types';
  *     - everyone who backed the Underdog scores 3 points instead of 1, and
  *     - in Party mode everyone who bet against them drinks 3 sips instead of 1.
  *
- * Party mode keeps the same points and leaderboard as Classic; on top of that,
- * every wrong call drinks as many sips as the right callers scored points.
+ * Party mode keeps the same points and leaderboard as Classic. Drinks are fixed:
+ * every wrong call (and the losing challenger) drinks 1 sip, or 3 when the
+ * Underdog won; No Votes and draws drink 1. The final round doubles everything.
  *
  * Share is counted only among bettors who picked a side (No Votes excluded). A
  * challenger with zero votes is always the Underdog (0% < 33%).
@@ -46,8 +47,6 @@ export interface RoundScoreInput {
   bets: Record<string, Pick | undefined>;
   outcome: Outcome;
   isFinalRound: boolean;
-  loserSips: number;
-  finalShotRule: boolean;
 }
 
 export interface RoundScore {
@@ -87,7 +86,7 @@ export function underdogSide(bettors: string[], bets: Record<string, Pick | unde
 }
 
 export function scoreRound(input: RoundScoreInput): RoundScore {
-  const { mode, challengers, bettors, bets, outcome, isFinalRound, loserSips, finalShotRule } = input;
+  const { mode, challengers, bettors, bets, outcome, isFinalRound } = input;
   const party = mode === 'party';
   const final = isFinalRound ? 2 : 1;
   const { votesA, votesB, noVotes } = voteTally(bettors, bets);
@@ -108,19 +107,13 @@ export function scoreRound(input: RoundScoreInput): RoundScore {
 
   if (outcome === 'DRAW') {
     for (const id of challengers) {
-      perPlayer[id] = { result: 'draw', points: 0, sips: party ? loserSips * final : 0, shot: false };
+      perPlayer[id] = { result: 'draw', points: 0, sips: party ? 1 * final : 0, shot: false };
     }
   } else {
     const winner = outcome === 'A' ? a : b;
     const loser = outcome === 'A' ? b : a;
     perPlayer[winner] = { result: 'challengerWin', points: 1 * final, sips: 0, shot: false };
-    const loserShot = party && isFinalRound && finalShotRule;
-    perPlayer[loser] = {
-      result: 'challengerLoss',
-      points: 0,
-      sips: party && !loserShot ? loserSips * final : 0,
-      shot: loserShot,
-    };
+    perPlayer[loser] = { result: 'challengerLoss', points: 0, sips: party ? sipMult * final : 0, shot: false };
   }
 
   for (const id of bettors) {

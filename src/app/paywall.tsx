@@ -16,6 +16,7 @@ const PERKS: [string, string][] = [
   ['✍️', 'Make your own questions'],
   ['🚫', 'No ads, ever'],
   ['💰', '2× gold coins every game'],
+  ['👑', 'The Royal Crown: Premium-only avatar item'],
 ];
 
 export default function Paywall() {

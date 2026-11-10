@@ -18,8 +18,6 @@ function run(spec: string, overrides: Partial<RoundScoreInput> = {}) {
     ...bets(spec),
     outcome: 'A',
     isFinalRound: false,
-    loserSips: 2,
-    finalShotRule: false,
     ...overrides,
   });
 }
@@ -105,12 +103,16 @@ describe('Classic mode — Underdog ×3 on points', () => {
 });
 
 describe('Party mode — Underdog ×3 on sips', () => {
-  it('wrong bet = 1 sip, No Vote = 1 sip, loser = host setting', () => {
+  it('every drink is 1 sip: wrong bet, No Vote and the losing challenger', () => {
     const s = run('AAB-');
     expect(s.perPlayer.b2.sips).toBe(1);
     expect(s.perPlayer.b3).toMatchObject({ result: 'noVote', sips: 1, points: 0 });
-    expect(s.perPlayer.cb.sips).toBe(2);
+    expect(s.perPlayer.cb.sips).toBe(1);
     expect(s.perPlayer.ca.sips).toBe(0);
+  });
+
+  it('when the Underdog wins, the beaten favourite drinks 3 too', () => {
+    expect(run('ABBB').perPlayer.cb.sips).toBe(3);
   });
 
   it('Underdog wins: backers score 3 points, everyone against them drinks 3', () => {
@@ -137,19 +139,13 @@ describe('Party mode — Underdog ×3 on sips', () => {
     const s = run('ABBB-', { isFinalRound: true });
     expect(s.perPlayer.b1.sips).toBe(6);
     expect(s.perPlayer.b4.sips).toBe(2);
-    expect(s.perPlayer.cb.sips).toBe(4);
+    expect(s.perPlayer.cb.sips).toBe(6);
   });
 
-  it('final-round shot house rule replaces the loser’s sips with a shot', () => {
-    const s = run('AABB', { isFinalRound: true, finalShotRule: true });
-    expect(s.perPlayer.cb).toMatchObject({ sips: 0, shot: true });
-    expect(s.perPlayer.b2.sips).toBe(2);
-  });
-
-  it('draw: nobody scores, both challengers drink the loser amount', () => {
+  it('draw: nobody scores, both challengers drink 1', () => {
     const s = run('AB-', { outcome: 'DRAW' });
-    expect(s.perPlayer.ca).toMatchObject({ result: 'draw', points: 0, sips: 2 });
-    expect(s.perPlayer.cb).toMatchObject({ result: 'draw', points: 0, sips: 2 });
+    expect(s.perPlayer.ca).toMatchObject({ result: 'draw', points: 0, sips: 1 });
+    expect(s.perPlayer.cb).toMatchObject({ result: 'draw', points: 0, sips: 1 });
     expect(s.perPlayer.b0).toMatchObject({ points: 0, sips: 0 });
     expect(s.perPlayer.b2.sips).toBe(1);
   });
@@ -162,8 +158,6 @@ describe('Party mode — Underdog ×3 on sips', () => {
       bets: {},
       outcome: 'B',
       isFinalRound: false,
-      loserSips: 1,
-      finalShotRule: false,
     });
     expect(s.perPlayer.x).toMatchObject({ result: 'noVote', sips: 1 });
   });

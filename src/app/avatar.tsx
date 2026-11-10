@@ -37,6 +37,7 @@ interface Cell {
   tier: Tier;
   price: number;
   adult?: boolean;
+  premiumOnly?: boolean;
 }
 
 function confirmBuy(name: string, price: number): Promise<boolean> {
@@ -72,6 +73,7 @@ export default function AvatarEditor() {
             tier: x.tier,
             price: x.price,
             adult: x.adult,
+            premiumOnly: x.premiumOnly,
           }));
     return list.sort((a, b) => a.price - b.price);
   }, [tab, profile.ageConfirmed]);
@@ -88,6 +90,7 @@ export default function AvatarEditor() {
   const onCell = async (c: Cell) => {
     tap();
     if (isOwned(c)) return equip(c);
+    if (c.premiumOnly) return router.push('/paywall');
     if (profile.tokens < c.price) {
       notify('Not enough coins', `${c.name} costs ${c.price.toLocaleString()} coins. You have ${profile.tokens.toLocaleString()}. Win games, earn awards, or watch a video in the Shop.`);
       return;
@@ -159,6 +162,8 @@ export default function AvatarEditor() {
                   <Text style={styles.status}>✓ ON</Text>
                 ) : owned ? (
                   <Text style={styles.statusDim}>{tab === 'animal' ? 'Owned' : 'Tap to wear'}</Text>
+                ) : c.premiumOnly ? (
+                  <Text style={styles.premiumOnly}>👑 PREMIUM</Text>
                 ) : (
                   <Row style={{ gap: 3 }}>
                     <Coin size={15} />
@@ -203,4 +208,5 @@ const styles = StyleSheet.create({
   status: { color: colors.green, fontFamily: fonts.display, fontSize: 13 },
   statusDim: { color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 11 },
   price: { color: colors.gold, fontFamily: fonts.display, fontSize: 14 },
+  premiumOnly: { color: colors.gold, fontFamily: fonts.display, fontSize: 12 },
 });
