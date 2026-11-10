@@ -14,6 +14,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { Background } from './Background';
+import { useScreenSize } from './screenSize';
 import { A_COLOR as A, B_COLOR as B, colors, fonts } from './theme';
 import { bounce } from '@/ui/motion';
 
@@ -69,9 +70,7 @@ export function Screen({
       <Background tint={tint} />
       <SafeAreaView style={{ flex: 1 }}>
         {scroll ? (
-          <ScrollView contentContainerStyle={[styles.content, style, pad]} keyboardShouldPersistTaps="handled">
-            {children}
-          </ScrollView>
+          <AutoFit style={[style, pad]}>{children}</AutoFit>
         ) : (
           <View style={[styles.content, { flex: 1 }, style, pad]}>{children}</View>
         )}
@@ -86,6 +85,36 @@ export function Screen({
           {overlay}
         </View>
       ) : null}
+    </View>
+  );
+}
+
+/**
+ * Lays content out at full phone height and, if it's taller than the screen, scales
+ * it down so everything is visible at once. No page ever needs scrolling.
+ * (Layout height is unaffected by transforms, so measuring the inner view gives
+ * the natural height even while it's scaled.)
+ */
+function AutoFit({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) {
+  // Start from an estimate so the screen draws instantly; the real height arrives via onLayout.
+  const estimate = useScreenSize().height - 90;
+  const [avail, setAvail] = React.useState(estimate);
+  const [natural, setNatural] = React.useState(0);
+  const scale = avail > 0 && natural > avail + 1 ? avail / natural : 1;
+  return (
+    <View style={{ flex: 1, overflow: 'hidden' }} onLayout={(e) => setAvail(e.nativeEvent.layout.height)}>
+      {avail > 0 && (
+        <View
+          style={[
+            styles.content,
+            { minHeight: avail, position: 'absolute', top: 0, left: 0, right: 0, transform: [{ scale }], transformOrigin: 'top' },
+            style,
+          ]}
+          onLayout={(e) => setNatural(e.nativeEvent.layout.height)}
+        >
+          {children}
+        </View>
+      )}
     </View>
   );
 }

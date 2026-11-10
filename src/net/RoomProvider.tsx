@@ -8,6 +8,7 @@ import type { GameSettings, Player } from '@/game/types';
 import { useProfile } from '@/state/profile';
 import { broadcastAvailable, createBroadcastTransport } from './broadcastTransport';
 import { createSupabaseTransport, supabaseConfigured } from './supabase';
+import { createRelayTransport, relayConfigured } from './relayTransport';
 import { publishable, type RoomTransport } from './transport';
 
 /**
@@ -18,7 +19,7 @@ import { publishable, type RoomTransport } from './transport';
  * If the host leaves, the next player who joined is promoted and takes over.
  */
 
-export type Connection = 'practice' | 'supabase' | 'broadcast';
+export type Connection = 'practice' | 'supabase' | 'relay' | 'broadcast';
 
 interface RoomApi {
   state?: GameState;
@@ -50,6 +51,7 @@ export function defaultSettings(): GameSettings {
 
 function openTransport(code: string): { transport?: RoomTransport; connection: Connection } {
   if (supabaseConfigured()) return { transport: createSupabaseTransport(code), connection: 'supabase' };
+  if (relayConfigured()) return { transport: createRelayTransport(code), connection: 'relay' };
   if (broadcastAvailable()) return { transport: createBroadcastTransport(code), connection: 'broadcast' };
   return { connection: 'practice' };
 }
@@ -265,7 +267,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       joinRoom,
       leaveRoom,
       dispatch,
-      onlineAvailable: supabaseConfigured() || broadcastAvailable(),
+      onlineAvailable: supabaseConfigured() || relayConfigured() || broadcastAvailable(),
     }),
     [state, profile.id, isHost, connection, clockOffset, hostRoom, joinRoom, leaveRoom, dispatch],
   );

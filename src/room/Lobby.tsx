@@ -136,6 +136,7 @@ export function Lobby({ state }: { state: GameState }) {
   const { isHost, dispatch, connection, leaveRoom } = useRoom();
   const { profile, update } = useProfile();
   const [ageGateFor, setAgeGateFor] = useState<'party' | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
   const s = state.settings;
   const hostPlayer = host(state);
   const hostPremium = !!hostPlayer?.premium;
@@ -216,6 +217,52 @@ export function Lobby({ state }: { state: GameState }) {
               value={s.mode}
               onChange={setMode}
             />
+            <Row style={{ justifyContent: 'space-between' }}>
+              <Dim style={{ flex: 1 }}>
+                {s.rounds} rounds · {s.categories.length} categories{s.mode === 'party' && s.spicy ? ' · 🌶️ Spicy' : ''}
+                {!hostPlayer?.playing ? ' · you only judge' : ''}
+              </Dim>
+              <Button small variant="secondary" label="⚙️ More settings" onPress={() => setShowSettings(true)} />
+            </Row>
+          </Card>
+        </SlideIn>
+      ) : (
+        <Card style={{ alignItems: 'center' }}>
+          <H2>{s.mode === 'party' ? `🍻 Party mode${s.spicy ? ' · 🌶️ Spicy' : ''}` : '🎉 Classic mode'}</H2>
+          <Dim>{s.rounds} rounds</Dim>
+          <WaitingDots text={`Waiting for ${hostPlayer?.name ?? 'the host'} to start`} />
+        </Card>
+      )}
+
+      {isHost && (
+        <Pulse active={ready} scale={1.03} duration={700}>
+          <Button
+            big
+            variant="green"
+            label={ready ? "▶ Let's Play!" : 'Waiting for players…'}
+            disabled={!ready}
+            onPress={() => {
+              if (s.mode === 'party' && !hostPremium) update({ partyTrialUsed: true });
+              dispatch({ type: 'start', now: Date.now() });
+            }}
+          />
+        </Pulse>
+      )}
+      <Button
+        label="Leave"
+        variant="ghost"
+        small
+        onPress={() => {
+          leaveRoom();
+          router.replace('/');
+        }}
+      />
+
+
+      <Modal visible={showSettings} transparent animationType="slide" onRequestClose={() => setShowSettings(false)}>
+        <View style={styles.sheetBg}>
+          <View style={styles.sheet}>
+            <H2>⚙️ Game settings</H2>
             {s.mode === 'party' && (
               <>
                 <Toggle label="🌶️ Spicy questions" hint="Cheeky dating & confession challenges" value={s.spicy} onChange={(v) => applyMode('party', v)} />
@@ -264,40 +311,10 @@ export function Lobby({ state }: { state: GameState }) {
                 );
               })}
             </View>
-          </Card>
-        </SlideIn>
-      ) : (
-        <Card style={{ alignItems: 'center' }}>
-          <H2>{s.mode === 'party' ? `🍻 Party mode${s.spicy ? ' · 🌶️ Spicy' : ''}` : '🎉 Classic mode'}</H2>
-          <Dim>{s.rounds} rounds</Dim>
-          <WaitingDots text={`Waiting for ${hostPlayer?.name ?? 'the host'} to start`} />
-        </Card>
-      )}
-
-      {isHost && (
-        <Pulse active={ready} scale={1.03} duration={700}>
-          <Button
-            big
-            variant="green"
-            label={ready ? "▶ Let's Play!" : 'Waiting for players…'}
-            disabled={!ready}
-            onPress={() => {
-              if (s.mode === 'party' && !hostPremium) update({ partyTrialUsed: true });
-              dispatch({ type: 'start', now: Date.now() });
-            }}
-          />
-        </Pulse>
-      )}
-      <Button
-        label="Leave"
-        variant="ghost"
-        small
-        onPress={() => {
-          leaveRoom();
-          router.replace('/');
-        }}
-      />
-
+            <Button label="Done" onPress={() => setShowSettings(false)} />
+          </View>
+        </View>
+      </Modal>
       <AgeGate
         visible={ageGateFor === 'party' || guestNeedsAgeGate}
         onConfirm={() => {
@@ -374,6 +391,8 @@ const styles = StyleSheet.create({
   cat: { borderWidth: 2.5, borderRadius: 99, paddingHorizontal: 12, paddingVertical: 7 },
   catText: { color: colors.white, fontFamily: fonts.display, fontSize: 15 },
   waiting: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 16 },
+  sheetBg: { flex: 1, backgroundColor: 'rgba(10,0,25,0.7)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: '#2A0E55', borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 20, gap: 10, maxWidth: 560, width: '100%', alignSelf: 'center' },
   modalBg: { flex: 1, backgroundColor: 'rgba(10,0,25,0.8)', alignItems: 'center', justifyContent: 'center', padding: 20 },
   gate: {
     backgroundColor: colors.party,

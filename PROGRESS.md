@@ -2,7 +2,12 @@
 
 _Last updated: 2026-11-09_
 
-## 🖼️ Icons and polish (latest)
+## 📱 Play-test with friends (latest)
+- **No scrolling:** every screen fits on one phone screen; long screens shrink slightly to fit. The lobby's extra settings moved into a "⚙️ More settings" panel.
+- **Multiplayer across phones** works through a free public relay (EMQX) until Supabase is set up. Tested with a host and a guest: joining, renaming and changing avatars (shown on everyone's screen), a full game and a rematch.
+- **Play-test build:** Premium is unlocked for everyone, with 5,000 coins each. Publish it with `bash tools/deploy-playtest.sh`, then share https://noahswesade-ai.github.io/call-it-app/
+
+## 🖼️ Icons and polish
 - **Your category icons** are on the wheel, the category pills, the lobby and the intro. Party and Spicy keep 🍻 and 🌶️ until they have icons.
 - **Avatar editor:**
   - The "Animals" tab is now "Avatars", and the tabs no longer overlap or hide behind the items.

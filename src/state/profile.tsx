@@ -45,6 +45,13 @@ function storageKey(): string {
 
 const KEY = storageKey();
 
+/**
+ * Play-test builds (EXPO_PUBLIC_PLAYTEST=1): everyone gets Premium and a stack of
+ * coins so friends can try every feature. Never set this for a store release.
+ */
+export const PLAYTEST = process.env.EXPO_PUBLIC_PLAYTEST === '1';
+const PLAYTEST_COINS = 5000;
+
 function newProfile(): Profile {
   const avatar = randomStarterAvatar();
   const animal = ANIMAL_BY_ID[avatar.animal]?.name ?? 'Player';
@@ -54,9 +61,9 @@ function newProfile(): Profile {
     name: `${animal} ${10 + Math.floor(Math.random() * 90)}`,
     namedByUser: false,
     avatar,
-    tokens: 50, // a small welcome gift — coins should feel rare
+    tokens: PLAYTEST ? PLAYTEST_COINS : 50, // a small welcome gift — coins should feel rare
     owned: [...FREE_ITEMS],
-    premium: false,
+    premium: PLAYTEST,
     partyTrialUsed: false,
     ageConfirmed: false,
     seenIntro: false,
@@ -104,6 +111,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         const merged = { ...newProfile(), namedByUser: !!saved.name, ...saved };
         // Older versions had different animals, colors and accessory slots.
         merged.avatar = sanitizeLoadout(merged.avatar as never);
+        if (PLAYTEST) merged.premium = true;
         merged.owned = Array.from(new Set([...FREE_ITEMS, ...(merged.owned ?? []).filter((k) => !k.startsWith('color:'))]));
         setProfile(merged);
       })

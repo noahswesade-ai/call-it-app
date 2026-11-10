@@ -20,7 +20,7 @@ export interface ActionMessage {
 }
 
 export interface RoomTransport {
-  readonly kind: 'supabase' | 'broadcast';
+  readonly kind: 'supabase' | 'relay' | 'broadcast';
   publishState(msg: StateMessage): void;
   sendAction(msg: ActionMessage): void;
   /** Guests call this to ask the host to re-send the state (on join / reconnect). */

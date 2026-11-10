@@ -167,25 +167,30 @@ export function Podium({ state }: { state: GameState }) {
             </View>
           )}
 
-          <View style={styles.panel}>
-            <Text style={styles.panelTitle}>📊 Final standings</Text>
-            {ranks.map((r, i) => (
-              <SlideIn key={r.player.id} from="bottom" delay={200 + i * 80} distance={30}>
-                <Row style={{ justifyContent: 'space-between' }}>
-                  <Row style={{ gap: 8, flexShrink: 1 }}>
-                    <Text style={styles.rankNum}>{r.rank}</Text>
-                    <AnimalAvatar avatar={r.player.avatar} size={30} />
-                    <Text style={styles.rank} numberOfLines={1}>
-                      {r.player.name}
-                    </Text>
-                  </Row>
-                  <Text style={styles.rankVal}>
-                    {r.totals.points} pts{party ? ` · 🍺${r.totals.sips}` : ''}
-                  </Text>
-                </Row>
-              </SlideIn>
-            ))}
-          </View>
+          {ranks.length > 3 && (
+            <View style={styles.panel}>
+              <Text style={styles.panelTitle}>📊 Everyone else</Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+                {ranks.slice(3).map((r, i) => (
+                  <SlideIn key={r.player.id} from="bottom" delay={200 + i * 80} distance={30}>
+                    <View style={styles.restChip}>
+                      <Text style={styles.rankNum}>{r.rank}</Text>
+                      <Sway>
+                        <AnimalAvatar avatar={r.player.avatar} size={24} />
+                      </Sway>
+                      <Text style={styles.restName} numberOfLines={1}>
+                        {r.player.name}
+                      </Text>
+                      <Text style={styles.rankVal}>
+                        {r.totals.points}
+                        {party ? ` · 🍺${r.totals.sips}` : ''}
+                      </Text>
+                    </View>
+                  </SlideIn>
+                ))}
+              </View>
+            </View>
+          )}
 
           {party && !hostPremium && !profile.premium && (
             <PopIn delay={400}>
@@ -254,6 +259,8 @@ const styles = StyleSheet.create({
   awardBonusText: { color: colors.gold, fontFamily: fonts.display, fontSize: 13 },
   awardName: { color: colors.gold, fontFamily: fonts.display, fontSize: 16 },
   rankNum: { color: colors.gold, fontFamily: fonts.display, fontSize: 18, width: 20, textAlign: 'center' },
+  restChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 99, paddingHorizontal: 8, paddingVertical: 2 },
+  restName: { color: colors.white, fontFamily: fonts.display, fontSize: 13, maxWidth: 80 },
   rank: { color: colors.white, fontSize: 16, fontFamily: fonts.display, flexShrink: 1 },
   rankVal: { color: colors.dim, fontSize: 15, fontFamily: fonts.display },
   upsell: { backgroundColor: colors.party, borderColor: colors.neon, borderWidth: 2.5, borderRadius: 24, padding: 16, gap: 10 },

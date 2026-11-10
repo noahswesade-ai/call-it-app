@@ -667,7 +667,7 @@ export function myResultTint(state: GameState, myId: string): 'green' | 'red' | 
 }
 
 function Standings({ state, delay = 500 }: { state: GameState; delay?: number }) {
-  const rows = rankings(state).slice(0, 5);
+  const rows = rankings(state).slice(0, 4);
   const max = Math.max(1, ...rows.map((r) => r.totals.points));
   const lastRound = state.round?.score?.perPlayer ?? {};
   return (
@@ -677,7 +677,7 @@ function Standings({ state, delay = 500 }: { state: GameState; delay?: number })
         <SlideIn key={r.player.id} from="right" delay={delay + i * 110} distance={80}>
           <Row style={{ gap: 8 }}>
             <Text style={styles.rankNum}>{r.rank}</Text>
-            <AnimalAvatar avatar={r.player.avatar} size={34} mood={i === 0 ? 'happy' : undefined} />
+            <AnimalAvatar avatar={r.player.avatar} size={26} mood={i === 0 ? 'happy' : undefined} />
             <View style={{ flex: 1, gap: 3 }}>
               <Row style={{ justifyContent: 'space-between' }}>
                 <Text style={styles.rowName} numberOfLines={1}>
@@ -757,18 +757,18 @@ export function Result({ state }: { state: GameState }) {
       <RoundHeader state={state} />
 
       {/* 1. The winner, front and centre */}
-      <View style={{ alignItems: 'center', justifyContent: 'center', minHeight: 250 }}>
-        <Sunburst size={440} color="rgba(255,255,255,0.13)" />
+      <View style={{ alignItems: 'center', justifyContent: 'center', minHeight: 180 }}>
+        <Sunburst size={400} color="rgba(255,255,255,0.13)" />
         {winner ? (
           <>
             <PopIn from={0.1}>
               <Bob amount={9} duration={380}>
                 <Sway deg={5}>
-                  <AnimalAvatar avatar={winner.avatar} size={140} mood="happy" />
+                  <AnimalAvatar avatar={winner.avatar} size={104} mood="happy" />
                 </Sway>
               </Bob>
             </PopIn>
-            <Slam text={`${winner.name} WINS!`} size={46} color={colors.gold} delay={200} />
+            <Slam text={`${winner.name} WINS!`} size={38} color={colors.gold} delay={200} />
           </>
         ) : (
           <>
