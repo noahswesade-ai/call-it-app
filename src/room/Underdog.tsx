@@ -15,24 +15,18 @@ import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { UNDERDOG_MULTIPLIER } from '@/game/scoring';
 import type { Mode, Player } from '@/game/types';
 import { Confetti } from '@/ui/Confetti';
-import { Bob, PopIn, Pulse, Shake, SlideIn, Wobble } from '@/ui/motion';
+import { Bob, PopIn, Pulse, Shake, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { EmojiRain, Sunburst } from './fx';
 
-/** Strobing white flashes, like a siren hit. */
+/** A single soft white flash as the screen appears. */
 function Flash({ delay = 0 }: { delay?: number }) {
   const o = useSharedValue(0);
   useEffect(() => {
     o.value = withDelay(
       delay,
-      withSequence(
-        withTiming(0.85, { duration: 60 }),
-        withTiming(0, { duration: 160 }),
-        withTiming(0.6, { duration: 60 }),
-        withTiming(0, { duration: 220 }),
-        withTiming(0.4, { duration: 60 }),
-        withTiming(0, { duration: 300 }),
-      ),
+      // One soft flash (no strobing — rapid flashing is uncomfortable to look at).
+      withSequence(withTiming(0.3, { duration: 180 }), withTiming(0, { duration: 500 })),
     );
   }, [delay, o]);
   const st = useAnimatedStyle(() => ({ opacity: o.value }));
@@ -57,16 +51,6 @@ function SirenBeams() {
       </Animated.View>
     </View>
   );
-}
-
-/** Text that alternates between two colors like a flashing sign. */
-function Blink({ text, a, b, size, interval = 220 }: { text: string; a: string; b: string; size: number; interval?: number }) {
-  const [on, setOn] = useState(false);
-  useEffect(() => {
-    const t = setInterval(() => setOn((v) => !v), interval);
-    return () => clearInterval(t);
-  }, [interval]);
-  return <Text style={[styles.blink, { fontSize: size, color: on ? a : b }]}>{text}</Text>;
 }
 
 /** The giant ×3: slams in, then throbs forever. */
@@ -213,17 +197,21 @@ export function UnderdogTag({ mode }: { mode: Mode }) {
 /** Celebration when the Underdog actually wins. */
 export function UnderdogVictory({ name, mode }: { name: string; mode: Mode }) {
   useEffect(() => {
-    [0, 150, 300].forEach((ms) => setTimeout(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => {}), ms));
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
   }, []);
+  // Calm and readable on purpose: no blinking or flashing, just a slow gentle pulse.
   return (
-    <PopIn from={2.5}>
-      <Wobble deg={3} duration={300}>
-        <LinearGradient colors={[colors.gold, '#FF8A00']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.victory}>
-          <Text style={styles.victoryTop}>🐶 THE UNDERDOG WON! 🐶</Text>
+    <PopIn from={0.6}>
+      <Pulse scale={1.02} duration={1400}>
+        <LinearGradient colors={[colors.gold, '#FFB23C']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.victory}>
+          <Text style={styles.victoryTop}>🐶 THE UNDERDOG WON!</Text>
           <Text style={styles.victoryName}>{name}</Text>
-          <Blink text={mode === 'party' ? 'DOUBTERS DRINK ×3 🍺' : 'BELIEVERS SCORE ×3 🎯'} a={colors.ink} b={colors.greenLip} size={22} />
+          <View style={styles.victoryChip}>
+            <Text style={styles.victoryX3}>×{UNDERDOG_MULTIPLIER}</Text>
+            <Text style={styles.victoryRule}>{mode === 'party' ? 'Doubters drink triple 🍺' : 'Believers score triple 🎯'}</Text>
+          </View>
         </LinearGradient>
-      </Wobble>
+      </Pulse>
     </PopIn>
   );
 }
@@ -289,7 +277,10 @@ const styles = StyleSheet.create({
   tag: { backgroundColor: colors.gold, borderRadius: 14, paddingHorizontal: 10, paddingVertical: 4, alignItems: 'center', borderWidth: 2.5, borderColor: colors.ink },
   tagText: { color: colors.ink, fontFamily: fonts.display, fontSize: 15 },
   tagSub: { color: colors.ink, fontFamily: fonts.bodyBold, fontSize: 10 },
-  victory: { borderRadius: 24, padding: 16, alignItems: 'center', gap: 2, borderWidth: 4, borderColor: colors.ink },
+  victory: { borderRadius: 24, padding: 16, alignItems: 'center', gap: 6, borderWidth: 4, borderColor: colors.ink },
+  victoryChip: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: colors.ink, borderRadius: 16, paddingHorizontal: 14, paddingVertical: 6 },
+  victoryX3: { color: colors.gold, fontFamily: fonts.display, fontSize: 34 },
+  victoryRule: { color: colors.white, fontFamily: fonts.display, fontSize: 18 },
   victoryTop: { color: colors.ink, fontFamily: fonts.display, fontSize: 22 },
   victoryName: { color: colors.white, fontFamily: fonts.display, fontSize: 36, textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 0 },
 });
