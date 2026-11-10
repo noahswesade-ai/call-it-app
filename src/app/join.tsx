@@ -13,7 +13,7 @@ export default function Join() {
   const go = () => {
     if (!valid) return;
     joinRoom(code);
-    router.replace('/room');
+    router.replace({ pathname: '/room', params: { code } });
   };
 
   return (

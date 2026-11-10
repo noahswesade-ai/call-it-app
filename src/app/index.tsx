@@ -133,8 +133,8 @@ export default function Home() {
   const trialAvailable = locked && !profile.partyTrialUsed;
 
   const hostParty = () => {
-    hostRoom({ mode: 'party' });
-    router.push('/room');
+    const code = hostRoom({ mode: 'party' });
+    router.push({ pathname: '/room', params: { code } });
   };
 
   const onParty = () => {
@@ -168,8 +168,8 @@ export default function Home() {
             subtitle="Trivia, challenges & bragging rights"
             disabled={!onlineAvailable}
             onPress={() => {
-              hostRoom({ mode: 'classic' });
-              router.push('/room');
+              const code = hostRoom({ mode: 'classic' });
+              router.push({ pathname: '/room', params: { code } });
             }}
           />
         </SlideIn>

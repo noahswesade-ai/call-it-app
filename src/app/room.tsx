@@ -1,7 +1,8 @@
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
 import Animated, { ZoomIn, SlideInRight, FadeIn } from 'react-native-reanimated';
 import { useRoom } from '@/net/RoomProvider';
+import { useProfile } from '@/state/profile';
 import { Lobby } from '@/room/Lobby';
 import { BetsReveal, Betting, Challenge, Matchup, Result, Spin, UnderdogOverlay, myResultTint } from '@/room/Phases';
 import { Podium } from '@/room/Podium';
@@ -12,8 +13,22 @@ import { Bob } from '@/ui/motion';
 
 /** One screen for the whole game; each phase animates in as the host's state changes. */
 export default function Room() {
-  const { state, myId, leaveRoom } = useRoom();
+  const { state, myId, leaveRoom, joinRoom } = useRoom();
   const [waitedLong, setWaitedLong] = useState(false);
+  // The room code lives in the address (…/room?code=ABCD), so a copied address works
+  // as an invite and a reloaded page reconnects to the same room (a host who reloads
+  // is recognised as host again).
+  const params = useLocalSearchParams<{ code?: string }>();
+  const code = (params.code ?? '').toUpperCase();
+  const autoJoined = useRef(false);
+  const { loaded } = useProfile();
+  useEffect(() => {
+    // Wait for this phone's saved profile so we join as ourselves, not a temporary id.
+    if (loaded && !state && /^[A-Z]{4}$/.test(code) && !autoJoined.current) {
+      autoJoined.current = true;
+      joinRoom(code);
+    }
+  }, [loaded, state, code, joinRoom]);
 
   useEffect(() => {
     const t = setTimeout(() => setWaitedLong(true), 6000);
