@@ -2,7 +2,17 @@
 
 _Last updated: 2026-11-09_
 
-## 👓 Fit and rules update (latest)
+## 🖼️ Icons and polish (latest)
+- **Your category icons** are on the wheel, the category pills, the lobby and the intro. Party and Spicy keep 🍻 and 🌶️ until they have icons.
+- **Avatar editor:**
+  - The "Animals" tab is now "Avatars", and the tabs no longer overlap or hide behind the items.
+  - The preview is always neutral.
+  - Tapping a locked item tries it on (a ~1.5s happy face) and shows an Unlock bar.
+- **Results:** a bigger card showing your points or how many sips to drink.
+- **Names** appear under every betting avatar, and avatars gently sway on the betting, reveal, results and podium screens.
+- **Phone-sized preview:** on a computer, the preview shows the app inside a 390px-wide phone frame instead of stretching to the window.
+
+## 👓 Fit and rules update
 - **Every accessory is fitted to every animal.** A tool (`tools/fit_accessories.py`) measures each animal's eyes, head and chin, then places all 47 accessories on all 22 animals individually. All 1,034 combinations were checked on contact sheets.
   - Headphones: the band goes behind the head and the ear cups sit at the sides, so the face stays visible.
   - Necklaces, scarves and collars hang from behind the chin.

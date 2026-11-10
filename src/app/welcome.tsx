@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
+import { CategoryIcon } from '@/content/CategoryIcon';
 import { markIntroShown } from '@/state/intro';
 import { useProfile } from '@/state/profile';
 import { Button, Screen, tap } from '@/ui/kit';
@@ -66,7 +67,11 @@ export default function Welcome() {
         <Wobble deg={25} duration={500}>
           <Text style={styles.big}>🎡</Text>
         </Wobble>
-        <Text style={styles.small}>🧠 💪 🎬 🍻</Text>
+        <View style={{ flexDirection: 'row', gap: 2 }}>
+          {(['basic', 'physical', 'popculture', 'sports'] as const).map((c) => (
+            <CategoryIcon key={c} category={c} size={30} />
+          ))}
+        </View>
       </Step>
 
       <Step n={3} delay={400} caption="Everyone else calls the winner">

@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { colors } from './theme';
+import { useScreenSize } from '@/ui/screenSize';
 
 const PALETTE = [colors.gold, colors.pink, colors.cyan, colors.green, colors.violet, '#FFFFFF'];
 
@@ -48,7 +49,7 @@ function Piece({ i, w, h, origin }: { i: number; w: number; h: number; origin: '
 
 /** One-shot confetti. Change `burstKey` to fire again. */
 export function Confetti({ count = 60, origin = 'top', burstKey = 0 }: { count?: number; origin?: 'top' | 'center'; burstKey?: number | string }) {
-  const { width, height } = useWindowDimensions();
+  const { width, height } = useScreenSize();
   return (
     <View key={burstKey} style={StyleSheet.absoluteFill} pointerEvents="none">
       {Array.from({ length: count }, (_, i) => (

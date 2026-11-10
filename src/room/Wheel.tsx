@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated as RNAnimated, Easing as RNEasing, StyleSheet, Text, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
-import Svg, { Circle, G, Path, Polygon, Text as SvgText } from 'react-native-svg';
+import Svg, { Circle, G, Image as SvgImage, Path, Polygon, Text as SvgText } from 'react-native-svg';
+import { CATEGORY_ICONS, CategoryIcon } from '@/content/CategoryIcon';
 import { CATEGORY_BY_ID, DIFFICULTY_LABEL, RANDOM_DESCRIPTION } from '@/content/categories';
 import type { Category, Difficulty, WheelSlice } from '@/game/types';
 import { Confetti } from '@/ui/Confetti';
@@ -33,6 +34,23 @@ function sliceInfo(s: WheelSlice | 'locked') {
   if (s === 'locked') return { label: 'Party', emoji: '🔒', color: '#3A1F5C', description: '' };
   const c = CATEGORY_BY_ID[s];
   return { label: c.label, emoji: c.emoji, color: c.color, description: c.description };
+}
+
+/** A slice's illustrated icon on a soft white disc (emoji for Party/Spicy/locked). */
+function SliceGlyph({ slice, x, y, size }: { slice: WheelSlice | 'locked'; x: number; y: number; size: number }) {
+  const icon = slice === 'locked' ? undefined : CATEGORY_ICONS[slice];
+  return (
+    <G>
+      <Circle cx={x} cy={y} r={size * 0.6} fill="#FFFFFF" opacity={0.9} />
+      {icon ? (
+        <SvgImage href={icon} x={x - size / 2} y={y - size / 2} width={size} height={size} preserveAspectRatio="xMidYMid meet" />
+      ) : (
+        <SvgText x={x} y={y + size * 0.33} fontSize={size * 0.8} textAnchor="middle">
+          {sliceInfo(slice).emoji}
+        </SvgText>
+      )}
+    </G>
+  );
 }
 
 function arc(i: number, n: number, r: number): string {
@@ -164,9 +182,7 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
                 return (
                   <G key={`${s}-${i}`} opacity={dim ? 0.3 : 1}>
                     <Path d={arc(i, n, R)} fill={info.color} stroke={colors.ink} strokeWidth={3} />
-                    <SvgText x={R + R * 0.68 * Math.cos(m)} y={R + R * 0.68 * Math.sin(m) + 10} fontSize={28} textAnchor="middle">
-                      {info.emoji}
-                    </SvgText>
+                    <SliceGlyph slice={s} x={R + R * 0.68 * Math.cos(m)} y={R + R * 0.68 * Math.sin(m)} size={34} />
                   </G>
                 );
               })}
@@ -176,9 +192,7 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
                 <WinningSlice index={index} n={n} color={landedInfo.color} />
                 <PopIn from={0.5} style={StyleSheet.absoluteFill}>
                   <Svg width={SIZE} height={SIZE}>
-                    <SvgText x={R + R * 0.74 * Math.cos(mid)} y={R + R * 0.74 * Math.sin(mid) + 13} fontSize={36} textAnchor="middle">
-                      {landedInfo.emoji}
-                    </SvgText>
+                    <SliceGlyph slice={landOn} x={R + R * 0.74 * Math.cos(mid)} y={R + R * 0.74 * Math.sin(mid)} size={46} />
                   </Svg>
                 </PopIn>
               </View>
@@ -201,11 +215,12 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
         {showBox && (
           <PopIn from={0.4}>
             <View style={[styles.box, { borderColor: result.color }]}>
-              {landOn === 'random' && <Text style={styles.randomNote}>🎲 Random picked…</Text>}
+              {landOn === 'random' && <Text style={styles.randomNote}>Random picked…</Text>}
               <Bob amount={4} duration={700}>
-                <Text style={styles.boxTitle}>
-                  {result.emoji} {result.label}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <CategoryIcon category={landOn === 'random' ? randomResult : landOn} size={52} />
+                  <Text style={styles.boxTitle}>{result.label}</Text>
+                </View>
               </Bob>
               <Text style={styles.boxDesc}>{result.description}</Text>
               <PopIn delay={250}>

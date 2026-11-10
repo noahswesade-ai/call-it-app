@@ -11,13 +11,13 @@ import { useRoom } from '@/net/RoomProvider';
 import { useCountUp } from '@/ui/Coin';
 import { Confetti } from '@/ui/Confetti';
 import { Button, Dim, Pill, Row, tap } from '@/ui/kit';
-import { Bob, PopIn, Pulse, Shake, SlideIn, Wobble } from '@/ui/motion';
+import { Bob, PopIn, Pulse, Shake, SlideIn, Sway, Wobble } from '@/ui/motion';
 import { A_COLOR, A_LIP, B_COLOR, B_LIP, colors, fonts } from '@/ui/theme';
 import { CountdownRing, DangerVignette, EmojiRain, GrowBar, Slam, Sunburst } from './fx';
 import { PlayerBadge, playerById, useTimeLeft } from './shared';
 import { Wheel } from './Wheel';
+import { CategoryIcon } from '@/content/CategoryIcon';
 import { UnderdogAlert, UnderdogTag, UnderdogVictory } from './Underdog';
-import { Modal } from 'react-native';
 import { bounce } from '@/ui/motion';
 
 function RoundHeader({ state }: { state: GameState }) {
@@ -40,7 +40,10 @@ function CategoryLine({ state }: { state: GameState }) {
   return (
     <Row style={{ justifyContent: 'center' }}>
       <PopIn>
-        <Pill label={`${c.emoji} ${c.label.toUpperCase()}`} color={c.color} textColor={colors.ink} />
+        <View style={[styles.catPill, { backgroundColor: c.color }]}>
+          <CategoryIcon category={r.category} size={24} />
+          <Text style={styles.catPillText}>{c.label.toUpperCase()}</Text>
+        </View>
       </PopIn>
       <PopIn delay={120}>
         <Pill label={DIFFICULTY_LABEL[r.question.difficulty].toUpperCase()} color="rgba(20,4,40,0.55)" />
@@ -56,7 +59,11 @@ function Fighter({ state, id, side, size = 120, mood }: { state: GameState; id: 
   return (
     <View style={[styles.fighter, { backgroundColor: color, transform: [{ rotate: side === 'A' ? '-4deg' : '4deg' }] }]}>
       <Bob amount={5} duration={700} delay={side === 'A' ? 0 : 200}>
-        {p && <AnimalAvatar avatar={p.avatar} size={size} mood={mood} />}
+        {p && (
+          <Sway deg={4}>
+            <AnimalAvatar avatar={p.avatar} size={size} mood={mood} />
+          </Sway>
+        )}
       </Bob>
       <Text style={styles.fighterName} numberOfLines={1}>
         {p?.premium ? '👑 ' : ''}
@@ -220,7 +227,11 @@ function PickCard({ state, id, side, onPick, chosen, disabled }: { state: GameSt
       <View style={[styles.pickLip, { backgroundColor: lip }]}>
         <Animated.View style={[styles.pickFace, { backgroundColor: color }, face]}>
           <Bob amount={4} duration={600} delay={side === 'A' ? 0 : 300}>
-            {p && <AnimalAvatar avatar={p.avatar} size={100} mood="neutral" />}
+            {p && (
+              <Sway deg={4}>
+                <AnimalAvatar avatar={p.avatar} size={100} mood="neutral" />
+              </Sway>
+            )}
           </Bob>
           <Text style={styles.pickName} numberOfLines={1}>
             {p?.name}
@@ -313,7 +324,14 @@ export function Betting({ state }: { state: GameState }) {
             const p = playerById(state, id);
             return p ? (
               <PopIn key={id} from={0}>
-                <AnimalAvatar avatar={p.avatar} size={34} mood="happy" />
+                <View style={{ alignItems: 'center', width: 56 }}>
+                  <Sway>
+                    <AnimalAvatar avatar={p.avatar} size={34} mood="neutral" />
+                  </Sway>
+                  <Text style={styles.backerName} numberOfLines={1}>
+                    {p.name}
+                  </Text>
+                </View>
               </PopIn>
             ) : null;
           })}
@@ -353,6 +371,41 @@ function UnderdogCallout({ delay }: { delay: number }) {
   );
 }
 
+/** Timing of the bets-reveal sequence: 1) votes drop in 2) percentages count up 3) the <33% callout 4) UNDERDOG takeover. */
+function revealTimeline(state: GameState) {
+  const r = state.round!;
+  const count = (pick: 'A' | 'B') => r.bettors.filter((id) => r.bets[id] === pick).length;
+  const VOTES_AT = 300;
+  const VOTE_STEP = 120;
+  const PCT_AT = VOTES_AT + Math.max(count('A'), count('B')) * VOTE_STEP + 400;
+  const CALLOUT_AT = PCT_AT + 1100;
+  const ALERT_AT = CALLOUT_AT + 1300;
+  return { VOTES_AT, VOTE_STEP, PCT_AT, CALLOUT_AT, ALERT_AT };
+}
+
+/**
+ * The full-screen UNDERDOG takeover. Rendered by the room screen as an overlay above
+ * everything (so it covers the whole phone screen, not just the scrolling content).
+ */
+export function UnderdogOverlay({ state }: { state: GameState }) {
+  const r = state.round;
+  const dog = currentUnderdog(state);
+  if (!r || state.phase !== 'betsReveal' || !dog) return null;
+  const dogPlayer = playerById(state, r.challengers[dog === 'A' ? 0 : 1]);
+  if (!dogPlayer) return null;
+  const backers = r.bettors.filter((id) => r.bets[id] === dog).map((id) => playerById(state, id)!).filter(Boolean);
+  const total = r.bettors.filter((id) => r.bets[id] === 'A' || r.bets[id] === 'B').length;
+  return (
+    <UnderdogAlert
+      underdog={dogPlayer}
+      share={backers.length / Math.max(1, total)}
+      backers={backers}
+      mode={state.settings.mode}
+      delay={revealTimeline(state).ALERT_AT}
+    />
+  );
+}
+
 export function BetsReveal({ state }: { state: GameState }) {
   const r = state.round!;
   const side = (pick: 'A' | 'B') => r.bettors.filter((id) => r.bets[id] === pick).map((id) => playerById(state, id)!).filter(Boolean);
@@ -360,27 +413,10 @@ export function BetsReveal({ state }: { state: GameState }) {
   const total = side('A').length + side('B').length;
   const pct = (n: number) => (total === 0 ? 0 : Math.round((n / total) * 100));
   const dog = currentUnderdog(state);
-  const dogPlayer = dog ? playerById(state, r.challengers[dog === 'A' ? 0 : 1]) : undefined;
-  // Sequence: 1) votes drop in  2) percentages count up  3) the <33% number is called out  4) UNDERDOG takeover.
-  const VOTES_AT = 300;
-  const VOTE_STEP = 120;
-  const PCT_AT = VOTES_AT + Math.max(side('A').length, side('B').length) * VOTE_STEP + 400;
-  const CALLOUT_AT = PCT_AT + 1100;
-  const ALERT_AT = CALLOUT_AT + 1300;
+  const { VOTES_AT, VOTE_STEP, PCT_AT, CALLOUT_AT } = revealTimeline(state);
 
   return (
     <View style={styles.stage}>
-      {dog && dogPlayer && (
-        <Modal visible transparent animationType="none">
-          <UnderdogAlert
-            underdog={dogPlayer}
-            share={side(dog).length / Math.max(1, total)}
-            backers={side(dog)}
-            mode={state.settings.mode}
-            delay={ALERT_AT}
-          />
-        </Modal>
-      )}
       <RoundHeader state={state} />
       <Slam text="THE ROOM HAS SPOKEN" size={34} />
       <Row style={{ alignItems: 'flex-start', gap: 10 }}>
@@ -412,7 +448,9 @@ export function BetsReveal({ state }: { state: GameState }) {
                 )}
                 {backers.map((pl, j) => (
                   <SlideIn key={pl.id} from="top" distance={50} delay={VOTES_AT + j * VOTE_STEP}>
-                    <AnimalAvatar avatar={pl.avatar} size={40} mood="neutral" />
+                    <Sway>
+                      <AnimalAvatar avatar={pl.avatar} size={40} mood="neutral" />
+                    </Sway>
                     <Text style={styles.backerName} numberOfLines={1}>
                       {pl.name}
                     </Text>
@@ -725,7 +763,9 @@ export function Result({ state }: { state: GameState }) {
           <>
             <PopIn from={0.1}>
               <Bob amount={9} duration={380}>
-                <AnimalAvatar avatar={winner.avatar} size={140} mood="happy" />
+                <Sway deg={5}>
+                  <AnimalAvatar avatar={winner.avatar} size={140} mood="happy" />
+                </Sway>
               </Bob>
             </PopIn>
             <Slam text={`${winner.name} WINS!`} size={46} color={colors.gold} delay={200} />
@@ -758,7 +798,9 @@ export function Result({ state }: { state: GameState }) {
                 {supporters.map((p, i) => (
                   <PopIn key={p.id} delay={SUP_START + i * SUP_STEP} from={0.2} style={styles.supCell}>
                     <View style={styles.supporterRow}>
-                      <AnimalAvatar avatar={p.avatar} size={34} mood="happy" />
+                      <Sway>
+                        <AnimalAvatar avatar={p.avatar} size={34} mood="happy" />
+                      </Sway>
                       <Text style={styles.supporterName} numberOfLines={1}>
                         {p.id === myId ? 'You' : p.name}
                       </Text>
@@ -778,11 +820,11 @@ export function Result({ state }: { state: GameState }) {
           <Shake trigger={kind === 'win' ? 0 : 1} strength={kind === 'win' ? 0 : 10}>
             <View style={[styles.youCard, kind === 'win' ? styles.youWin : kind === 'neutral' ? styles.youNeutral : styles.youLose]}>
               {me && (
-                <Wobble deg={kind === 'drink' ? 10 : 0} duration={300}>
-                  <AnimalAvatar avatar={me.avatar} size={84} mood={kind === 'win' ? 'happy' : kind === 'neutral' ? 'neutral' : 'sad'} />
+                <Wobble deg={kind === 'drink' ? 10 : 4} duration={kind === 'drink' ? 300 : 700}>
+                  <AnimalAvatar avatar={me.avatar} size={112} mood={kind === 'win' ? 'happy' : kind === 'neutral' ? 'neutral' : 'sad'} />
                 </Wobble>
               )}
-              <View style={{ flex: 1, gap: 2 }}>
+              <View style={{ alignItems: 'center', gap: 4 }}>
                 <Text style={styles.youLabel}>
                   {kind === 'win'
                     ? mine.result === 'challengerWin'
@@ -850,6 +892,8 @@ export function Result({ state }: { state: GameState }) {
 }
 
 const styles = StyleSheet.create({
+  catPill: { flexDirection: 'row', alignItems: 'center', gap: 5, borderRadius: 99, paddingLeft: 4, paddingRight: 12, paddingVertical: 3 },
+  catPillText: { color: colors.ink, fontFamily: fonts.display, fontSize: 14 },
   stage: { gap: 16, flexGrow: 1, justifyContent: 'center' },
   subHead: { color: colors.dim, fontFamily: fonts.display, fontSize: 18, textAlign: 'center' },
   faceoff: { flexDirection: 'row', alignItems: 'center' },
@@ -962,16 +1006,16 @@ const styles = StyleSheet.create({
   plus: { backgroundColor: colors.green, borderRadius: 12, paddingHorizontal: 10, paddingVertical: 2, borderWidth: 2.5, borderColor: colors.ink },
   plusBig: { backgroundColor: colors.gold },
   plusText: { color: colors.ink, fontFamily: fonts.display, fontSize: 16 },
-  youCard: { flexDirection: 'row', alignItems: 'center', gap: 12, borderRadius: 24, padding: 14, borderWidth: 3, borderBottomWidth: 8 },
+  youCard: { alignItems: 'center', gap: 8, borderRadius: 28, paddingVertical: 22, paddingHorizontal: 16, borderWidth: 4, borderBottomWidth: 10 },
   youLose: { backgroundColor: '#E8324A', borderColor: '#8E0F22' },
   youNeutral: { backgroundColor: 'rgba(20,4,40,0.6)', borderColor: 'rgba(255,255,255,0.25)' },
-  youLabel: { color: colors.white, fontFamily: fonts.display, fontSize: 16, letterSpacing: 0.5, opacity: 0.95 },
-  youBig: { color: colors.white, fontFamily: fonts.display, fontSize: 27, textShadowColor: 'rgba(0,0,0,0.25)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
+  youLabel: { color: colors.white, fontFamily: fonts.display, fontSize: 19, letterSpacing: 0.5, opacity: 0.95, textAlign: 'center' },
+  youBig: { textAlign: 'center', color: colors.white, fontFamily: fonts.display, fontSize: 40, textShadowColor: 'rgba(0,0,0,0.25)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
   youStrip: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'rgba(20,4,40,0.6)', borderRadius: 20, padding: 10, borderWidth: 2, borderColor: 'rgba(255,255,255,0.2)' },
   youWin: { backgroundColor: '#1FB866', borderColor: '#0B6B39' },
   youDrink: { borderColor: colors.red, backgroundColor: 'rgba(255,71,87,0.25)' },
   youHead: { color: colors.white, fontFamily: fonts.display, fontSize: 22 },
-  youSub: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 14, opacity: 0.9 },
+  youSub: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 16, opacity: 0.9, textAlign: 'center' },
   winnerBanner: { backgroundColor: colors.gold, borderRadius: 18, paddingVertical: 10, alignItems: 'center', borderBottomWidth: 5, borderBottomColor: colors.goldLip },
   winnerText: { color: colors.ink, fontFamily: fonts.display, fontSize: 20 },
   drinkChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(255,71,87,0.3)', borderRadius: 99, paddingRight: 10, paddingLeft: 3, paddingVertical: 2 },

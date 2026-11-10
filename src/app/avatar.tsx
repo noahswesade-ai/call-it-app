@@ -1,9 +1,10 @@
 import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import {
   ACCESSORIES,
+  ACCESSORY_BY_ID,
   ANIMALS,
   SLOT_LABEL,
   TIER_COLOR,
@@ -15,14 +16,14 @@ import {
 import { ACCESSORY_IMAGES } from '@/avatar/images';
 import { useProfile } from '@/state/profile';
 import { Coin, CoinCounter } from '@/ui/Coin';
-import { Button, Dim, Row, Screen, Segmented, tap } from '@/ui/kit';
+import { Button, Dim, Row, Screen, tap } from '@/ui/kit';
 import { Bob, PopIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 
 type Tab = 'animal' | AccessorySlot;
 
 const TABS: { value: Tab; label: string }[] = [
-  { value: 'animal', label: 'Animals' },
+  { value: 'animal', label: 'Avatars' },
   { value: 'head', label: SLOT_LABEL.head },
   { value: 'eyes', label: SLOT_LABEL.eyes },
   { value: 'mouth', label: SLOT_LABEL.mouth },
@@ -60,7 +61,17 @@ export default function AvatarEditor() {
   const { profile, update, owns, buy } = useProfile();
   const [tab, setTab] = useState<Tab>('animal');
   const [name, setName] = useState(profile.name);
-  const [preview, setPreview] = useState<'happy' | 'neutral' | 'sad'>('happy');
+  // The preview is always neutral, except a ~1.5s happy flash whenever something is put on.
+  const [mood, setMood] = useState<'neutral' | 'happy'>('neutral');
+  const moodTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const flashHappy = () => {
+    setMood('happy');
+    clearTimeout(moodTimer.current);
+    moodTimer.current = setTimeout(() => setMood('neutral'), 1500);
+  };
+  useEffect(() => () => clearTimeout(moodTimer.current), []);
+  // A locked item being tried on (not owned yet): shown on the preview with a buy bar.
+  const [tryOn, setTryOn] = useState<Cell | undefined>();
 
   const cells: Cell[] = useMemo(() => {
     const list: Cell[] =
@@ -78,18 +89,35 @@ export default function AvatarEditor() {
     return list.sort((a, b) => a.price - b.price);
   }, [tab, profile.ageConfirmed]);
 
+  const slotOf = (c: Cell): Tab => (c.key.startsWith('animal:') ? 'animal' : (ACCESSORY_BY_ID[c.id]?.slot as Tab));
+
+  const previewAvatar = tryOn ? { ...profile.avatar, [slotOf(tryOn)]: tryOn.id } : profile.avatar;
   const isOwned = (c: Cell) => c.price === 0 || owns(c.key);
   const isEquipped = (c: Cell) => (tab === 'animal' ? profile.avatar.animal === c.id : profile.avatar[tab] === c.id);
 
   const equip = (c: Cell) => {
-    if (tab === 'animal') update({ avatar: { ...profile.avatar, animal: c.id } });
+    const slot = slotOf(c);
+    setTryOn(undefined);
+    if (slot === 'animal') {
+      update({ avatar: { ...profile.avatar, animal: c.id } });
+      flashHappy();
+      return;
+    }
     // Tapping an equipped accessory takes it off.
-    else update({ avatar: { ...profile.avatar, [tab]: profile.avatar[tab] === c.id ? undefined : c.id } });
+    const removing = profile.avatar[slot] === c.id;
+    update({ avatar: { ...profile.avatar, [slot]: removing ? undefined : c.id } });
+    if (!removing) flashHappy();
   };
 
-  const onCell = async (c: Cell) => {
+  const onCell = (c: Cell) => {
     tap();
     if (isOwned(c)) return equip(c);
+    // Try it on first: show it on the avatar with a happy face, then offer to unlock it.
+    setTryOn(c);
+    flashHappy();
+  };
+
+  const unlock = async (c: Cell) => {
     if (c.premiumOnly) return router.push('/paywall');
     if (profile.tokens < c.price) {
       notify('Not enough coins', `${c.name} costs ${c.price.toLocaleString()} coins. You have ${profile.tokens.toLocaleString()}. Win games, earn awards, or watch a video in the Shop.`);
@@ -115,26 +143,51 @@ export default function AvatarEditor() {
       </Row>
 
       <View style={{ alignItems: 'center', gap: 4 }}>
-        <PopIn key={JSON.stringify(profile.avatar)} from={0.7}>
+        <PopIn key={JSON.stringify(previewAvatar)} from={0.7} style={{ marginTop: 26 }}>
           <Bob amount={6} duration={900}>
-            <AnimalAvatar avatar={profile.avatar} size={150} mood={preview} />
+            <AnimalAvatar avatar={previewAvatar} size={140} mood={mood} />
           </Bob>
         </PopIn>
-        <Row style={{ gap: 6 }}>
-          {(['happy', 'neutral', 'sad'] as const).map((m) => (
-            <Pressable key={m} onPress={() => setPreview(m)} style={[styles.moodBtn, preview === m && styles.moodOn]}>
-              <Text style={{ fontSize: 16 }}>{m === 'happy' ? '😄' : m === 'neutral' ? '🙂' : '😢'}</Text>
-            </Pressable>
-          ))}
-        </Row>
-        <TextInput value={name} onChangeText={setName} onBlur={save} onSubmitEditing={save} maxLength={16} style={styles.name} />
+        {tryOn ? (
+          <PopIn from={0.6}>
+            <View style={styles.buyBar}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.buyName} numberOfLines={1}>
+                  {tryOn.name}
+                </Text>
+                <Text style={[styles.tier, { color: TIER_COLOR[tryOn.tier] }]}>{TIER_LABEL[tryOn.tier].toUpperCase()}</Text>
+              </View>
+              <Button
+                small
+                label={tryOn.premiumOnly ? '👑 Get Premium' : `Unlock · ${tryOn.price.toLocaleString()}`}
+                onPress={() => unlock(tryOn)}
+              />
+              <Pressable onPress={() => setTryOn(undefined)} style={styles.buyClose} accessibilityLabel="Stop trying on">
+                <Text style={{ color: colors.white, fontFamily: fonts.display, fontSize: 16 }}>✕</Text>
+              </Pressable>
+            </View>
+          </PopIn>
+        ) : (
+          <TextInput value={name} onChangeText={setName} onBlur={save} onSubmitEditing={save} maxLength={16} style={styles.name} />
+        )}
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }}>
-        <Segmented options={TABS} value={tab} onChange={setTab} />
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabsScroll} contentContainerStyle={styles.tabs}>
+        {TABS.map((t) => (
+          <Pressable
+            key={t.value}
+            onPress={() => {
+              tap();
+              setTab(t.value);
+            }}
+            style={[styles.tab, tab === t.value && styles.tabOn]}
+          >
+            <Text style={[styles.tabText, tab === t.value && { color: colors.ink }]}>{t.label}</Text>
+          </Pressable>
+        ))}
       </ScrollView>
 
-      <ScrollView contentContainerStyle={styles.grid}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.grid}>
         {cells.map((c, i) => {
           const owned = isOwned(c);
           const equipped = isEquipped(c);
@@ -190,8 +243,25 @@ export default function AvatarEditor() {
 const styles = StyleSheet.create({
   title: { color: colors.white, fontFamily: fonts.display, fontSize: 30 },
   name: { color: colors.white, fontSize: 24, fontFamily: fonts.display, textAlign: 'center', minWidth: 200, padding: 2 },
-  moodBtn: { width: 34, height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.1)' },
-  moodOn: { backgroundColor: colors.gold },
+  tabsScroll: { flexGrow: 0, flexShrink: 0 },
+  tabs: { gap: 6, paddingVertical: 2 },
+  tab: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 12, backgroundColor: 'rgba(20,4,40,0.45)' },
+  tabOn: { backgroundColor: colors.gold },
+  tabText: { color: colors.white, fontFamily: fonts.display, fontSize: 15 },
+  buyBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: 'rgba(20,4,40,0.7)',
+    borderColor: colors.gold,
+    borderWidth: 2,
+    borderRadius: 18,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    width: 330,
+  },
+  buyName: { color: colors.white, fontFamily: fonts.display, fontSize: 17 },
+  buyClose: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.15)' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center', paddingBottom: 12 },
   cell: {
     width: 100,

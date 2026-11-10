@@ -15,7 +15,7 @@ import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { UNDERDOG_MULTIPLIER } from '@/game/scoring';
 import type { Mode, Player } from '@/game/types';
 import { Confetti } from '@/ui/Confetti';
-import { Bob, PopIn, Pulse, Shake, SlideIn } from '@/ui/motion';
+import { Bob, PopIn, Pulse, Shake, SlideIn, Sway } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { EmojiRain, Sunburst } from './fx';
 
@@ -146,7 +146,9 @@ export function UnderdogAlert({
         <SlideIn from="bottom" delay={1300}>
           <View style={styles.dogCard}>
             <Bob amount={6} duration={420}>
-              <AnimalAvatar avatar={underdog.avatar} size={96} mood="sad" />
+              <Sway deg={4}>
+                <AnimalAvatar avatar={underdog.avatar} size={96} mood="sad" />
+              </Sway>
             </Bob>
             <View style={styles.dogTag}>
               <Text style={styles.dogTagText}>{underdog.name}</Text>
@@ -165,7 +167,14 @@ export function UnderdogAlert({
               <View style={{ flexDirection: 'row', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
                 {backers.map((p, i) => (
                   <PopIn key={p.id} delay={1900 + i * 120} from={0}>
-                    <AnimalAvatar avatar={p.avatar} size={36} mood="happy" />
+                    <View style={{ alignItems: 'center', width: 58 }}>
+                      <Sway>
+                        <AnimalAvatar avatar={p.avatar} size={36} mood="happy" />
+                      </Sway>
+                      <Text style={styles.callerName} numberOfLines={1}>
+                        {p.name}
+                      </Text>
+                    </View>
                   </PopIn>
                 ))}
               </View>
@@ -272,6 +281,7 @@ const styles = StyleSheet.create({
   ruleText: { color: '#6B5A99', fontFamily: fonts.bodyBold, fontSize: 15 },
   ruleBig: { color: colors.ink, fontFamily: fonts.display, fontSize: 26 },
   backers: { alignItems: 'center', gap: 4, marginTop: 4 },
+  callerName: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 11, textAlign: 'center' },
   backersLabel: { color: colors.gold, fontFamily: fonts.display, fontSize: 13, letterSpacing: 2 },
   tag: { backgroundColor: colors.gold, borderRadius: 14, paddingHorizontal: 10, paddingVertical: 4, alignItems: 'center', borderWidth: 2.5, borderColor: colors.ink },
   tagText: { color: colors.ink, fontFamily: fonts.display, fontSize: 15 },

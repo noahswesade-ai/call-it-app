@@ -1,9 +1,10 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useMemo } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withRepeat, withTiming } from 'react-native-reanimated';
 import Svg, { Circle, Polygon, Rect } from 'react-native-svg';
 import { colors } from './theme';
+import { useScreenSize } from '@/ui/screenSize';
 
 type Shape = 'circle' | 'triangle' | 'square' | 'star';
 
@@ -50,7 +51,7 @@ function Floater({ s, w, h }: { s: (typeof SHAPES)[number]; w: number; h: number
 
 /** Full-screen party gradient with slowly drifting shapes. */
 export function Background({ tint }: { tint?: 'red' | 'green' | 'party' | 'fire' }) {
-  const { width, height } = useWindowDimensions();
+  const { width, height } = useScreenSize();
   const gradient = useMemo<[string, string, string]>(() => {
     if (tint === 'red') return ['#7A0A1E', '#B3122E', '#3D0010'];
     if (tint === 'green') return ['#05603A', '#0E9F5D', '#023821'];

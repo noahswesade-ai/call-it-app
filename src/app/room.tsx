@@ -1,9 +1,9 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import Animated, { FadeOut, ZoomIn, SlideInRight, FadeIn } from 'react-native-reanimated';
+import Animated, { ZoomIn, SlideInRight, FadeIn } from 'react-native-reanimated';
 import { useRoom } from '@/net/RoomProvider';
 import { Lobby } from '@/room/Lobby';
-import { BetsReveal, Betting, Challenge, Matchup, Result, Spin, myResultTint } from '@/room/Phases';
+import { BetsReveal, Betting, Challenge, Matchup, Result, Spin, UnderdogOverlay, myResultTint } from '@/room/Phases';
 import { Podium } from '@/room/Podium';
 import { TimerBar } from '@/room/TimerBar';
 import { isFinalRound, phaseDuration } from '@/game/engine';
@@ -85,6 +85,7 @@ export default function Room() {
       scroll
       style={{ flexGrow: 1 }}
       tint={tint}
+      overlay={state.phase === 'betsReveal' ? <UnderdogOverlay key={state.round?.number} state={state} /> : undefined}
       footer={
         state.phaseEndsAt !== undefined && phaseDuration(state) ? (
           <TimerBar key={`${state.phase}-${state.round?.number}`} endsAt={state.phaseEndsAt} total={phaseDuration(state)!} />
@@ -94,7 +95,6 @@ export default function Room() {
       <Animated.View
         key={`${state.phase}-${state.round?.number ?? 0}`}
         entering={entering}
-        exiting={FadeOut.duration(150)}
         style={{ flexGrow: 1 }}
       >
         {content}

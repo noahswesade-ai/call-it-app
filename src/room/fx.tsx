@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -12,6 +12,7 @@ import Animated, {
 import Svg, { Circle, Polygon } from 'react-native-svg';
 import { colors, fonts } from '@/ui/theme';
 import { bounce } from '@/ui/motion';
+import { useScreenSize } from '@/ui/screenSize';
 
 /** Circular countdown ring with the seconds in the middle. */
 export function CountdownRing({ msLeft, total, size = 120, danger }: { msLeft: number; total: number; size?: number; danger?: boolean }) {
@@ -88,7 +89,7 @@ export function Slam({ text, color = colors.white, size = 56, delay = 0 }: { tex
 
 /** Emoji rain (🍺 for drinks, ⭐ for wins…). */
 export function EmojiRain({ emoji, count = 18 }: { emoji: string; count?: number }) {
-  const { width, height } = useWindowDimensions();
+  const { width, height } = useScreenSize();
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="none">
       {Array.from({ length: count }, (_, i) => (

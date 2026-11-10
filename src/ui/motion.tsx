@@ -136,3 +136,28 @@ export function SlideIn({
   }));
   return <Animated.View style={[style, s]}>{children}</Animated.View>;
 }
+
+/**
+ * Gentle side-to-side sway for avatars so screens never feel static. Each instance
+ * starts at a random point with a slightly different speed, so a row of avatars
+ * moves organically rather than in lockstep.
+ */
+export function Sway({ children, deg = 5, style }: { children: React.ReactNode; deg?: number; style?: StyleProp<ViewStyle> }) {
+  const seed = React.useMemo(() => ({ delay: Math.random() * 900, duration: 900 + Math.random() * 500 }), []);
+  const r = useSharedValue(0);
+  useEffect(() => {
+    r.value = withDelay(
+      seed.delay,
+      withRepeat(
+        withSequence(
+          withTiming(deg, { duration: seed.duration / 2, easing: Easing.inOut(Easing.sin) }),
+          withTiming(-deg, { duration: seed.duration, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: seed.duration / 2, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+      ),
+    );
+  }, [deg, seed, r]);
+  const s = useAnimatedStyle(() => ({ transform: [{ rotate: `${r.value}deg` }] }));
+  return <Animated.View style={[style, s]}>{children}</Animated.View>;
+}

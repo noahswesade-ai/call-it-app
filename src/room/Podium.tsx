@@ -12,7 +12,7 @@ import { tokensForGame, useProfile } from '@/state/profile';
 import { Coin, CoinReward } from '@/ui/Coin';
 import { Confetti } from '@/ui/Confetti';
 import { Button, Dim, Row } from '@/ui/kit';
-import { Bob, PopIn, Pulse, SlideIn } from '@/ui/motion';
+import { Bob, PopIn, Pulse, SlideIn, Sway } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { Slam, Sunburst } from './fx';
 import { playerById } from './shared';
@@ -105,7 +105,9 @@ export function Podium({ state }: { state: GameState }) {
                 <PopIn delay={at + 250} from={0}>
                   <Text style={{ fontSize: 30, textAlign: 'center' }}>{MEDALS[Math.min(2, r.rank - 1)]}</Text>
                   <Bob amount={r.rank === 1 ? 8 : 4} duration={r.rank === 1 ? 450 : 800}>
-                    <AnimalAvatar avatar={r.player.avatar} size={r.rank === 1 ? 92 : 68} mood={r.rank === 1 ? 'happy' : 'neutral'} />
+                    <Sway deg={r.rank === 1 ? 5 : 4}>
+                      <AnimalAvatar avatar={r.player.avatar} size={r.rank === 1 ? 92 : 68} mood={r.rank === 1 ? 'happy' : 'neutral'} />
+                    </Sway>
                   </Bob>
                   <Text style={styles.podiumName} numberOfLines={1}>
                     {r.player.name}

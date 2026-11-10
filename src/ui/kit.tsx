@@ -52,6 +52,7 @@ export function Screen({
   style,
   tint,
   footer,
+  overlay,
 }: {
   children: React.ReactNode;
   scroll?: boolean;
@@ -59,6 +60,8 @@ export function Screen({
   tint?: 'red' | 'green' | 'party' | 'fire';
   /** Pinned to the bottom of the screen above the content (e.g. the timer bar). */
   footer?: React.ReactNode;
+  /** Full-screen layer drawn above everything (e.g. the Underdog takeover). */
+  overlay?: React.ReactNode;
 }) {
   const pad = footer ? { paddingBottom: 90 } : null;
   return (
@@ -78,6 +81,11 @@ export function Screen({
           </View>
         ) : null}
       </SafeAreaView>
+      {overlay ? (
+        <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+          {overlay}
+        </View>
+      ) : null}
     </View>
   );
 }

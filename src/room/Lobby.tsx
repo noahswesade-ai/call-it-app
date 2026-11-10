@@ -11,6 +11,7 @@ import { notEveryoneWillPlay } from '@/game/selection';
 import type { Category, GameSettings, Mode } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
 import { canHostParty, DEV_UNLOCK_PARTY } from '@/state/access';
+import { CategoryIcon } from '@/content/CategoryIcon';
 import { useProfile } from '@/state/profile';
 import { Body, Button, Card, Dim, H2, Row, Segmented, Toggle, tap } from '@/ui/kit';
 import { Bob, PopIn, Pulse, SlideIn } from '@/ui/motion';
@@ -255,9 +256,10 @@ export function Lobby({ state }: { state: GameState }) {
                     }}
                     style={[styles.cat, { borderColor: c.color, backgroundColor: on ? c.color : 'transparent' }]}
                   >
-                    <Text style={[styles.catText, on && { color: colors.ink }]}>
-                      {c.emoji} {c.label}
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                      <CategoryIcon category={c.id} size={22} />
+                      <Text style={[styles.catText, on && { color: colors.ink }]}>{c.label}</Text>
+                    </View>
                   </Pressable>
                 );
               })}

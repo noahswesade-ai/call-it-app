@@ -4,7 +4,7 @@ import { AnimalAvatar, type Mood } from '@/avatar/AnimalAvatar';
 import type { GameState } from '@/game/engine';
 import type { Player } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
-import { Bob } from '@/ui/motion';
+import { Bob, Sway } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 
 /** Milliseconds left in the current timed phase, corrected for the host's clock. */
@@ -40,7 +40,11 @@ export function PlayerBadge({
   bob?: boolean;
 }) {
   if (!player) return null;
-  const avatar = <AnimalAvatar avatar={player.avatar} size={size} mood={mood} />;
+  const avatar = (
+    <Sway deg={size > 80 ? 4 : 6}>
+      <AnimalAvatar avatar={player.avatar} size={size} mood={mood} />
+    </Sway>
+  );
   return (
     <View style={{ alignItems: 'center', width: size + 24 }}>
       {bob ? (
