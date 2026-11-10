@@ -6,7 +6,8 @@
 set -euo pipefail
 
 REPO="noahswesade-ai/call-it-app"
-RELAY="wss://broker.emqx.io:8084/mqtt"
+# Several public brokers: every phone uses all of them, so one going down is harmless.
+RELAY="wss://broker.hivemq.com:8884/mqtt,wss://test.mosquitto.org:8081"
 
 echo "▶ Building…"
 rm -rf dist-web

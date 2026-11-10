@@ -13,6 +13,7 @@ import type { Category, GameSettings, Mode } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
 import { canHostParty, DEV_UNLOCK_PARTY } from '@/state/access';
 import { CategoryIcon } from '@/content/CategoryIcon';
+import { onRelayStatus } from '@/net/relayTransport';
 import { useProfile } from '@/state/profile';
 import { Body, Button, Card, Dim, H2, Row, Segmented, Toggle, tap } from '@/ui/kit';
 import { Bob, PopIn, Pulse, SlideIn } from '@/ui/motion';
@@ -29,6 +30,19 @@ export function inviteLink(code: string): string {
     return `${window.location.origin}${base}/join?code=${code}`;
   }
   return Linking.createURL('/join', { queryParams: { code } });
+}
+
+/** Small "online" pill so it's obvious whether this phone can reach the game server. */
+function RelayStatus() {
+  const [online, setOnline] = useState(false);
+  useEffect(() => onRelayStatus(setOnline), []);
+  return (
+    <Row style={{ justifyContent: 'center' }}>
+      <View style={[styles.statusPill, { borderColor: online ? colors.green : colors.red }]}>
+        <Text style={styles.statusText}>{online ? '🟢 Online — friends can join' : '🔴 Connecting to the game server…'}</Text>
+      </View>
+    </Row>
+  );
 }
 
 export function AgeGate({ visible, onConfirm, onCancel }: { visible: boolean; onConfirm: () => void; onCancel: () => void }) {
@@ -190,6 +204,7 @@ export function Lobby({ state }: { state: GameState }) {
           <Button small variant="secondary" label="🔗 Copy invite link" onPress={() => Clipboard.setStringAsync(link)} />
         </Row>
       )}
+      {connection === 'relay' && <RelayStatus />}
       {connection === 'broadcast' && (
         <Dim style={{ textAlign: 'center', fontSize: 13 }}>Test mode: open another browser tab and join with this code.</Dim>
       )}
@@ -396,6 +411,8 @@ const styles = StyleSheet.create({
   },
   nameStatic: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   nameText: { color: colors.white, fontFamily: fonts.display, fontSize: 26, flexShrink: 1 },
+  statusPill: { borderWidth: 2, borderRadius: 99, paddingHorizontal: 12, paddingVertical: 4, backgroundColor: 'rgba(0,0,0,0.3)' },
+  statusText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 13 },
   sipRules: { backgroundColor: 'rgba(0,0,0,0.25)', borderRadius: 14, padding: 10, gap: 2 },
   sipRulesText: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 14 },
   count: { color: colors.gold, fontFamily: fonts.display, fontSize: 20 },
