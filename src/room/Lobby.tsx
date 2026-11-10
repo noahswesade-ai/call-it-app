@@ -160,7 +160,8 @@ function YouCard() {
 }
 
 export function Lobby({ state }: { state: GameState }) {
-  const { isHost, dispatch, connection, leaveRoom } = useRoom();
+  const { isHost, dispatch, connection, leaveRoom, myId } = useRoom();
+  const [kickTarget, setKickTarget] = useState<{ id: string; name: string }>();
   const { profile, update } = useProfile();
   const [ageGateFor, setAgeGateFor] = useState<'party' | null>(null);
   const [showSettings, setShowSettings] = useState(false);
@@ -222,10 +223,20 @@ export function Lobby({ state }: { state: GameState }) {
         <View style={styles.players}>
           {state.players.map((p, i) => (
             <PopIn key={p.id} delay={Math.min(i, 6) * 60}>
-              <PlayerBadge player={p} size={58} bob label={p.isHost ? (p.playing ? '⭐ Host' : '⭐ Judging') : undefined} />
+              <Pressable
+                disabled={!isHost || p.id === myId}
+                accessibilityLabel={isHost && p.id !== myId ? `Remove ${p.name}` : undefined}
+                onPress={() => {
+                  tap('light');
+                  setKickTarget({ id: p.id, name: p.name });
+                }}
+              >
+                <PlayerBadge player={p} size={58} bob label={p.isHost ? (p.playing ? '⭐ Host' : '⭐ Judging') : undefined} />
+              </Pressable>
             </PopIn>
           ))}
         </View>
+        {isHost && state.players.length > 1 && <Dim style={{ fontSize: 12, textAlign: 'center' }}>Tap a player to remove them</Dim>}
         {!canJoin(state) && isHost && (
           <Pressable onPress={() => router.push('/paywall')}>
             <Dim style={{ color: colors.gold }}>Room full. Premium hosts can have unlimited players →</Dim>
@@ -286,6 +297,28 @@ export function Lobby({ state }: { state: GameState }) {
         }}
       />
 
+
+      <Modal visible={!!kickTarget} transparent animationType="fade" onRequestClose={() => setKickTarget(undefined)}>
+        <View style={styles.modalBg}>
+          <PopIn>
+            <View style={styles.gate}>
+              <Text style={styles.gateTitle}>Remove {kickTarget?.name} from the lobby?</Text>
+              <Row>
+                <Button style={{ flex: 1 }} variant="green" label="No" onPress={() => setKickTarget(undefined)} />
+                <Button
+                  style={{ flex: 1 }}
+                  variant="danger"
+                  label="Kick"
+                  onPress={() => {
+                    if (kickTarget) dispatch({ type: 'kick', playerId: kickTarget.id });
+                    setKickTarget(undefined);
+                  }}
+                />
+              </Row>
+            </View>
+          </PopIn>
+        </View>
+      </Modal>
 
       <Modal visible={showSettings} transparent animationType="slide" onRequestClose={() => setShowSettings(false)}>
         <View style={styles.sheetBg}>

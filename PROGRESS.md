@@ -141,3 +141,12 @@ _Last updated: 2026-11-09_
 
 ## 🧪 Checks
 `npm test` runs 34 automated tests. `npm run typecheck` checks the code for mistakes.
+
+## 2026-11-10 — Play-test tweaks
+- Game pauses when the host leaves the app (guests see "Game paused"); resumes when they return.
+- Host can tap a player in the lobby to remove them (No / Kick); removed players can't rejoin that room.
+- Every category now has equal odds on every spin; +15 harder questions per category (31 each).
+- Question shown to everyone; answer and judging only on the host's phone. Bigger "How to win" box.
+- Only betting and the result screen are timed; matchup, wheel and bet reveal wait for the host ("Click to continue...").
+- Everyone's own result (points / sips) now appears right after the winner.
+- Verified on the live site with 4 simulated phones: join by link, join by code, kick, continue, pause/resume.

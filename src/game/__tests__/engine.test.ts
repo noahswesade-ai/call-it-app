@@ -37,8 +37,12 @@ function toChallenge(g: GameState, now: number, rng = seededRng(1)): [GameState,
           g = reduce(g, { type: 'bet', playerId: id, pick: rng() < 0.5 ? 'A' : 'B', now: t }, rng);
         }
       }
+    } else if (g.phaseEndsAt === undefined) {
+      // Untimed screens wait for the host's tap.
+      t += 1;
+      g = reduce(g, { type: 'next', now: t }, rng);
     } else {
-      t = (g.phaseEndsAt ?? t) + 1;
+      t = g.phaseEndsAt + 1;
       g = reduce(g, { type: 'tick', now: t }, rng);
     }
   }
@@ -72,9 +76,13 @@ describe('engine', () => {
   it('betting ends early once everyone has voted, otherwise after 30s', () => {
     const rng = seededRng(7);
     let g = reduce(newGame(5), { type: 'start', now: 0 }, rng);
-    g = reduce(g, { type: 'tick', now: DURATIONS.matchup + 1 }, rng);
-    const tSpinEnd = g.phaseEndsAt! + 1;
-    g = reduce(g, { type: 'tick', now: tSpinEnd }, rng);
+    expect(g.phaseEndsAt).toBeUndefined(); // the VS screen waits for a tap
+    g = reduce(g, { type: 'tick', now: 999_999 }, rng);
+    expect(g.phase).toBe('matchup');
+    g = reduce(g, { type: 'next', now: 1 }, rng);
+    expect(g.phase).toBe('spin');
+    const tSpinEnd = 2;
+    g = reduce(g, { type: 'next', now: tSpinEnd }, rng);
     expect(g.phase).toBe('betting');
     expect(g.phaseEndsAt).toBe(tSpinEnd + DURATIONS.betting);
     expect(inPressure(g, tSpinEnd + 19_000)).toBe(false);
@@ -100,16 +108,11 @@ describe('engine', () => {
     expect(after.round!.bets[c]).toBeUndefined();
   });
 
-  it('when the host is a challenger, a bettor judges', () => {
+  it('the host always judges (only the host sees the answer)', () => {
     for (let seed = 0; seed < 50; seed++) {
       const rng = seededRng(seed);
       const g = reduce(newGame(5, { categories: ['geography'] }), { type: 'start', now: 0 }, rng);
-      const r = g.round!;
-      if (r.challengers.includes('h')) {
-        expect(r.bettors).toContain(r.judgeId);
-      } else {
-        expect(r.judgeId).toBe('h');
-      }
+      expect(g.round!.judgeId).toBe('h');
     }
   });
 
@@ -120,7 +123,7 @@ describe('engine', () => {
     expect(r.category).toBe('kyf');
     expect(r.subjectId).toBeDefined();
     expect(r.challengers).not.toContain(r.subjectId);
-    expect(r.judgeId).toBe(r.subjectId);
+    expect(r.judgeId).toBe('h');
   });
 
   it('a spectating host is never a challenger and never bets', () => {
@@ -172,25 +175,10 @@ describe('engine', () => {
     expect(Object.values(g.totals).every((t) => t.points === 0)).toBe(true);
   });
 
-  it('the same category never appears three times in a row', () => {
-    const rng = seededRng(99);
-    let g = reduce(newGame(6, { rounds: 40 }, { premium: true }), { type: 'start', now: 0 }, rng);
-    let now = 0;
-    for (let i = 0; i < 39; i++) {
-      [g, now] = toChallenge(g, now, rng);
-      g = reduce(g, { type: 'judge', by: g.hostId, outcome: 'B', now }, rng);
-      now += DURATIONS.result + 1;
-      g = reduce(g, { type: 'tick', now }, rng);
-    }
-    const cats = g.recentCategories;
-    for (let i = 2; i < cats.length; i++) {
-      expect(cats[i] === cats[i - 1] && cats[i] === cats[i - 2]).toBe(false);
-    }
-  });
 });
 
 describe('Underdog reveal', () => {
-  it('gives the reveal extra time when an Underdog appears', () => {
+  it('detects the Underdog when bets are revealed', () => {
     const rng = seededRng(4);
     let g = reduce(newGame(6, { mode: 'classic' }), { type: 'start', now: 0 }, rng);
     g = reduce(g, { type: 'next', now: 1 }, rng);
@@ -201,6 +189,47 @@ describe('Underdog reveal', () => {
     for (const id of rest) g = reduce(g, { type: 'bet', playerId: id, pick: 'B', now: 3 }, rng);
     expect(g.phase).toBe('betsReveal');
     expect(currentUnderdog(g)).toBe('A');
-    expect(g.phaseEndsAt).toBe(3 + DURATIONS.underdogReveal);
+    expect(g.phaseEndsAt).toBeUndefined(); // the reveal waits for the host's tap
+  });
+});
+
+describe('pause, kick and category odds', () => {
+  it('pausing freezes the timer and resuming restores the time left', () => {
+    const rng = seededRng(1);
+    let g = reduce(newGame(4), { type: 'start', now: 0 }, rng);
+    g = reduce(g, { type: 'next', now: 1 }, rng);
+    g = reduce(g, { type: 'next', now: 2 }, rng); // betting, ends at 2 + 30s
+    expect(g.phase).toBe('betting');
+    g = reduce(g, { type: 'pause', now: 10_002 }, rng); // 20s left
+    g = reduce(g, { type: 'tick', now: 999_999 }, rng);
+    expect(g.phase).toBe('betting');
+    g = reduce(g, { type: 'resume', now: 500_000 }, rng);
+    expect(g.phaseEndsAt).toBe(520_000);
+  });
+
+  it('a kicked player is removed and cannot rejoin', () => {
+    let g = newGame(4);
+    g = reduce(g, { type: 'kick', playerId: 'p2' });
+    expect(g.players.map((p) => p.id)).not.toContain('p2');
+    g = reduce(g, { type: 'join', player: player('p2') });
+    expect(g.players.map((p) => p.id)).not.toContain('p2');
+  });
+
+  it('the host cannot be kicked', () => {
+    const g = reduce(newGame(3), { type: 'kick', playerId: 'h' });
+    expect(g.players.map((p) => p.id)).toContain('h');
+  });
+
+  it('every enabled category is equally likely', () => {
+    const { spin } = jest.requireActual('@/content/picker');
+    const cats = availableCategories('party', true);
+    const counts: Record<string, number> = {};
+    const rng = seededRng(7);
+    const N = 18000;
+    for (let i = 0; i < N; i++) {
+      const r = spin(ALL_QUESTIONS, cats, [], new Set(), rng, { canUseKyf: true });
+      counts[r.category] = (counts[r.category] ?? 0) + 1;
+    }
+    for (const c of cats) expect(counts[c] / N).toBeCloseTo(1 / cats.length, 1);
   });
 });

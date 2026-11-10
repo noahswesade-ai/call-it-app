@@ -86,6 +86,10 @@ export interface GameState {
   usedQuestions: string[];
   recentCategories: Category[];
   bank: Question[];
+  /** Set while the host's phone is away; timers are frozen with this much time left. */
+  paused?: { remaining?: number };
+  /** Players the host removed; their phones can't rejoin this room. */
+  kicked?: string[];
 }
 
 export type Action =
@@ -104,7 +108,10 @@ export type Action =
   | { type: 'judge'; by: string; outcome: Outcome; now: number }
   | { type: 'skipRound'; now: number }
   | { type: 'swapChallenger'; out: string; now: number }
-  | { type: 'rematch' };
+  | { type: 'rematch' }
+  | { type: 'pause'; now: number }
+  | { type: 'resume'; now: number }
+  | { type: 'kick'; playerId: string };
 
 export function emptyTotals(): PlayerTotals {
   return {
@@ -167,17 +174,16 @@ export function pendingBettors(state: GameState): string[] {
   return r.bettors.filter((id) => !(id in r.bets));
 }
 
-/** Full length of the current timed phase in ms (for the timer bar), or undefined if untimed. */
+/**
+ * Full length of the current timed phase in ms (for the timer bar), or undefined if untimed.
+ * Only voting and the between-rounds results run on a timer; every other screen waits
+ * for the host to tap "Click to continue".
+ */
 export function phaseDuration(state: GameState): number | undefined {
+  if (state.paused) return undefined;
   switch (state.phase) {
-    case 'matchup':
-      return isFinalRound(state) ? DURATIONS.finalMatchup : DURATIONS.matchup;
-    case 'spin':
-      return DURATIONS.spin;
     case 'betting':
       return DURATIONS.betting;
-    case 'betsReveal':
-      return currentUnderdog(state) ? DURATIONS.underdogReveal : DURATIONS.betsReveal;
     case 'result':
       return DURATIONS.result;
     default:
@@ -206,11 +212,12 @@ function chooseJudge(
   subjectId: string | undefined,
   rng: Rng,
 ): string {
-  if (subjectId) return subjectId;
-  if (!challengers.includes(state.hostId)) return state.hostId;
-  const others = bettors.length > 0 ? bettors : state.players.map((p) => p.id).filter((id) => !challengers.includes(id));
-  if (others.length === 0) return state.hostId;
-  return others[Math.floor(rng() * others.length)];
+  // The host always judges: only the host's phone shows the answer.
+  void challengers;
+  void bettors;
+  void subjectId;
+  void rng;
+  return state.hostId;
 }
 
 function beginRound(state: GameState, number: number, now: number, rng: Rng): GameState {
@@ -260,7 +267,7 @@ function beginRound(state: GameState, number: number, now: number, rng: Rng): Ga
   return {
     ...state,
     phase: 'matchup',
-    phaseEndsAt: now + (number === state.settings.rounds ? DURATIONS.finalMatchup : DURATIONS.matchup),
+    phaseEndsAt: undefined, // waits for the host's tap
     round,
     timesChosen: {
       ...state.timesChosen,
@@ -328,7 +335,7 @@ function advanceAfterResult(state: GameState, now: number, rng: Rng): GameState 
 function advance(state: GameState, now: number, rng: Rng): GameState {
   switch (state.phase) {
     case 'matchup':
-      return { ...state, phase: 'spin', phaseEndsAt: now + DURATIONS.spin };
+      return { ...state, phase: 'spin', phaseEndsAt: undefined };
     case 'spin':
       if (state.round!.bettors.length === 0) {
         // Nobody can bet (e.g. 2 players): go straight to the challenge.
@@ -336,11 +343,7 @@ function advance(state: GameState, now: number, rng: Rng): GameState {
       }
       return { ...state, phase: 'betting', phaseEndsAt: now + DURATIONS.betting };
     case 'betting':
-      return {
-        ...state,
-        phase: 'betsReveal',
-        phaseEndsAt: now + (currentUnderdog(state) ? DURATIONS.underdogReveal : DURATIONS.betsReveal),
-      };
+      return { ...state, phase: 'betsReveal', phaseEndsAt: undefined };
     case 'betsReveal':
       return { ...state, phase: 'challenge', phaseEndsAt: undefined };
     case 'result':
@@ -353,6 +356,7 @@ function advance(state: GameState, now: number, rng: Rng): GameState {
 export function reduce(state: GameState, action: Action, rng: Rng = Math.random): GameState {
   switch (action.type) {
     case 'join': {
+      if (state.kicked?.includes(action.player.id)) return state;
       if (state.players.some((p) => p.id === action.player.id)) {
         return reduce(state, { type: 'setConnected', playerId: action.player.id, connected: true }, rng);
       }
@@ -415,7 +419,26 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
       if (state.phase !== 'lobby' || challengerPool(state).length < 2) return state;
       return beginRound(state, 1, action.now, rng);
 
+    case 'pause': {
+      if (state.paused) return state;
+      const remaining = state.phaseEndsAt !== undefined ? Math.max(0, state.phaseEndsAt - action.now) : undefined;
+      return { ...state, paused: { remaining }, phaseEndsAt: undefined };
+    }
+
+    case 'resume': {
+      if (!state.paused) return state;
+      const remaining = state.paused.remaining;
+      return { ...state, paused: undefined, phaseEndsAt: remaining !== undefined ? action.now + remaining : undefined };
+    }
+
+    case 'kick': {
+      if (action.playerId === state.hostId) return state;
+      const left = reduce(state, { type: 'leave', playerId: action.playerId }, rng);
+      return { ...left, kicked: [...(state.kicked ?? []), action.playerId] };
+    }
+
     case 'tick': {
+      if (state.paused) return state;
       if (state.phase === 'betting' && pendingBettors(state).length === 0) {
         return advance(state, action.now, rng);
       }

@@ -7,13 +7,18 @@ import { Lobby } from '@/room/Lobby';
 import { BetsReveal, Betting, Challenge, Matchup, Result, Spin, UnderdogOverlay, myResultTint } from '@/room/Phases';
 import { Podium } from '@/room/Podium';
 import { TimerBar } from '@/room/TimerBar';
+import { ContinuePrompt, ContinueTapArea, waitsForHost } from '@/room/Continue';
+import { host as hostOf } from '@/game/engine';
+import { View, Text } from 'react-native';
+import { Pulse } from '@/ui/motion';
+import { colors, fonts } from '@/ui/theme';
 import { canJoin, isFinalRound, phaseDuration } from '@/game/engine';
 import { Body, Button, Dim, H1, Screen } from '@/ui/kit';
 import { Bob } from '@/ui/motion';
 
 /** One screen for the whole game; each phase animates in as the host's state changes. */
 export default function Room() {
-  const { state, myId, leaveRoom, joinRoom } = useRoom();
+  const { state, myId, leaveRoom, joinRoom, isHost, dispatch, hostAway } = useRoom();
   const [waitedLong, setWaitedLong] = useState(false);
   // The room code lives in the address (…/room?code=ABCD), so a copied address works
   // as an invite and a reloaded page reconnects to the same room (a host who reloads
@@ -48,6 +53,16 @@ export default function Room() {
         </Bob>
         {waitedLong && <Dim style={{ textAlign: 'center' }}>Can't find that room. Check the code and that the host has the lobby open.</Dim>}
         <Button label="Back" variant="ghost" onPress={back} />
+      </Screen>
+    );
+  }
+
+  if (state.kicked?.includes(myId)) {
+    return (
+      <Screen style={{ justifyContent: 'center' }}>
+        <H1 style={{ textAlign: 'center' }}>You were removed</H1>
+        <Body style={{ textAlign: 'center' }}>The host removed you from this lobby.</Body>
+        <Button label="Back to home" onPress={back} />
       </Screen>
     );
   }
@@ -100,10 +115,18 @@ export default function Room() {
       scroll
       style={{ flexGrow: 1 }}
       tint={tint}
-      overlay={state.phase === 'betsReveal' ? <UnderdogOverlay key={state.round?.number} state={state} /> : undefined}
+      overlay={
+        <>
+          {state.phase === 'betsReveal' && <UnderdogOverlay key={state.round?.number} state={state} />}
+          {isHost && waitsForHost(state) && <ContinueTapArea state={state} onContinue={() => dispatch({ type: 'next', now: Date.now() })} />}
+          {hostAway && <HostAway name={hostOf(state)?.name ?? 'the host'} />}
+        </>
+      }
       footer={
         state.phaseEndsAt !== undefined && phaseDuration(state) ? (
           <TimerBar key={`${state.phase}-${state.round?.number}`} endsAt={state.phaseEndsAt} total={phaseDuration(state)!} />
+        ) : waitsForHost(state) ? (
+          <ContinuePrompt state={state} isHost={isHost} hostName={hostOf(state)?.name ?? 'the host'} />
         ) : undefined
       }
     >
@@ -115,5 +138,33 @@ export default function Room() {
         {content}
       </Animated.View>
     </Screen>
+  );
+}
+
+/** Shown on guests' phones while the host's phone is away: the game is paused. */
+function HostAway({ name }: { name: string }) {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(10,0,25,0.82)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 30,
+        gap: 10,
+      }}
+    >
+      <Pulse scale={1.1} duration={700}>
+        <Text style={{ fontSize: 56 }}>⏸️</Text>
+      </Pulse>
+      <Text style={{ color: colors.white, fontFamily: fonts.display, fontSize: 30, textAlign: 'center' }}>Game paused</Text>
+      <Text style={{ color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 17, textAlign: 'center' }}>
+        Waiting for {name} to come back to the game…
+      </Text>
+    </View>
   );
 }

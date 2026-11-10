@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { AppState } from 'react-native';
 import { availableCategories } from '@/content/categories';
 import { ALL_QUESTIONS } from '@/content/questions';
 import { randomStarterAvatar } from '@/avatar/catalog';
@@ -33,6 +34,8 @@ interface RoomApi {
   leaveRoom: () => void;
   dispatch: (action: Action) => void;
   onlineAvailable: boolean;
+  /** True on guests' phones while the host is away (app in background or disconnected). */
+  hostAway: boolean;
 }
 
 const Ctx = createContext<RoomApi | null>(null);
@@ -98,6 +101,38 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       transportRef.current.publishState({ state: publishable(state), sentAt: Date.now() });
     }
   }, [isHost, state]);
+
+  // Guests: when did we last hear from the host? (The host re-sends the state every
+  // few seconds as a heartbeat, so silence means the host's phone is away.)
+  const lastStateAtRef = useRef(0);
+  const [stale, setStale] = useState(false);
+  useEffect(() => {
+    if (isHost || !state) return setStale(false);
+    const t = setInterval(() => setStale(Date.now() - lastStateAtRef.current > 12_000), 1000);
+    return () => clearInterval(t);
+  }, [isHost, state]);
+
+  // Host: heartbeat, so guests can tell the host is still here.
+  useEffect(() => {
+    if (!isHost) return;
+    const t = setInterval(() => {
+      if (stateRef.current && transportRef.current) {
+        transportRef.current.publishState({ state: publishable(stateRef.current), sentAt: Date.now() });
+      }
+    }, 4000);
+    return () => clearInterval(t);
+  }, [isHost]);
+
+  // Host: pause the game while the host's app is in the background, resume on return.
+  useEffect(() => {
+    if (!isHost) return;
+    const sub = AppState.addEventListener('change', (st) => {
+      const s = stateRef.current;
+      if (!s || s.phase === 'lobby' || s.phase === 'podium') return;
+      applyLocal({ type: st === 'active' ? 'resume' : 'pause', now: Date.now() });
+    });
+    return () => sub.remove();
+  }, [isHost, applyLocal]);
 
   // Host: timers.
   useEffect(() => {
@@ -196,6 +231,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       setIsHost(false);
       transport.onState(({ state: s, sentAt }) => {
         if (isHostRef.current) return;
+        lastStateAtRef.current = Date.now();
         setClockOffset(sentAt - Date.now());
         // Host migration: if the host left and we're next in line, take over.
         if (s.hostId === profile.id) {
@@ -216,6 +252,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       const ask = () => {
         if (isHostRef.current || transportRef.current !== transport) return clearInterval(retry);
         if (stateRef.current?.players.some((p) => p.id === profile.id)) return;
+        if (stateRef.current?.kicked?.includes(profile.id)) return clearInterval(retry);
         transport.sendAction({ action: { type: 'join', player: me(false) }, from: profile.id });
         transport.requestState();
       };
@@ -276,8 +313,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       leaveRoom,
       dispatch,
       onlineAvailable: supabaseConfigured() || relayConfigured() || broadcastAvailable(),
+      hostAway: !isHost && !!state && state.phase !== 'lobby' && (stale || !!state.paused),
     }),
-    [state, profile.id, isHost, connection, clockOffset, hostRoom, joinRoom, leaveRoom, dispatch],
+    [state, profile.id, isHost, connection, clockOffset, hostRoom, joinRoom, leaveRoom, dispatch, stale],
   );
 
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;

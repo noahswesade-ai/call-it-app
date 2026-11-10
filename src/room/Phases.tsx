@@ -372,7 +372,7 @@ function UnderdogCallout({ delay }: { delay: number }) {
 }
 
 /** Timing of the bets-reveal sequence: 1) votes drop in 2) percentages count up 3) the <33% callout 4) UNDERDOG takeover. */
-function revealTimeline(state: GameState) {
+export function revealTimeline(state: GameState) {
   const r = state.round!;
   const count = (pick: 'A' | 'B') => r.bettors.filter((id) => r.bets[id] === pick).length;
   const VOTES_AT = 300;
@@ -509,8 +509,8 @@ export function Challenge({ state }: { state: GameState }) {
   const [stallStart, setStallStart] = useState<number>();
   const stallLeft = useTimeLeft(stallStart !== undefined ? stallStart + 5000 : undefined);
   const subject = playerById(state, r.subjectId);
-  const isJudge = r.judgeId === myId;
-  const canJudge = isJudge || isHost;
+  // Only the host's phone ever sees the answer and the judging buttons.
+  const canJudge = isHost;
   const isSubject = r.subjectId === myId;
   const prompt = q.prompt.replace(/\{S\}/g, subject?.name ?? 'them');
   const answer = q.type === 'SUBJECT_JUDGED' ? r.subjectAnswer : q.answer;
@@ -587,7 +587,7 @@ export function Challenge({ state }: { state: GameState }) {
       {canJudge ? (
         <SlideIn from="bottom" delay={350}>
           <View style={styles.panel}>
-            <Text style={styles.panelTitle}>{isJudge ? '⚖️ You’re the judge' : `⚖️ ${judgeName} judges · you can override`}</Text>
+            <Text style={styles.panelTitle}>⚖️ You’re the judge</Text>
             {(answer !== undefined || q.answer) &&
               (revealed ? (
                 <>
@@ -745,7 +745,7 @@ export function Result({ state }: { state: GameState }) {
     ? r.bettors.filter((id) => score.perPlayer[id]?.result === 'betWin').map((id) => playerById(state, id)!).filter(Boolean)
     : [];
   // Timeline: winner → supporters one by one → their +points → your result → the rest.
-  const SUP_START = 1100;
+  const SUP_START = 1900;
   const SUP_STEP = 260;
   const plusAt = SUP_START + supporters.length * SUP_STEP + 250;
   const youAt = plusAt + supporters.length * 160 + 400;
@@ -784,39 +784,9 @@ export function Result({ state }: { state: GameState }) {
         )}
       </View>
 
-      {score.multiplier > 1 && winner && <UnderdogVictory name={winner.name} mode={state.settings.mode} />}
-
-      {/* 2. Everyone who backed the winner, one by one, then 3. their +points */}
-      {winner && (
-        <SlideIn from="bottom" delay={SUP_START - 250}>
-          <View style={styles.panel}>
-            <Text style={styles.panelTitle}>🎯 Called it!</Text>
-            {supporters.length === 0 ? (
-              <Dim>Nobody saw that coming. 😱</Dim>
-            ) : (
-              <View style={styles.supGrid}>
-                {supporters.map((p, i) => (
-                  <PopIn key={p.id} delay={SUP_START + i * SUP_STEP} from={0.2} style={styles.supCell}>
-                    <View style={styles.supporterRow}>
-                      <Sway>
-                        <AnimalAvatar avatar={p.avatar} size={34} mood="happy" />
-                      </Sway>
-                      <Text style={styles.supporterName} numberOfLines={1}>
-                        {p.id === myId ? 'You' : p.name}
-                      </Text>
-                      <PlusPoints points={score.perPlayer[p.id].points} delay={plusAt + i * 160} />
-                    </View>
-                  </PopIn>
-                ))}
-              </View>
-            )}
-          </View>
-        </SlideIn>
-      )}
-
-      {/* Your own result: unmistakably green (right) or red (wrong) */}
+      {/* Your own result FIRST (everyone sees their reward/punishment right away): unmistakably green (right) or red (wrong) */}
       {mine && (
-        <PopIn delay={winner ? youAt : 500} from={0.4}>
+        <PopIn delay={winner ? 900 : 500} from={0.4}>
           <Shake trigger={kind === 'win' ? 0 : 1} strength={kind === 'win' ? 0 : 10}>
             <View style={[styles.youCard, kind === 'win' ? styles.youWin : kind === 'neutral' ? styles.youNeutral : styles.youLose]}>
               {me && (
@@ -852,6 +822,36 @@ export function Result({ state }: { state: GameState }) {
             </View>
           </Shake>
         </PopIn>
+      )}
+
+      {score.multiplier > 1 && winner && <UnderdogVictory name={winner.name} mode={state.settings.mode} />}
+
+      {/* 2. Everyone who backed the winner, one by one, then 3. their +points */}
+      {winner && (
+        <SlideIn from="bottom" delay={SUP_START - 250}>
+          <View style={styles.panel}>
+            <Text style={styles.panelTitle}>🎯 Called it!</Text>
+            {supporters.length === 0 ? (
+              <Dim>Nobody saw that coming. 😱</Dim>
+            ) : (
+              <View style={styles.supGrid}>
+                {supporters.map((p, i) => (
+                  <PopIn key={p.id} delay={SUP_START + i * SUP_STEP} from={0.2} style={styles.supCell}>
+                    <View style={styles.supporterRow}>
+                      <Sway>
+                        <AnimalAvatar avatar={p.avatar} size={34} mood="happy" />
+                      </Sway>
+                      <Text style={styles.supporterName} numberOfLines={1}>
+                        {p.id === myId ? 'You' : p.name}
+                      </Text>
+                      <PlusPoints points={score.perPlayer[p.id].points} delay={plusAt + i * 160} />
+                    </View>
+                  </PopIn>
+                ))}
+              </View>
+            )}
+          </View>
+        </SlideIn>
       )}
 
       {party && (
@@ -973,12 +973,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1.5,
     borderColor: 'rgba(255,201,60,0.55)',
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    gap: 2,
+    paddingVertical: 11,
+    paddingHorizontal: 16,
+    gap: 3,
   },
-  ruleLabel: { color: colors.gold, fontFamily: fonts.display, fontSize: 12, letterSpacing: 2 },
-  ruleText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 16, lineHeight: 21 },
+  ruleLabel: { color: colors.gold, fontFamily: fonts.display, fontSize: 14, letterSpacing: 2 },
+  ruleText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 18, lineHeight: 24 },
   qCard: {
     backgroundColor: colors.white,
     borderRadius: 24,

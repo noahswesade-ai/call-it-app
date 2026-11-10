@@ -41,6 +41,22 @@ export const GEOGRAPHY = build('geography', [
   [`Name the countries that border Germany.`, T, 'H', 'Denmark, Poland, Czechia, Austria, Switzerland, France, Luxembourg, Belgium, Netherlands'],
   [`Name countries in Europe.`, T, 'M'],
   ['What is the capital of Canada?', X, 'E', 'Ottawa'],
+  // ── More challenging (v2) ──
+  ['How many countries are members of the United Nations?', C, 'M', '193', 193],
+  ['How long is the Great Wall of China, in miles (all its branches)?', C, 'H', 'About 13,170 miles', 13170],
+  ['Roughly how many islands make up Indonesia?', C, 'H', 'About 17,000', 17000],
+  ['How tall is the Eiffel Tower, in meters?', C, 'M', 'About 330 m', 330],
+  ['What percentage of Earth’s surface is covered by water?', C, 'E', 'About 71%', 71],
+  ['How many time zones does Russia stretch across?', C, 'M', '11', 11],
+  ['How many countries share a land border with China?', C, 'H', '14', 14],
+  ['Which African country has THREE capital cities?', X, 'H', 'South Africa (Pretoria, Cape Town, Bloemfontein)'],
+  ['What’s the hottest temperature ever recorded on Earth, in °F?', C, 'H', '134°F (Death Valley, 1913)', 134],
+  ['How many US states start with the letter M?', C, 'M', '8', 8],
+  ['Which city is further north: Rome or New York?', X, 'H', 'Rome (just barely!)'],
+  ['How long is the Amazon River, in miles?', C, 'H', 'About 4,000 miles', 4000],
+  ['What is the capital of Turkey? (Careful…)', X, 'M', 'Ankara — not Istanbul!'],
+  ['Which country has the most natural lakes?', X, 'H', 'Canada'],
+  [`Name US state capitals.`, T, 'M'],
 ]);
 
 export const HISTORY = build('history', [
@@ -60,6 +76,22 @@ export const HISTORY = build('history', [
   ['In what year was the US Declaration of Independence adopted?', C, 'E', '1776', 1776],
   ['Which country gave the Statue of Liberty to the United States?', X, 'E', 'France'],
   [`Name US presidents.`, T, 'M'],
+  // ── More challenging (v2) ──
+  ['How many years did the Berlin Wall stand?', C, 'M', '28 years (1961–1989)', 28],
+  ['The shortest war ever (Britain vs Zanzibar, 1896) lasted how many minutes?', C, 'H', 'About 38–45 minutes', 40],
+  ['How many different people have been President of the United States?', C, 'H', '45 (Cleveland and Trump each served twice)', 45],
+  ['In what year did the Black Death reach Europe?', C, 'H', '1347', 1347],
+  ['How tall was Napoleon, in centimeters?', C, 'M', 'About 170 cm (average for his time!)', 170],
+  ['In what year did the Wright brothers make the first powered flight?', C, 'M', '1903', 1903],
+  ['How many years did Queen Elizabeth II reign?', C, 'M', '70 years', 70],
+  ['Around what year did Gutenberg invent the printing press?', C, 'H', 'About 1440', 1440],
+  ['How many minutes did Yuri Gagarin’s first trip to space last?', C, 'H', '108 minutes', 108],
+  ['For how many million dollars did the US buy Alaska from Russia in 1867?', C, 'H', '$7.2 million', 7.2],
+  ['How many people signed the US Declaration of Independence?', C, 'H', '56', 56],
+  ['How many years did the Western Roman Empire last (27 BC to 476 AD)?', C, 'H', 'About 500 years', 503],
+  ['Who was the first emperor of Rome?', X, 'M', 'Augustus (Octavian)'],
+  ['Which ancient wonder stood in the harbour of Alexandria?', X, 'M', 'The Lighthouse (Pharos) of Alexandria'],
+  [`Name Greek or Roman gods.`, T, 'M'],
 ]);
 
 export const BASIC = build('basic', [
@@ -79,6 +111,22 @@ export const BASIC = build('basic', [
   ['How many teaspoons are in a tablespoon?', X, 'M', '3'],
   [`Name animals that start with “B”.`, T, 'E'],
   ['How many legs does a spider have?', X, 'E', '8'],
+  // ── More challenging (v2) ──
+  ['How many hairs are on the average human head?', C, 'H', 'About 100,000', 100000],
+  ['How far is the Moon from Earth, in miles?', C, 'H', 'About 238,900 miles', 238900],
+  ['How many times does your heart beat in one day?', C, 'H', 'About 100,000', 100000],
+  ['How many muscles are in the human body?', C, 'H', 'About 600', 600],
+  ['How many minutes does sunlight take to reach Earth?', C, 'M', 'About 8 minutes 20 seconds', 8.3],
+  ['How many liters of blood are in an adult body?', C, 'M', 'About 5 liters', 5],
+  ['How many bones is a newborn baby born with?', C, 'H', 'About 300', 300],
+  ['What is a cheetah’s top speed, in mph?', C, 'M', 'About 70 mph', 70],
+  ['How many months is an elephant pregnant for?', C, 'H', 'About 22 months', 22],
+  ['How many hours a day does a koala sleep?', C, 'M', 'About 20 hours', 20],
+  ['What percentage of the human body is water?', C, 'M', 'About 60%', 60],
+  ['Which letter doesn’t appear in any US state name?', X, 'H', 'Q'],
+  ['How many elements are on the periodic table?', C, 'M', '118', 118],
+  ['How many seconds are in one day?', C, 'M', '86,400', 86400],
+  ['Which planet has the most moons?', X, 'H', 'Saturn'],
 ]);
 
 export const POP_CULTURE = build('popculture', [
@@ -98,6 +146,22 @@ export const POP_CULTURE = build('popculture', [
   ['In what year did YouTube launch?', C, 'M', '2005', 2005],
   [`Name Marvel superheroes.`, T, 'E'],
   [`Name Pixar movies.`, T, 'M'],
+  // ── More challenging (v2) ──
+  ['How many episodes of Friends were made?', C, 'H', '236', 236],
+  ['In what year did the first Toy Story come out?', C, 'M', '1995', 1995],
+  ['How many Pokémon were in the original Red & Blue games?', C, 'M', '151', 151],
+  ['What is the best-selling video game of all time?', X, 'M', 'Minecraft'],
+  ['How many Oscars did The Lord of the Rings: The Return of the King win?', C, 'H', '11', 11],
+  ['What’s the name of the hidden African nation in Black Panther?', X, 'E', 'Wakanda'],
+  ['In what year did Facebook launch?', C, 'M', '2004', 2004],
+  ['How many Grammys has Beyoncé won?', C, 'H', '35 (as of 2025)', 35],
+  ['What’s the name of the paper company in The Office (US)?', X, 'E', 'Dunder Mifflin'],
+  ['What is Lady Gaga’s real first name?', X, 'H', 'Stefani'],
+  ['In what year did Netflix start streaming movies online?', C, 'H', '2007', 2007],
+  ['How long is Queen’s “Bohemian Rhapsody”, in seconds?', C, 'H', 'About 354 seconds (5:54)', 354],
+  ['How many UK studio albums did the Beatles release?', C, 'H', '12', 12],
+  [`Name Disney princesses.`, T, 'E'],
+  [`Name Taylor Swift songs.`, T, 'M'],
 ]);
 
 export const SPORTS = build('sports', [
@@ -117,6 +181,22 @@ export const SPORTS = build('sports', [
   ['How many minutes long is an NBA game, not counting overtime?', C, 'M', '48', 48],
   [`Name NBA teams.`, T, 'M'],
   [`Name Premier League clubs.`, T, 'M'],
+  // ── More challenging (v2) ──
+  ['How many dimples are on a standard golf ball?', C, 'H', 'About 336 (usually 300–500)', 336],
+  ['How long is an Olympic swimming pool, in meters?', C, 'M', '50 m', 50],
+  ['How many Olympic GOLD medals did Michael Phelps win?', C, 'M', '23', 23],
+  ['How high is a basketball hoop, in feet?', C, 'E', '10 feet', 10],
+  ['How many players does a rugby union team have on the field?', C, 'M', '15', 15],
+  ['In what year were the first modern Olympics held?', C, 'M', '1896 (Athens)', 1896],
+  ['How many Super Bowls have the New England Patriots won?', C, 'M', '6', 6],
+  ['How wide is a basketball hoop, in inches?', C, 'H', '18 inches', 18],
+  ['How long is a cricket pitch, in yards?', C, 'H', '22 yards', 22],
+  ['Which country hosted the very first FIFA World Cup?', X, 'H', 'Uruguay (1930)'],
+  ['What is the fastest tennis serve ever recorded, in mph?', C, 'H', 'About 163.7 mph (Sam Groth, 2012)', 163.7],
+  ['How long is a soccer goal, in feet?', C, 'H', '24 feet (8 yards)', 24],
+  ['How many players per team are on the ice in hockey (goalie included)?', C, 'E', '6', 6],
+  [`Name Olympic sports.`, T, 'E'],
+  [`Name famous soccer players.`, T, 'E'],
 ]);
 
 export const PHYSICAL = build('physical', [
@@ -136,6 +216,22 @@ export const PHYSICAL = build('physical', [
   ['Who can hop on one foot the longest?', H, 'M'],
   ['Bottle flip — first to land one wins!', H, 'M'],
   ['Who can stack the most coins in 30 seconds?', H, 'M'],
+  // ── More challenging (v2) ──
+  ['Arm wrestling — best of 3!', H, 'M'],
+  ['Who can do the most burpees in 30 seconds?', H, 'H'],
+  ['Who can hold their arms straight out to the sides the longest?', H, 'M'],
+  ['Who can hold a lunge the longest?', H, 'H'],
+  ['Who can do the most sit-ups in 30 seconds?', H, 'M'],
+  ['Who can stay up on their tiptoes the longest?', H, 'M'],
+  ['Who can hold a one-arm plank the longest?', H, 'H'],
+  ['Hold a plank and name 10 animals — first to finish wins.', H, 'M'],
+  ['Walk across the room and back with a book on your head — fastest without dropping it wins.', H, 'M'],
+  ['Stand up from sitting cross-legged without using your hands — first to do it 3 times wins.', H, 'M'],
+  ['Hand-slap game — first to land 3 slaps wins.', H, 'E'],
+  ['No-laugh stare-down: face each other — first to smile or laugh loses.', H, 'E'],
+  ['Who can touch their nose with their tongue? The room judges who gets closest.', H, 'E'],
+  ['Elbow coin catch: balance coins on your elbow, flip and catch — most caught wins.', H, 'H'],
+  ['Spin around 10 times, then walk a straight line — the room judges who wobbles less.', H, 'M'],
 ]);
 
 export const KNOW_YOUR_FRIENDS: Question[] = (
@@ -156,6 +252,22 @@ export const KNOW_YOUR_FRIENDS: Question[] = (
     ['How many hours of screen time did {S} have yesterday?', true],
     ['What was {S}’s first car (or first phone)?'],
     ['What is {S}’s go-to fast food order?'],
+    // ── More challenging (v2) ──
+    ['What is {S}’s biggest pet peeve?'],
+    ['What is {S}’s guilty-pleasure TV show?'],
+    ['How many countries has {S} visited?', true],
+    ['What is {S}’s shoe size?', true],
+    ['How many photos are in {S}’s camera roll?', true],
+    ['How many hours did {S} sleep last night?', true],
+    ['How many pairs of shoes does {S} own?', true],
+    ['What is {S}’s go-to pizza topping?'],
+    ['Who was {S}’s celebrity crush growing up?'],
+    ['What’s the first thing {S} would buy after winning $1 million?'],
+    ['What is {S}’s secret hidden talent?'],
+    ['What was the last thing {S} bought online?'],
+    ['What food does {S} hate the most?'],
+    ['What is {S}’s favorite season?'],
+    ['What was {S}’s most embarrassing phase growing up?'],
   ] as [string, boolean?][]
 ).map(([prompt, closest], i) => ({
   id: `kyf-${String(i + 1).padStart(3, '0')}`,
@@ -183,6 +295,22 @@ export const PARTY = build('party', [
   ['Never Have I Ever face-off: take turns making statements — first to have done 3 loses.', H, 'M'],
   ['Who can stack empty cups or cans the highest in 30 seconds?', H, 'M'],
   ['Hold a mouthful of your drink while the room tries to crack you — first to laugh loses.', H, 'H'],
+  // ── More challenging (v2) ──
+  ['Who can balance a coaster on their forehead the longest?', H, 'M'],
+  ['Coaster flip: flick a coaster off the table edge and catch it — most in a row wins.', H, 'H'],
+  [`Name drinking games.`, T, 'M'],
+  [`Name things you can find in a bar.`, T, 'E'],
+  ['What is the typical alcohol % of vodka?', C, 'M', 'About 40%', 40],
+  ['Which grain is Scotch whisky mostly made from?', X, 'H', 'Barley'],
+  ['Which country does Guinness come from?', X, 'E', 'Ireland'],
+  ['What is the main ingredient in sake?', X, 'M', 'Rice'],
+  ['How many bottles of champagne fit in a giant “Nebuchadnezzar” bottle?', C, 'H', '20', 20],
+  ['Best impression of the most tipsy person you know — the room votes.', H, 'E'],
+  ['Most convincing “I’m totally sober” speech — the room votes.', H, 'E'],
+  ['Blind taste test: eyes closed, the room hands you a drink — first to name it wins.', H, 'M'],
+  ['Flick a bottle cap into a cup from across the table — most in 5 tries wins.', H, 'M'],
+  ['Tell a story where every sentence includes the word “cheers” — first to stall loses.', H, 'M'],
+  ['Keep a straight face while the room tells terrible jokes — first to laugh loses.', H, 'E'],
 ]);
 
 export const SPICY = build('spicy', [
@@ -202,6 +330,22 @@ export const SPICY = build('spicy', [
   ['Cheesiest compliment to a player of the room’s choice — the room votes.', H, 'E'],
   ['Who is more likely to text an ex tonight? The room votes — the “winner” loses.', H, 'E'],
   ['Describe your type in 3 words — the room votes for the best description.', H, 'E'],
+  // ── More challenging (v2) ──
+  ['Most convincing fake marriage proposal to a player the room picks — the room votes.', H, 'M'],
+  ['Rate your own kissing skills out of 10 and defend it for 20 seconds — most convincing wins.', H, 'M'],
+  ['Serenade the other challenger for 15 seconds — the room votes.', H, 'E'],
+  ['Most dramatic fake breakup speech to the other challenger — the room votes.', H, 'E'],
+  ['Read a grocery list in your most seductive voice — the room votes.', H, 'E'],
+  ['Best pickup line using only food puns — the room votes.', H, 'M'],
+  ['Describe your celebrity hall pass and defend your choice — the room votes.', H, 'E'],
+  ['Truth-off: “What’s your biggest red flag?” Most honest answer wins. Refusing = loss.', H, 'H'],
+  ['Boldest DM you’ve ever sent — best story wins. Refusing = loss.', H, 'H'],
+  ['Who’s more likely to have a secret crush in this room? The room votes — the “winner” loses.', H, 'M'],
+  ['Strut your best runway walk across the room — the room votes.', H, 'E'],
+  ['Write the flirtiest text you can in 30 seconds and read it out — the room votes.', H, 'M'],
+  ['Act out your “type” walking into a bar — best performance wins.', H, 'M'],
+  ['Recreate your best first-date opening line on the other challenger — the room votes.', H, 'M'],
+  ['Guess how many exes the other challenger has — closer guess wins.', H, 'H'],
 ]);
 
 const MINIGAME_NAMES: [MinigameId, string, Difficulty][] = [

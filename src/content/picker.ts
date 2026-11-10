@@ -1,11 +1,9 @@
 import type { Category, Question, Rng, WheelSlice } from '@/game/types';
-import { weightedPick } from '@/game/selection';
 
 /**
  * Chooses what the wheel lands on and which question is asked.
  * - The wheel has one slice per enabled category plus "Random".
- * - The same category never comes up three times in a row.
- * - "Random" picks a category weighted toward the ones that have come up least.
+ * - Every enabled category has exactly the same chance on every spin.
  * - Questions already used this game (or seen before, if a history is passed) are avoided.
  */
 
@@ -17,15 +15,6 @@ export interface SpinResult {
 
 export function wheelSlices(categories: Category[]): WheelSlice[] {
   return [...categories, 'random'];
-}
-
-function allowedCategories(categories: Category[], recent: Category[]): Category[] {
-  const [last, prev] = [recent[recent.length - 1], recent[recent.length - 2]];
-  if (last && last === prev) {
-    const others = categories.filter((c) => c !== last);
-    if (others.length > 0) return others;
-  }
-  return categories;
 }
 
 export function pickQuestion(
@@ -44,7 +33,7 @@ export function pickQuestion(
 export function spin(
   bank: Question[],
   categories: Category[],
-  recent: Category[],
+  _recent: Category[],
   used: Set<string>,
   rng: Rng,
   opts: { canUseKyf: boolean },
@@ -53,23 +42,11 @@ export function spin(
   if (!opts.canUseKyf) usable = usable.filter((c) => c !== 'kyf');
   if (usable.length === 0) throw new Error('No playable categories are enabled');
 
-  const allowed = allowedCategories(usable, recent);
-  const slices: WheelSlice[] = [...allowed, 'random'];
-  const slice = slices[Math.floor(rng() * slices.length)];
-
-  let category: Category;
-  if (slice === 'random') {
-    const counts = Object.fromEntries(usable.map((c) => [c, 0])) as Record<Category, number>;
-    for (const c of recent) if (c in counts) counts[c]++;
-    category = weightedPick(
-      allowed,
-      allowed.map((c) => 1 / (1 + counts[c])),
-      rng,
-    ) as Category;
-  } else {
-    category = slice;
-  }
-
+  // Every enabled category is exactly equally likely on every spin (1 / n).
+  const category = usable[Math.floor(rng() * usable.length)];
+  // The wheel shows a "Random" slice too; landing there sometimes keeps it fun without
+  // changing the odds (whatever Random picks is still the uniformly chosen category).
+  const slice: WheelSlice = rng() < 1 / (usable.length + 1) ? 'random' : category;
   const question = pickQuestion(bank, category, used, rng)!;
   return { slice, category, question };
 }
