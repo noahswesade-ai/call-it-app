@@ -51,23 +51,32 @@ export function Screen({
   scroll = false,
   style,
   tint,
+  footer,
 }: {
   children: React.ReactNode;
   scroll?: boolean;
   style?: StyleProp<ViewStyle>;
   tint?: 'red' | 'green' | 'party';
+  /** Pinned to the bottom of the screen above the content (e.g. the timer bar). */
+  footer?: React.ReactNode;
 }) {
+  const pad = footer ? { paddingBottom: 90 } : null;
   return (
     <View style={{ flex: 1, backgroundColor: colors.bgBottom }}>
       <Background tint={tint} />
       <SafeAreaView style={{ flex: 1 }}>
         {scroll ? (
-          <ScrollView contentContainerStyle={[styles.content, style]} keyboardShouldPersistTaps="handled">
+          <ScrollView contentContainerStyle={[styles.content, style, pad]} keyboardShouldPersistTaps="handled">
             {children}
           </ScrollView>
         ) : (
-          <View style={[styles.content, { flex: 1 }, style]}>{children}</View>
+          <View style={[styles.content, { flex: 1 }, style, pad]}>{children}</View>
         )}
+        {footer ? (
+          <View style={styles.footer} pointerEvents="box-none">
+            {footer}
+          </View>
+        ) : null}
       </SafeAreaView>
     </View>
   );
@@ -276,6 +285,7 @@ export function Segmented<T extends string | number>({
 }
 
 const styles = StyleSheet.create({
+  footer: { position: 'absolute', left: 0, right: 0, bottom: 22, paddingHorizontal: 18, maxWidth: 560, width: '100%', alignSelf: 'center' },
   content: { padding: 18, gap: 14, maxWidth: 560, width: '100%', alignSelf: 'center' },
   lip: {},
   face: {

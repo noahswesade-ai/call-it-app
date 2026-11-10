@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
+import { markIntroShown } from '@/state/intro';
 import { useProfile } from '@/state/profile';
 import { Button, Screen, tap } from '@/ui/kit';
 import { Bob, PopIn, Pulse, SlideIn, Wobble } from '@/ui/motion';
@@ -31,6 +32,7 @@ function Mini({ animal, color, mood }: { animal: string; color: string; mood?: '
 
 export default function Welcome() {
   const { update } = useProfile();
+  markIntroShown();
   const close = () => {
     tap('medium');
     update({ seenIntro: true });
@@ -69,20 +71,24 @@ export default function Welcome() {
 
       <Step n={3} delay={400} caption="Everyone else calls the winner">
         <Text style={styles.big}>👆</Text>
-        <View style={[styles.chip, { backgroundColor: A_COLOR }]}>
-          <Text style={styles.chipText}>A</Text>
-        </View>
+        <Bob amount={3} duration={450}>
+          <View style={[styles.chip, { backgroundColor: A_COLOR }]}>
+            <Mini animal="cat" color="orange" mood="happy" />
+          </View>
+        </Bob>
         <Text style={styles.small}>or</Text>
-        <View style={[styles.chip, { backgroundColor: B_COLOR }]}>
-          <Text style={styles.chipText}>B</Text>
-        </View>
+        <Bob amount={3} duration={450} delay={200}>
+          <View style={[styles.chip, { backgroundColor: B_COLOR }]}>
+            <Mini animal="frog" color="green" mood="happy" />
+          </View>
+        </Bob>
       </Step>
 
       <Step n={4} delay={550} caption="Back the long shot. If they win: ×3!" highlight>
         <Pulse scale={1.12} duration={350}>
           <Text style={styles.big}>🐶</Text>
         </Pulse>
-        <Text style={styles.dogMath}>≤25%</Text>
+        <Text style={styles.dogMath}>{'<33%'}</Text>
         <Text style={styles.dogArrow}>→</Text>
         <Pulse scale={1.18} duration={300}>
           <Text style={styles.x3}>×3</Text>
@@ -137,7 +143,7 @@ const styles = StyleSheet.create({
   vs: { fontSize: 28 },
   big: { fontSize: 38 },
   small: { color: colors.dim, fontSize: 18, fontFamily: fonts.display },
-  chip: { width: 38, height: 38, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  chip: { width: 54, height: 54, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 4, borderBottomColor: 'rgba(0,0,0,0.25)' },
   chipText: { color: colors.white, fontFamily: fonts.display, fontSize: 20 },
   dogMath: { color: colors.ink, fontFamily: fonts.display, fontSize: 24 },
   dogArrow: { color: colors.ink, fontFamily: fonts.display, fontSize: 24 },

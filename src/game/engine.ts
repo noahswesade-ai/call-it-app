@@ -22,13 +22,15 @@ export type Phase =
 
 export const DURATIONS = {
   matchup: 4000,
-  spin: 5000,
+  /** ~5.5s of spinning that slows to a crawl, then the category box. */
+  spin: 9500,
   betting: 30000,
   bettingPressure: 10000, // the final 10s of betting turn red
   betsReveal: 4000,
   /** Extra time on the reveal so the Underdog Alert can play out. */
-  underdogReveal: 7500,
-  result: 9000,
+  underdogReveal: 9500,
+  /** Winner, then their supporters, then the +points, then standings. */
+  result: 13000,
 } as const;
 
 export const FREE_MAX_PLAYERS = 10;
@@ -62,7 +64,7 @@ export interface PlayerTotals {
   bonusBets: number; // correct bets with an underdog multiplier
   noVotes: number;
   challengeWins: number;
-  giantSlays: number; // challenge wins when ≤25% backed them
+  giantSlays: number; // challenge wins as the Underdog
 }
 
 export interface GameState {
@@ -161,6 +163,24 @@ export function pendingBettors(state: GameState): string[] {
   const r = state.round;
   if (!r) return [];
   return r.bettors.filter((id) => !(id in r.bets));
+}
+
+/** Full length of the current timed phase in ms (for the timer bar), or undefined if untimed. */
+export function phaseDuration(state: GameState): number | undefined {
+  switch (state.phase) {
+    case 'matchup':
+      return DURATIONS.matchup;
+    case 'spin':
+      return DURATIONS.spin;
+    case 'betting':
+      return DURATIONS.betting;
+    case 'betsReveal':
+      return currentUnderdog(state) ? DURATIONS.underdogReveal : DURATIONS.betsReveal;
+    case 'result':
+      return DURATIONS.result;
+    default:
+      return undefined;
+  }
 }
 
 /** Which challenger is the Underdog in the current round's bets ('A' | 'B'), if any. */

@@ -25,16 +25,22 @@ function run(spec: string, overrides: Partial<RoundScoreInput> = {}) {
 }
 
 describe('underdogSide', () => {
-  it('is the side with 25% or less of the side-picking bettors', () => {
-    const s = bets('ABBB');
+  it('is the side with less than 33% of the side-picking bettors', () => {
+    const s = bets('ABBB'); // 25%
     expect(underdogSide(s.bettors, s.bets)).toBe('A');
-    const t = bets('AAAAB');
+    const t = bets('AAAAB'); // 20%
     expect(underdogSide(t.bettors, t.bets)).toBe('B');
+    const v = bets('ABBBBBA'.slice(0, 7)); // 2 of 7 ≈ 28.6%
+    expect(underdogSide(v.bettors, v.bets)).toBe('A');
+  });
+  it('exactly one third (33.3%) is NOT an Underdog', () => {
+    const s = bets('ABBABB'); // 2 of 6
+    expect(underdogSide(s.bettors, s.bets)).toBeUndefined();
   });
   it('does not exist on a close split', () => {
     const s = bets('AABB');
     expect(underdogSide(s.bettors, s.bets)).toBeUndefined();
-    const t = bets('ABBBB'.slice(0, 4) + 'A'); // 2 of 5 = 40%
+    const t = bets('ABBBA'); // 2 of 5 = 40%
     expect(underdogSide(t.bettors, t.bets)).toBeUndefined();
   });
   it('needs at least 4 bettors picking a side; No Votes do not count', () => {

@@ -4,12 +4,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
-import { computeAwards } from '@/game/awards';
+import { AWARD_BONUS, computeAwards } from '@/game/awards';
 import { host, rankings, type GameState } from '@/game/engine';
 import { showEndOfGameAd } from '@/monetize/store';
 import { isBotId, useRoom } from '@/net/RoomProvider';
 import { tokensForGame, useProfile } from '@/state/profile';
-import { CoinReward } from '@/ui/Coin';
+import { Coin, CoinReward } from '@/ui/Coin';
 import { Confetti } from '@/ui/Confetti';
 import { Button, Dim, Row } from '@/ui/kit';
 import { Bob, PopIn, Pulse, SlideIn } from '@/ui/motion';
@@ -70,12 +70,13 @@ export function Podium({ state }: { state: GameState }) {
   useEffect(() => {
     if (recorded.current || !mine) return;
     recorded.current = true;
-    const coins = tokensForGame(mine.rank, mine.totals.correctBets, profile.premium);
+    const myAwards = awards.filter((a) => a.playerId === mine.player.id).length;
+    const coins = tokensForGame(mine.rank, mine.totals.correctBets, profile.premium) + myAwards * AWARD_BONUS;
     setEarned(coins);
     recordGame(mine.rank === 1 && mine.totals.points > 0, coins);
     // Ads are per person: every non-Premium player sees one, even in a Premium host's room.
     void showEndOfGameAd(profile.premium);
-  }, [mine, profile.premium, recordGame]);
+  }, [mine, profile.premium, recordGame, awards]);
 
   // Visual order on the podium: 2nd, 1st, 3rd.
   const podium = order.length === 3 ? [order[1], order[0], order[2]] : order;
@@ -127,6 +128,11 @@ export function Podium({ state }: { state: GameState }) {
                   {party ? ` · 🍺 ${mine.totals.sips} sips` : ''}
                 </Text>
                 {earned !== undefined && <CoinReward amount={earned} />}
+                {awards.some((a) => a.playerId === mine.player.id) && (
+                  <Text style={styles.rewardSmall}>
+                    Includes 🎖️ +{AWARD_BONUS * awards.filter((a) => a.playerId === mine.player.id).length} award bonus
+                  </Text>
+                )}
                 {profile.premium && <Text style={styles.rewardSmall}>👑 Premium 2× coins</Text>}
               </View>
             </PopIn>
@@ -135,6 +141,7 @@ export function Podium({ state }: { state: GameState }) {
           {awards.length > 0 && (
             <View style={styles.panel}>
               <Text style={styles.panelTitle}>🎖️ Awards</Text>
+              <Text style={styles.awardIntro}>Each award earns its winner +{AWARD_BONUS} gold coins</Text>
               {awards.map((a, i) => (
                 <SlideIn key={a.id} from={i % 2 ? 'right' : 'left'} delay={i * 150} distance={100}>
                   <Row style={styles.awardRow}>
@@ -143,7 +150,15 @@ export function Podium({ state }: { state: GameState }) {
                       <Text style={styles.awardTitle}>{a.title}</Text>
                       <Text style={styles.awardDesc}>{a.description}</Text>
                     </View>
-                    <Text style={styles.awardName}>{playerById(state, a.playerId)?.name}</Text>
+                    <View style={{ alignItems: 'flex-end', gap: 2 }}>
+                      <Text style={styles.awardName}>{playerById(state, a.playerId)?.name}</Text>
+                      <PopIn delay={i * 150 + 400} from={2}>
+                        <View style={styles.awardBonus}>
+                          <Coin size={14} />
+                          <Text style={styles.awardBonusText}>+{AWARD_BONUS}</Text>
+                        </View>
+                      </PopIn>
+                    </View>
                   </Row>
                 </SlideIn>
               ))}
@@ -232,6 +247,9 @@ const styles = StyleSheet.create({
   awardRow: { backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 16, padding: 8 },
   awardTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 18 },
   awardDesc: { color: colors.dim, fontFamily: fonts.body, fontSize: 13 },
+  awardIntro: { color: colors.gold, fontFamily: fonts.bodySemi, fontSize: 13, marginTop: -6 },
+  awardBonus: { flexDirection: 'row', alignItems: 'center', gap: 3, backgroundColor: 'rgba(255,201,60,0.2)', borderRadius: 99, paddingHorizontal: 7, paddingVertical: 1 },
+  awardBonusText: { color: colors.gold, fontFamily: fonts.display, fontSize: 13 },
   awardName: { color: colors.gold, fontFamily: fonts.display, fontSize: 16 },
   rankNum: { color: colors.gold, fontFamily: fonts.display, fontSize: 18, width: 20, textAlign: 'center' },
   rank: { color: colors.white, fontSize: 16, fontFamily: fonts.display, flexShrink: 1 },

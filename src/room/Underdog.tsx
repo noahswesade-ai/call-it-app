@@ -39,7 +39,7 @@ function Flash({ delay = 0 }: { delay?: number }) {
   return <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, { backgroundColor: '#FFFFFF', zIndex: 20 }, st]} />;
 }
 
-/** Two rotating siren beams (red and gold) sweeping behind everything. */
+/** Two rotating light beams (white and gold) sweeping behind everything. */
 function SirenBeams() {
   const r = useSharedValue(0);
   useEffect(() => {
@@ -50,10 +50,10 @@ function SirenBeams() {
   return (
     <View pointerEvents="none" style={[StyleSheet.absoluteFill, { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }]}>
       <Animated.View style={red}>
-        <Sunburst size={900} color="rgba(255,60,80,0.22)" />
+        <Sunburst size={900} color="rgba(255,255,255,0.12)" />
       </Animated.View>
       <Animated.View style={[{ position: 'absolute' }, gold]}>
-        <Sunburst size={700} color="rgba(255,201,60,0.18)" />
+        <Sunburst size={700} color="rgba(255,231,120,0.16)" />
       </Animated.View>
     </View>
   );
@@ -84,9 +84,11 @@ function TimesThree({ delay }: { delay: number }) {
     return () => clearTimeout(t);
   }, [delay, s, o, pulse]);
   const st = useAnimatedStyle(() => ({ opacity: o.value, transform: [{ scale: s.value * pulse.value }, { rotate: '-6deg' }] }));
+  const halo = useAnimatedStyle(() => ({ opacity: o.value * (0.35 + (pulse.value - 1) * 4), transform: [{ scale: 0.8 + (pulse.value - 1) * 3 }] }));
   return (
     <Animated.View style={st}>
       <View style={styles.x3Wrap}>
+        <Animated.View style={[styles.halo, halo]} />
         <Text style={styles.x3Shadow}>×{UNDERDOG_MULTIPLIER}</Text>
         <Text style={styles.x3}>×{UNDERDOG_MULTIPLIER}</Text>
       </View>
@@ -95,8 +97,8 @@ function TimesThree({ delay }: { delay: number }) {
 }
 
 /**
- * Full-screen "UNDERDOG ALERT!" takeover. Plays when the bets are revealed and one
- * challenger is backed by 25% or less of the room.
+ * Full-screen green "UNDERDOG!" takeover. Plays when the bets are revealed and one
+ * challenger is backed by less than 33% of the room.
  */
 export function UnderdogAlert({
   underdog,
@@ -135,23 +137,23 @@ export function UnderdogAlert({
   return (
     <View style={[StyleSheet.absoluteFill, { zIndex: 10 }]}>
       <Animated.View style={[StyleSheet.absoluteFill, backdrop]}>
-        <LinearGradient colors={['#3D0010', '#7A0A1E', '#2A0040']} style={[StyleSheet.absoluteFill, { borderRadius: 28 }]} />
+        <LinearGradient colors={['#02391F', '#0B8A4F', '#034D2A']} style={StyleSheet.absoluteFill} />
         <SirenBeams />
       </Animated.View>
       <EmojiRain emoji="🐶" count={14} />
       <Confetti count={60} origin="center" />
 
       <View style={styles.center}>
-        <Shake trigger={live} strength={14}>
-          <Text style={styles.alertTop}>🚨 🚨 🚨</Text>
-        </Shake>
+        <PopIn from={0}>
+          <Text style={styles.alertTop}>✨ 🐶 ✨</Text>
+        </PopIn>
         <PopIn from={3}>
-          <Shake trigger={live} strength={10}>
-            <Text style={styles.underdog}>UNDERDOG</Text>
+          <Shake trigger={live} strength={8}>
+            <Text style={styles.underdog}>UNDERDOG!</Text>
           </Shake>
         </PopIn>
-        <PopIn delay={200} from={2}>
-          <Blink text="ALERT!" a={colors.gold} b={colors.white} size={44} />
+        <PopIn delay={250} from={0.3}>
+          <Text style={styles.subtitle}>A long shot has entered the arena</Text>
         </PopIn>
 
         <PopIn delay={450} from={0}>
@@ -162,28 +164,27 @@ export function UnderdogAlert({
             <View style={styles.dogTag}>
               <Text style={styles.dogTagText}>🐶 {underdog.name}</Text>
             </View>
-            <Text style={styles.onlyPct}>Only {pct}% believe!</Text>
+            <Text style={styles.onlyPct}>Only {pct}% believe in them</Text>
           </View>
         </PopIn>
 
-        <TimesThree delay={900} />
+        <TimesThree delay={2100} />
 
-        <SlideIn from="bottom" delay={1300}>
+        <SlideIn from="bottom" delay={2700}>
           <View style={styles.ruleCard}>
-            <Text style={styles.ruleText}>
-              If {underdog.name} wins…
-            </Text>
-            <Text style={styles.ruleBig}>{party ? '🍺 Doubters drink ×3!' : '🎯 Believers score ×3!'}</Text>
+            <Text style={styles.ruleText}>If {underdog.name} wins…</Text>
+            <Text style={styles.ruleBig}>{party ? '🍺 SIPS TRIPLED' : '🎯 POINTS TRIPLED'}</Text>
+            <Text style={styles.ruleText}>{party ? 'for everyone who bet against them' : 'for everyone who backed them'}</Text>
           </View>
         </SlideIn>
 
         {backers.length > 0 && (
-          <SlideIn from="bottom" delay={1700}>
+          <SlideIn from="bottom" delay={3100}>
             <View style={styles.backers}>
               <Text style={styles.backersLabel}>BRAVE CALLERS</Text>
               <View style={{ flexDirection: 'row', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
                 {backers.map((p, i) => (
-                  <PopIn key={p.id} delay={1800 + i * 120} from={0}>
+                  <PopIn key={p.id} delay={3200 + i * 120} from={0}>
                     <AnimalAvatar avatar={p.avatar} size={36} mood="happy" />
                   </PopIn>
                 ))}
@@ -220,7 +221,7 @@ export function UnderdogVictory({ name, mode }: { name: string; mode: Mode }) {
         <LinearGradient colors={[colors.gold, '#FF8A00']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.victory}>
           <Text style={styles.victoryTop}>🐶 THE UNDERDOG WON! 🐶</Text>
           <Text style={styles.victoryName}>{name}</Text>
-          <Blink text={mode === 'party' ? 'DOUBTERS DRINK ×3 🍺' : 'BELIEVERS SCORE ×3 🎯'} a={colors.ink} b="#8A0016" size={22} />
+          <Blink text={mode === 'party' ? 'DOUBTERS DRINK ×3 🍺' : 'BELIEVERS SCORE ×3 🎯'} a={colors.ink} b={colors.greenLip} size={22} />
         </LinearGradient>
       </Wobble>
     </PopIn>
@@ -235,10 +236,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.display,
     fontSize: 62,
     letterSpacing: 1,
-    textShadowColor: '#FF1F3D',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 18,
+    textShadowColor: colors.ink,
+    textShadowOffset: { width: 0, height: 5 },
+    textShadowRadius: 0,
   },
+  subtitle: { color: '#D8FFE9', fontFamily: fonts.bodyBold, fontSize: 16, textAlign: 'center' },
   blink: { fontFamily: fonts.display, textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 4 }, textShadowRadius: 0, textAlign: 'center' },
   dogCard: {
     alignItems: 'center',
@@ -256,10 +258,29 @@ const styles = StyleSheet.create({
   },
   dogTag: { backgroundColor: colors.gold, borderRadius: 99, paddingHorizontal: 14, paddingVertical: 3, marginTop: 4 },
   dogTagText: { color: colors.ink, fontFamily: fonts.display, fontSize: 22 },
-  onlyPct: { color: '#FFD1D8', fontFamily: fonts.bodyBold, fontSize: 15, marginTop: 6 },
+  onlyPct: { color: '#D8FFE9', fontFamily: fonts.bodyBold, fontSize: 15, marginTop: 6 },
   x3Wrap: { alignItems: 'center', justifyContent: 'center' },
-  x3: { color: colors.gold, fontFamily: fonts.display, fontSize: 120, lineHeight: 130 },
-  x3Shadow: { position: 'absolute', color: '#8A0016', fontFamily: fonts.display, fontSize: 120, lineHeight: 130, top: 8 },
+  x3: {
+    color: colors.gold,
+    fontFamily: fonts.display,
+    fontSize: 120,
+    lineHeight: 130,
+    textShadowColor: '#FFF3A6',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 26,
+  },
+  halo: {
+    position: 'absolute',
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+    backgroundColor: 'rgba(255,214,90,0.55)',
+    shadowColor: colors.gold,
+    shadowOpacity: 1,
+    shadowRadius: 40,
+    shadowOffset: { width: 0, height: 0 },
+  },
+  x3Shadow: { position: 'absolute', color: '#7A4A00', fontFamily: fonts.display, fontSize: 120, lineHeight: 130, top: 8 },
   ruleCard: { backgroundColor: colors.white, borderRadius: 20, paddingHorizontal: 18, paddingVertical: 10, alignItems: 'center', borderBottomWidth: 6, borderBottomColor: '#C9B8F0' },
   ruleText: { color: '#6B5A99', fontFamily: fonts.bodyBold, fontSize: 15 },
   ruleBig: { color: colors.ink, fontFamily: fonts.display, fontSize: 26 },

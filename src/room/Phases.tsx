@@ -219,7 +219,7 @@ export function Betting({ state }: { state: GameState }) {
           <CountdownRing msLeft={left} total={DURATIONS.betting} danger={pressure} size={pressure ? 130 : 116} />
         </Shake>
       </View>
-      <Text style={styles.dogHint}>🐶 Back the long shot: 25% or less = UNDERDOG ×3</Text>
+      <Text style={styles.dogHint}>🐶 Under 33% of the vote = UNDERDOG ×3</Text>
 
       {canBet ? (
         <>
@@ -485,6 +485,23 @@ export function Challenge({ state }: { state: GameState }) {
   );
 }
 
+/** "+1" that pops in beside a supporter, then floats gently. */
+function PlusPoints({ points, delay }: { points: number; delay: number }) {
+  useEffect(() => {
+    const t = setTimeout(() => tap('light'), delay);
+    return () => clearTimeout(t);
+  }, [delay]);
+  return (
+    <PopIn delay={delay} from={2.4}>
+      <Bob amount={3} duration={500} delay={delay}>
+        <View style={[styles.plus, points >= 3 && styles.plusBig]}>
+          <Text style={styles.plusText}>+{points}</Text>
+        </View>
+      </Bob>
+    </PopIn>
+  );
+}
+
 /** Per-player result kind, used to tint the whole screen. */
 export function myResultTint(state: GameState, myId: string): 'green' | 'red' | undefined {
   const s = state.round?.score?.perPlayer[myId];
@@ -494,7 +511,7 @@ export function myResultTint(state: GameState, myId: string): 'green' | 'red' | 
   return undefined;
 }
 
-function Standings({ state }: { state: GameState }) {
+function Standings({ state, delay = 500 }: { state: GameState; delay?: number }) {
   const rows = rankings(state).slice(0, 5);
   const max = Math.max(1, ...rows.map((r) => r.totals.points));
   const lastRound = state.round?.score?.perPlayer ?? {};
@@ -502,7 +519,7 @@ function Standings({ state }: { state: GameState }) {
     <View style={styles.panel}>
       <Text style={styles.panelTitle}>📊 Standings</Text>
       {rows.map((r, i) => (
-        <SlideIn key={r.player.id} from="right" delay={500 + i * 110} distance={80}>
+        <SlideIn key={r.player.id} from="right" delay={delay + i * 110} distance={80}>
           <Row style={{ gap: 8 }}>
             <Text style={styles.rankNum}>{r.rank}</Text>
             <AnimalAvatar avatar={r.player.avatar} size={34} mood={i === 0 ? 'happy' : undefined} />
@@ -517,7 +534,7 @@ function Standings({ state }: { state: GameState }) {
                   {lastRound[r.player.id]?.points ? <Text style={{ color: colors.green }}>  +{lastRound[r.player.id].points}</Text> : null}
                 </Text>
               </Row>
-              <GrowBar pct={(r.totals.points / max) * 100} color={i === 0 ? colors.gold : colors.violet} height={8} delay={600 + i * 110} />
+              <GrowBar pct={(r.totals.points / max) * 100} color={i === 0 ? colors.gold : colors.violet} height={8} delay={delay + 100 + i * 110} />
             </View>
           </Row>
         </SlideIn>
@@ -569,50 +586,96 @@ export function Result({ state }: { state: GameState }) {
     sub = '+0 this round';
   }
 
+  const winner = playerById(state, winnerId);
+  const supporters = winnerId
+    ? r.bettors.filter((id) => score.perPlayer[id]?.result === 'betWin').map((id) => playerById(state, id)!).filter(Boolean)
+    : [];
+  // Timeline: winner → supporters one by one → their +points → your result → the rest.
+  const SUP_START = 1100;
+  const SUP_STEP = 380;
+  const plusAt = SUP_START + supporters.length * SUP_STEP + 250;
+  const youAt = plusAt + supporters.length * 160 + 400;
+
   return (
     <View style={{ gap: 14 }}>
-      {kind === 'win' && <Confetti count={70} />}
+      {winner && <Confetti count={70} />}
       {kind === 'drink' && <EmojiRain emoji={mine?.shot ? '🥃' : '🍺'} count={16} />}
       <RoundHeader state={state} />
-      <View style={{ alignItems: 'center', justifyContent: 'center', minHeight: 260 }}>
-        <Sunburst size={440} color={kind === 'win' ? 'rgba(255,255,255,0.14)' : kind === 'drink' ? 'rgba(255,220,120,0.12)' : 'rgba(255,255,255,0.05)'} />
-        {me && mine && (
-          <PopIn from={0.2}>
-            {kind === 'drink' ? (
-              <Wobble deg={10} duration={300}>
-                <AnimalAvatar avatar={me.avatar} size={130} mood="drink" />
-              </Wobble>
-            ) : kind === 'loss' ? (
-              <Shake trigger={1} strength={12}>
-                <AnimalAvatar avatar={me.avatar} size={130} mood="nervous" />
-              </Shake>
-            ) : (
-              <Bob amount={8} duration={400}>
-                <AnimalAvatar avatar={me.avatar} size={130} mood="happy" />
+
+      {/* 1. The winner, front and centre */}
+      <View style={{ alignItems: 'center', justifyContent: 'center', minHeight: 250 }}>
+        <Sunburst size={440} color="rgba(255,255,255,0.13)" />
+        {winner ? (
+          <>
+            <PopIn from={0.1}>
+              <Bob amount={9} duration={380}>
+                <AnimalAvatar avatar={winner.avatar} size={140} mood="happy" />
               </Bob>
-            )}
-          </PopIn>
+            </PopIn>
+            <Slam text={`${winner.name} WINS!`} size={46} color={colors.gold} delay={200} />
+          </>
+        ) : (
+          <>
+            <Row style={{ justifyContent: 'center' }}>
+              {r.challengers.map((id, i) => (
+                <PopIn key={id} delay={i * 150}>
+                  <AnimalAvatar avatar={playerById(state, id)!.avatar} size={100} mood="nervous" />
+                </PopIn>
+              ))}
+            </Row>
+            <Slam text="🤝 IT'S A DRAW!" size={44} delay={200} />
+          </>
         )}
-        <Slam text={headline} size={kind === 'neutral' ? 40 : 62} color={kind === 'win' ? colors.gold : kind === 'drink' ? colors.white : colors.white} delay={150} />
-        {sub ? (
-          <SlideIn from="bottom" delay={450}>
-            <Text style={styles.resultSub}>{sub}</Text>
-          </SlideIn>
-        ) : null}
       </View>
 
-      {score.multiplier > 1 ? (
-        <UnderdogVictory name={playerById(state, winnerId)?.name ?? ''} mode={state.settings.mode} />
-      ) : (
-        <SlideIn from="bottom" delay={350}>
-          <View style={styles.winnerBanner}>
-            <Text style={styles.winnerText}>{r.outcome === 'DRAW' ? '🤝 Draw!' : `🏆 ${playerById(state, winnerId)?.name} won the face-off`}</Text>
+      {score.multiplier > 1 && winner && <UnderdogVictory name={winner.name} mode={state.settings.mode} />}
+
+      {/* 2. Everyone who backed the winner, one by one, then 3. their +points */}
+      {winner && (
+        <SlideIn from="bottom" delay={SUP_START - 250}>
+          <View style={styles.panel}>
+            <Text style={styles.panelTitle}>🎯 Called it!</Text>
+            {supporters.length === 0 ? (
+              <Dim>Nobody saw that coming. 😱</Dim>
+            ) : (
+              supporters.map((p, i) => (
+                <PopIn key={p.id} delay={SUP_START + i * SUP_STEP} from={0.2}>
+                  <Row style={styles.supporterRow}>
+                    <AnimalAvatar avatar={p.avatar} size={44} mood="happy" />
+                    <Text style={styles.supporterName} numberOfLines={1}>
+                      {p.name}
+                      {p.id === myId ? ' (you)' : ''}
+                    </Text>
+                    <PlusPoints points={score.perPlayer[p.id].points} delay={plusAt + i * 160} />
+                  </Row>
+                </PopIn>
+              ))
+            )}
           </View>
         </SlideIn>
       )}
 
+      {/* Your own result */}
+      {mine && (
+        <PopIn delay={winner ? youAt : 500}>
+          <Shake trigger={kind === 'loss' ? 1 : 0} strength={kind === 'loss' ? 10 : 0}>
+            <View style={[styles.youStrip, kind === 'win' && styles.youWin, kind === 'drink' && styles.youDrink]}>
+              {me && (
+                <Wobble deg={kind === 'drink' ? 10 : 0} duration={300}>
+                  <AnimalAvatar avatar={me.avatar} size={48} mood={kind === 'win' ? 'happy' : kind === 'drink' ? 'drink' : 'nervous'} />
+                </Wobble>
+              )}
+              <View style={{ flex: 1 }}>
+                <Text style={styles.youHead}>YOU: {headline}</Text>
+                {sub ? <Text style={styles.youSub}>{sub}</Text> : null}
+              </View>
+            </View>
+          </Shake>
+        </PopIn>
+      )}
+
       {party && (
-        <SlideIn from="bottom" delay={450}>
+        <SlideIn from="bottom" delay={winner ? youAt + 300 : 600}>
           <View style={styles.panel}>
             <Text style={styles.panelTitle}>🍺 Drink up</Text>
             <Row style={{ flexWrap: 'wrap', gap: 8 }}>
@@ -633,7 +696,7 @@ export function Result({ state }: { state: GameState }) {
         </SlideIn>
       )}
 
-      <Standings state={state} />
+      <Standings state={state} delay={winner ? youAt + 500 : 800} />
 
       {isHost ? (
         <Button
@@ -718,6 +781,16 @@ const styles = StyleSheet.create({
   waitText: { color: colors.white, fontFamily: fonts.display, fontSize: 20, textAlign: 'center' },
   input: { backgroundColor: colors.white, color: colors.ink, fontSize: 18, fontFamily: fonts.bodySemi, padding: 12, borderRadius: 12 },
   resultSub: { color: colors.white, fontSize: 20, fontFamily: fonts.display, textAlign: 'center' },
+  supporterRow: { gap: 10, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 16, paddingVertical: 4, paddingHorizontal: 8 },
+  supporterName: { color: colors.white, fontFamily: fonts.display, fontSize: 18, flex: 1 },
+  plus: { backgroundColor: colors.green, borderRadius: 12, paddingHorizontal: 10, paddingVertical: 2, borderWidth: 2.5, borderColor: colors.ink },
+  plusBig: { backgroundColor: colors.gold },
+  plusText: { color: colors.ink, fontFamily: fonts.display, fontSize: 20 },
+  youStrip: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'rgba(20,4,40,0.6)', borderRadius: 20, padding: 10, borderWidth: 2, borderColor: 'rgba(255,255,255,0.2)' },
+  youWin: { borderColor: colors.green, backgroundColor: 'rgba(46,224,127,0.18)' },
+  youDrink: { borderColor: colors.red, backgroundColor: 'rgba(255,71,87,0.25)' },
+  youHead: { color: colors.white, fontFamily: fonts.display, fontSize: 22 },
+  youSub: { color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 14 },
   winnerBanner: { backgroundColor: colors.gold, borderRadius: 18, paddingVertical: 10, alignItems: 'center', borderBottomWidth: 5, borderBottomColor: colors.goldLip },
   winnerText: { color: colors.ink, fontFamily: fonts.display, fontSize: 20 },
   drinkChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(255,71,87,0.3)', borderRadius: 99, paddingRight: 10, paddingLeft: 3, paddingVertical: 2 },

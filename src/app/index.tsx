@@ -12,6 +12,7 @@ import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { ANIMALS } from '@/avatar/catalog';
 import { useRoom } from '@/net/RoomProvider';
 import { AgeGate } from '@/room/Lobby';
+import { shouldShowIntro } from '@/state/intro';
 import { useProfile } from '@/state/profile';
 import { CoinCounter } from '@/ui/Coin';
 import { Button, Dim, Screen, tap } from '@/ui/kit';
@@ -125,7 +126,7 @@ export default function Home() {
   const [ageGate, setAgeGate] = useState(false);
 
   if (!loaded) return <Screen>{null}</Screen>;
-  if (!profile.seenIntro) return <Redirect href="/welcome" />;
+  if (shouldShowIntro(profile.seenIntro)) return <Redirect href="/welcome" />;
 
   const locked = !profile.premium;
   const trialAvailable = !profile.premium && !profile.partyTrialUsed;

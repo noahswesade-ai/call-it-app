@@ -5,6 +5,8 @@ import { useRoom } from '@/net/RoomProvider';
 import { Lobby } from '@/room/Lobby';
 import { BetsReveal, Betting, Challenge, Matchup, Result, Spin, myResultTint } from '@/room/Phases';
 import { Podium } from '@/room/Podium';
+import { TimerBar } from '@/room/TimerBar';
+import { phaseDuration } from '@/game/engine';
 import { Body, Button, Dim, H1, Screen } from '@/ui/kit';
 import { Bob } from '@/ui/motion';
 
@@ -77,7 +79,16 @@ export default function Room() {
     state.phase === 'matchup' ? ZoomIn.duration(350) : state.phase === 'lobby' ? FadeIn.duration(300) : SlideInRight.duration(320);
 
   return (
-    <Screen scroll style={{ flexGrow: 1 }} tint={tint}>
+    <Screen
+      scroll
+      style={{ flexGrow: 1 }}
+      tint={tint}
+      footer={
+        state.phaseEndsAt !== undefined && phaseDuration(state) ? (
+          <TimerBar key={`${state.phase}-${state.round?.number}`} endsAt={state.phaseEndsAt} total={phaseDuration(state)!} />
+        ) : undefined
+      }
+    >
       <Animated.View
         key={`${state.phase}-${state.round?.number ?? 0}`}
         entering={entering}

@@ -2,7 +2,19 @@
 
 _Last updated: 2026-11-09_
 
-## 🐶 Underdog update (latest)
+## 🎡 Polish update (latest)
+- **Underdog rule:** a challenger is the Underdog only with **under 33%** of the vote (and at least 4 bettors picking a side). If they win it's ×3: points in Classic, sips in Party. No other split has a multiplier.
+- **Timer bar:** a yellow loading bar at the bottom of every timed screen (VS, wheel, betting, reveal, results).
+- **Wheel:**
+  - A ticking sound that slows down with the wheel, then a chime when it lands.
+  - The chosen slice grows and glows while the others dim.
+  - A box then shows the category, a one-line description and the difficulty.
+- **Underdog screen** is now green and positive ("UNDERDOG! A long shot has entered the arena"). The glowing ×3 arrives later, with "POINTS TRIPLED" or "SIPS TRIPLED".
+- **Result screen:** the winner pops up first, then everyone who backed them (animal and name), then a +1 (or +3) pops beside each, then your own result and the standings.
+- **Awards:** each one now gives its winner **+20 gold coins** and says exactly what it rewards.
+- **Intro:** step 3 shows the two animals on their team colors. In development (the preview link and Expo Go), the intro opens on every load so it can be tweaked; real players only see it once.
+
+## 🐶 Underdog update
 - **Renamed to Underdog** (app name, home logo, app IDs `com.underdoggame.party`).
 - **Signature rule, Underdog ×3:** when bets are revealed, a challenger backed by 25% or less of the room (with at least 4 bettors picking a side) is the Underdog. If they win:
   - Classic: their backers score **×3**.
