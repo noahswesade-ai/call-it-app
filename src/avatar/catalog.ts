@@ -1,21 +1,16 @@
 import type { AvatarLoadout } from '@/game/types';
 
-// Avatar catalog (PLAN.md §5). Prices are in tokens. Everything listed here is
-// drawable by AnimalAvatar; polished art can replace the drawings later without
-// changing ids.
+/**
+ * Avatar catalog: every animal and accessory, its rarity tier and its price in
+ * gold coins. The reasoning behind tiers and prices is in PRICING.md.
+ *
+ * Price ladder (≈ real-money value at the base pack rate of 500 coins = $0.99):
+ *   Animals      Common 500 (~$1) · Rare 1,500 (~$3) · Epic 2,500 (~$5) · Legendary 5,000 (~$10)
+ *   Accessories  Common 150 · Rare 400 · Epic 900 · Legendary 2,000
+ */
 
 export type Tier = 'free' | 'common' | 'rare' | 'epic' | 'legendary';
 
-export interface AnimalDef {
-  id: string;
-  name: string;
-  tier: Tier;
-  price: number;
-  /** Suggested starting color. */
-  defaultColor: string;
-}
-
-export const TIER_PRICE: Record<Tier, number> = { free: 0, common: 400, rare: 1000, epic: 2500, legendary: 6000 };
 export const TIER_LABEL: Record<Tier, string> = {
   free: 'Free',
   common: 'Common',
@@ -24,136 +19,166 @@ export const TIER_LABEL: Record<Tier, string> = {
   legendary: 'Legendary',
 };
 
-const a = (id: string, name: string, tier: Tier, defaultColor: string): AnimalDef => ({
-  id,
-  name,
-  tier,
-  price: TIER_PRICE[tier],
-  defaultColor,
-});
+export const TIER_COLOR: Record<Tier, string> = {
+  free: '#B9AEDB',
+  common: '#2EE07F',
+  rare: '#22C7F0',
+  epic: '#B57BFF',
+  legendary: '#FFC93C',
+};
 
-export const ANIMALS: AnimalDef[] = [
-  a('cat', 'Cat', 'free', 'orange'),
-  a('dog', 'Dog', 'free', 'tan'),
-  a('frog', 'Frog', 'free', 'green'),
-  a('bear', 'Bear', 'free', 'brown'),
-  a('bunny', 'Bunny', 'common', 'cream'),
-  a('pig', 'Pig', 'common', 'pink'),
-  a('penguin', 'Penguin', 'common', 'navy'),
-  a('duck', 'Duck', 'common', 'yellow'),
-  a('fox', 'Fox', 'rare', 'orange'),
-  a('panda', 'Panda', 'rare', 'white'),
-  a('koala', 'Koala', 'rare', 'grey'),
-  a('raccoon', 'Raccoon', 'rare', 'grey'),
-  a('owl', 'Owl', 'rare', 'brown'),
-  a('shark', 'Shark', 'epic', 'sky'),
-  a('axolotl', 'Axolotl', 'epic', 'pink'),
-  a('redpanda', 'Red Panda', 'epic', 'rust'),
-  a('sloth', 'Sloth', 'epic', 'tan'),
-  a('octopus', 'Octopus', 'epic', 'purple'),
-  a('dragon', 'Dragon', 'legendary', 'green'),
-  a('unicorn', 'Unicorn', 'legendary', 'white'),
-  a('yeti', 'Yeti', 'legendary', 'white'),
-];
+export const ANIMAL_PRICE: Record<Tier, number> = { free: 0, common: 500, rare: 1500, epic: 2500, legendary: 5000 };
+export const ACCESSORY_PRICE: Record<Tier, number> = { free: 0, common: 150, rare: 400, epic: 900, legendary: 2000 };
 
-export interface ColorDef {
+export interface AnimalDef {
   id: string;
   name: string;
-  hex: string;
+  tier: Tier;
   price: number;
-  /** Special finishes render with a gradient. */
-  finish?: [string, string];
 }
 
-const c = (id: string, name: string, hex: string, price = 150): ColorDef => ({ id, name, hex, price });
+const animal = (id: string, name: string, tier: Tier): AnimalDef => ({ id, name, tier, price: ANIMAL_PRICE[tier] });
 
-export const COLORS: ColorDef[] = [
-  // 6 free base colors
-  c('orange', 'Orange', '#FF9F43', 0),
-  c('brown', 'Brown', '#A9744F', 0),
-  c('green', 'Green', '#4CD07D', 0),
-  c('tan', 'Tan', '#E0B784', 0),
-  c('grey', 'Grey', '#A4AEBB', 0),
-  c('white', 'Snow', '#F4F1EC', 0),
-  // 18 unlockable colors
-  c('pink', 'Bubblegum', '#FF9EC4'),
-  c('cream', 'Cream', '#FFE9C7'),
-  c('yellow', 'Sunshine', '#FFD93D'),
-  c('navy', 'Navy', '#3A4F7A'),
-  c('sky', 'Sky', '#7CC6FE'),
-  c('rust', 'Rust', '#D2603A'),
-  c('purple', 'Grape', '#9B6DFF'),
-  c('mint', 'Mint', '#9DF2C9'),
-  c('lilac', 'Lilac', '#CDB4FF'),
-  c('peach', 'Peach', '#FFB89A'),
-  c('teal', 'Teal', '#1FB5A8'),
-  c('red', 'Cherry', '#FF5A5F'),
-  c('black', 'Midnight', '#3B3B4F'),
-  c('neonGreen', 'Neon Lime', '#B6FF3B'),
-  c('neonPink', 'Neon Pink', '#FF3BD4'),
-  c('neonBlue', 'Neon Blue', '#3BE2FF'),
-  c('olive', 'Olive', '#8E9B4A'),
-  c('sand', 'Sand', '#D9C7A2'),
-  // Special finishes
-  { id: 'gold', name: 'Gold', hex: '#F5C542', price: 1500, finish: ['#FFE68A', '#D69E1E'] },
-  { id: 'galaxy', name: 'Galaxy', hex: '#5B3FA8', price: 1500, finish: ['#2B1B5C', '#C04BD9'] },
-  { id: 'rainbow', name: 'Rainbow', hex: '#FF6F91', price: 1500, finish: ['#FF6F91', '#4FC3F7'] },
-  { id: 'glow', name: 'Glow-in-the-Dark', hex: '#C6FF8A', price: 1500, finish: ['#EFFFD1', '#7CFF4F'] },
+export const ANIMALS: AnimalDef[] = [
+  // Free starters (the four you chose)
+  animal('dog', 'Dog', 'free'),
+  animal('cat', 'Cat', 'free'),
+  animal('frog', 'Frog', 'free'),
+  animal('bear', 'Bear', 'free'),
+  // Common: familiar farm & backyard animals — first unlock within a few days of play
+  animal('bunny', 'Bunny', 'common'),
+  animal('pig', 'Pig', 'common'),
+  animal('lamb', 'Lamb', 'common'),
+  animal('beaver', 'Beaver', 'common'),
+  animal('seal', 'Seal', 'common'),
+  animal('squirrel', 'Squirrel', 'common'),
+  // Rare: cute & distinctive
+  animal('owl', 'Owl', 'rare'),
+  animal('koala', 'Koala', 'rare'),
+  animal('fawn', 'Fawn', 'rare'),
+  animal('flamingo', 'Flamingo', 'rare'),
+  animal('chameleon', 'Chameleon', 'rare'),
+  // Epic: the internet's favourite animals
+  animal('panda', 'Panda', 'epic'),
+  animal('fox', 'Fox', 'epic'),
+  animal('redpanda', 'Red Panda', 'epic'),
+  animal('pangolin', 'Pangolin', 'epic'),
+  // Legendary: fantastical / cult favourites, the long-term goal
+  animal('axolotl', 'Axolotl', 'legendary'),
+  animal('narwhal', 'Narwhal', 'legendary'),
+  animal('dragon', 'Dragon', 'legendary'),
 ];
 
-export type AccessorySlot = 'head' | 'face' | 'outfit' | 'hand';
+/** Where an accessory sits on the face. */
+export type AccessorySlot = 'head' | 'eyes' | 'mouth' | 'neck' | 'ears';
+
+export const SLOT_LABEL: Record<AccessorySlot, string> = {
+  head: 'Head',
+  eyes: 'Eyes',
+  mouth: 'Face',
+  neck: 'Neck',
+  ears: 'Ears',
+};
 
 export interface AccessoryDef {
   id: string;
   name: string;
   slot: AccessorySlot;
+  tier: Tier;
   price: number;
+  /** Party-themed (drinking/adult) — only shown after the 18+ age check. */
+  adult?: boolean;
+  /** Fine placement tweaks: scale and vertical nudge (fractions of avatar size). */
+  scale?: number;
+  dy?: number;
 }
 
-const x = (id: string, name: string, slot: AccessorySlot, price: number): AccessoryDef => ({ id, name, slot, price });
+const acc = (
+  id: string,
+  name: string,
+  slot: AccessorySlot,
+  tier: Tier,
+  extra: Partial<Pick<AccessoryDef, 'adult' | 'scale' | 'dy'>> = {},
+): AccessoryDef => ({ id, name, slot, tier, price: ACCESSORY_PRICE[tier], ...extra });
 
 export const ACCESSORIES: AccessoryDef[] = [
-  x('cap', 'Cap', 'head', 100),
-  x('beanie', 'Beanie', 'head', 150),
-  x('partyHat', 'Party Hat', 'head', 200),
-  x('cowboy', 'Cowboy Hat', 'head', 400),
-  x('chef', 'Chef Hat', 'head', 400),
-  x('viking', 'Viking Helmet', 'head', 700),
-  x('halo', 'Halo', 'head', 900),
-  x('crown', 'Crown', 'head', 1200),
-  x('sunglasses', 'Sunglasses', 'face', 150),
-  x('heartGlasses', 'Heart Glasses', 'face', 300),
-  x('monocle', 'Monocle', 'face', 400),
-  x('mustache', 'Mustache', 'face', 250),
-  x('clownNose', 'Clown Nose', 'face', 200),
-  x('hoodie', 'Hoodie', 'outfit', 300),
-  x('tux', 'Tuxedo', 'outfit', 800),
-  x('hawaiian', 'Hawaiian Shirt', 'outfit', 500),
-  x('jersey', 'Sports Jersey', 'outfit', 400),
-  x('cape', 'Superhero Cape', 'outfit', 1000),
-  x('pajamas', 'Pajamas', 'outfit', 350),
-  x('leather', 'Leather Jacket', 'outfit', 900),
-  x('trophy', 'Trophy', 'hand', 600),
-  x('foamFinger', 'Foam Finger', 'hand', 300),
-  x('mic', 'Microphone', 'hand', 400),
-  x('pizza', 'Pizza Slice', 'hand', 200),
+  // ── Head ──
+  acc('beanie', 'Beanie', 'head', 'common'),
+  acc('partyhat', 'Party Hat', 'head', 'common', { scale: 0.85, dy: -0.04 }),
+  acc('redbow', 'Red Bow', 'head', 'common', { scale: 0.6, dy: 0.04 }),
+  acc('bunnyears', 'Bunny Ears', 'head', 'common', { scale: 1.05, dy: -0.06 }),
+  acc('butterflyclip', 'Butterfly Clip', 'head', 'common', { scale: 0.5, dy: 0.06 }),
+  acc('tophat', 'Top Hat', 'head', 'rare'),
+  acc('piratehat', 'Pirate Hat', 'head', 'rare', { scale: 1.05 }),
+  acc('flowercrown', 'Flower Crown', 'head', 'rare', { scale: 1.0, dy: 0.06 }),
+  acc('headphones', 'Headphones', 'head', 'rare', { scale: 1.05, dy: 0.12 }),
+  acc('chefhat', 'Chef Hat', 'head', 'rare'),
+  acc('wizardhat', 'Wizard Hat', 'head', 'epic', { scale: 1.05, dy: -0.06 }),
+  acc('devilhorns', 'Devil Horns', 'head', 'epic', { scale: 1.0, dy: 0.02 }),
+  acc('halo', 'Halo', 'head', 'epic', { scale: 0.9, dy: -0.12 }),
+  acc('laurel', 'Laurel Wreath', 'head', 'epic', { scale: 1.0, dy: 0.06 }),
+  acc('mohawk', 'Mohawk', 'head', 'epic', { scale: 0.95, dy: -0.04 }),
+  acc('rainbowwig', 'Rainbow Wig', 'head', 'epic', { scale: 1.15, dy: 0.04 }),
+  acc('crown', 'Royal Crown', 'head', 'legendary', { scale: 0.85 }),
+  acc('tiara', 'Tiara', 'head', 'legendary', { scale: 0.8, dy: 0.04 }),
+  // ── Eyes ──
+  acc('roundglasses', 'Round Glasses', 'eyes', 'common'),
+  acc('starglasses', 'Star Glasses', 'eyes', 'rare'),
+  acc('heartglasses', 'Heart Glasses', 'eyes', 'rare'),
+  acc('heromask', 'Hero Mask', 'eyes', 'rare'),
+  acc('monocle', 'Monocle', 'eyes', 'rare', { scale: 0.55, dy: 0.08 }),
+  acc('cybervisor', 'Cyber Visor', 'eyes', 'epic', { scale: 1.1 }),
+  acc('masquerade', 'Masquerade Mask', 'eyes', 'epic', { scale: 1.05, dy: -0.04 }),
+  // ── Face (mouth & nose) ──
+  acc('mustache', 'Mustache', 'mouth', 'common'),
+  acc('beard', 'Santa Beard', 'mouth', 'rare', { scale: 1.3, dy: 0.12 }),
+  acc('nosering', 'Nose Ring', 'mouth', 'epic', { scale: 0.45, dy: -0.06 }),
+  // ── Neck ──
+  acc('bowtie', 'Polka Bow Tie', 'neck', 'common'),
+  acc('tie', 'Striped Tie', 'neck', 'common', { scale: 0.8, dy: 0.04 }),
+  acc('scarf', 'Cozy Scarf', 'neck', 'common', { scale: 1.1, dy: 0.06 }),
+  acc('pearls', 'Pearl Necklace', 'neck', 'rare'),
+  acc('shellnecklace', 'Shell Necklace', 'neck', 'epic'),
+  acc('gemcollar', 'Gem Collar', 'neck', 'epic'),
+  acc('goldchain', 'Gold Chain', 'neck', 'legendary', { scale: 1.1, dy: 0.04 }),
+  // ── Ears ──
+  acc('hoops', 'Gold Hoops', 'ears', 'rare'),
+  acc('moonearrings', 'Moon & Star Earrings', 'ears', 'rare'),
+  acc('diamondstuds', 'Diamond Studs', 'ears', 'legendary'),
+  // ── Party collection (18+) ──
+  acc('pokervisor', 'Poker Visor', 'head', 'rare', { adult: true, scale: 1.0, dy: 0.04 }),
+  acc('martiniband', 'Martini Headband', 'head', 'epic', { adult: true, scale: 0.95 }),
+  acc('rosetophat', 'Rose Top Hat', 'head', 'epic', { adult: true, scale: 0.95 }),
+  acc('beerhelmet', 'Beer Helmet', 'head', 'legendary', { adult: true, scale: 1.25, dy: 0.02 }),
+  acc('cateyeglasses', 'Cat-Eye Shades', 'eyes', 'rare', { adult: true }),
+  acc('lacemask', 'Lace Mask', 'eyes', 'epic', { adult: true, scale: 1.05 }),
+  acc('boa', 'Feather Boa', 'neck', 'rare', { adult: true, scale: 1.3, dy: 0.08 }),
+  acc('spikedcollar', 'Spiked Heart Collar', 'neck', 'epic', { adult: true }),
+  acc('diceearrings', 'Lucky Dice Earrings', 'ears', 'rare', { adult: true }),
 ];
 
-export const ANIMAL_BY_ID = Object.fromEntries(ANIMALS.map((x) => [x.id, x]));
-export const COLOR_BY_ID = Object.fromEntries(COLORS.map((x) => [x.id, x]));
-export const ACCESSORY_BY_ID = Object.fromEntries(ACCESSORIES.map((x) => [x.id, x]));
+export const ANIMAL_BY_ID: Record<string, AnimalDef> = Object.fromEntries(ANIMALS.map((x) => [x.id, x]));
+export const ACCESSORY_BY_ID: Record<string, AccessoryDef> = Object.fromEntries(ACCESSORIES.map((x) => [x.id, x]));
 
-export const FREE_ITEMS: string[] = [
-  ...ANIMALS.filter((x) => x.price === 0).map((x) => `animal:${x.id}`),
-  ...COLORS.filter((x) => x.price === 0).map((x) => `color:${x.id}`),
-];
+export const SLOTS: AccessorySlot[] = ['head', 'eyes', 'mouth', 'neck', 'ears'];
 
-export function itemKey(kind: 'animal' | 'color' | 'accessory', id: string): string {
+export const FREE_ITEMS: string[] = ANIMALS.filter((x) => x.price === 0).map((x) => `animal:${x.id}`);
+
+export function itemKey(kind: 'animal' | 'accessory', id: string): string {
   return `${kind}:${id}`;
 }
 
 export function randomStarterAvatar(rng: () => number = Math.random): AvatarLoadout {
   const free = ANIMALS.filter((x) => x.tier === 'free');
-  const animal = free[Math.floor(rng() * free.length)];
-  return { animal: animal.id, color: animal.defaultColor };
+  return { animal: free[Math.floor(rng() * free.length)].id };
+}
+
+/** Repairs a saved loadout from an older version of the app (old animals, colors, slots). */
+export function sanitizeLoadout(l: Partial<AvatarLoadout> & Record<string, unknown>): AvatarLoadout {
+  const out: AvatarLoadout = { animal: ANIMAL_BY_ID[l.animal as string] ? (l.animal as string) : 'dog' };
+  for (const slot of SLOTS) {
+    const id = l[slot] as string | undefined;
+    if (id && ACCESSORY_BY_ID[id]?.slot === slot) out[slot] = id;
+  }
+  return out;
 }

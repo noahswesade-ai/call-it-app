@@ -12,6 +12,7 @@ import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { ANIMALS } from '@/avatar/catalog';
 import { useRoom } from '@/net/RoomProvider';
 import { AgeGate } from '@/room/Lobby';
+import { DEV_UNLOCK_PARTY } from '@/state/access';
 import { shouldShowIntro } from '@/state/intro';
 import { useProfile } from '@/state/profile';
 import { CoinCounter } from '@/ui/Coin';
@@ -43,13 +44,13 @@ function Logo() {
 
 /** A row of free animals peeking up and bouncing, purely for charm. */
 function AnimalParade() {
-  const parade = ANIMALS.filter((a) => a.tier === 'free' || a.id === 'fox' || a.id === 'axolotl' || a.id === 'dragon');
+  const parade = ANIMALS.filter((a) => ['dog', 'cat', 'frog', 'bear', 'fox', 'axolotl', 'dragon'].includes(a.id));
   return (
     <View style={styles.parade}>
       {parade.map((a, i) => (
         <PopIn key={a.id} delay={500 + i * 90}>
           <Bob amount={8} duration={700 + (i % 3) * 150} delay={i * 120}>
-            <AnimalAvatar avatar={{ animal: a.id, color: a.defaultColor }} size={46} mood={i % 3 === 0 ? 'happy' : 'neutral'} />
+            <AnimalAvatar avatar={{ animal: a.id }} size={46} mood={i % 3 === 0 ? 'happy' : 'neutral'} />
           </Bob>
         </PopIn>
       ))}
@@ -101,7 +102,7 @@ function PartyBox({ locked, trialAvailable, onPress }: { locked: boolean; trialA
           <Text style={styles.partySub}>Sips & shots, drinking challenges, spicy questions & more</Text>
           <View style={styles.partyBadgeRow}>
             {!locked ? (
-              <Text style={[styles.badge, { backgroundColor: colors.green, color: colors.ink }]}>UNLOCKED</Text>
+              <Text style={[styles.badge, { backgroundColor: colors.green, color: colors.ink }]}>{DEV_UNLOCK_PARTY ? 'UNLOCKED (TEST BUILD)' : 'UNLOCKED'}</Text>
             ) : trialAvailable ? (
               <Text style={[styles.badge, { backgroundColor: colors.gold, color: colors.ink }]}>1 FREE GAME</Text>
             ) : (
@@ -128,8 +129,8 @@ export default function Home() {
   if (!loaded) return <Screen>{null}</Screen>;
   if (shouldShowIntro(profile.seenIntro)) return <Redirect href="/welcome" />;
 
-  const locked = !profile.premium;
-  const trialAvailable = !profile.premium && !profile.partyTrialUsed;
+  const locked = !profile.premium && !DEV_UNLOCK_PARTY;
+  const trialAvailable = locked && !profile.partyTrialUsed;
 
   const hostParty = () => {
     hostRoom({ mode: 'party' });

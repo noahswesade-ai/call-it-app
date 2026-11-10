@@ -22,8 +22,10 @@ export type Phase =
 
 export const DURATIONS = {
   matchup: 4000,
-  /** ~5.5s of spinning that slows to a crawl, then the category box. */
-  spin: 9500,
+  /** The last round gets a longer, louder build-up. */
+  finalMatchup: 6500,
+  /** ~4.8s of spinning that slows to a crawl, then the category box (≈8s total). */
+  spin: 8000,
   betting: 30000,
   bettingPressure: 10000, // the final 10s of betting turn red
   betsReveal: 4000,
@@ -169,7 +171,7 @@ export function pendingBettors(state: GameState): string[] {
 export function phaseDuration(state: GameState): number | undefined {
   switch (state.phase) {
     case 'matchup':
-      return DURATIONS.matchup;
+      return isFinalRound(state) ? DURATIONS.finalMatchup : DURATIONS.matchup;
     case 'spin':
       return DURATIONS.spin;
     case 'betting':
@@ -258,7 +260,7 @@ function beginRound(state: GameState, number: number, now: number, rng: Rng): Ga
   return {
     ...state,
     phase: 'matchup',
-    phaseEndsAt: now + DURATIONS.matchup,
+    phaseEndsAt: now + (number === state.settings.rounds ? DURATIONS.finalMatchup : DURATIONS.matchup),
     round,
     timesChosen: {
       ...state.timesChosen,

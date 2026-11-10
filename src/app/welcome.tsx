@@ -26,8 +26,8 @@ function Step({ n, delay, children, caption, highlight }: { n: number; delay: nu
   );
 }
 
-function Mini({ animal, color, mood }: { animal: string; color: string; mood?: 'happy' | 'nervous' | 'drink' }) {
-  return <AnimalAvatar avatar={{ animal, color }} size={40} mood={mood} />;
+function Mini({ animal, mood }: { animal: string; color?: string; mood?: 'happy' | 'nervous' | 'drink' | 'neutral' | 'sad' }) {
+  return <AnimalAvatar avatar={{ animal }} size={44} mood={mood} />;
 }
 
 export default function Welcome() {
@@ -54,11 +54,11 @@ export default function Welcome() {
 
       <Step n={1} delay={100} caption="Two players face off">
         <Bob amount={4} duration={500}>
-          <Mini animal="cat" color="orange" mood="nervous" />
+          <Mini animal="cat" mood="neutral" />
         </Bob>
         <Text style={styles.vs}>⚔️</Text>
         <Bob amount={4} duration={500} delay={250}>
-          <Mini animal="frog" color="green" mood="nervous" />
+          <Mini animal="frog" mood="neutral" />
         </Bob>
       </Step>
 

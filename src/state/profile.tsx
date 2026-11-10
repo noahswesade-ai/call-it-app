@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { ANIMAL_BY_ID, FREE_ITEMS, itemKey, randomStarterAvatar } from '@/avatar/catalog';
+import { ANIMAL_BY_ID, FREE_ITEMS, randomStarterAvatar, sanitizeLoadout } from '@/avatar/catalog';
 import { randomId } from '@/game/rng';
 import type { AvatarLoadout } from '@/game/types';
 
@@ -23,6 +23,12 @@ export interface Profile {
   ageConfirmed: boolean;
   /** True once the first-launch "how to play" screen has been closed. */
   seenIntro: boolean;
+  starterPackBought: boolean;
+  /** When the starter-pack offer first appeared (ms), for its 72-hour window. */
+  starterOfferAt?: number;
+  /** Rewarded videos watched today (resets daily). */
+  adDay: string;
+  adCount: number;
   gamesPlayed: number;
   gamesWon: number;
 }
@@ -54,6 +60,9 @@ function newProfile(): Profile {
     partyTrialUsed: false,
     ageConfirmed: false,
     seenIntro: false,
+    starterPackBought: false,
+    adDay: '',
+    adCount: 0,
     gamesPlayed: 0,
     gamesWon: 0,
   };
@@ -92,7 +101,11 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         if (!raw) return;
         const saved = JSON.parse(raw) as Partial<Profile>;
         // Profiles from before starter names: a saved name was chosen by the player.
-        setProfile({ ...newProfile(), namedByUser: !!saved.name, ...saved });
+        const merged = { ...newProfile(), namedByUser: !!saved.name, ...saved };
+        // Older versions had different animals, colors and accessory slots.
+        merged.avatar = sanitizeLoadout(merged.avatar as never);
+        merged.owned = Array.from(new Set([...FREE_ITEMS, ...(merged.owned ?? []).filter((k) => !k.startsWith('color:'))]));
+        setProfile(merged);
       })
       .finally(() => setLoaded(true));
   }, []);
@@ -109,12 +122,6 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       if (profile.owned.includes(key) || profile.tokens < price) return false;
       setProfile((p) => {
         const owned = [...p.owned, key];
-        // Unlocking an animal also unlocks its signature color.
-        if (key.startsWith('animal:')) {
-          const animal = ANIMAL_BY_ID[key.slice(7)];
-          const colorKey = animal && itemKey('color', animal.defaultColor);
-          if (colorKey && !owned.includes(colorKey)) owned.push(colorKey);
-        }
         return { ...p, tokens: p.tokens - price, owned };
       });
       return true;

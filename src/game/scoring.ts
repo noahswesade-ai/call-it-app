@@ -8,14 +8,17 @@ import type { Mode, Outcome, Pick } from './types';
  *   UNDERDOG_THRESHOLD (33%) of the bettors who picked a side, that challenger
  *   is the Underdog. If the Underdog then wins, the round is worth ×3. There is
  *   no other multiplier for any other split:
- *     - Classic: everyone who backed the Underdog gets 3 points instead of 1.
- *     - Party:   everyone who bet against the Underdog drinks 3 sips instead of 1.
+ *     - everyone who backed the Underdog scores 3 points instead of 1, and
+ *     - in Party mode everyone who bet against them drinks 3 sips instead of 1.
  *
- * Share is counted only among bettors who picked a side (No Votes excluded), and
- * the Underdog only exists when at least MIN_BETTORS_FOR_UNDERDOG picked a side.
+ * Party mode keeps the same points and leaderboard as Classic; on top of that,
+ * every wrong call drinks as many sips as the right callers scored points.
+ *
+ * Share is counted only among bettors who picked a side (No Votes excluded). A
+ * challenger with zero votes is always the Underdog (0% < 33%).
  */
 
-export const MIN_BETTORS_FOR_UNDERDOG = 4;
+export const MIN_BETTORS_FOR_UNDERDOG = 1;
 export const UNDERDOG_THRESHOLD = 0.33;
 export const UNDERDOG_MULTIPLIER = 3;
 
@@ -96,9 +99,9 @@ export function scoreRound(input: RoundScoreInput): RoundScore {
     winnerShare = (outcome === 'A' ? votesA : votesB) / sidePickers;
   }
   const multiplier = underdog && outcome === underdog ? UNDERDOG_MULTIPLIER : 1;
-  // Classic multiplies the winners' points; Party multiplies the losers' sips.
-  const pointMult = party ? 1 : multiplier;
-  const sipMult = party ? multiplier : 1;
+  // Right calls score `multiplier` points; in Party, wrong calls drink the same number of sips.
+  const pointMult = multiplier;
+  const sipMult = multiplier;
 
   const perPlayer: Record<string, PlayerRoundScore> = {};
   const [a, b] = challengers;

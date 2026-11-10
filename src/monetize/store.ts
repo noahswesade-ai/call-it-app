@@ -12,12 +12,32 @@ export const STORE_IS_PLACEHOLDER = true;
 
 export const PREMIUM_PRICE = '$4.99';
 
+/**
+ * Coin packs (see PRICING.md). Base rate $0.99 = 500 coins; bigger packs add a
+ * growing bonus so the $9.99 "Most popular" and $49.99 "Best value" anchors pull
+ * buyers up the ladder.
+ */
 export const TOKEN_PACKS = [
-  { id: 'tokens_500', tokens: 500, price: '$0.99' },
-  { id: 'tokens_1500', tokens: 1500, price: '$2.99' },
-  { id: 'tokens_4000', tokens: 4000, price: '$6.99' },
-  { id: 'tokens_10000', tokens: 10000, price: '$14.99' },
+  { id: 'coins_500', tokens: 500, price: '$0.99', bonus: 0, tag: undefined },
+  { id: 'coins_2750', tokens: 2750, price: '$4.99', bonus: 10, tag: undefined },
+  { id: 'coins_6000', tokens: 6000, price: '$9.99', bonus: 20, tag: 'MOST POPULAR' },
+  { id: 'coins_13000', tokens: 13000, price: '$19.99', bonus: 30, tag: undefined },
+  { id: 'coins_35000', tokens: 35000, price: '$49.99', bonus: 40, tag: 'BEST VALUE' },
 ] as const;
+
+/** One-time starter pack: ~4× the value of the base pack. Offered after a player's 3rd game, for 72 hours. */
+export const STARTER_PACK = {
+  id: 'starter_pack',
+  price: '$1.99',
+  tokens: 2000,
+  accessory: 'starglasses',
+  offerAfterGames: 3,
+  offerHours: 72,
+} as const;
+
+/** Coins per rewarded video, and the daily cap (so ads don't replace buying). */
+export const AD_REWARD = 25;
+export const AD_DAILY_CAP = 6;
 
 export async function purchasePremium(): Promise<boolean> {
   // TODO(RevenueCat): Purchases.purchasePackage(offerings.current.lifetime)

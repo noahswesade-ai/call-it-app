@@ -10,6 +10,7 @@ import { canJoin, challengerPool, FREE_MAX_PLAYERS, FREE_ROUNDS, host, type Game
 import { notEveryoneWillPlay } from '@/game/selection';
 import type { Category, GameSettings, Mode } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
+import { canHostParty, DEV_UNLOCK_PARTY } from '@/state/access';
 import { useProfile } from '@/state/profile';
 import { Body, Button, Card, Dim, H2, Row, Segmented, Toggle, tap } from '@/ui/kit';
 import { Bob, PopIn, Pulse, SlideIn } from '@/ui/motion';
@@ -89,7 +90,7 @@ function YouCard() {
   return (
     <SlideIn from="bottom">
       <View style={styles.you}>
-        <Pressable onPress={() => router.push('/avatar')} accessibilityRole="button" accessibilityLabel="Customize your animal">
+        <Pressable onPress={() => router.push('/avatar')} accessibilityRole="button" accessibilityLabel="Customize your avatar">
           <Bob amount={5} duration={900}>
             <AnimalAvatar avatar={profile.avatar} size={96} mood="happy" />
           </Bob>
@@ -123,7 +124,7 @@ function YouCard() {
               </Pressable>
             )}
           </View>
-          <Button small variant="secondary" label="🎨 Customize animal" onPress={() => router.push('/avatar')} />
+          <Button small variant="secondary" label="🎨 Customize avatar" onPress={() => router.push('/avatar')} />
         </View>
       </View>
     </SlideIn>
@@ -137,7 +138,7 @@ export function Lobby({ state }: { state: GameState }) {
   const s = state.settings;
   const hostPlayer = host(state);
   const hostPremium = !!hostPlayer?.premium;
-  const partyAllowed = hostPremium || !profile.partyTrialUsed;
+  const partyAllowed = hostPremium || canHostParty(profile);
 
   const set = (patch: Partial<GameSettings>) => dispatch({ type: 'updateSettings', patch });
 
@@ -209,7 +210,7 @@ export function Lobby({ state }: { state: GameState }) {
             <Segmented<Mode>
               options={[
                 { value: 'classic', label: '🎉 Classic' },
-                { value: 'party', label: hostPremium ? '🍻 Party' : partyAllowed ? '🍻 Party (1 free)' : '🔒 Party' },
+                { value: 'party', label: hostPremium || DEV_UNLOCK_PARTY ? '🍻 Party' : partyAllowed ? '🍻 Party (1 free)' : '🔒 Party' },
               ]}
               value={s.mode}
               onChange={setMode}

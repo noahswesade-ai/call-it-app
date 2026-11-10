@@ -43,13 +43,23 @@ describe('underdogSide', () => {
     const t = bets('ABBBA'); // 2 of 5 = 40%
     expect(underdogSide(t.bettors, t.bets)).toBeUndefined();
   });
-  it('needs at least 4 bettors picking a side; No Votes do not count', () => {
-    const s = bets('ABB');
+  it('a challenger with zero votes is always the Underdog, even in small rooms', () => {
+    const s = bets('BB');
+    expect(underdogSide(s.bettors, s.bets)).toBe('A');
+    const t = bets('B');
+    expect(underdogSide(t.bettors, t.bets)).toBe('A');
+    const u = bets('AAA-');
+    expect(underdogSide(u.bettors, u.bets)).toBe('B');
+  });
+  it('No Votes do not count toward the share', () => {
+    const s = bets('ABB--'); // 1 of 3 = 33.3% → not under 33%
     expect(underdogSide(s.bettors, s.bets)).toBeUndefined();
-    const t = bets('ABB--');
-    expect(underdogSide(t.bettors, t.bets)).toBeUndefined();
-    const u = bets('ABBB--');
+    const u = bets('ABBB--'); // 25%
     expect(underdogSide(u.bettors, u.bets)).toBe('A');
+  });
+  it('nobody picked a side → no Underdog', () => {
+    const s = bets('--');
+    expect(underdogSide(s.bettors, s.bets)).toBeUndefined();
   });
   it('a challenger nobody backed is the Underdog', () => {
     const s = bets('BBBB');
@@ -103,12 +113,19 @@ describe('Party mode — Underdog ×3 on sips', () => {
     expect(s.perPlayer.ca.sips).toBe(0);
   });
 
-  it('Underdog wins: everyone who bet against them drinks 3, backers still get 1 point', () => {
+  it('Underdog wins: backers score 3 points, everyone against them drinks 3', () => {
     const s = run('ABBB');
     expect(s.multiplier).toBe(3);
     expect(s.perPlayer.b1.sips).toBe(3);
     expect(s.perPlayer.b3.sips).toBe(3);
-    expect(s.perPlayer.b0).toMatchObject({ points: 1, sips: 0 });
+    expect(s.perPlayer.b0).toMatchObject({ points: 3, sips: 0 });
+  });
+
+  it('Party keeps the same points as Classic; sips mirror the points', () => {
+    const party = run('AAB');
+    const classic = run('AAB', { mode: 'classic' });
+    expect(party.perPlayer.b0.points).toBe(classic.perPlayer.b0.points);
+    expect(party.perPlayer.b2.sips).toBe(party.perPlayer.b0.points);
   });
 
   it('No Vote is not multiplied', () => {

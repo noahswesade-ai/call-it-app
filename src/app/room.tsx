@@ -6,7 +6,7 @@ import { Lobby } from '@/room/Lobby';
 import { BetsReveal, Betting, Challenge, Matchup, Result, Spin, myResultTint } from '@/room/Phases';
 import { Podium } from '@/room/Podium';
 import { TimerBar } from '@/room/TimerBar';
-import { phaseDuration } from '@/game/engine';
+import { isFinalRound, phaseDuration } from '@/game/engine';
 import { Body, Button, Dim, H1, Screen } from '@/ui/kit';
 import { Bob } from '@/ui/motion';
 
@@ -70,7 +70,9 @@ export default function Room() {
   })();
 
   const tint =
-    state.phase === 'result'
+    state.phase === 'matchup' && isFinalRound(state)
+      ? 'fire'
+      : state.phase === 'result'
       ? myResultTint(state, myId)
       : state.settings.mode === 'party' && (state.phase === 'lobby' || state.phase === 'podium')
         ? 'party'

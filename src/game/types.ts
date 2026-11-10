@@ -52,11 +52,12 @@ export type MinigameId =
 
 export interface AvatarLoadout {
   animal: string;
-  color: string;
   head?: string;
-  face?: string;
-  outfit?: string;
-  hand?: string;
+  eyes?: string;
+  /** Mouth & nose items (mustache, beard, nose ring). */
+  mouth?: string;
+  neck?: string;
+  ears?: string;
 }
 
 export interface Player {

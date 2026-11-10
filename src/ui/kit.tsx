@@ -56,7 +56,7 @@ export function Screen({
   children: React.ReactNode;
   scroll?: boolean;
   style?: StyleProp<ViewStyle>;
-  tint?: 'red' | 'green' | 'party';
+  tint?: 'red' | 'green' | 'party' | 'fire';
   /** Pinned to the bottom of the screen above the content (e.g. the timer bar). */
   footer?: React.ReactNode;
 }) {

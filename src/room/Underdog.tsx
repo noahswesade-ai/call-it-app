@@ -61,20 +61,20 @@ function TimesThree({ delay }: { delay: number }) {
   useEffect(() => {
     o.value = withDelay(delay, withTiming(1, { duration: 80 }));
     s.value = withDelay(delay, withTiming(1, { duration: 380, easing: Easing.out(Easing.back(2.5)) }));
-    pulse.value = withDelay(delay + 400, withRepeat(withTiming(1.12, { duration: 280, easing: Easing.inOut(Easing.quad) }), -1, true));
+    pulse.value = withDelay(delay + 400, withRepeat(withTiming(1.06, { duration: 320, easing: Easing.inOut(Easing.quad) }), -1, true));
     const t = setTimeout(() => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
     }, delay);
     return () => clearTimeout(t);
   }, [delay, s, o, pulse]);
-  const st = useAnimatedStyle(() => ({ opacity: o.value, transform: [{ scale: s.value * pulse.value }, { rotate: '-6deg' }] }));
+  const st = useAnimatedStyle(() => ({ opacity: o.value, transform: [{ scale: s.value * pulse.value }, { rotate: '-3deg' }] }));
   const halo = useAnimatedStyle(() => ({ opacity: o.value * (0.35 + (pulse.value - 1) * 4), transform: [{ scale: 0.8 + (pulse.value - 1) * 3 }] }));
   return (
     <Animated.View style={st}>
       <View style={styles.x3Wrap}>
         <Animated.View style={[styles.halo, halo]} />
-        <Text style={styles.x3Shadow}>×{UNDERDOG_MULTIPLIER}</Text>
-        <Text style={styles.x3}>×{UNDERDOG_MULTIPLIER}</Text>
+        <Text style={styles.x3Shadow}>{UNDERDOG_MULTIPLIER}× MULTIPLIER</Text>
+        <Text style={styles.x3}>{UNDERDOG_MULTIPLIER}× MULTIPLIER</Text>
       </View>
     </Animated.View>
   );
@@ -128,47 +128,43 @@ export function UnderdogAlert({
       <Confetti count={60} origin="center" />
 
       <View style={styles.center}>
-        <PopIn from={0}>
-          <Text style={styles.alertTop}>✨ 🐶 ✨</Text>
-        </PopIn>
+        {/* 1. The headers: UNDERDOG + 3× MULTIPLIER */}
         <PopIn from={3}>
           <Shake trigger={live} strength={8}>
-            <Text style={styles.underdog}>UNDERDOG!</Text>
+            <Text style={styles.underdog}>🐶 UNDERDOG</Text>
           </Shake>
         </PopIn>
-        <PopIn delay={250} from={0.3}>
-          <Text style={styles.subtitle}>A long shot has entered the arena</Text>
-        </PopIn>
-
-        <PopIn delay={450} from={0}>
-          <View style={styles.dogCard}>
-            <Bob amount={8} duration={260}>
-              <AnimalAvatar avatar={underdog.avatar} size={110} mood="nervous" />
-            </Bob>
-            <View style={styles.dogTag}>
-              <Text style={styles.dogTagText}>🐶 {underdog.name}</Text>
-            </View>
-            <Text style={styles.onlyPct}>Only {pct}% believe in them</Text>
+        <TimesThree delay={350} />
+        {/* 2. Small print right under the headers so nobody misses it */}
+        <PopIn delay={800} from={0.5}>
+          <View style={styles.smallPrint}>
+            <Text style={styles.smallPrintText}>{party ? 'All points & sips ×3' : 'All points ×3'}</Text>
           </View>
         </PopIn>
 
-        <TimesThree delay={2100} />
-
-        <SlideIn from="bottom" delay={2700}>
-          <View style={styles.ruleCard}>
-            <Text style={styles.ruleText}>If {underdog.name} wins…</Text>
-            <Text style={styles.ruleBig}>{party ? '🍺 SIPS TRIPLED' : '🎯 POINTS TRIPLED'}</Text>
-            <Text style={styles.ruleText}>{party ? 'for everyone who bet against them' : 'for everyone who backed them'}</Text>
+        {/* 3. Who the Underdog is */}
+        <SlideIn from="bottom" delay={1300}>
+          <View style={styles.dogCard}>
+            <Bob amount={6} duration={420}>
+              <AnimalAvatar avatar={underdog.avatar} size={96} mood="sad" />
+            </Bob>
+            <View style={styles.dogTag}>
+              <Text style={styles.dogTagText}>{underdog.name}</Text>
+            </View>
+            <Text style={styles.onlyPct}>Only {pct}% believe in them</Text>
+            <Text style={styles.ifWins}>
+              If they win: {party ? 'believers score ×3, doubters drink ×3' : 'believers score ×3'}
+            </Text>
           </View>
         </SlideIn>
 
         {backers.length > 0 && (
-          <SlideIn from="bottom" delay={3100}>
+          <SlideIn from="bottom" delay={1800}>
             <View style={styles.backers}>
               <Text style={styles.backersLabel}>BRAVE CALLERS</Text>
               <View style={{ flexDirection: 'row', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
                 {backers.map((p, i) => (
-                  <PopIn key={p.id} delay={3200 + i * 120} from={0}>
+                  <PopIn key={p.id} delay={1900 + i * 120} from={0}>
                     <AnimalAvatar avatar={p.avatar} size={36} mood="happy" />
                   </PopIn>
                 ))}
@@ -188,7 +184,7 @@ export function UnderdogTag({ mode }: { mode: Mode }) {
     <Pulse scale={1.1} duration={380}>
       <View style={styles.tag}>
         <Text style={styles.tagText}>🐶 UNDERDOG ×{UNDERDOG_MULTIPLIER}</Text>
-        <Text style={styles.tagSub}>{mode === 'party' ? 'doubters drink ×3' : 'believers score ×3'}</Text>
+        <Text style={styles.tagSub}>{mode === 'party' ? 'points & sips ×3' : 'points ×3'}</Text>
       </View>
     </Pulse>
   );
@@ -208,7 +204,7 @@ export function UnderdogVictory({ name, mode }: { name: string; mode: Mode }) {
           <Text style={styles.victoryName}>{name}</Text>
           <View style={styles.victoryChip}>
             <Text style={styles.victoryX3}>×{UNDERDOG_MULTIPLIER}</Text>
-            <Text style={styles.victoryRule}>{mode === 'party' ? 'Doubters drink triple 🍺' : 'Believers score triple 🎯'}</Text>
+            <Text style={styles.victoryRule}>{mode === 'party' ? 'Points & sips tripled' : 'Points tripled 🎯'}</Text>
           </View>
         </LinearGradient>
       </Pulse>
@@ -222,12 +218,15 @@ const styles = StyleSheet.create({
   underdog: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 62,
+    fontSize: 50,
     letterSpacing: 1,
     textShadowColor: colors.ink,
     textShadowOffset: { width: 0, height: 5 },
     textShadowRadius: 0,
   },
+  smallPrint: { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 99, paddingHorizontal: 16, paddingVertical: 5 },
+  smallPrintText: { color: colors.white, fontFamily: fonts.display, fontSize: 18, letterSpacing: 0.5 },
+  ifWins: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 13, marginTop: 2, textAlign: 'center' },
   subtitle: { color: '#D8FFE9', fontFamily: fonts.bodyBold, fontSize: 16, textAlign: 'center' },
   blink: { fontFamily: fonts.display, textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 4 }, textShadowRadius: 0, textAlign: 'center' },
   dogCard: {
@@ -251,24 +250,24 @@ const styles = StyleSheet.create({
   x3: {
     color: colors.gold,
     fontFamily: fonts.display,
-    fontSize: 120,
-    lineHeight: 130,
+    fontSize: 46,
+    lineHeight: 54,
     textShadowColor: '#FFF3A6',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 26,
   },
   halo: {
     position: 'absolute',
-    width: 220,
-    height: 220,
-    borderRadius: 110,
+    width: 300,
+    height: 90,
+    borderRadius: 45,
     backgroundColor: 'rgba(255,214,90,0.55)',
     shadowColor: colors.gold,
     shadowOpacity: 1,
     shadowRadius: 40,
     shadowOffset: { width: 0, height: 0 },
   },
-  x3Shadow: { position: 'absolute', color: '#7A4A00', fontFamily: fonts.display, fontSize: 120, lineHeight: 130, top: 8 },
+  x3Shadow: { position: 'absolute', color: '#7A4A00', fontFamily: fonts.display, fontSize: 46, lineHeight: 54, top: 4 },
   ruleCard: { backgroundColor: colors.white, borderRadius: 20, paddingHorizontal: 18, paddingVertical: 10, alignItems: 'center', borderBottomWidth: 6, borderBottomColor: '#C9B8F0' },
   ruleText: { color: '#6B5A99', fontFamily: fonts.bodyBold, fontSize: 15 },
   ruleBig: { color: colors.ink, fontFamily: fonts.display, fontSize: 26 },

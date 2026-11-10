@@ -103,18 +103,73 @@ export function Matchup({ state }: { state: GameState }) {
   useEffect(() => {
     Haptics.notificationAsync(mine ? Haptics.NotificationFeedbackType.Warning : Haptics.NotificationFeedbackType.Success).catch(() => {});
   }, [mine]);
+  if (final) return <FinalRoundIntro state={state} mine={mine} />;
   return (
     <View style={styles.stage}>
       <View style={{ alignItems: 'center', justifyContent: 'center', height: 150 }}>
-        <Sunburst size={420} color={final ? 'rgba(255,71,87,0.18)' : 'rgba(255,255,255,0.07)'} />
-        <Slam text={final ? '🔥 FINAL ROUND 🔥' : `ROUND ${r.number}`} size={final ? 44 : 64} color={final ? colors.gold : colors.white} />
+        <Sunburst size={420} color="rgba(255,255,255,0.07)" />
+        <Slam text={`ROUND ${r.number}`} size={64} color={colors.white} />
         <SlideIn from="bottom" delay={500}>
-          <Text style={styles.subHead}>{final ? 'Double points. Double sips.' : `of ${state.settings.rounds}`}</Text>
+          <Text style={styles.subHead}>of {state.settings.rounds}</Text>
         </SlideIn>
       </View>
-      <FaceOff state={state} moodFor={(id) => (id === myId ? 'nervous' : undefined)} />
+      <FaceOff state={state} moodFor={() => 'neutral'} />
       {mine && (
         <PopIn delay={900}>
+          <Pulse scale={1.1} duration={400}>
+            <Text style={styles.youreUp}>⚡ YOU'RE UP! ⚡</Text>
+          </Pulse>
+        </PopIn>
+      )}
+    </View>
+  );
+}
+
+/** The last round's build-up: fire, a giant 2×, and who's leading, before the face-off. */
+function FinalRoundIntro({ state, mine }: { state: GameState; mine: boolean }) {
+  const { myId } = useRoom();
+  const party = state.settings.mode === 'party';
+  const ranks = rankings(state);
+  const leader = ranks[0];
+  const gap = ranks.length > 1 ? leader.totals.points - ranks[1].totals.points : 0;
+  useEffect(() => {
+    [0, 200, 400, 1300, 1450].forEach((ms) => setTimeout(() => tap('heavy'), ms));
+  }, []);
+  return (
+    <View style={styles.stage}>
+      <EmojiRain emoji="🔥" count={18} />
+      <View style={{ alignItems: 'center', justifyContent: 'center', minHeight: 250 }}>
+        <Sunburst size={460} color="rgba(255,190,60,0.2)" />
+        <Shake trigger={1} strength={10}>
+          <Slam text="🔥 FINAL ROUND 🔥" size={44} color={colors.white} />
+        </Shake>
+        <PopIn delay={1300} from={4}>
+          <Pulse scale={1.08} duration={300}>
+            <View style={styles.doubleWrap}>
+              <Text style={styles.double}>2×</Text>
+              <Text style={styles.doubleLabel}>{party ? 'POINTS & SIPS' : 'POINTS'}</Text>
+            </View>
+          </Pulse>
+        </PopIn>
+        <SlideIn from="bottom" delay={2100}>
+          <Text style={styles.finalSub}>Every point counts double. Anyone can still win!</Text>
+        </SlideIn>
+        {leader && leader.totals.points > 0 && (
+          <SlideIn from="bottom" delay={2500}>
+            <View style={styles.leaderPill}>
+              <AnimalAvatar avatar={leader.player.avatar} size={30} mood="happy" />
+              <Text style={styles.leaderText}>
+                👑 {leader.player.name} leads by {gap} pt{gap === 1 ? '' : 's'}
+              </Text>
+            </View>
+          </SlideIn>
+        )}
+      </View>
+      <SlideIn from="bottom" delay={3000}>
+        <FaceOff state={state} size={84} moodFor={() => 'neutral'} />
+      </SlideIn>
+      {mine && (
+        <PopIn delay={3600}>
           <Pulse scale={1.1} duration={400}>
             <Text style={styles.youreUp}>⚡ YOU'RE UP! ⚡</Text>
           </Pulse>
@@ -165,7 +220,7 @@ function PickCard({ state, id, side, onPick, chosen, disabled }: { state: GameSt
       <View style={[styles.pickLip, { backgroundColor: lip }]}>
         <Animated.View style={[styles.pickFace, { backgroundColor: color }, face]}>
           <Bob amount={4} duration={600} delay={side === 'A' ? 0 : 300}>
-            {p && <AnimalAvatar avatar={p.avatar} size={100} mood="nervous" />}
+            {p && <AnimalAvatar avatar={p.avatar} size={100} mood="neutral" />}
           </Bob>
           <Text style={styles.pickName} numberOfLines={1}>
             {p?.name}
@@ -242,7 +297,7 @@ export function Betting({ state }: { state: GameState }) {
         </>
       ) : (
         <>
-          <FaceOff state={state} size={92} moodFor={(id) => (id === myId ? 'nervous' : undefined)} />
+          <FaceOff state={state} size={92} moodFor={() => 'neutral'} />
           <Pulse scale={1.05} duration={700}>
             <Text style={styles.callIt}>{isChallenger ? '😬 The room is betting on you…' : 'Bets are coming in…'}</Text>
           </Pulse>
@@ -268,9 +323,34 @@ export function Betting({ state }: { state: GameState }) {
   );
 }
 
-function PercentLabel({ pct, color }: { pct: number; color: string }) {
-  const shown = useCountUp(pct, 1000);
+function PercentLabel({ pct, color, delay = 0 }: { pct: number; color: string; delay?: number }) {
+  const [target, setTarget] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => setTarget(pct), delay);
+    return () => clearTimeout(t);
+  }, [pct, delay]);
+  const shown = useCountUp(target, 900);
   return <Text style={[styles.pct, { color }]}>{shown}%</Text>;
+}
+
+/** Pulsing gold ring + buzz that calls attention to the Underdog's percentage. */
+function UnderdogCallout({ delay }: { delay: number }) {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setOn(true);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => {});
+    }, delay);
+    return () => clearTimeout(t);
+  }, [delay]);
+  if (!on) return null;
+  return (
+    <View pointerEvents="none" style={styles.calloutWrap}>
+      <Pulse scale={1.18} duration={330}>
+        <View style={styles.calloutRing} />
+      </Pulse>
+    </View>
+  );
 }
 
 export function BetsReveal({ state }: { state: GameState }) {
@@ -281,6 +361,12 @@ export function BetsReveal({ state }: { state: GameState }) {
   const pct = (n: number) => (total === 0 ? 0 : Math.round((n / total) * 100));
   const dog = currentUnderdog(state);
   const dogPlayer = dog ? playerById(state, r.challengers[dog === 'A' ? 0 : 1]) : undefined;
+  // Sequence: 1) votes drop in  2) percentages count up  3) the <33% number is called out  4) UNDERDOG takeover.
+  const VOTES_AT = 300;
+  const VOTE_STEP = 120;
+  const PCT_AT = VOTES_AT + Math.max(side('A').length, side('B').length) * VOTE_STEP + 400;
+  const CALLOUT_AT = PCT_AT + 1100;
+  const ALERT_AT = CALLOUT_AT + 1300;
 
   return (
     <View style={styles.stage}>
@@ -291,6 +377,7 @@ export function BetsReveal({ state }: { state: GameState }) {
             share={side(dog).length / Math.max(1, total)}
             backers={side(dog)}
             mode={state.settings.mode}
+            delay={ALERT_AT}
           />
         </Modal>
       )}
@@ -303,15 +390,29 @@ export function BetsReveal({ state }: { state: GameState }) {
           return (
             <View key={p} style={{ flex: 1, alignItems: 'center', gap: 8 }}>
               <SlideIn from={p === 'A' ? 'left' : 'right'} distance={120}>
-                <PlayerBadge player={playerById(state, r.challengers[i])} size={92} color={color} bob />
+                <PlayerBadge player={playerById(state, r.challengers[i])} size={92} color={color} bob mood={dog === p ? 'sad' : 'neutral'} />
               </SlideIn>
-              {dog === p && <UnderdogTag mode={state.settings.mode} />}
-              <PercentLabel pct={pct(backers.length)} color={color} />
-              <GrowBar pct={pct(backers.length)} color={color} delay={200} />
+              <PopIn delay={PCT_AT} from={0.3}>
+                <View style={{ alignItems: 'center' }}>
+                  {dog === p && <UnderdogCallout delay={CALLOUT_AT - PCT_AT} />}
+                  <PercentLabel pct={pct(backers.length)} color={color} delay={PCT_AT} />
+                </View>
+              </PopIn>
+              <GrowBar pct={pct(backers.length)} color={color} delay={PCT_AT} />
+              {dog === p && (
+                <PopIn delay={CALLOUT_AT + 200} from={2}>
+                  <Text style={styles.under33}>⬆ UNDER 33%!</Text>
+                </PopIn>
+              )}
               <View style={styles.stack}>
+                {backers.length === 0 && (
+                  <PopIn delay={PCT_AT}>
+                    <Text style={styles.noBackers}>Nobody! 😱</Text>
+                  </PopIn>
+                )}
                 {backers.map((pl, j) => (
-                  <SlideIn key={pl.id} from="top" distance={50} delay={400 + j * 140}>
-                    <AnimalAvatar avatar={pl.avatar} size={40} mood="happy" />
+                  <SlideIn key={pl.id} from="top" distance={50} delay={VOTES_AT + j * VOTE_STEP}>
+                    <AnimalAvatar avatar={pl.avatar} size={40} mood="neutral" />
                     <Text style={styles.backerName} numberOfLines={1}>
                       {pl.name}
                     </Text>
@@ -377,12 +478,17 @@ export function Challenge({ state }: { state: GameState }) {
   const answer = q.type === 'SUBJECT_JUDGED' ? r.subjectAnswer : q.answer;
   const judgeName = playerById(state, r.judgeId)?.name ?? 'the host';
   const dog = currentUnderdog(state);
-  const hint =
+  // How-to-win rules are shown BEFORE the question so they're read first.
+  const rule =
     q.type === 'SPOKEN_CLOSEST'
-      ? 'Both shout a number. Closest wins!'
+      ? { icon: '🔢', text: 'Both say a number out loud. Closest answer wins.' }
       : q.type === 'SPOKEN_EXACT'
-        ? 'First to shout the right answer wins!'
-        : undefined;
+        ? { icon: '🗣️', text: 'Shout the answer. First correct answer wins.' }
+        : q.type === 'TURN_BASED'
+          ? { icon: '🔁', text: 'Take turns answering. Repeat, stall 5s or get one wrong and you lose.' }
+          : q.type === 'SUBJECT_JUDGED'
+            ? { icon: '🤫', text: `${subject?.name ?? 'They'} secretly locks in the real answer. ${q.closest ? 'Closest' : 'Best'} guess wins.` }
+            : undefined;
 
   const judge = (outcome: Outcome) => {
     tap('heavy');
@@ -396,16 +502,26 @@ export function Challenge({ state }: { state: GameState }) {
       <CategoryLine state={state} />
       <Row style={{ justifyContent: 'center', gap: 6 }}>
         <SlideIn from="left" style={{ alignItems: 'center', gap: 4 }}>
-          <PlayerBadge player={playerById(state, a)} size={64} color={A_COLOR} bob />
+          <PlayerBadge player={playerById(state, a)} size={64} color={A_COLOR} bob mood={dog === 'A' ? 'sad' : 'neutral'} />
           {dog === 'A' && <UnderdogTag mode={state.settings.mode} />}
         </SlideIn>
         <VsBadge delay={150} />
         <SlideIn from="right" style={{ alignItems: 'center', gap: 4 }}>
-          <PlayerBadge player={playerById(state, b)} size={64} color={B_COLOR} bob />
+          <PlayerBadge player={playerById(state, b)} size={64} color={B_COLOR} bob mood={dog === 'B' ? 'sad' : 'neutral'} />
           {dog === 'B' && <UnderdogTag mode={state.settings.mode} />}
         </SlideIn>
       </Row>
-      <QuestionCard text={prompt} hint={hint} />
+      {rule && (
+        <SlideIn from="top" distance={20}>
+          <View style={styles.rule}>
+            <Text style={styles.ruleLabel}>HOW TO WIN</Text>
+            <Text style={styles.ruleText}>
+              {rule.icon} {rule.text}
+            </Text>
+          </View>
+        </SlideIn>
+      )}
+      <QuestionCard text={prompt} />
 
       {isSubject && (
         <SlideIn from="bottom" delay={300}>
@@ -507,8 +623,9 @@ export function myResultTint(state: GameState, myId: string): 'green' | 'red' | 
   const s = state.round?.score?.perPlayer[myId];
   if (!s) return undefined;
   if (s.points > 0) return 'green';
-  if (state.settings.mode === 'party' && (s.sips > 0 || s.shot)) return 'red';
-  return undefined;
+  if (s.result === 'draw') return undefined;
+  // Wrong call, losing challenger or No Vote: red in both modes.
+  return 'red';
 }
 
 function Standings({ state, delay = 500 }: { state: GameState; delay?: number }) {
@@ -566,7 +683,7 @@ export function Result({ state }: { state: GameState }) {
   } else if (mine.points > 0) {
     kind = 'win';
     headline = `+${mine.points}`;
-    sub = mine.result === 'betWin' && score.multiplier > 1 ? `🐶 UNDERDOG BONUS ×${score.multiplier}!` : mine.result === 'challengerWin' ? 'You won the face-off!' : 'You called it!';
+    sub = mine.result === 'betWin' && score.multiplier > 1 ? `🐶 Underdog bonus ×${score.multiplier}!` : '';
   } else if (party && (mine.sips > 0 || mine.shot)) {
     kind = 'drink';
     headline = mine.shot ? 'SHOT!' : `DRINK ${mine.sips}`;
@@ -575,15 +692,14 @@ export function Result({ state }: { state: GameState }) {
         ? 'That’s the No Vote tax 🍺'
         : mine.result === 'draw'
           ? 'Draws mean both challengers drink'
-          : score.multiplier > 1
-            ? `🐶 Underdog won · ×${score.multiplier} sips! 😱`
-            : mine.sips === 1
-              ? 'One sip. Bottoms up!'
-              : 'Sips. Bottoms up!';
+          : mine.result === 'betLoss' && score.multiplier > 1
+            ? `🐶 The Underdog won · sips ×${score.multiplier}! 😱`
+            : 'Bottoms up!';
   } else {
     kind = 'loss';
     headline = mine.result === 'noVote' ? 'NO VOTE' : mine.result === 'draw' ? 'DRAW' : 'MISSED IT';
-    sub = '+0 this round';
+    sub = mine.result === 'draw' ? 'Nobody scores on a draw' : 'Better luck next round!';
+    if (mine.result === 'draw') kind = 'neutral';
   }
 
   const winner = playerById(state, winnerId);
@@ -592,7 +708,7 @@ export function Result({ state }: { state: GameState }) {
     : [];
   // Timeline: winner → supporters one by one → their +points → your result → the rest.
   const SUP_START = 1100;
-  const SUP_STEP = 380;
+  const SUP_STEP = 260;
   const plusAt = SUP_START + supporters.length * SUP_STEP + 250;
   const youAt = plusAt + supporters.length * 160 + 400;
 
@@ -638,35 +754,57 @@ export function Result({ state }: { state: GameState }) {
             {supporters.length === 0 ? (
               <Dim>Nobody saw that coming. 😱</Dim>
             ) : (
-              supporters.map((p, i) => (
-                <PopIn key={p.id} delay={SUP_START + i * SUP_STEP} from={0.2}>
-                  <Row style={styles.supporterRow}>
-                    <AnimalAvatar avatar={p.avatar} size={44} mood="happy" />
-                    <Text style={styles.supporterName} numberOfLines={1}>
-                      {p.name}
-                      {p.id === myId ? ' (you)' : ''}
-                    </Text>
-                    <PlusPoints points={score.perPlayer[p.id].points} delay={plusAt + i * 160} />
-                  </Row>
-                </PopIn>
-              ))
+              <View style={styles.supGrid}>
+                {supporters.map((p, i) => (
+                  <PopIn key={p.id} delay={SUP_START + i * SUP_STEP} from={0.2} style={styles.supCell}>
+                    <View style={styles.supporterRow}>
+                      <AnimalAvatar avatar={p.avatar} size={34} mood="happy" />
+                      <Text style={styles.supporterName} numberOfLines={1}>
+                        {p.id === myId ? 'You' : p.name}
+                      </Text>
+                      <PlusPoints points={score.perPlayer[p.id].points} delay={plusAt + i * 160} />
+                    </View>
+                  </PopIn>
+                ))}
+              </View>
             )}
           </View>
         </SlideIn>
       )}
 
-      {/* Your own result */}
+      {/* Your own result: unmistakably green (right) or red (wrong) */}
       {mine && (
-        <PopIn delay={winner ? youAt : 500}>
-          <Shake trigger={kind === 'loss' ? 1 : 0} strength={kind === 'loss' ? 10 : 0}>
-            <View style={[styles.youStrip, kind === 'win' && styles.youWin, kind === 'drink' && styles.youDrink]}>
+        <PopIn delay={winner ? youAt : 500} from={0.4}>
+          <Shake trigger={kind === 'win' ? 0 : 1} strength={kind === 'win' ? 0 : 10}>
+            <View style={[styles.youCard, kind === 'win' ? styles.youWin : kind === 'neutral' ? styles.youNeutral : styles.youLose]}>
               {me && (
                 <Wobble deg={kind === 'drink' ? 10 : 0} duration={300}>
-                  <AnimalAvatar avatar={me.avatar} size={48} mood={kind === 'win' ? 'happy' : kind === 'drink' ? 'drink' : 'nervous'} />
+                  <AnimalAvatar avatar={me.avatar} size={84} mood={kind === 'win' ? 'happy' : kind === 'neutral' ? 'neutral' : 'sad'} />
                 </Wobble>
               )}
-              <View style={{ flex: 1 }}>
-                <Text style={styles.youHead}>YOU: {headline}</Text>
+              <View style={{ flex: 1, gap: 2 }}>
+                <Text style={styles.youLabel}>
+                  {kind === 'win'
+                    ? mine.result === 'challengerWin'
+                      ? '✅ YOU WON THE FACE-OFF'
+                      : '✅ CORRECT CALL'
+                    : mine.result === 'noVote'
+                      ? '🙈 NO VOTE'
+                      : mine.result === 'draw'
+                        ? '🤝 DRAW'
+                        : mine.result === 'challengerLoss'
+                          ? '❌ YOU LOST THE FACE-OFF'
+                          : '❌ WRONG CALL'}
+                </Text>
+                <Text style={styles.youBig}>
+                  {kind === 'win'
+                    ? `+${mine.points} POINT${mine.points === 1 ? '' : 'S'}`
+                    : party && mine.shot
+                      ? '🥃 TAKE A SHOT'
+                      : party && mine.sips > 0
+                        ? `🍺 DRINK ${mine.sips} SIP${mine.sips === 1 ? '' : 'S'}`
+                        : '0 POINTS'}
+                </Text>
                 {sub ? <Text style={styles.youSub}>{sub}</Text> : null}
               </View>
             </View>
@@ -736,6 +874,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   vsText: { color: colors.ink, fontFamily: fonts.display, fontSize: 28 },
+  doubleWrap: {
+    alignItems: 'center',
+    backgroundColor: colors.gold,
+    borderRadius: 26,
+    borderWidth: 4,
+    borderColor: colors.ink,
+    borderBottomWidth: 9,
+    paddingHorizontal: 26,
+    paddingVertical: 4,
+    marginTop: 10,
+    transform: [{ rotate: '-4deg' }],
+    shadowColor: colors.gold,
+    shadowOpacity: 0.9,
+    shadowRadius: 26,
+    shadowOffset: { width: 0, height: 0 },
+  },
+  double: { color: colors.ink, fontFamily: fonts.display, fontSize: 84, lineHeight: 90 },
+  doubleLabel: { color: colors.ink, fontFamily: fonts.display, fontSize: 22, marginTop: -6, letterSpacing: 1 },
+  finalSub: { color: colors.white, fontFamily: fonts.display, fontSize: 18, textAlign: 'center', marginTop: 10 },
+  leaderPill: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'rgba(0,0,0,0.35)', borderRadius: 99, paddingHorizontal: 12, paddingVertical: 4, marginTop: 8 },
+  leaderText: { color: colors.gold, fontFamily: fonts.display, fontSize: 15 },
   youreUp: { color: colors.gold, fontFamily: fonts.display, fontSize: 34, textAlign: 'center', textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 0 },
   spinTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 24, textAlign: 'center' },
   callIt: { color: colors.white, fontFamily: fonts.display, fontSize: 28, textAlign: 'center' },
@@ -759,8 +918,23 @@ const styles = StyleSheet.create({
   dogHint: { color: colors.gold, fontFamily: fonts.bodyBold, fontSize: 14, textAlign: 'center' },
   votedLabel: { color: colors.dim, fontFamily: fonts.display, fontSize: 15, letterSpacing: 1 },
   pct: { fontSize: 44, fontFamily: fonts.display },
+  calloutWrap: { position: 'absolute', top: -4, left: -26, right: -26, bottom: -18, alignItems: 'center', justifyContent: 'center' },
+  calloutRing: { width: 132, height: 76, borderRadius: 38, borderWidth: 5, borderColor: colors.gold, backgroundColor: 'rgba(255,201,60,0.18)' },
+  under33: { color: colors.gold, fontFamily: fonts.display, fontSize: 20, textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
+  noBackers: { color: colors.dim, fontFamily: fonts.display, fontSize: 15 },
   stack: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4 },
   backerName: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 11, textAlign: 'center', maxWidth: 52 },
+  rule: {
+    backgroundColor: 'rgba(20,4,40,0.55)',
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,201,60,0.55)',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    gap: 2,
+  },
+  ruleLabel: { color: colors.gold, fontFamily: fonts.display, fontSize: 12, letterSpacing: 2 },
+  ruleText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 16, lineHeight: 21 },
   qCard: {
     backgroundColor: colors.white,
     borderRadius: 24,
@@ -781,16 +955,23 @@ const styles = StyleSheet.create({
   waitText: { color: colors.white, fontFamily: fonts.display, fontSize: 20, textAlign: 'center' },
   input: { backgroundColor: colors.white, color: colors.ink, fontSize: 18, fontFamily: fonts.bodySemi, padding: 12, borderRadius: 12 },
   resultSub: { color: colors.white, fontSize: 20, fontFamily: fonts.display, textAlign: 'center' },
-  supporterRow: { gap: 10, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 16, paddingVertical: 4, paddingHorizontal: 8 },
-  supporterName: { color: colors.white, fontFamily: fonts.display, fontSize: 18, flex: 1 },
+  supGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  supCell: { width: '48.5%' },
+  supporterRow: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 14, paddingVertical: 3, paddingHorizontal: 6 },
+  supporterName: { color: colors.white, fontFamily: fonts.display, fontSize: 15, flex: 1 },
   plus: { backgroundColor: colors.green, borderRadius: 12, paddingHorizontal: 10, paddingVertical: 2, borderWidth: 2.5, borderColor: colors.ink },
   plusBig: { backgroundColor: colors.gold },
-  plusText: { color: colors.ink, fontFamily: fonts.display, fontSize: 20 },
+  plusText: { color: colors.ink, fontFamily: fonts.display, fontSize: 16 },
+  youCard: { flexDirection: 'row', alignItems: 'center', gap: 12, borderRadius: 24, padding: 14, borderWidth: 3, borderBottomWidth: 8 },
+  youLose: { backgroundColor: '#E8324A', borderColor: '#8E0F22' },
+  youNeutral: { backgroundColor: 'rgba(20,4,40,0.6)', borderColor: 'rgba(255,255,255,0.25)' },
+  youLabel: { color: colors.white, fontFamily: fonts.display, fontSize: 16, letterSpacing: 0.5, opacity: 0.95 },
+  youBig: { color: colors.white, fontFamily: fonts.display, fontSize: 27, textShadowColor: 'rgba(0,0,0,0.25)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
   youStrip: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'rgba(20,4,40,0.6)', borderRadius: 20, padding: 10, borderWidth: 2, borderColor: 'rgba(255,255,255,0.2)' },
-  youWin: { borderColor: colors.green, backgroundColor: 'rgba(46,224,127,0.18)' },
+  youWin: { backgroundColor: '#1FB866', borderColor: '#0B6B39' },
   youDrink: { borderColor: colors.red, backgroundColor: 'rgba(255,71,87,0.25)' },
   youHead: { color: colors.white, fontFamily: fonts.display, fontSize: 22 },
-  youSub: { color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 14 },
+  youSub: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 14, opacity: 0.9 },
   winnerBanner: { backgroundColor: colors.gold, borderRadius: 18, paddingVertical: 10, alignItems: 'center', borderBottomWidth: 5, borderBottomColor: colors.goldLip },
   winnerText: { color: colors.ink, fontFamily: fonts.display, fontSize: 20 },
   drinkChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(255,71,87,0.3)', borderRadius: 99, paddingRight: 10, paddingLeft: 3, paddingVertical: 2 },

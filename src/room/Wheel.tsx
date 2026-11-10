@@ -26,7 +26,7 @@ const SIZE = 300;
 const R = SIZE / 2;
 const BULBS = 20;
 /** Time after landing that is reserved for the glow + category box. */
-const AFTER_LANDING_MS = 3600;
+const AFTER_LANDING_MS = 3000;
 
 function sliceInfo(s: WheelSlice | 'locked') {
   if (s === 'random') return { label: 'Random', emoji: '🎲', color: '#FFFFFF', description: RANDOM_DESCRIPTION };
@@ -109,7 +109,7 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
     const sliceCentre = ((index + 0.5) / n) * 360;
     const jitter = (Math.random() - 0.5) * (300 / n) * 0.55;
     const target = 360 * 7 + (360 - sliceCentre) + jitter;
-    const spinMs = Math.max(2500, Math.min(5800, durationMs - AFTER_LANDING_MS));
+    const spinMs = Math.max(2500, Math.min(4800, durationMs - AFTER_LANDING_MS));
     rotation.setValue(0);
     lastSlice.current = 0;
     // Every slice boundary passing the pointer = a click, a pointer flick and a tiny buzz.
@@ -134,7 +134,7 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
       playDing();
       tap('heavy');
       setLanded(true);
-      setTimeout(() => setShowBox(true), 650);
+      setTimeout(() => setShowBox(true), 450);
     });
     return () => {
       anim.stop();

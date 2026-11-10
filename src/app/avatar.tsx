@@ -1,32 +1,54 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
-import { Alert, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useMemo, useState } from 'react';
+import { Alert, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import {
   ACCESSORIES,
   ANIMALS,
-  COLORS,
+  SLOT_LABEL,
+  TIER_COLOR,
   TIER_LABEL,
   itemKey,
   type AccessorySlot,
+  type Tier,
 } from '@/avatar/catalog';
-import type { AvatarLoadout } from '@/game/types';
+import { ACCESSORY_IMAGES } from '@/avatar/images';
 import { useProfile } from '@/state/profile';
-import { Button, Dim, H1, Row, Screen, Segmented, tap, theme } from '@/ui/kit';
 import { Coin, CoinCounter } from '@/ui/Coin';
+import { Button, Dim, Row, Screen, Segmented, tap } from '@/ui/kit';
 import { Bob, PopIn } from '@/ui/motion';
-import { fonts } from '@/ui/theme';
+import { colors, fonts } from '@/ui/theme';
 
-type Tab = 'animal' | 'color' | AccessorySlot;
+type Tab = 'animal' | AccessorySlot;
 
 const TABS: { value: Tab; label: string }[] = [
-  { value: 'animal', label: 'Animal' },
-  { value: 'color', label: 'Color' },
-  { value: 'head', label: 'Hat' },
-  { value: 'face', label: 'Face' },
-  { value: 'outfit', label: 'Outfit' },
-  { value: 'hand', label: 'Hand' },
+  { value: 'animal', label: 'Animals' },
+  { value: 'head', label: SLOT_LABEL.head },
+  { value: 'eyes', label: SLOT_LABEL.eyes },
+  { value: 'mouth', label: SLOT_LABEL.mouth },
+  { value: 'neck', label: SLOT_LABEL.neck },
+  { value: 'ears', label: SLOT_LABEL.ears },
 ];
+
+interface Cell {
+  key: string;
+  id: string;
+  name: string;
+  tier: Tier;
+  price: number;
+  adult?: boolean;
+}
+
+function confirmBuy(name: string, price: number): Promise<boolean> {
+  const msg = `Unlock ${name} for ${price.toLocaleString()} gold coins?`;
+  if (Platform.OS === 'web') return Promise.resolve(globalThis.confirm?.(msg) ?? true);
+  return new Promise((resolve) =>
+    Alert.alert('Unlock?', msg, [
+      { text: 'Cancel', style: 'cancel', onPress: () => resolve(false) },
+      { text: 'Unlock', onPress: () => resolve(true) },
+    ]),
+  );
+}
 
 function notify(title: string, msg: string) {
   if (Platform.OS === 'web') globalThis.alert?.(`${title}\n\n${msg}`);
@@ -37,118 +59,122 @@ export default function AvatarEditor() {
   const { profile, update, owns, buy } = useProfile();
   const [tab, setTab] = useState<Tab>('animal');
   const [name, setName] = useState(profile.name);
+  const [preview, setPreview] = useState<'happy' | 'neutral' | 'sad'>('happy');
 
-  const items: { key: string; id: string; label: string; price: number; preview: AvatarLoadout; sub?: string }[] =
-    tab === 'animal'
-      ? ANIMALS.map((a) => ({
-          key: itemKey('animal', a.id),
-          id: a.id,
-          label: a.name,
-          price: a.price,
-          sub: TIER_LABEL[a.tier],
-          preview: { animal: a.id, color: owns(itemKey('color', profile.avatar.color)) && a.price === 0 ? profile.avatar.color : a.defaultColor },
-        }))
-      : tab === 'color'
-        ? COLORS.map((c) => ({
-            key: itemKey('color', c.id),
-            id: c.id,
-            label: c.name,
-            price: c.price,
-            preview: { ...profile.avatar, color: c.id },
-          }))
-        : [
-            { key: '', id: '', label: 'None', price: 0, preview: { ...profile.avatar, [tab]: undefined } },
-            ...ACCESSORIES.filter((x) => x.slot === tab).map((x) => ({
-              key: itemKey('accessory', x.id),
-              id: x.id,
-              label: x.name,
-              price: x.price,
-              preview: { ...profile.avatar, [tab]: x.id },
-            })),
-          ];
+  const cells: Cell[] = useMemo(() => {
+    const list: Cell[] =
+      tab === 'animal'
+        ? ANIMALS.map((a) => ({ key: itemKey('animal', a.id), id: a.id, name: a.name, tier: a.tier, price: a.price }))
+        : ACCESSORIES.filter((x) => x.slot === tab && (!x.adult || profile.ageConfirmed)).map((x) => ({
+            key: itemKey('accessory', x.id),
+            id: x.id,
+            name: x.name,
+            tier: x.tier,
+            price: x.price,
+            adult: x.adult,
+          }));
+    return list.sort((a, b) => a.price - b.price);
+  }, [tab, profile.ageConfirmed]);
 
-  const isEquipped = (id: string) =>
-    tab === 'animal' ? profile.avatar.animal === id : tab === 'color' ? profile.avatar.color === id : (profile.avatar[tab] ?? '') === id;
+  const isOwned = (c: Cell) => c.price === 0 || owns(c.key);
+  const isEquipped = (c: Cell) => (tab === 'animal' ? profile.avatar.animal === c.id : profile.avatar[tab] === c.id);
 
-  const equip = (id: string) => {
-    if (tab === 'animal') {
-      const a = ANIMALS.find((x) => x.id === id)!;
-      // Keep the current color if owned, otherwise use the animal's signature color.
-      const color = owns(itemKey('color', profile.avatar.color)) ? profile.avatar.color : a.defaultColor;
-      update({ avatar: { ...profile.avatar, animal: id, color } });
-    } else if (tab === 'color') update({ avatar: { ...profile.avatar, color: id } });
-    else update({ avatar: { ...profile.avatar, [tab]: id || undefined } });
+  const equip = (c: Cell) => {
+    if (tab === 'animal') update({ avatar: { ...profile.avatar, animal: c.id } });
+    // Tapping an equipped accessory takes it off.
+    else update({ avatar: { ...profile.avatar, [tab]: profile.avatar[tab] === c.id ? undefined : c.id } });
   };
 
-  const onItem = (item: (typeof items)[number]) => {
+  const onCell = async (c: Cell) => {
     tap();
-    if (!item.key || item.price === 0 || owns(item.key)) return equip(item.id);
-    if (profile.tokens < item.price) {
-      notify('Not enough coins', `${item.label} costs ${item.price} coins. You have ${profile.tokens}. Win games or visit the shop to get more.`);
+    if (isOwned(c)) return equip(c);
+    if (profile.tokens < c.price) {
+      notify('Not enough coins', `${c.name} costs ${c.price.toLocaleString()} coins. You have ${profile.tokens.toLocaleString()}. Win games, earn awards, or watch a video in the Shop.`);
       return;
     }
-    if (buy(item.key, item.price)) equip(item.id);
+    if (await confirmBuy(c.name, c.price)) {
+      if (buy(c.key, c.price)) {
+        tap('heavy');
+        equip(c);
+      }
+    }
+  };
+
+  const save = () => {
+    if (name.trim()) update({ name: name.trim(), namedByUser: true });
   };
 
   return (
     <Screen>
       <Row style={{ justifyContent: 'space-between' }}>
-        <H1>Your animal</H1>
+        <Text style={styles.title}>Your avatar</Text>
         <CoinCounter coins={profile.tokens} onPress={() => router.push('/shop')} />
       </Row>
-      <View style={{ alignItems: 'center' }}>
-        <PopIn key={`${profile.avatar.animal}-${profile.avatar.color}-${profile.avatar.head}-${profile.avatar.face}-${profile.avatar.outfit}-${profile.avatar.hand}`} from={0.7}>
+
+      <View style={{ alignItems: 'center', gap: 4 }}>
+        <PopIn key={JSON.stringify(profile.avatar)} from={0.7}>
           <Bob amount={6} duration={900}>
-            <AnimalAvatar avatar={profile.avatar} size={150} mood="happy" />
+            <AnimalAvatar avatar={profile.avatar} size={150} mood={preview} />
           </Bob>
         </PopIn>
-        <TextInput
-          value={name}
-          onChangeText={setName}
-          onBlur={() => name.trim() && update({ name: name.trim(), namedByUser: true })}
-          maxLength={16}
-          style={styles.name}
-        />
+        <Row style={{ gap: 6 }}>
+          {(['happy', 'neutral', 'sad'] as const).map((m) => (
+            <Pressable key={m} onPress={() => setPreview(m)} style={[styles.moodBtn, preview === m && styles.moodOn]}>
+              <Text style={{ fontSize: 16 }}>{m === 'happy' ? '😄' : m === 'neutral' ? '🙂' : '😢'}</Text>
+            </Pressable>
+          ))}
+        </Row>
+        <TextInput value={name} onChangeText={setName} onBlur={save} onSubmitEditing={save} maxLength={16} style={styles.name} />
       </View>
+
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }}>
         <Segmented options={TABS} value={tab} onChange={setTab} />
       </ScrollView>
+
       <ScrollView contentContainerStyle={styles.grid}>
-        {items.map((item) => {
-          const owned = !item.key || item.price === 0 || owns(item.key);
-          const equipped = isEquipped(item.id);
+        {cells.map((c, i) => {
+          const owned = isOwned(c);
+          const equipped = isEquipped(c);
           return (
-            <Pressable
-              key={item.label}
-              onPress={() => onItem(item)}
-              style={[styles.cell, equipped && { borderColor: theme.accent }]}
-              accessibilityRole="button"
-              accessibilityLabel={`${item.label}${owned ? '' : `, ${item.price} tokens`}`}
-            >
-              <View style={{ opacity: owned ? 1 : 0.55 }}>
-                <AnimalAvatar avatar={item.preview} size={64} />
-              </View>
-              <Text style={styles.cellLabel} numberOfLines={1}>
-                {item.label}
-              </Text>
-              <Text style={[styles.cellSub, !owned && { color: theme.accent }]}>
-                {equipped ? '✓ Equipped' : owned ? item.sub ?? 'Owned' : ''}
-              </Text>
-              {!owned && (
-                <Row style={{ gap: 3 }}>
-                  <Coin size={16} />
-                  <Text style={styles.price}>{item.price}</Text>
-                </Row>
-              )}
-            </Pressable>
+            <PopIn key={c.key} delay={Math.min(i, 12) * 30} from={0.6}>
+              <Pressable
+                onPress={() => onCell(c)}
+                style={[styles.cell, { borderColor: equipped ? colors.white : TIER_COLOR[c.tier] }, equipped && styles.cellOn]}
+                accessibilityRole="button"
+                accessibilityLabel={`${c.name}, ${TIER_LABEL[c.tier]}${owned ? '' : `, ${c.price} coins`}`}
+              >
+                <View style={{ opacity: owned ? 1 : 0.6 }}>
+                  {tab === 'animal' ? (
+                    <AnimalAvatar avatar={{ animal: c.id }} size={62} bare />
+                  ) : (
+                    <Image source={ACCESSORY_IMAGES[c.id]} style={{ width: 58, height: 58 }} resizeMode="contain" />
+                  )}
+                </View>
+                <Text style={styles.cellName} numberOfLines={1}>
+                  {c.adult ? '🍻 ' : ''}
+                  {c.name}
+                </Text>
+                <Text style={[styles.tier, { color: TIER_COLOR[c.tier] }]}>{TIER_LABEL[c.tier].toUpperCase()}</Text>
+                {equipped ? (
+                  <Text style={styles.status}>✓ ON</Text>
+                ) : owned ? (
+                  <Text style={styles.statusDim}>{tab === 'animal' ? 'Owned' : 'Tap to wear'}</Text>
+                ) : (
+                  <Row style={{ gap: 3 }}>
+                    <Coin size={15} />
+                    <Text style={styles.price}>{c.price.toLocaleString()}</Text>
+                  </Row>
+                )}
+              </Pressable>
+            </PopIn>
           );
         })}
       </ScrollView>
-      <Dim style={{ textAlign: 'center' }}>Win games to earn gold coins, then unlock new looks.</Dim>
+      <Dim style={{ textAlign: 'center', fontSize: 13 }}>Win games, earn awards and watch videos for gold coins.</Dim>
       <Button
         label="Done"
         onPress={() => {
-          if (name.trim()) update({ name: name.trim(), namedByUser: true });
+          save();
           router.back();
         }}
       />
@@ -157,19 +183,24 @@ export default function AvatarEditor() {
 }
 
 const styles = StyleSheet.create({
-  tokens: { color: theme.accent, fontWeight: '900', fontSize: 18 },
-  name: { color: theme.text, fontSize: 26, fontFamily: fonts.display, textAlign: 'center', minWidth: 200, padding: 4 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, justifyContent: 'center', paddingBottom: 12 },
+  title: { color: colors.white, fontFamily: fonts.display, fontSize: 30 },
+  name: { color: colors.white, fontSize: 24, fontFamily: fonts.display, textAlign: 'center', minWidth: 200, padding: 2 },
+  moodBtn: { width: 34, height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.1)' },
+  moodOn: { backgroundColor: colors.gold },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center', paddingBottom: 12 },
   cell: {
-    width: 98,
+    width: 100,
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
     borderRadius: 18,
     paddingVertical: 8,
     borderWidth: 3,
-    borderColor: 'transparent',
+    gap: 1,
   },
-  cellLabel: { color: theme.text, fontFamily: fonts.display, fontSize: 14 },
-  price: { color: theme.accent, fontFamily: fonts.display, fontSize: 14 },
-  cellSub: { color: theme.dim, fontSize: 12, fontFamily: fonts.bodySemi },
+  cellOn: { backgroundColor: 'rgba(255,255,255,0.22)' },
+  cellName: { color: colors.white, fontFamily: fonts.display, fontSize: 13, maxWidth: 92 },
+  tier: { fontFamily: fonts.display, fontSize: 10, letterSpacing: 1 },
+  status: { color: colors.green, fontFamily: fonts.display, fontSize: 13 },
+  statusDim: { color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 11 },
+  price: { color: colors.gold, fontFamily: fonts.display, fontSize: 14 },
 });

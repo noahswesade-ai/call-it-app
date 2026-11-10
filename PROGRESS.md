@@ -2,7 +2,31 @@
 
 _Last updated: 2026-11-09_
 
-## 🎡 Polish update (latest)
+## 🎨 Real art and economy update (latest)
+- **Your avatar art** is in the game: 22 animals, each with neutral, happy and sad faces, plus 47 wearable accessories in five slots (head, eyes, face, neck, ears).
+  - Faces follow the game: neutral when choosing, happy when winning, sad when losing, drinking or being the Underdog.
+  - Skipped because they can't go on a head-only avatar: the gloves, the glowing wristband and the astronaut helmet.
+  - The adult accessory set only shows after the 18+ check.
+- **Rarity and coin prices** are based on research, written up in `PRICING.md`.
+  - Animals: Common 500, Rare 1,500, Epic 2,500, Legendary 5,000 coins.
+  - Accessories: 150, 400, 900 and 2,000 coins.
+  - New coin packs from $0.99 to $49.99, with bonuses of up to +40%.
+  - A one-time $1.99 starter pack, offered after a player's 3rd game.
+  - Videos give 25 coins each, up to 6 a day.
+- **Underdog:** a challenger with 0 votes is now always the Underdog, even in small rooms (and the ×3 applies).
+- **Party scoring** uses the same points and leaderboard as Normal mode; on top of that, wrong calls drink as many sips as the right callers scored.
+- **Results:** a big green card for a correct call (+points) or a red card for a wrong one ("0 points" in Normal mode, "DRINK N SIPS" in Party). The background turns green or red to match.
+- **Underdog reveal, in order:**
+  1. The votes drop in.
+  2. The percentages count up.
+  3. The under-33% number gets a pulsing gold ring and "UNDER 33%!".
+  4. "UNDERDOG / 3× MULTIPLIER" appears, with "All points ×3" (or "All points & sips ×3") underneath.
+- **Wheel screen** is now about 8 seconds.
+- **Question rules** ("HOW TO WIN") now show above the question.
+- **Final round:** a fire-themed build-up with a giant "2× POINTS" and who's leading.
+- **Party mode is unlocked in test builds** (the preview link and Expo Go) so you can try it. Release builds still need Premium or the free trial.
+
+## 🎡 Polish update
 - **Underdog rule:** a challenger is the Underdog only with **under 33%** of the vote (and at least 4 bettors picking a side). If they win it's ×3: points in Classic, sips in Party. No other split has a multiplier.
 - **Timer bar:** a yellow loading bar at the bottom of every timed screen (VS, wheel, betting, reveal, results).
 - **Wheel:**

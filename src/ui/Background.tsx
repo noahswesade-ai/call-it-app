@@ -49,12 +49,13 @@ function Floater({ s, w, h }: { s: (typeof SHAPES)[number]; w: number; h: number
 }
 
 /** Full-screen party gradient with slowly drifting shapes. */
-export function Background({ tint }: { tint?: 'red' | 'green' | 'party' }) {
+export function Background({ tint }: { tint?: 'red' | 'green' | 'party' | 'fire' }) {
   const { width, height } = useWindowDimensions();
   const gradient = useMemo<[string, string, string]>(() => {
     if (tint === 'red') return ['#7A0A1E', '#B3122E', '#3D0010'];
     if (tint === 'green') return ['#05603A', '#0E9F5D', '#023821'];
     if (tint === 'party') return ['#2A0040', '#5C0A6B', '#14001F'];
+    if (tint === 'fire') return ['#4A0A00', '#B8360A', '#2A0300'];
     return [colors.bgTop, colors.bgMid, colors.bgBottom];
   }, [tint]);
   return (
