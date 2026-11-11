@@ -1,0 +1,756 @@
+# UNDERDOG — QUESTION BANK
+# One question per line, under its category heading (## Category).
+# Format:   [Type · Difficulty] Question => Answer = number
+#   Types:  Answer (one right answer) · Number (closest number wins; put the number after " = ")
+#           Turns (take turns naming things) · Challenge (a task; the host picks the winner)
+#           Friend / Friend number (about {friend}, who secretly types the real answer)
+#           Room game (Know Your Friends games the room runs; these may repeat)
+#   Difficulty: Easy · Medium · Hard (Friend / Room game lines have none)
+# Lines starting with # are notes and are ignored.
+
+## Geography
+[Answer · Medium] Which river is the longest in the world? => The Nile (accept the Amazon — it’s disputed)
+[Number · Medium] What is the population of India? => About 1.45 billion = 1450000000
+[Answer · Easy] What is the capital of Australia? => Canberra
+[Answer · Hard] Which country has the most time zones (counting overseas territories)? => France (12)
+[Answer · Easy] What is the smallest country in the world? => Vatican City
+[Number · Medium] How tall is Mount Everest, in meters? => 8,849 m = 8849
+[Number · Medium] How many countries are in Africa? => 54 = 54
+[Answer · Medium] Which US state has the longest coastline? => Alaska
+[Answer · Easy] What is the deepest point in the ocean? => The Mariana Trench (Challenger Deep)
+[Answer · Hard] What is the largest desert on Earth? => Antarctica (the Sahara is the largest hot desert)
+[Number · Hard] How many US states border Canada? => 13 = 13
+[Answer · Easy] What is the most populous country in South America? => Brazil
+[Number · Hard] How far is New York from Los Angeles in a straight line, in miles? => About 2,450 miles = 2450
+[Turns · Hard] Name the countries that border Germany. => Denmark, Poland, Czechia, Austria, Switzerland, France, Luxembourg, Belgium, Netherlands
+[Turns · Medium] Name countries in Europe.
+[Answer · Easy] What is the capital of Canada? => Ottawa
+[Number · Medium] How many countries are members of the United Nations? => 193 = 193
+[Number · Hard] How long is the Great Wall of China, in miles (all its branches)? => About 13,170 miles = 13170
+[Number · Hard] Roughly how many islands make up Indonesia? => About 17,000 = 17000
+[Number · Medium] How tall is the Eiffel Tower, in meters? => About 330 m = 330
+[Number · Easy] What percentage of Earth’s surface is covered by water? => About 71% = 71
+[Number · Medium] How many time zones does Russia stretch across? => 11 = 11
+[Number · Hard] How many countries share a land border with China? => 14 = 14
+[Answer · Hard] Which African country has THREE capital cities? => South Africa (Pretoria, Cape Town, Bloemfontein)
+[Number · Hard] What’s the hottest temperature ever recorded on Earth, in °F? => 134°F (Death Valley, 1913) = 134
+[Number · Medium] How many US states start with the letter M? => 8 = 8
+[Answer · Hard] Which city is further north: Rome or New York? => Rome (just barely!)
+[Number · Hard] How long is the Amazon River, in miles? => About 4,000 miles = 4000
+[Answer · Medium] What is the capital of Turkey? (Careful…) => Ankara — not Istanbul!
+[Answer · Hard] Which country has the most natural lakes? => Canada
+[Turns · Medium] Name US state capitals.
+[Answer · Medium] What is the capital of New Zealand? => Wellington (not Auckland!)
+[Answer · Medium] What is the capital of Brazil? => Brasília
+[Answer · Hard] What is the capital of Kazakhstan? => Astana
+[Answer · Medium] What is the capital of Switzerland? => Bern
+[Answer · Hard] What is the capital of Nigeria? => Abuja (not Lagos)
+[Answer · Easy] Which country is shaped like a boot? => Italy
+[Answer · Medium] Which country has the most pyramids in the world? => Sudan (more than Egypt!)
+[Answer · Hard] What is the only country in the world with a non-rectangular flag? => Nepal
+[Answer · Medium] Which country is home to the most volcanoes? => Indonesia (also accept the USA for total counted)
+[Answer · Easy] What is the largest ocean on Earth? => The Pacific Ocean
+[Answer · Medium] What is the longest river in Europe? => The Volga
+[Answer · Hard] Which two countries share the longest international border? => Canada and the USA
+[Answer · Medium] In which country would you find the ancient city of Petra? => Jordan
+[Answer · Easy] Which continent is the Sahara Desert on? => Africa
+[Answer · Hard] In which country is the legendary city of Timbuktu? => Mali
+[Answer · Medium] Which US state is known as the Sunshine State? => Florida
+[Answer · Hard] What is the smallest US state by area? => Rhode Island
+[Answer · Medium] Which country has the largest population in Africa? => Nigeria
+[Answer · Hard] Which river flows through Baghdad? => The Tigris
+[Answer · Medium] What is the tallest waterfall in the world? => Angel Falls (Venezuela)
+[Answer · Hard] Which country has the longest coastline in the world? => Canada
+[Answer · Medium] Mount Kilimanjaro is in which country? => Tanzania
+[Answer · Easy] What is the largest country in South America by area? => Brazil
+[Answer · Medium] What is the largest island in the world? => Greenland
+[Answer · Hard] Istanbul sits on two continents. Which two? => Europe and Asia
+[Number · Medium] How many countries are there in Europe? => 44 (about) = 44
+[Number · Hard] How many countries are there in South America? => 12 = 12
+[Number · Medium] How many US states are there that touch the Pacific Ocean? => 5 (California, Oregon, Washington, Alaska, Hawaii) = 5
+[Number · Hard] How deep is the Mariana Trench, in meters? => About 10,935 m = 10935
+[Number · Hard] How many square miles is Russia? => About 6.6 million = 6600000
+[Number · Medium] What is the population of Australia? => About 27 million = 27000000
+[Number · Hard] What is the population of Tokyo's metro area? => About 37 million = 37000000
+[Number · Hard] How long is the Nile River, in miles? => About 4,130 miles = 4130
+[Number · Medium] How many countries does the Equator pass through? => 13 = 13
+[Number · Hard] How many islands make up the Philippines? => About 7,600 = 7600
+[Number · Medium] How tall is the Burj Khalifa, in meters? => 828 m = 828
+[Number · Hard] How long is the Panama Canal, in miles? => About 51 miles = 51
+[Number · Hard] How many countries border Brazil? => 10 = 10
+[Number · Medium] How many time zones does the mainland USA (lower 48) have? => 4 = 4
+[Number · Hard] What is the highest mountain in Africa, in meters? => 5,895 m (Kilimanjaro) = 5895
+[Number · Hard] What is the coldest temperature ever recorded on Earth, in °C? => −89.2°C (Antarctica, 1983) = -89.2
+[Number · Medium] What percentage of the world's population lives in China or India? => About 35% = 35
+[Number · Hard] How far is London from New York, in miles? => About 3,460 miles = 3460
+[Number · Hard] How many lakes does Finland have? => About 188,000 = 188000
+[Turns · Medium] Name countries in Africa.
+[Turns · Medium] Name countries in Asia.
+[Turns · Easy] Name US states.
+[Turns · Hard] Name capital cities in Europe.
+[Turns · Medium] Name countries that start with the letter S.
+[Turns · Hard] Name islands.
+
+## History
+[Number · Medium] In what year did the Industrial Revolution begin? => About 1760 = 1760
+[Answer · Easy] Which American town became famous for its witch trials? => Salem, Massachusetts
+[Number · Easy] In what year did the Titanic sink? => 1912 = 1912
+[Answer · Easy] Who was the first person to walk on the Moon? => Neil Armstrong (1969)
+[Number · Medium] In what year did the Berlin Wall fall? => 1989 = 1989
+[Number · Hard] How many years did the Hundred Years’ War actually last? => 116 years = 116
+[Answer · Easy] Who was the 16th president of the United States? => Abraham Lincoln
+[Number · Easy] In what year did Columbus first reach the Americas? => 1492 = 1492
+[Answer · Medium] Which civilization built Machu Picchu? => The Inca
+[Number · Easy] In what year did World War II end? => 1945 = 1945
+[Answer · Medium] Who was the first woman to win a Nobel Prize? => Marie Curie (1903)
+[Answer · Medium] Which of the Seven Wonders of the Ancient World is still standing? => The Great Pyramid of Giza
+[Number · Easy] How many wives did Henry VIII have? => 6 = 6
+[Number · Easy] In what year was the US Declaration of Independence adopted? => 1776 = 1776
+[Answer · Easy] Which country gave the Statue of Liberty to the United States? => France
+[Turns · Medium] Name US presidents.
+[Number · Medium] How many years did the Berlin Wall stand? => 28 years (1961–1989) = 28
+[Number · Hard] The shortest war ever (Britain vs Zanzibar, 1896) lasted how many minutes? => About 38–45 minutes = 40
+[Number · Hard] How many different people have been President of the United States? => 45 (Cleveland and Trump each served twice) = 45
+[Number · Hard] In what year did the Black Death reach Europe? => 1347 = 1347
+[Number · Medium] How tall was Napoleon, in centimeters? => About 170 cm (average for his time!) = 170
+[Number · Medium] In what year did the Wright brothers make the first powered flight? => 1903 = 1903
+[Number · Medium] How many years did Queen Elizabeth II reign? => 70 years = 70
+[Number · Hard] Around what year did Gutenberg invent the printing press? => About 1440 = 1440
+[Number · Hard] How many minutes did Yuri Gagarin’s first trip to space last? => 108 minutes = 108
+[Number · Hard] For how many million dollars did the US buy Alaska from Russia in 1867? => $7.2 million = 7.2
+[Number · Hard] How many people signed the US Declaration of Independence? => 56 = 56
+[Number · Hard] How many years did the Western Roman Empire last (27 BC to 476 AD)? => About 500 years = 503
+[Answer · Medium] Who was the first emperor of Rome? => Augustus (Octavian)
+[Answer · Medium] Which ancient wonder stood in the harbour of Alexandria? => The Lighthouse (Pharos) of Alexandria
+[Turns · Medium] Name Greek or Roman gods.
+[Answer · Easy] Who was the first President of the United States? => George Washington
+[Answer · Medium] Which ship brought the Pilgrims to America in 1620? => The Mayflower
+[Answer · Medium] Who painted the ceiling of the Sistine Chapel? => Michelangelo
+[Answer · Hard] Which empire was ruled by Genghis Khan? => The Mongol Empire
+[Answer · Medium] Who was the British Prime Minister for most of World War II? => Winston Churchill
+[Answer · Easy] Which country did the US declare independence from? => Great Britain
+[Answer · Hard] Who was the last Pharaoh of ancient Egypt? => Cleopatra VII
+[Answer · Medium] Which city was buried by the eruption of Mount Vesuvius in 79 AD? => Pompeii
+[Answer · Hard] Which French queen supposedly said "Let them eat cake"? => Marie Antoinette (she probably never said it!)
+[Answer · Medium] What was the name of the first artificial satellite, launched in 1957? => Sputnik 1
+[Answer · Hard] Who was the first woman to fly solo across the Atlantic? => Amelia Earhart
+[Answer · Medium] Which wall was built to keep invaders out of northern Britain under Roman rule? => Hadrian's Wall
+[Answer · Easy] In which country did the Olympic Games originate? => Greece
+[Answer · Medium] Who wrote the "I Have a Dream" speech? => Martin Luther King Jr.
+[Answer · Hard] What was the name of the plane that dropped the atomic bomb on Hiroshima? => Enola Gay
+[Answer · Hard] Which famous ship sank in 1915 after being hit by a German torpedo? => The Lusitania
+[Answer · Hard] Who was the first Emperor of China to unify the country? => Qin Shi Huang
+[Answer · Hard] Which explorer's crew made the first trip all the way around the world? => Ferdinand Magellan's
+[Answer · Medium] Who discovered penicillin? => Alexander Fleming
+[Answer · Hard] What was Abraham Lincoln's job before politics (one of them)? => Lawyer (also rail-splitter, postmaster, shopkeeper)
+[Answer · Medium] Which country was Adolf Hitler born in? => Austria
+[Answer · Hard] Which revolution began with the storming of the Bastille? => The French Revolution (1789)
+[Answer · Medium] Which ancient civilization built the city of Tenochtitlan? => The Aztecs
+[Answer · Hard] Who was the longest-reigning French king? => Louis XIV (72 years)
+[Answer · Medium] Who invented the telephone? => Alexander Graham Bell
+[Number · Medium] In what year did humans first land on the Moon? => 1969 = 1969
+[Number · Medium] In what year did the Soviet Union collapse? => 1991 = 1991
+[Number · Hard] In what year was the Magna Carta signed? => 1215 = 1215
+[Number · Medium] In what year did World War I begin? => 1914 = 1914
+[Number · Hard] In what year was Julius Caesar assassinated (BC)? => 44 BC = 44
+[Number · Hard] How many people could the Roman Colosseum hold? => About 50,000 = 50000
+[Number · Hard] How old was Alexander the Great when he died? => 32 = 32
+[Number · Medium] In what year did Martin Luther King Jr. give his "I Have a Dream" speech? => 1963 = 1963
+[Number · Hard] How many years did the Great Pyramid of Giza stay the tallest man-made structure? => About 3,800 years = 3800
+[Number · Hard] In what year did the American Civil War end? => 1865 = 1865
+[Number · Medium] In what year did the Wall Street Crash happen? => 1929 = 1929
+[Number · Hard] How many days did the D-Day landings' Battle of Normandy last? => About 77 days (June 6 – Aug 25, 1944) = 77
+[Number · Hard] How long did the Cold War last, in years? => About 44 years (1947–1991) = 44
+[Number · Hard] In what year did the Spanish flu pandemic begin? => 1918 = 1918
+[Number · Hard] How many people lived on Earth in the year 1800? => About 1 billion = 1000000000
+[Number · Medium] How many years did Nelson Mandela spend in prison? => 27 years = 27
+[Number · Hard] How long did Apollo 11's crew spend walking on the Moon, in hours? => About 2.5 hours = 2.5
+[Number · Hard] In what year did the Ottoman Empire capture Constantinople? => 1453 = 1453
+[Number · Medium] In what year did the Chernobyl disaster happen? => 1986 = 1986
+[Number · Hard] How many US presidents have been assassinated? => 4 (Lincoln, Garfield, McKinley, Kennedy) = 4
+[Turns · Medium] Name famous inventors.
+[Turns · Hard] Name kings or queens of England.
+[Turns · Medium] Name ancient civilizations.
+[Turns · Hard] Name wars.
+[Turns · Medium] Name famous explorers.
+
+## Basic Knowledge
+[Answer · Easy] What is the fastest land animal? => The cheetah
+[Number · Hard] How much does a blue whale’s heart weigh, in kg? => About 180 kg = 180
+[Turns · Medium] Name capital cities.
+[Number · Medium] How many bones are in the adult human body? => 206 = 206
+[Answer · Medium] What is the chemical symbol for gold? => Au
+[Answer · Medium] How many hearts does an octopus have? => 3
+[Number · Easy] What is the boiling point of water in °F? => 212 °F = 212
+[Answer · Easy] What is the largest planet in our solar system? => Jupiter
+[Number · Medium] How many minutes are in a week? => 10,080 = 10080
+[Answer · Easy] What is the hardest natural substance? => Diamond
+[Number · Medium] How many keys are on a standard piano? => 88 = 88
+[Number · Hard] What is the speed of light, in km per second? => About 300,000 km/s (299,792) = 299792
+[Answer · Easy] Which gas do plants take in from the air? => Carbon dioxide (CO₂)
+[Answer · Medium] How many teaspoons are in a tablespoon? => 3
+[Turns · Easy] Name animals that start with “B”.
+[Answer · Easy] How many legs does a spider have? => 8
+[Number · Hard] How many hairs are on the average human head? => About 100,000 = 100000
+[Number · Hard] How far is the Moon from Earth, in miles? => About 238,900 miles = 238900
+[Number · Hard] How many times does your heart beat in one day? => About 100,000 = 100000
+[Number · Hard] How many muscles are in the human body? => About 600 = 600
+[Number · Medium] How many minutes does sunlight take to reach Earth? => About 8 minutes 20 seconds = 8.3
+[Number · Medium] How many liters of blood are in an adult body? => About 5 liters = 5
+[Number · Hard] How many bones is a newborn baby born with? => About 300 = 300
+[Number · Medium] What is a cheetah’s top speed, in mph? => About 70 mph = 70
+[Number · Hard] How many months is an elephant pregnant for? => About 22 months = 22
+[Number · Medium] How many hours a day does a koala sleep? => About 20 hours = 20
+[Number · Medium] What percentage of the human body is water? => About 60% = 60
+[Answer · Hard] Which letter doesn’t appear in any US state name? => Q
+[Number · Medium] How many elements are on the periodic table? => 118 = 118
+[Number · Medium] How many seconds are in one day? => 86,400 = 86400
+[Answer · Hard] Which planet has the most moons? => Saturn
+[Answer · Easy] What is the largest organ of the human body? => The skin
+[Answer · Medium] What is the only mammal that can truly fly? => The bat
+[Answer · Medium] What is the chemical symbol for iron? => Fe
+[Answer · Hard] What is the chemical symbol for potassium? => K
+[Answer · Easy] What color do you get when you mix blue and yellow? => Green
+[Answer · Medium] Which planet is known as the Red Planet? => Mars
+[Answer · Hard] Which planet spins on its side? => Uranus
+[Answer · Medium] What is the hottest planet in our solar system? => Venus (not Mercury!)
+[Answer · Hard] What is the most common gas in Earth's air? => Nitrogen (about 78%)
+[Answer · Medium] Which animal has the longest lifespan of any mammal? => The bowhead whale (200+ years)
+[Answer · Hard] What is the only food that never spoils? => Honey
+[Answer · Medium] What do bees collect to make honey? => Nectar
+[Answer · Easy] How many continents are there? => 7
+[Answer · Medium] What is a baby kangaroo called? => A joey
+[Answer · Hard] What is a group of crows called? => A murder
+[Answer · Medium] Which blood type is the universal donor? => O negative
+[Answer · Hard] Which bone is the longest in the human body? => The femur (thigh bone)
+[Answer · Medium] What is frozen carbon dioxide called? => Dry ice
+[Answer · Hard] What is the smallest bone in the human body? => The stapes (in the ear)
+[Answer · Medium] Which vitamin do you get from sunlight? => Vitamin D
+[Answer · Hard] Which animal's fingerprints are almost identical to humans'? => The koala
+[Answer · Medium] How many sides does a hexagon have? => 6
+[Answer · Hard] What is the only even prime number? => 2
+[Answer · Medium] What is the square root of 144? => 12
+[Answer · Hard] What is a group of flamingos called? => A flamboyance
+[Number · Medium] How many teeth does an adult human have? => 32 = 32
+[Number · Hard] How many taste buds does the human tongue have? => About 10,000 = 10000
+[Number · Hard] How many eggs does a hen lay in a year, on average? => About 250–300 = 280
+[Number · Medium] How many legs does a lobster have? => 10 = 10
+[Number · Hard] How many times can a hummingbird flap its wings per second? => About 50–80 = 70
+[Number · Medium] What is the normal human body temperature in °F? => 98.6°F = 98.6
+[Number · Hard] How many kilometers is the Earth around the Equator? => About 40,075 km = 40075
+[Number · Hard] How old is the universe, in billions of years? => About 13.8 billion years = 13.8
+[Number · Hard] How old is the Earth, in billions of years? => About 4.5 billion = 4.5
+[Number · Medium] How many hours does it take the Earth to spin once? => About 24 (23 h 56 min) = 24
+[Number · Hard] How many words are in the English dictionary (Oxford English Dictionary entries)? => About 500,000 = 500000
+[Number · Hard] How many times does the average person blink in a day? => About 15,000–20,000 = 17000
+[Number · Medium] How many dots are on a standard pair of dice? => 42 = 42
+[Number · Hard] How fast does a sneeze travel, in mph? => About 100 mph (estimates vary) = 100
+[Number · Hard] How long is a giraffe's tongue, in inches? => About 18–20 inches = 19
+[Number · Medium] How many stomachs does a cow have? => 4 compartments = 4
+[Number · Hard] How many bones are in the human hand (one hand)? => 27 = 27
+[Number · Medium] How many degrees are in a triangle? => 180 = 180
+[Number · Hard] How many liters of saliva does a person make in a day? => About 1–1.5 liters = 1.25
+[Number · Hard] How many species of bird are there in the world? => About 11,000 = 11000
+[Turns · Easy] Name fruits.
+[Turns · Medium] Name animals that live in the ocean.
+[Turns · Medium] Name chemical elements.
+[Turns · Hard] Name bones in the human body.
+[Turns · Easy] Name things you find in a kitchen.
+
+## Pop Culture
+[Answer · Easy] Which TV show features “the Upside Down”? => Stranger Things
+[Answer · Easy] How many main Harry Potter books are there? => 7
+[Answer · Medium] What is the highest-grossing film of all time (not adjusted for inflation)? => Avatar (2009)
+[Answer · Easy] Which artist released the album “1989”? => Taylor Swift
+[Number · Medium] How many seasons did Friends run? => 10 = 10
+[Number · Medium] In what year did the first iPhone come out? => 2007 = 2007
+[Answer · Easy] Who played Jack in Titanic? => Leonardo DiCaprio
+[Answer · Easy] Which band was Harry Styles in? => One Direction
+[Answer · Medium] What is the name of the coffee shop in Friends? => Central Perk
+[Number · Hard] How many Oscars did Titanic win? => 11 = 11
+[Answer · Medium] Which video game series stars Master Chief? => Halo
+[Answer · Easy] What is the name of Shrek’s wife? => Fiona
+[Answer · Easy] Which streaming service released Squid Game? => Netflix
+[Number · Medium] In what year did YouTube launch? => 2005 = 2005
+[Turns · Easy] Name Marvel superheroes.
+[Turns · Medium] Name Pixar movies.
+[Number · Hard] How many episodes of Friends were made? => 236 = 236
+[Number · Medium] In what year did the first Toy Story come out? => 1995 = 1995
+[Number · Medium] How many Pokémon were in the original Red & Blue games? => 151 = 151
+[Answer · Medium] What is the best-selling video game of all time? => Minecraft
+[Number · Hard] How many Oscars did The Lord of the Rings: The Return of the King win? => 11 = 11
+[Answer · Easy] What’s the name of the hidden African nation in Black Panther? => Wakanda
+[Number · Medium] In what year did Facebook launch? => 2004 = 2004
+[Number · Hard] How many Grammys has Beyoncé won? => 35 (as of 2025) = 35
+[Answer · Easy] What’s the name of the paper company in The Office (US)? => Dunder Mifflin
+[Answer · Hard] What is Lady Gaga’s real first name? => Stefani
+[Number · Hard] In what year did Netflix start streaming movies online? => 2007 = 2007
+[Number · Hard] How long is Queen’s “Bohemian Rhapsody”, in seconds? => About 354 seconds (5:54) = 354
+[Number · Hard] How many UK studio albums did the Beatles release? => 12 = 12
+[Turns · Easy] Name Disney princesses.
+[Turns · Medium] Name Taylor Swift songs.
+[Answer · Easy] What is the name of Harry Potter's owl? => Hedwig
+[Answer · Medium] Which band sang "Mr. Brightside"? => The Killers
+[Answer · Medium] In "Breaking Bad", what is Walter White's alias? => Heisenberg
+[Answer · Hard] What was the first feature-length animated Disney film? => Snow White and the Seven Dwarfs (1937)
+[Answer · Easy] Who is SpongeBob's best friend? => Patrick Star
+[Answer · Medium] Which rapper's real name is Marshall Mathers? => Eminem
+[Answer · Hard] What is the name of the kingdom in "Frozen"? => Arendelle
+[Answer · Medium] Who directed "Jurassic Park"? => Steven Spielberg
+[Answer · Hard] Which actor has played the Joker AND won an Oscar for it — name one. => Heath Ledger or Joaquin Phoenix
+[Answer · Medium] What is the name of the fictional town in "Stranger Things"? => Hawkins, Indiana
+[Answer · Easy] Which superhero is also known as the Man of Steel? => Superman
+[Answer · Medium] Which singer is known as the "Queen of Pop"? => Madonna
+[Answer · Hard] What was Freddie Mercury's real first name? => Farrokh
+[Answer · Medium] In "The Lion King", what is Simba's father called? => Mufasa
+[Answer · Hard] What is the highest-selling album of all time? => Michael Jackson's "Thriller"
+[Answer · Medium] In which TV show would you find the Iron Throne? => Game of Thrones
+[Answer · Medium] Who sang "Rolling in the Deep"? => Adele
+[Answer · Hard] Which film features the quote "Here's looking at you, kid"? => Casablanca
+[Answer · Medium] In "Friends", what is Chandler's last name? => Bing
+[Answer · Hard] What was the name of the dog in "The Wizard of Oz"? => Toto
+[Answer · Medium] Which video game character is a blue hedgehog? => Sonic
+[Answer · Medium] Who sang "Shape of You"? => Ed Sheeran
+[Answer · Medium] What is the name of the wizarding school in Harry Potter? => Hogwarts
+[Answer · Hard] Who played Hermione Granger in the Harry Potter films? => Emma Watson
+[Answer · Medium] Which TV family lives at 742 Evergreen Terrace? => The Simpsons
+[Number · Medium] How many seasons of "The Office" (US) are there? => 9 = 9
+[Number · Hard] How many Star Wars films are in the main "Skywalker saga"? => 9 = 9
+[Number · Medium] In what year was the first Harry Potter book published? => 1997 = 1997
+[Number · Hard] How many Marvel films are in the "Infinity Saga" (Iron Man to Far From Home)? => 23 = 23
+[Number · Medium] In what year did Michael Jackson release "Thriller"? => 1982 = 1982
+[Number · Hard] How many Academy Awards did Walt Disney personally win? => 22 (plus 4 honorary) = 22
+[Number · Medium] In what year did Instagram launch? => 2010 = 2010
+[Number · Hard] How many episodes of "The Simpsons" are there (roughly)? => About 790+ (and counting) = 790
+[Number · Medium] How many Toy Story movies are there? => 4 (a 5th is coming) = 4
+[Number · Hard] In what year was the first Super Mario Bros. game released? => 1985 = 1985
+[Number · Hard] How many followers does Cristiano Ronaldo have on Instagram (in millions)? => About 650 million (it keeps growing!) = 650
+[Number · Medium] In what year did TikTok launch worldwide? => 2018 (Douyin in 2016) = 2018
+[Number · Hard] How long is the movie "Titanic", in minutes? => 194 minutes = 194
+[Number · Medium] How many members were in the original Spice Girls? => 5 = 5
+[Number · Hard] In what year did MTV launch? => 1981 = 1981
+[Number · Hard] How many weeks did "Old Town Road" spend at #1 on the Billboard Hot 100? => 19 weeks = 19
+[Number · Medium] How many Pirates of the Caribbean movies are there? => 5 = 5
+[Number · Hard] In what year did "The Matrix" come out? => 1999 = 1999
+[Number · Medium] How many dwarfs are there in Snow White? => 7 = 7
+[Number · Hard] How many Grand Theft Auto main games have been released (numbered + major titles, e.g. GTA I–V)? => 5 numbered games (I–V) = 5
+[Turns · Easy] Name Harry Potter characters.
+[Turns · Medium] Name Disney or Pixar villains.
+[Turns · Medium] Name TV sitcoms.
+[Turns · Hard] Name Oscar Best Picture winners.
+[Turns · Medium] Name rappers.
+
+## Sports
+[Answer · Easy] How many players does a soccer team have on the field? => 11
+[Answer · Medium] Which country has won the most men’s FIFA World Cups? => Brazil (5)
+[Answer · Easy] How many rings are on the Olympic flag? => 5
+[Answer · Easy] What was Michael Jordan’s famous jersey number? => 23
+[Number · Medium] How long is a marathon, in miles? => 26.2 miles = 26.2
+[Number · Hard] What is Usain Bolt’s 100m world record, in seconds? => 9.58 s = 9.58
+[Answer · Easy] Which sport uses a shuttlecock? => Badminton
+[Answer · Easy] How many points is a touchdown worth? => 6
+[Answer · Easy] How many holes are in a standard round of golf? => 18
+[Answer · Medium] Which city hosted the 2016 Summer Olympics? => Rio de Janeiro
+[Number · Medium] What is a perfect score in ten-pin bowling? => 300 = 300
+[Answer · Easy] How many players does a baseball team have on the field? => 9
+[Number · Hard] How many Grand Slam singles titles has Novak Djokovic won? => 24 = 24
+[Number · Medium] How many minutes long is an NBA game, not counting overtime? => 48 = 48
+[Turns · Medium] Name NBA teams.
+[Turns · Medium] Name Premier League clubs.
+[Number · Hard] How many dimples are on a standard golf ball? => About 336 (usually 300–500) = 336
+[Number · Medium] How long is an Olympic swimming pool, in meters? => 50 m = 50
+[Number · Medium] How many Olympic GOLD medals did Michael Phelps win? => 23 = 23
+[Number · Easy] How high is a basketball hoop, in feet? => 10 feet = 10
+[Number · Medium] How many players does a rugby union team have on the field? => 15 = 15
+[Number · Medium] In what year were the first modern Olympics held? => 1896 (Athens) = 1896
+[Number · Medium] How many Super Bowls have the New England Patriots won? => 6 = 6
+[Number · Hard] How wide is a basketball hoop, in inches? => 18 inches = 18
+[Number · Medium] In cricket, how many balls are bowled in one over? => 6 = 6
+[Answer · Hard] Which country hosted the very first FIFA World Cup? => Uruguay (1930)
+[Number · Hard] What is the fastest tennis serve ever recorded, in mph? => About 163.7 mph (Sam Groth, 2012) = 163.7
+[Number · Hard] How long is a soccer goal, in feet? => 24 feet (8 yards) = 24
+[Number · Easy] How many players per team are on the ice in hockey (goalie included)? => 6 = 6
+[Turns · Easy] Name Olympic sports.
+[Turns · Easy] Name famous soccer players.
+[Answer · Easy] In which sport would you perform a slam dunk? => Basketball
+[Answer · Medium] Which country invented the sport of judo? => Japan
+[Answer · Medium] Which tennis tournament is played on grass? => Wimbledon
+[Answer · Hard] Which country won the first ever Rugby World Cup in 1987? => New Zealand
+[Answer · Medium] What color is the jersey worn by the leader of the Tour de France? => Yellow
+[Answer · Easy] In which sport do you use a puck? => Ice hockey
+[Answer · Hard] Which boxer was known as "The Greatest"? => Muhammad Ali
+[Answer · Medium] Which NFL team has the most Super Bowl wins (tied)? => New England Patriots and Pittsburgh Steelers (6 each)
+[Answer · Hard] What is the only country to have played in every men's FIFA World Cup? => Brazil
+[Answer · Medium] Which footballer is nicknamed "CR7"? => Cristiano Ronaldo
+[Answer · Hard] In which city were the 2012 Summer Olympics held? => London
+[Answer · Medium] What sport is played at Augusta National? => Golf (the Masters)
+[Answer · Hard] Which country has won the most Olympic gold medals of all time? => The United States
+[Answer · Medium] In bowling, what is it called when you knock down all ten pins with your first ball? => A strike
+[Answer · Hard] Which swimmer is nicknamed "The Thorpedo"? => Ian Thorpe
+[Answer · Medium] In which sport would you find a "home run"? => Baseball
+[Answer · Hard] Which F1 driver has the most world championships (tied)? => Lewis Hamilton and Michael Schumacher (7 each)
+[Answer · Medium] Which country hosts the Grand Prix held in Monte Carlo? => Monaco
+[Answer · Hard] What is the national sport of Canada (summer)? => Lacrosse
+[Answer · Medium] Which NBA player is nicknamed "King James"? => LeBron James
+[Answer · Hard] Which club has won the most UEFA Champions League titles? => Real Madrid
+[Answer · Medium] What's the term for three goals by one player in a single game? => A hat-trick
+[Answer · Hard] What is the maximum break in snooker? => 147
+[Answer · Medium] Which country has won the most cricket World Cups? => Australia
+[Answer · Hard] In golf, what is a score of three under par on one hole called? => An albatross (or double eagle)
+[Number · Medium] How many players are on a volleyball team on the court? => 6 = 6
+[Number · Medium] How long is a tennis court, in feet? => 78 feet = 78
+[Number · Hard] How heavy is an Olympic men's shot put, in kg? => 7.26 kg = 7.26
+[Number · Medium] How many minutes are in a regular soccer match? => 90 = 90
+[Number · Hard] What is the men's marathon world record, in minutes? => About 121 minutes (2:00:35, Kelvin Kiptum, 2023) = 121
+[Number · Medium] How many NBA championships did Michael Jordan win? => 6 = 6
+[Number · Hard] Roughly how many career NBA points has LeBron James scored? => Over 40,000 (still counting!) = 41000
+[Number · Hard] How fast was Usain Bolt's top speed, in mph? => About 27.8 mph = 27.8
+[Number · Medium] How many rounds are there in a championship boxing match? => 12 = 12
+[Number · Hard] How long is an NFL field including end zones, in yards? => 120 yards = 120
+[Number · Hard] How many Wimbledon singles titles has Roger Federer won? => 8 = 8
+[Number · Medium] How many World Cups has Germany won (men's)? => 4 = 4
+[Number · Hard] How heavy is a regulation NBA basketball, in ounces? => About 22 oz = 22
+[Number · Hard] What is the world record for the men's high jump, in meters? => 2.45 m (Javier Sotomayor) = 2.45
+[Number · Medium] How many teams are in the NFL? => 32 = 32
+[Number · Hard] How many teams are in the Premier League? => 20 = 20
+[Number · Hard] How long did the longest tennis match ever last, in hours? => 11 hours 5 minutes (Isner vs Mahut, 2010) = 11
+[Number · Medium] How many pins are used in ten-pin bowling? => 10 = 10
+[Number · Hard] In what year did Tiger Woods win his first Masters? => 1997 = 1997
+[Number · Hard] How far is the pitcher's mound from home plate, in feet? => 60 feet 6 inches = 60.5
+[Turns · Medium] Name NFL teams.
+[Turns · Medium] Name tennis players.
+[Turns · Hard] Name Formula 1 drivers.
+[Turns · Easy] Name sports played with a ball.
+[Turns · Medium] Name famous basketball players.
+
+## Physical
+[Challenge · Medium] Who can do the most push-ups in 30 seconds?
+[Challenge · Medium] Who can hold their breath the longest?
+[Challenge · Easy] Rock, Paper, Scissors — best of 3!
+[Challenge · Hard] Who can hold a wall sit the longest?
+[Challenge · Hard] Who can hold a plank the longest?
+[Challenge · Medium] Who can stand on one leg with their eyes closed the longest?
+[Challenge · Easy] Thumb war — best of 3!
+[Challenge · Medium] Who can do the most jumping jacks in 30 seconds?
+[Challenge · Easy] Staring contest — first to blink loses!
+[Challenge · Hard] Who can balance a spoon on their nose the longest?
+[Challenge · Hard] Who can say the alphabet backwards the fastest?
+[Challenge · Medium] Say “Red lorry, yellow lorry” three times fast — fewest mistakes wins.
+[Challenge · Medium] Who can do the most squats in 30 seconds?
+[Challenge · Medium] Who can hop on one foot the longest?
+[Challenge · Medium] Bottle flip — first to land one wins!
+[Challenge · Medium] Who can stack the most coins in 30 seconds?
+[Challenge · Medium] Arm wrestling — best of 3!
+[Challenge · Hard] Who can do the most burpees in 30 seconds?
+[Challenge · Medium] Who can hold their arms straight out to the sides the longest?
+[Challenge · Hard] Who can hold a lunge the longest?
+[Challenge · Medium] Who can do the most sit-ups in 30 seconds?
+[Challenge · Medium] Who can stay up on their tiptoes the longest?
+[Challenge · Hard] Who can hold a one-arm plank the longest?
+[Challenge · Medium] Hold a plank and name 10 animals — first to finish wins.
+[Challenge · Medium] Walk across the room and back with a book on your head — fastest without dropping it wins.
+[Challenge · Medium] Stand up from sitting cross-legged without using your hands — first to do it 3 times wins.
+[Challenge · Easy] Hand-slap game — first to land 3 slaps wins.
+[Challenge · Easy] No-laugh stare-down: face each other — first to smile or laugh loses.
+[Challenge · Easy] Who can touch their nose with their tongue? The room judges who gets closest.
+[Challenge · Hard] Elbow coin catch: balance coins on your elbow, flip and catch — most caught wins.
+[Challenge · Medium] Spin around 10 times, then walk a straight line — the room judges who wobbles less.
+[Challenge · Medium] Who can hold a squat the longest — thighs parallel to the floor?
+[Challenge · Hard] Who can hold a handstand against the wall the longest?
+[Challenge · Medium] Who can do the most lunges in 30 seconds?
+[Challenge · Easy] Who can balance on one foot the longest while the room tries to distract them?
+[Challenge · Medium] Who can do the most star jumps in 20 seconds?
+[Challenge · Hard] Who can hold a superman pose (lying on your belly, arms and legs up) the longest?
+[Challenge · Medium] Who can keep a piece of paper stuck to their forehead the longest without hands while dancing?
+[Challenge · Easy] Who can spin a pen (or coin) on the table the longest?
+[Challenge · Medium] Who can toss a coin into a glass from 2 meters away first?
+[Challenge · Easy] Who can do the best cartwheel (or attempt)? The host judges.
+[Challenge · Medium] Who can hold a hollow body hold (lying on your back, legs and shoulders up) the longest?
+[Challenge · Hard] Who can do the most pull-ups (or dead hang the longest if no bar)?
+[Challenge · Medium] Who can stand up and sit down on a chair the most times in 30 seconds?
+[Challenge · Easy] Who can do the best robot dance for 15 seconds? The host judges.
+[Challenge · Medium] Who can walk heel-to-toe along a straight line the fastest without wobbling?
+[Challenge · Medium] Who can touch their toes and hold it the longest without bending their knees?
+[Challenge · Hard] Who can hold their leg straight out in front of them the longest?
+[Challenge · Easy] Who can blow a ping-pong ball (or a scrunched paper ball) across the table first?
+[Challenge · Medium] Who can keep a balloon (or rolled sock) in the air the longest using only their head?
+[Challenge · Easy] Who can do the most convincing slow-motion run? The host judges.
+[Challenge · Medium] Who can stack 5 cups or coins on the back of their hand and walk across the room first?
+[Challenge · Medium] Mirror match: copy every move the host makes. First to mess up loses.
+[Challenge · Hard] Who can do the most push-ups with their feet up on a chair?
+[Challenge · Easy] Simon says — the host gives the commands, first to slip up loses.
+[Challenge · Medium] Who can crab-walk to the other side of the room and back first?
+[Challenge · Medium] Who can hold a book out at arm's length the longest?
+[Challenge · Hard] Who can hold a side plank the longest?
+[Challenge · Easy] Who can do the best breakdance move? The host judges.
+[Challenge · Medium] Who can pick up a coin from the floor without bending their knees first?
+[Challenge · Easy] Who can do the funniest walk across the room? The host judges.
+[Challenge · Medium] Leg wrestling — best of 3!
+[Challenge · Medium] Finger-pull tug-of-war — first to pull the other over the line wins.
+[Challenge · Easy] Who can whistle a song the room recognizes first?
+[Challenge · Medium] Who can roll their tongue, wiggle their ears or do the weirdest body trick? The room votes.
+[Challenge · Hard] Who can jump the furthest from a standing start?
+[Challenge · Medium] Who can do the most sit-ups with their arms crossed in 30 seconds?
+[Challenge · Easy] Who can stand without blinking or laughing while the room makes faces?
+[Challenge · Medium] Who can rub their belly and pat their head the longest without mixing them up?
+[Challenge · Medium] Who can stay frozen like a statue the longest while the room tries to make them move?
+[Challenge · Hard] Who can hold a deep squat with their arms straight up the longest?
+[Challenge · Easy] Who can throw a piece of popcorn (or paper) in the air and catch it in their mouth first?
+[Challenge · Medium] Who can draw a perfect circle on paper? The host judges.
+[Challenge · Medium] Who can say the longest sentence on one breath?
+[Challenge · Easy] Who can spin around the most times in 10 seconds?
+[Challenge · Medium] Who can hop on one leg across the room and back fastest?
+[Challenge · Hard] Who can do the most burpees in 45 seconds?
+[Challenge · Medium] Who can keep a coin balanced on their nose (head tilted back) the longest?
+[Challenge · Easy] Shadow boxing: best 15-second fight routine. The room votes.
+[Challenge · Medium] Who can walk backwards across the room and back fastest without bumping into anything?
+[Challenge · Medium] Who can do the longest wall sit with a full glass of water in their hands (no spilling)?
+
+## Know Your Friends
+[Friend] What is {friend}’s favorite food?
+[Friend] What is {friend}’s go-to drink order?
+[Friend] Which month is {friend}’s birthday in?
+[Friend] What is {friend}’s dream travel destination?
+[Friend] What is {friend}’s middle name?
+[Friend] What is {friend}’s biggest fear?
+[Friend] Which celebrity would {friend} most want to meet?
+[Friend] What was {friend}’s dream job as a kid?
+[Friend] What is {friend}’s go-to karaoke song?
+[Friend] What is {friend}’s most-used emoji?
+[Friend] What is {friend}’s favorite movie?
+[Friend number] What is {friend}’s phone battery % right now?
+[Friend number] How many unread texts does {friend} have?
+[Friend number] How many hours of screen time did {friend} have yesterday?
+[Friend] What was {friend}’s first car (or first phone)?
+[Friend] What is {friend}’s go-to fast food order?
+[Friend] What is {friend}’s biggest pet peeve?
+[Friend] What is {friend}’s guilty-pleasure TV show?
+[Friend number] How many countries has {friend} visited?
+[Friend number] What is {friend}’s shoe size?
+[Friend number] How many photos are in {friend}’s camera roll?
+[Friend number] How many hours did {friend} sleep last night?
+[Friend number] How many pairs of shoes does {friend} own?
+[Friend] What is {friend}’s go-to pizza topping?
+[Friend] Who was {friend}’s celebrity crush growing up?
+[Friend] What’s the first thing {friend} would buy after winning $1 million?
+[Friend] What is {friend}’s secret hidden talent?
+[Friend] What was the last thing {friend} bought online?
+[Friend] What food does {friend} hate the most?
+[Friend] What is {friend}’s favorite season?
+[Friend] What was {friend}’s most embarrassing phase growing up?
+[Friend] What is {friend}'s go-to order at Starbucks (or their usual coffee)?
+[Friend] What was {friend}'s first concert?
+[Friend] What is {friend}'s comfort movie?
+[Friend] What is {friend}'s worst habit?
+[Friend] Which app does {friend} use the most?
+[Friend] What is {friend}'s dream car?
+[Friend] Which country would {friend} move to tomorrow if they could?
+[Friend] What's {friend}'s go-to excuse for being late?
+[Friend] Who in this room has {friend} known the longest?
+[Friend] What is {friend}'s favorite song right now?
+[Friend] What is {friend}'s star sign?
+[Friend] What did {friend} want to be when they grew up?
+[Friend] What is {friend}'s most irrational fear?
+[Friend] What's the worst job {friend} has ever had?
+[Friend] Which celebrity does {friend} get told they look like?
+[Friend] What is {friend}'s favorite cereal?
+[Friend] What's {friend}'s go-to dance move?
+[Friend] What was {friend}'s first pet's name (or what pet do they want)?
+[Friend] What is {friend}'s favorite holiday?
+[Friend] What subject was {friend} worst at in school?
+[Friend] What's {friend}'s most-watched TV show of all time?
+[Friend] What's {friend}'s go-to snack at 2am?
+[Friend] Which fictional character is {friend} most like?
+[Friend] What's the most expensive thing {friend} has ever bought?
+[Friend] What would {friend}'s last meal be?
+[Friend number] How many siblings does {friend} have (including step/half)?
+[Friend number] What's the most hours {friend} has ever slept in one go?
+[Friend number] How many apps are on {friend}'s phone?
+[Friend number] How many tabs does {friend} have open on their phone right now?
+[Friend number] How many times has {friend} moved house?
+[Friend number] How old was {friend} when they had their first kiss?
+[Friend number] How many countries does {friend} want to visit before 40?
+[Friend number] How many cups of coffee does {friend} drink a day?
+[Room game] Truth or Dare: the room picks a truth or a dare for each challenger. Best effort wins — the room votes.
+[Room game] Truth or Dare (dare edition): everyone else agrees on ONE dare for both challengers. Whoever does it better wins.
+[Room game] Hot Seat: the room fires questions at each challenger for 30 seconds. Most entertaining answers win.
+[Room game] Two Truths and a Lie: each challenger tells two truths and one lie. Whoever fools more of the room wins.
+[Room game] Would You Rather: the room makes up a tough "would you rather" — both answer and defend it. Best argument wins.
+[Room game] Impressions: the room names someone everyone knows — both do an impression. The room votes.
+[Room game] Charades: the room whispers a movie to each challenger. Whoever gets the room to guess it faster wins.
+[Room game] Roast battle: 30 seconds each to (lovingly) roast the other. The room votes.
+[Room game] Pitch it: the room picks a ridiculous product — each challenger has 20 seconds to sell it. Best pitch wins.
+[Room game] Story time: the room gives three random words — each challenger tells a 30-second story using all three.
+[Room game] Lip sync battle: the room picks a song for each challenger. Best performance wins.
+[Room game] Who knows who? The room picks a player — each challenger says 3 facts about them. Most correct wins.
+[Room game] Never Have I Ever: the room writes 5 statements — whoever has done FEWER of them wins.
+[Room game] Desert island: the room names 3 items — each challenger explains how they'd survive with them. Best plan wins.
+[Room game] Interview: the room plays a job interviewer for a silly job they choose. Most hireable challenger wins.
+[Room game] Truth or Dare (truth edition): the room asks each challenger one juicy question. Most honest answer wins; refusing = loss.
+[Room game] Accent swap: the room picks an accent for each challenger — they must tell a story in it. The room votes.
+
+## Party
+[Challenge · Medium] Who can take a shot (of their drink of choice) with less of a reaction?
+[Challenge · Easy] Who can take a sip with the straightest face while the room tries to make them laugh?
+[Challenge · Medium] Flip cup — first to flip their cup upright wins!
+[Challenge · Hard] Bounce a coin into a cup — first to land it wins!
+[Challenge · Medium] Who can balance their drink on the back of their hand the longest?
+[Challenge · Medium] Who can hold their drink at arm’s length the longest?
+[Turns · Medium] Name beer brands.
+[Turns · Medium] Name cocktails.
+[Challenge · Easy] Pour exactly half a glass — the room judges who’s closer.
+[Challenge · Easy] Give the best 20-second toast — the room picks the winner.
+[Challenge · Medium] One beer-pong shot each — closest to sinking it wins.
+[Answer · Easy] Which country does tequila come from? => Mexico
+[Number · Medium] What is the typical alcohol % of wine? => About 12% = 12
+[Challenge · Medium] Never Have I Ever face-off: take turns making statements — first to have done 3 loses.
+[Challenge · Medium] Who can stack empty cups or cans the highest in 30 seconds?
+[Challenge · Hard] Hold a mouthful of your drink while the room tries to crack you — first to laugh loses.
+[Challenge · Medium] Who can balance a coaster on their forehead the longest?
+[Challenge · Hard] Coaster flip: flick a coaster off the table edge and catch it — most in a row wins.
+[Turns · Medium] Name drinking games.
+[Turns · Easy] Name things you can find in a bar.
+[Number · Medium] What is the typical alcohol % of vodka? => About 40% = 40
+[Answer · Hard] Which grain is Scotch whisky mostly made from? => Barley
+[Answer · Easy] Which country does Guinness come from? => Ireland
+[Answer · Medium] What is the main ingredient in sake? => Rice
+[Number · Hard] How many bottles of champagne fit in a giant “Nebuchadnezzar” bottle? => 20 = 20
+[Challenge · Easy] Best impression of the most tipsy person you know — the room votes.
+[Challenge · Easy] Most convincing “I’m totally sober” speech — the room votes.
+[Challenge · Medium] Blind taste test: eyes closed, the room hands you a drink — first to name it wins.
+[Challenge · Medium] Flick a bottle cap into a cup from across the table — most in 5 tries wins.
+[Challenge · Medium] Tell a story where every sentence includes the word “cheers” — first to stall loses.
+[Challenge · Easy] Keep a straight face while the room tells terrible jokes — first to laugh loses.
+[Challenge · Medium] Who can balance a full cup on their head the longest?
+[Challenge · Easy] Best drinking toast that rhymes — the room votes.
+[Challenge · Medium] Who can say "Toy boat" 5 times fast after a sip of their drink?
+[Challenge · Medium] Rock, Paper, Scissors, best of 5 — the loser of each throw takes a sip.
+[Challenge · Hard] Quarters: bounce a coin into a glass — first to land 2 wins.
+[Challenge · Easy] Who can do the best impression of a bartender taking an order? The room votes.
+[Challenge · Medium] Who can hold a drink on their head while sitting down and standing up 3 times?
+[Challenge · Medium] Name that tune: the room hums a song — first to name it wins.
+[Challenge · Easy] Best dance move with a drink in hand (no spilling!) — the room votes.
+[Challenge · Medium] Who can guess the exact number of sips left in the other's drink? Closest guess wins.
+[Challenge · Hard] Blindfolded pour: pour a drink to the halfway line with eyes closed. Closest wins.
+[Challenge · Medium] Who can tell the best "this one time at a party…" story in 30 seconds? The room votes.
+[Challenge · Easy] Cheers in the most languages — take turns, first to run out loses.
+[Challenge · Medium] Who can hold a coaster flat on an outstretched palm while spinning around 3 times?
+[Challenge · Medium] Who can hold their drink with just their pinky and thumb the longest?
+[Challenge · Easy] Best karaoke chorus of a song the room picks — the room votes.
+[Challenge · Medium] Straight face: the room tries to make you laugh while you sip slowly. First to laugh loses.
+[Challenge · Hard] Who can stack the most coasters on their elbow and catch them?
+[Challenge · Medium] Guess the drink: the room makes a mystery mix — first to name 2 ingredients wins.
+[Challenge · Easy] Most dramatic slow-motion "cheers" — the room votes.
+[Challenge · Medium] Who can keep a bottle cap on their nose the longest?
+[Challenge · Medium] Speed spelling: spell a cocktail name the room picks, backwards. Fastest correct wins.
+[Challenge · Easy] Best bar-fight-style trash talk (all friendly!) in 15 seconds — the room votes.
+[Challenge · Medium] Who can flip a coaster and catch it the most times in 20 seconds?
+[Challenge · Hard] Bottle spin: spin a bottle — whoever gets it to point at a player the room picked wins.
+[Turns · Medium] Name cocktails with fruit in them.
+[Turns · Easy] Name famous party songs.
+[Turns · Medium] Name things people say when they're tipsy.
+[Turns · Hard] Name brands of whisky, vodka, gin or rum.
+[Turns · Medium] Name drinking songs or chants.
+[Answer · Medium] What spirit is the main ingredient in a Mojito? => Rum
+[Answer · Medium] What is the main spirit in a Margarita? => Tequila
+[Answer · Hard] What is the main spirit in a Negroni (besides vermouth and Campari)? => Gin
+[Answer · Medium] Which country is famous for Champagne? => France
+[Answer · Hard] What fruit is used to make Calvados? => Apples
+[Answer · Medium] Which beer is famously brewed at St. James's Gate in Dublin? => Guinness
+[Answer · Hard] What plant is tequila made from? => Blue agave
+[Answer · Medium] Which drink is made by mixing beer and lemonade? => A shandy
+[Answer · Hard] What does IPA stand for in beer? => India Pale Ale
+[Answer · Medium] Which Italian drink is made with Aperol, prosecco and soda? => An Aperol Spritz
+[Number · Medium] How many standard drinks are in a bottle of wine? => About 5 glasses = 5
+[Number · Hard] What is the alcohol % of most beers? => About 5% = 5
+[Number · Hard] How many bubbles are in a bottle of champagne (millions)? => About 49 million (estimate) = 49
+[Number · Medium] How many shots are in a standard 750 ml bottle? => About 17 = 17
+[Number · Hard] How many pounds of grapes does it take to make one bottle of wine? => About 2.5–3 pounds = 2.75
+[Number · Medium] What is the legal drinking age in the USA? => 21 = 21
+[Number · Hard] How many beers does the average German drink per year? => About 90–100 liters (~190 pints) = 190
+[Number · Hard] How old is the oldest known beer recipe, in years? => About 3,800+ years (Sumerian Hymn to Ninkasi) = 3800
+[Number · Medium] How many ounces are in a standard shot (US)? => 1.5 oz = 1.5
+[Number · Hard] How many years must Scotch whisky be aged, at minimum? => 3 years = 3
+
+## Spicy
+[Challenge · Medium] Best pickup line, delivered to a player the room picks — the room votes.
+[Challenge · Medium] Most embarrassing drunk story in 30 seconds — the room votes.
+[Challenge · Hard] Read your last sent text out loud — funnier one wins. Refusing = drink 3.
+[Challenge · Medium] Who has had more relationships? Both reveal — higher number wins.
+[Challenge · Easy] Describe your worst date ever in 5 words — the room votes.
+[Challenge · Easy] Best “smolder” for 5 seconds — the room votes.
+[Challenge · Medium] Make the other person blush first — compliments only.
+[Challenge · Easy] Most creative excuse for ghosting someone — the room votes.
+[Challenge · Easy] Slow dance with an imaginary partner — the room votes.
+[Challenge · Medium] Write your dating-app bio on the spot and read it out — the room votes.
+[Challenge · Hard] Show the 5th most recent photo in your camera roll — more embarrassing one wins.
+[Challenge · Hard] Truth-off: each answers “What’s the most awkward thing you’ve done on a date?” Refusing = loss.
+[Challenge · Medium] Flirty celebrity impression — the room votes.
+[Challenge · Easy] Cheesiest compliment to a player of the room’s choice — the room votes.
+[Challenge · Easy] Who is more likely to text an ex tonight? The room votes — the “winner” loses.
+[Challenge · Easy] Describe your type in 3 words — the room votes for the best description.
+[Challenge · Medium] Most convincing fake marriage proposal to a player the room picks — the room votes.
+[Challenge · Medium] Rate your own kissing skills out of 10 and defend it for 20 seconds — most convincing wins.
+[Challenge · Easy] Serenade the other challenger for 15 seconds — the room votes.
+[Challenge · Easy] Most dramatic fake breakup speech to the other challenger — the room votes.
+[Challenge · Easy] Read a grocery list in your most seductive voice — the room votes.
+[Challenge · Medium] Best pickup line using only food puns — the room votes.
+[Challenge · Easy] Describe your celebrity hall pass and defend your choice — the room votes.
+[Challenge · Hard] Truth-off: “What’s your biggest red flag?” Most honest answer wins. Refusing = loss.
+[Challenge · Hard] Boldest DM you’ve ever sent — best story wins. Refusing = loss.
+[Challenge · Medium] Who’s more likely to have a secret crush in this room? The room votes — the “winner” loses.
+[Challenge · Easy] Strut your best runway walk across the room — the room votes.
+[Challenge · Medium] Write the flirtiest text you can in 30 seconds and read it out — the room votes.
+[Challenge · Medium] Act out your “type” walking into a bar — best performance wins.
+[Challenge · Medium] Recreate your best first-date opening line on the other challenger — the room votes.
+[Challenge · Hard] Guess how many exes the other challenger has — closer guess wins.
+[Turns · Medium] Name sex positions. Repeat one or stall and you lose.
+[Turns · Hard] Name places you've actually had sex. No lying — the room can call you out!
+[Turns · Medium] Name places you'd LIKE to have sex.
+[Turns · Medium] Name things that turn you on.
+[Turns · Easy] Name dating apps.
+[Turns · Medium] Name sexy songs.
+[Turns · Medium] Name slang words for sex.
+[Turns · Medium] Name celebrities you'd sleep with.
+[Turns · Hard] Name things you'd find in someone's bedside drawer.
+[Turns · Medium] Name famous sex symbols.
+[Turns · Easy] Name romantic or steamy movies.
+[Turns · Medium] Name terrible first-date ideas.
+[Turns · Hard] Name body parts you find attractive.
+[Turns · Medium] Name red flags on a first date.
+[Turns · Medium] Name pickup lines (they must be real lines, not made up on the spot).
+[Challenge · Medium] Who has kissed more people? Both reveal — higher number wins.
+[Challenge · Hard] Body count face-off: both secretly tell the host — higher number wins. The host only says who won.
+[Challenge · Medium] Describe your last hookup in exactly 3 words — the room votes.
+[Challenge · Medium] Best moan impression — the room votes. 😳
+[Challenge · Easy] Most seductive way to eat a banana (or any snack) — the room votes.
+[Challenge · Medium] Give the other challenger a lap-dance-style dance move for 10 seconds (clothes on!) — the room votes.
+[Challenge · Hard] Show your most recent DM conversation with a crush — juicier one wins. Refusing = loss.
+[Challenge · Medium] Kiss the back of your own hand like it's your celebrity crush — most passionate wins.
+[Challenge · Medium] What's the wildest place you've hooked up? Best story wins (refusing = loss).
+[Challenge · Easy] Flirt with an object in the room for 20 seconds — the room votes.
+[Challenge · Medium] Whisper the dirtiest (but non-explicit) thing you can into the host's ear — the host picks the winner.
+[Challenge · Hard] Truth-off: "What's your biggest fantasy?" Most honest answer wins. Refusing = loss.
+[Challenge · Medium] Describe your perfect night in, in 15 seconds — sexiest one wins.
+[Challenge · Medium] Text your last ex "hey" — whoever gets a reply first wins. Refusing = loss.
+[Challenge · Easy] Best striptease… of just ONE sock — the room votes.
+[Challenge · Medium] Rate everyone in the room's flirting skills out of 10 — most honest (and brave) wins.
+[Challenge · Hard] Who's done the walk of shame more times? Both reveal — higher wins.
+[Challenge · Medium] Best "come to bed" line in a movie-trailer voice — the room votes.
+[Challenge · Medium] Most creative way to ask someone in the room on a date — the room votes.
+[Challenge · Easy] Sexiest celebrity impression — the room votes.
+[Challenge · Medium] Name your top 3 celebrity crushes in 5 seconds — whoever does it fastest wins.
+[Challenge · Hard] Let the room read your last 3 Google searches. Most embarrassing wins (refusing = loss).
+[Challenge · Medium] Best impression of someone in the room flirting — the room votes.
+[Challenge · Medium] Most cringe thing you've ever said during a hookup — best story wins.
+[Challenge · Easy] Best air-kiss blown across the room — the room votes.
+[Challenge · Medium] Who'd be the better one-night stand? Both make their case in 15 seconds — the room votes.
+[Challenge · Hard] Confess your biggest turn-off — most surprising answer wins.
+[Challenge · Medium] Hold eye contact with the other challenger as seductively as possible — first to laugh loses.
+[Challenge · Medium] Best sexy dance to a song the room picks, 15 seconds — the room votes.
+[Challenge · Medium] Rank the other challenger's top 3 most attractive qualities — most flattering wins.
+[Challenge · Hard] Who's had more one-night stands? Both reveal — higher number wins.
+[Challenge · Medium] Most convincing fake "I'm into you" text to someone in the room — the room votes.
+[Challenge · Easy] Who's the bigger flirt? The room votes — the "winner" wins.
+[Challenge · Medium] Describe your ideal partner using only food — the room votes.
+[Challenge · Medium] Send a flirty emoji-only text to the 3rd person in your chats. Refusing = loss.

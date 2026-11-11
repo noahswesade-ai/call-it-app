@@ -150,3 +150,23 @@ _Last updated: 2026-11-09_
 - Only betting and the result screen are timed; matchup, wheel and bet reveal wait for the host ("Click to continue...").
 - Everyone's own result (points / sips) now appears right after the winner.
 - Verified on the live site with 4 simulated phones: join by link, join by code, kick, continue, pause/resume.
+
+## 2026-11-11 — Play-test round 2 fixes
+- Challengers no longer see the question: only category, difficulty, how-to-win and "Ears open!". Bettors see the
+  question; once the host reveals the answer it shows on everyone's phone except the challengers'.
+- Host hint ("read the instructions and the question/challenge out loud"), 🔄 New question (free: 1 per game, Premium: unlimited).
+- Hard "Answer" questions use a 3-2-1 countdown (both answer at once).
+- Host shown by name everywhere (🎙️ pill, mic on their avatar). When the host is a challenger, a stand-in host runs the round.
+- Disconnected guests are removed after 45s (their vote is no longer needed). If the host's phone disappears, the next
+  player takes over hosting (30s, or 45s if the host's app was paused). Old hosts that come back rejoin as players.
+- Underdog = 33% OR LESS. The UNDERDOG popup disappears by itself after ~4s.
+- 🔥 Streaks: 3+ wins in a row (face-offs or right calls) glow in the standings and on your result card.
+- Lobby: big Party / Spicy tiles always visible (locked look for free users). Premium "Custom questions" lets everyone add questions.
+- Starting the game pulls players out of the avatar/shop screens.
+- Wheel: weighted odds — Party mode ~70% Party/Spicy/Physical/Friends; each category gets less likely every time it lands
+  that game. Questions seen by anyone this session aren't repeated (room games may repeat). Smoother wheel animation.
+- Sounds: whoosh, landing chime, drum roll, Underdog stinger, reveal, winner fanfare, coin / sad horn, podium fanfare, join pop.
+- Question bank: 81 per category (729 total) in content/question-bank.txt, mirrored in the "Underdog" Google Doc.
+- Accessories refitted per animal with hand-measured landmarks (tools/fit_accessories2.py).
+- Verified live with 5 simulated phones: link + code joins, kick, avatar-screen pull-back, stand-in host, continue,
+  challenger view, answer reveal, host takeover.

@@ -40,6 +40,15 @@ interface RoomApi {
 
 const Ctx = createContext<RoomApi | null>(null);
 
+/** Question ids this phone has seen since the app was opened (shared with any room it hosts). */
+const sessionSeen = new Set<string>();
+const PING_MS = 5000;
+/** A guest silent for this long is removed from the game. */
+const GONE_MS = 45_000;
+/** With no word from the host for this long, the next player in line takes over hosting. */
+const HOST_GONE_MS = 30_000;
+const HOST_PAUSED_GONE_MS = 45_000;
+
 const BOT_NAMES = ['Mittens', 'Biscuit', 'Toad', 'Bruno', 'Pickles', 'Noodle', 'Waffles', 'Pepper', 'Ziggy'];
 const TICK_MS = 250;
 
@@ -70,6 +79,8 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   const botsRef = useRef<Set<string>>(new Set());
   const botTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const isHostRef = useRef(false);
+  const lastSeenRef = useRef<Record<string, number>>({});
+  const joinLoopRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   const me = useCallback(
     (host: boolean): Player => ({
@@ -108,9 +119,51 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   const [stale, setStale] = useState(false);
   useEffect(() => {
     if (isHost || !state) return setStale(false);
-    const t = setInterval(() => setStale(Date.now() - lastStateAtRef.current > 12_000), 1000);
+    const t = setInterval(() => {
+      const gap = Date.now() - lastStateAtRef.current;
+      setStale(gap > 12_000);
+      maybeTakeOver(gap);
+    }, 1000);
     return () => clearInterval(t);
-  }, [isHost, state]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHost, !!state]);
+
+  // Every phone remembers which questions it has seen since the app was opened.
+  useEffect(() => {
+    const id = state?.round?.question.id;
+    if (id && !state?.round?.question.repeatable) sessionSeen.add(id);
+  }, [state?.round?.question.id, state?.round?.question.repeatable]);
+
+  // Guests: tell the host we're still here.
+  useEffect(() => {
+    if (isHost || !state) return;
+    const t = setInterval(() => {
+      transportRef.current?.sendAction({ action: { type: 'ping' }, from: profile.id });
+    }, PING_MS);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHost, !!state, profile.id]);
+
+  // Host: remove players whose phones have gone completely silent.
+  useEffect(() => {
+    if (!isHost || connection === 'practice') return;
+    lastSeenRef.current = {};
+    const t = setInterval(() => {
+      const s = stateRef.current;
+      if (!s) return;
+      const now = Date.now();
+      for (const p of s.players) {
+        if (p.id === profile.id || isBotId(p.id)) continue;
+        const seen = lastSeenRef.current[p.id];
+        if (seen === undefined) lastSeenRef.current[p.id] = now;
+        else if (now - seen > GONE_MS) {
+          delete lastSeenRef.current[p.id];
+          applyLocal({ type: 'leave', playerId: p.id });
+        }
+      }
+    }, 3000);
+    return () => clearInterval(t);
+  }, [isHost, connection, profile.id, applyLocal]);
 
   // Host: heartbeat, so guests can tell the host is still here.
   useEffect(() => {
@@ -170,7 +223,11 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
 
   const attachHostHandlers = useCallback(
     (transport: RoomTransport) => {
-      transport.onAction(({ action }) => applyLocal(action));
+      transport.onAction(({ action, from }) => {
+        if (from) lastSeenRef.current[from] = Date.now();
+        if (action.type === 'ping') return;
+        applyLocal(action);
+      });
       transport.onStateRequest(() => {
         if (stateRef.current) {
           transport.publishState({ state: publishable(stateRef.current), sentAt: Date.now() });
@@ -185,6 +242,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       const code = roomCode();
       const settings = { ...defaultSettings(), mode, categories: availableCategories(mode, false) };
       let game = createGame({ code, host: me(true), settings, bank: ALL_QUESTIONS });
+      if (sessionSeen.size) game = reduce(game, { type: 'seen', ids: [...sessionSeen] });
       botsRef.current = new Set();
       if (practiceBots) {
         for (let i = 0; i < practiceBots; i++) {
@@ -209,7 +267,10 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
         const { transport, connection: conn } = openTransport(code);
         transportRef.current = transport;
         setConnection(conn);
-        if (transport) attachHostHandlers(transport);
+        if (transport) {
+          attachHostHandlers(transport);
+          transport.onState((m) => handleStateRef.current(transport, m.state, m.sentAt));
+        }
       }
       stateRef.current = game;
       isHostRef.current = true;
@@ -221,6 +282,87 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     [me, attachHostHandlers],
   );
 
+  /** Keep asking to join until the host's phone has us in the room. */
+  const startJoinLoop = useCallback(
+    (transport: RoomTransport) => {
+      if (joinLoopRef.current) clearInterval(joinLoopRef.current);
+      let sentSeen = false;
+      const ask = () => {
+        if (isHostRef.current || transportRef.current !== transport) return clearInterval(loop);
+        const s = stateRef.current;
+        if (s?.kicked?.includes(profile.id)) return clearInterval(loop);
+        if (s?.players.some((p) => p.id === profile.id)) {
+          // In the room: share the questions we've already seen this session, once.
+          if (!sentSeen && sessionSeen.size) transport.sendAction({ action: { type: 'seen', ids: [...sessionSeen] }, from: profile.id });
+          sentSeen = true;
+          return;
+        }
+        transport.sendAction({ action: { type: 'join', player: me(false) }, from: profile.id });
+        transport.requestState();
+      };
+      ask();
+      const loop = setInterval(ask, 2000);
+      joinLoopRef.current = loop;
+    },
+    [me, profile.id],
+  );
+
+  /** Become the host of `s` on this phone (host left, or went silent for too long). */
+  const becomeHost = useCallback(
+    (transport: RoomTransport, s: GameState) => {
+      let promoted: GameState = { ...s, bank: ALL_QUESTIONS };
+      if (promoted.paused) promoted = reduce(promoted, { type: 'resume', now: Date.now() });
+      stateRef.current = promoted;
+      isHostRef.current = true;
+      lastSeenRef.current = {};
+      setIsHost(true);
+      setClockOffset(0);
+      attachHostHandlers(transport);
+      setState(promoted);
+    },
+    [attachHostHandlers],
+  );
+
+  /** Every state message (guests and hosts both listen). */
+  const handleStateRef = useRef<(t: RoomTransport, s: GameState, sentAt: number) => void>(() => {});
+  handleStateRef.current = (transport, s, sentAt) => {
+    const mine = stateRef.current;
+    if (mine && (s.epoch ?? 0) < (mine.epoch ?? 0)) return; // an old host that hasn't noticed yet
+    if (isHostRef.current) {
+      // Someone else took over while this phone was away: go back to being a guest.
+      if (s.hostId !== profile.id && (s.epoch ?? 0) > (mine?.epoch ?? 0)) {
+        isHostRef.current = false;
+        setIsHost(false);
+        lastStateAtRef.current = Date.now();
+        stateRef.current = s;
+        setState(s);
+        startJoinLoop(transport);
+      }
+      return;
+    }
+    lastStateAtRef.current = Date.now();
+    setClockOffset(sentAt - Date.now());
+    // Host migration: if the host left and we're next in line, take over.
+    if (s.hostId === profile.id) return becomeHost(transport, s);
+    stateRef.current = s;
+    setState(s);
+  };
+
+  /** Guests: if the host has been silent too long, the next player in line takes over. */
+  const maybeTakeOver = (gap: number) => {
+    const s = stateRef.current;
+    const transport = transportRef.current;
+    if (!s || !transport || isHostRef.current || s.phase === 'podium') return;
+    const limit = s.paused ? HOST_PAUSED_GONE_MS : HOST_GONE_MS;
+    if (gap < limit) return;
+    const line = s.players.filter((p) => p.id !== s.hostId).sort((a, b) => a.joinOrder - b.joinOrder);
+    // If the first in line is gone too, the next one takes over a little later.
+    const turn = Math.min(line.length - 1, Math.floor((gap - limit) / 10_000));
+    if (line[turn]?.id !== profile.id) return;
+    const next = reduce({ ...s, bank: ALL_QUESTIONS }, { type: 'takeOver', newHostId: profile.id });
+    becomeHost(transport, next);
+  };
+
   const joinRoom = useCallback(
     (code: string) => {
       const { transport, connection: conn } = openTransport(code.toUpperCase());
@@ -229,37 +371,11 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       setConnection(conn);
       isHostRef.current = false;
       setIsHost(false);
-      transport.onState(({ state: s, sentAt }) => {
-        if (isHostRef.current) return;
-        lastStateAtRef.current = Date.now();
-        setClockOffset(sentAt - Date.now());
-        // Host migration: if the host left and we're next in line, take over.
-        if (s.hostId === profile.id) {
-          const promoted = { ...s, bank: ALL_QUESTIONS };
-          stateRef.current = promoted;
-          isHostRef.current = true;
-          setIsHost(true);
-          setClockOffset(0);
-          attachHostHandlers(transport);
-          setState(promoted);
-          return;
-        }
-        stateRef.current = s;
-        setState(s);
-      });
-      // Keep asking to join until the host's phone has us in the room. A host who
-      // briefly switched apps (e.g. to text the code) misses one-off messages.
-      const ask = () => {
-        if (isHostRef.current || transportRef.current !== transport) return clearInterval(retry);
-        if (stateRef.current?.players.some((p) => p.id === profile.id)) return;
-        if (stateRef.current?.kicked?.includes(profile.id)) return clearInterval(retry);
-        transport.sendAction({ action: { type: 'join', player: me(false) }, from: profile.id });
-        transport.requestState();
-      };
-      ask();
-      const retry = setInterval(ask, 2000);
+      lastStateAtRef.current = Date.now();
+      transport.onState((m) => handleStateRef.current(transport, m.state, m.sentAt));
+      startJoinLoop(transport);
     },
-    [me, profile.id, attachHostHandlers],
+    [startJoinLoop],
   );
 
   const leaveRoom = useCallback(() => {
@@ -275,6 +391,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     }
     botTimers.current.forEach(clearTimeout);
     botTimers.current = [];
+    if (joinLoopRef.current) clearInterval(joinLoopRef.current);
     transportRef.current = undefined;
     stateRef.current = undefined;
     isHostRef.current = false;

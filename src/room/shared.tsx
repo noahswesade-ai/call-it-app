@@ -55,7 +55,7 @@ export function PlayerBadge({
         avatar
       )}
       <Text style={[styles.name, color ? { color } : null, { fontSize: size > 90 ? 22 : 14 }]} numberOfLines={1}>
-        {player.premium ? '👑 ' : ''}
+        {player.isHost ? '🎙️ ' : player.premium ? '👑 ' : ''}
         {player.name}
       </Text>
       {label ? <Text style={styles.label}>{label}</Text> : null}

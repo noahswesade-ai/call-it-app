@@ -2,7 +2,7 @@ import * as Clipboard from 'expo-clipboard';
 import * as Linking from 'expo-linking';
 import { Platform } from 'react-native';
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
@@ -19,6 +19,8 @@ import { Body, Button, Card, Dim, H2, Row, Segmented, Toggle, tap } from '@/ui/k
 import { Bob, PopIn, Pulse, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { PlayerBadge } from './shared';
+import { AddQuestionButton, ModeTiles } from './LobbyExtras';
+import { playSfx } from '@/ui/sound';
 
 /**
  * Link that opens the Join screen with the room code filled in. On the web it keeps
@@ -192,6 +194,25 @@ export function Lobby({ state }: { state: GameState }) {
     set({ categories: on ? s.categories.filter((x) => x !== c) : [...s.categories, c] });
   };
 
+  // Spicy can only be on in Party mode: switching it on turns Party on too.
+  const setSpicy = (v: boolean) => {
+    if (!v) return applyMode(s.mode, false);
+    if (!partyAllowed) return router.push('/paywall');
+    if (!profile.ageConfirmed) {
+      setPendingSpicy(true);
+      return setAgeGateFor('party');
+    }
+    applyMode('party', true);
+  };
+  const [pendingSpicy, setPendingSpicy] = useState(false);
+
+  // A little pop whenever someone new joins.
+  const prevCount = useRef(state.players.length);
+  useEffect(() => {
+    if (state.players.length > prevCount.current) playSfx('pop');
+    prevCount.current = state.players.length;
+  }, [state.players.length]);
+
   const guestNeedsAgeGate = !isHost && s.mode === 'party' && !profile.ageConfirmed;
   const pool = challengerPool(state);
   const link = inviteLink(state.code);
@@ -248,14 +269,21 @@ export function Lobby({ state }: { state: GameState }) {
         <SlideIn from="bottom" delay={150}>
           <Card style={s.mode === 'party' ? { borderColor: colors.neon, backgroundColor: 'rgba(42,10,74,0.75)' } : undefined}>
             <H2>Game settings</H2>
-            <Segmented<Mode>
-              options={[
-                { value: 'classic', label: '🎉 Classic' },
-                { value: 'party', label: hostPremium || DEV_UNLOCK_PARTY ? '🍻 Party' : partyAllowed ? '🍻 Party (1 free)' : '🔒 Party' },
-              ]}
-              value={s.mode}
-              onChange={setMode}
+            <ModeTiles
+              party={s.mode === 'party'}
+              spicy={s.spicy}
+              locked={!partyAllowed}
+              interactive
+              onParty={(v) => setMode(v ? 'party' : 'classic')}
+              onSpicy={setSpicy}
+              onLocked={() => router.push('/paywall')}
             />
+            {s.mode === 'party' && (
+              <View style={styles.sipRules}>
+                <Text style={styles.sipRulesText}>🍺 Wrong call or losing the face-off = 1 sip</Text>
+                <Text style={styles.sipRulesText}>🐶 Underdog wins = 3 sips · 🔥 Final round = ×2</Text>
+              </View>
+            )}
             <Row style={{ justifyContent: 'space-between' }}>
               <Dim style={{ flex: 1 }}>
                 {s.rounds} rounds · {s.categories.length} categories{s.mode === 'party' && s.spicy ? ' · 🌶️ Spicy' : ''}
@@ -267,11 +295,13 @@ export function Lobby({ state }: { state: GameState }) {
         </SlideIn>
       ) : (
         <Card style={{ alignItems: 'center' }}>
-          <H2>{s.mode === 'party' ? `🍻 Party mode${s.spicy ? ' · 🌶️ Spicy' : ''}` : '🎉 Classic mode'}</H2>
-          <Dim>{s.rounds} rounds</Dim>
+          <ModeTiles party={s.mode === 'party'} spicy={s.spicy} locked={s.mode !== 'party' && !profile.premium} interactive={false} onLocked={() => router.push('/paywall')} />
+          <Dim>{s.rounds} rounds{s.mode !== 'party' && !profile.premium ? ' · Tap a lock to see Premium' : ''}</Dim>
           <WaitingDots text={`Waiting for ${hostPlayer?.name ?? 'the host'} to start`} />
         </Card>
       )}
+
+      {s.customQuestions && <AddQuestionButton state={state} />}
 
       {isHost && (
         <Pulse active={ready} scale={1.03} duration={700}>
@@ -324,15 +354,13 @@ export function Lobby({ state }: { state: GameState }) {
         <View style={styles.sheetBg}>
           <View style={styles.sheet}>
             <H2>⚙️ Game settings</H2>
-            {s.mode === 'party' && (
-              <>
-                <Toggle label="🌶️ Spicy questions" hint="Cheeky dating & confession challenges" value={s.spicy} onChange={(v) => applyMode('party', v)} />
-                <View style={styles.sipRules}>
-                  <Text style={styles.sipRulesText}>🍺 Wrong call or losing the face-off = 1 sip</Text>
-                  <Text style={styles.sipRulesText}>🐶 Underdog wins = 3 sips · 🔥 Final round = ×2</Text>
-                </View>
-              </>
-            )}
+            <Toggle
+              label="✍️ Custom questions"
+              hint={hostPremium ? 'Everyone in the lobby can add their own questions' : 'Premium: let the room write its own questions'}
+              locked={!hostPremium}
+              value={!!s.customQuestions}
+              onChange={(v) => (hostPremium ? set({ customQuestions: v }) : router.push('/paywall'))}
+            />
             <Toggle
               label="I'm playing"
               hint="Off = you only host and judge"
@@ -380,7 +408,8 @@ export function Lobby({ state }: { state: GameState }) {
         visible={ageGateFor === 'party' || guestNeedsAgeGate}
         onConfirm={() => {
           update({ ageConfirmed: true });
-          if (ageGateFor === 'party') applyMode('party', s.spicy);
+          if (ageGateFor === 'party') applyMode('party', pendingSpicy || s.spicy);
+          setPendingSpicy(false);
           setAgeGateFor(null);
         }}
         onCancel={() => {

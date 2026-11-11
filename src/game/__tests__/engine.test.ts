@@ -108,12 +108,37 @@ describe('engine', () => {
     expect(after.round!.bets[c]).toBeUndefined();
   });
 
-  it('the host always judges (only the host sees the answer)', () => {
-    for (let seed = 0; seed < 50; seed++) {
+  it('the host runs every round they are not playing in; otherwise a stand-in host does', () => {
+    let standIns = 0;
+    for (let seed = 0; seed < 60; seed++) {
       const rng = seededRng(seed);
       const g = reduce(newGame(5, { categories: ['geography'] }), { type: 'start', now: 0 }, rng);
-      expect(g.round!.judgeId).toBe('h');
+      const r = g.round!;
+      if (r.challengers.includes('h')) {
+        standIns++;
+        expect(r.judgeId).not.toBe('h');
+        expect(r.challengers).not.toContain(r.judgeId);
+      } else {
+        expect(r.judgeId).toBe('h');
+      }
     }
+    expect(standIns).toBeGreaterThan(0);
+  });
+
+  it('a challenging host cannot judge their own face-off', () => {
+    for (let seed = 0; seed < 60; seed++) {
+      const rng = seededRng(seed);
+      let g = reduce(newGame(4, { categories: ['geography'] }), { type: 'start', now: 0 }, rng);
+      if (!g.round!.challengers.includes('h')) continue;
+      [g] = toChallenge(g, 0, rng);
+      const before = g;
+      g = reduce(g, { type: 'judge', by: 'h', outcome: 'A', now: 1 }, rng);
+      expect(g).toBe(before);
+      g = reduce(g, { type: 'judge', by: g.round!.judgeId, outcome: 'A', now: 1 }, rng);
+      expect(g.phase).toBe('result');
+      return;
+    }
+    throw new Error('no seed put the host in a face-off');
   });
 
   it('Know Your Friends: the subject is not a challenger and judges the round', () => {
@@ -123,7 +148,7 @@ describe('engine', () => {
     expect(r.category).toBe('kyf');
     expect(r.subjectId).toBeDefined();
     expect(r.challengers).not.toContain(r.subjectId);
-    expect(r.judgeId).toBe('h');
+    expect(r.challengers.includes('h') ? r.judgeId !== 'h' : r.judgeId === 'h').toBe(true);
   });
 
   it('a spectating host is never a challenger and never bets', () => {
@@ -220,16 +245,147 @@ describe('pause, kick and category odds', () => {
     expect(g.players.map((p) => p.id)).toContain('h');
   });
 
-  it('every enabled category is equally likely', () => {
+  it('classic: every category is equally likely on the first spin', () => {
     const { spin } = jest.requireActual('@/content/picker');
-    const cats = availableCategories('party', true);
+    const cats = availableCategories('classic', false);
     const counts: Record<string, number> = {};
     const rng = seededRng(7);
-    const N = 18000;
+    const N = 14000;
     for (let i = 0; i < N; i++) {
-      const r = spin(ALL_QUESTIONS, cats, [], new Set(), rng, { canUseKyf: true });
+      const r = spin(ALL_QUESTIONS, cats, [], new Set(), rng, { canUseKyf: true, mode: 'classic' });
       counts[r.category] = (counts[r.category] ?? 0) + 1;
     }
     for (const c of cats) expect(counts[c] / N).toBeCloseTo(1 / cats.length, 1);
+  });
+
+  it('party: Party/Spicy/Physical/Know Your Friends come up about 70% of the time', () => {
+    const { spin, FUN_CATEGORIES } = jest.requireActual('@/content/picker');
+    const rng = seededRng(8);
+    for (const spicy of [true, false]) {
+      const cats = availableCategories('party', spicy);
+      let fun = 0;
+      const N = 10000;
+      for (let i = 0; i < N; i++) {
+        const r = spin(ALL_QUESTIONS, cats, [], new Set(), rng, { canUseKyf: true, mode: 'party' });
+        if (FUN_CATEGORIES.includes(r.category)) fun++;
+      }
+      expect(fun / N).toBeGreaterThan(0.66);
+      expect(fun / N).toBeLessThan(0.74);
+    }
+  });
+
+  it('a category that already came up this game becomes less likely', () => {
+    const { spin } = jest.requireActual('@/content/picker');
+    const cats = availableCategories('classic', false);
+    const rng = seededRng(11);
+    let geo = 0;
+    const N = 14000;
+    for (let i = 0; i < N; i++) {
+      if (spin(ALL_QUESTIONS, cats, ['geography', 'geography'], new Set(), rng, { canUseKyf: true }).category === 'geography') geo++;
+    }
+    expect(geo / N).toBeLessThan(0.6 / cats.length);
+  });
+
+  it('over a full game every category gets a turn (including Know Your Friends)', () => {
+    const rng = seededRng(12);
+    const counts: Record<string, number> = {};
+    for (let game = 0; game < 50; game++) {
+      let g = reduce(newGame(6, { rounds: 10, categories: availableCategories('classic', false) }), { type: 'start', now: 0 }, rng);
+      for (let i = 0; i < 10 && g.round; i++) {
+        counts[g.round.category] = (counts[g.round.category] ?? 0) + 1;
+        g = reduce(g, { type: 'skipRound', now: i }, rng);
+      }
+    }
+    expect(counts.kyf).toBeGreaterThan(40);
+  });
+
+  it('streaks count consecutive wins and reset on a miss', () => {
+    const rng = seededRng(3);
+    const X = 'p1';
+    let g = reduce(newGame(5, { categories: ['geography'], rounds: 10 }), { type: 'start', now: 0 }, rng);
+    const playRound = (xWins: boolean) => {
+      let t = 0;
+      while (g.phase !== 'challenge') {
+        if (g.phase === 'betting') {
+          for (const id of g.round!.bettors) if (g.phase === 'betting') g = reduce(g, { type: 'bet', playerId: id, pick: 'A', now: t }, rng);
+        } else g = reduce(g, { type: 'next', now: ++t }, rng);
+      }
+      const r = g.round!;
+      const xSide = r.challengers[0] === X ? 'A' : r.challengers[1] === X ? 'B' : 'A';
+      const outcome = xWins ? xSide : xSide === 'A' ? 'B' : 'A';
+      g = reduce(g, { type: 'judge', by: r.judgeId, outcome, now: ++t }, rng);
+      const involved = r.challengers.includes(X) || r.bettors.includes(X);
+      g = reduce(g, { type: 'next', now: ++t }, rng);
+      return involved;
+    };
+    let n = 0;
+    while (n < 3) if (playRound(true)) n++;
+    expect(g.totals[X].streak).toBe(3);
+    while (!playRound(false));
+    expect(g.totals[X].streak).toBe(0);
+    expect(g.totals[X].bestStreak).toBe(3);
+  });
+
+  it('free hosts can swap the question once per game, Premium hosts any number of times', () => {
+    const rng = seededRng(4);
+    let g = reduce(newGame(4, { categories: ['history'] }), { type: 'start', now: 0 }, rng);
+    const first = g.round!.question;
+    g = reduce(g, { type: 'regenQuestion', now: 1 }, rng);
+    expect(g.round!.question.id).not.toBe(first.id);
+    expect(g.round!.question.category).toBe('history');
+    expect(g.round!.question.difficulty).toBe(first.difficulty);
+    const second = g.round!.question.id;
+    g = reduce(g, { type: 'regenQuestion', now: 2 }, rng);
+    expect(g.round!.question.id).toBe(second);
+
+    let p = reduce(newGame(4, { categories: ['history'] }, { premium: true }), { type: 'start', now: 0 }, rng);
+    const seen = new Set([p.round!.question.id]);
+    for (let i = 0; i < 4; i++) {
+      p = reduce(p, { type: 'regenQuestion', now: i }, rng);
+      seen.add(p.round!.question.id);
+    }
+    expect(seen.size).toBe(5);
+  });
+
+  it('questions seen earlier in the session are not asked again', () => {
+    const rng = seededRng(9);
+    const geo = ALL_QUESTIONS.filter((q) => q.category === 'geography');
+    const keep = geo[geo.length - 1].id;
+    let g = newGame(4, { categories: ['geography'] });
+    g = reduce(g, { type: 'seen', ids: geo.filter((q) => q.id !== keep).map((q) => q.id) });
+    g = reduce(g, { type: 'start', now: 0 }, rng);
+    expect(g.round!.question.id).toBe(keep);
+  });
+
+  it('a player who disconnects is removed and no longer blocks the vote', () => {
+    const rng = seededRng(2);
+    let g = reduce(newGame(5, { categories: ['geography'] }), { type: 'start', now: 0 }, rng);
+    g = reduce(g, { type: 'next', now: 1 }, rng);
+    g = reduce(g, { type: 'next', now: 2 }, rng);
+    expect(g.phase).toBe('betting');
+    const [last, ...rest] = [...g.round!.bettors].reverse();
+    for (const id of rest) g = reduce(g, { type: 'bet', playerId: id, pick: 'A', now: 3 }, rng);
+    expect(g.phase).toBe('betting');
+    g = reduce(g, { type: 'leave', playerId: last }, rng);
+    expect(g.phase).toBe('betsReveal');
+    expect(g.players.map((p) => p.id)).not.toContain(last);
+  });
+
+  it('another phone can take over as host; the old host is removed', () => {
+    let g = newGame(4);
+    g = reduce(g, { type: 'takeOver', newHostId: 'p1' });
+    expect(g.hostId).toBe('p1');
+    expect(g.players.find((p) => p.id === 'p1')!.isHost).toBe(true);
+    expect(g.players.map((p) => p.id)).not.toContain('h');
+    expect(g.epoch).toBe(1);
+  });
+
+  it('custom questions can be added only when the host turned them on', () => {
+    const q = { id: 'custom-1', category: 'geography' as const, type: 'SPOKEN_EXACT' as const, difficulty: 'M' as const, prompt: 'Our town?', answer: 'Here' };
+    let g = reduce(newGame(3), { type: 'addCustom', question: q });
+    expect(g.custom ?? []).toHaveLength(0);
+    g = reduce(g, { type: 'updateSettings', patch: { customQuestions: true } });
+    g = reduce(g, { type: 'addCustom', question: q });
+    expect(g.custom).toHaveLength(1);
   });
 });

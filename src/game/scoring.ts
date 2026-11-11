@@ -4,8 +4,8 @@ import type { Mode, Outcome, Pick } from './types';
  * Points and drinks for one round — built around the game's signature rule:
  *
  *   THE UNDERDOG ×3
- *   When bets are revealed, if one challenger is backed by LESS THAN
- *   UNDERDOG_THRESHOLD (33%) of the bettors who picked a side, that challenger
+ *   When bets are revealed, if one challenger is backed by 33% OR LESS
+ *   (UNDERDOG_THRESHOLD) of the bettors who picked a side, that challenger
  *   is the Underdog. If the Underdog then wins, the round is worth ×3. There is
  *   no other multiplier for any other split:
  *     - everyone who backed the Underdog scores 3 points instead of 1, and
@@ -20,7 +20,9 @@ import type { Mode, Outcome, Pick } from './types';
  */
 
 export const MIN_BETTORS_FOR_UNDERDOG = 1;
-export const UNDERDOG_THRESHOLD = 0.33;
+/** One third: a challenger backed by 33% or less of the side-picking bettors is the Underdog. */
+export const UNDERDOG_THRESHOLD = 1 / 3;
+const EPS = 1e-9;
 export const UNDERDOG_MULTIPLIER = 3;
 
 export type PlayerRoundResult =
@@ -80,8 +82,8 @@ export function underdogSide(bettors: string[], bets: Record<string, Pick | unde
   const { votesA, votesB } = voteTally(bettors, bets);
   const total = votesA + votesB;
   if (total < MIN_BETTORS_FOR_UNDERDOG) return undefined;
-  if (votesA / total < UNDERDOG_THRESHOLD) return 'A';
-  if (votesB / total < UNDERDOG_THRESHOLD) return 'B';
+  if (votesA / total <= UNDERDOG_THRESHOLD + EPS) return 'A';
+  if (votesB / total <= UNDERDOG_THRESHOLD + EPS) return 'B';
   return undefined;
 }
 

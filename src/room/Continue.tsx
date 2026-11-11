@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { currentUnderdog, isFinalRound, type GameState } from '@/game/engine';
+import { UNDERDOG_SHOW_MS } from './Underdog';
 import { tap } from '@/ui/kit';
 import { Pulse } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
@@ -20,7 +21,7 @@ function readyAfter(state: GameState): number {
       return 5400; // the wheel spins ~4.8s, then the category box pops in
     case 'betsReveal': {
       const t = revealTimeline(state);
-      return currentUnderdog(state) ? t.ALERT_AT + 2800 : t.PCT_AT + 1400;
+      return currentUnderdog(state) ? t.ALERT_AT + UNDERDOG_SHOW_MS + 300 : t.PCT_AT + 1400;
     }
     default:
       return 0;
@@ -46,7 +47,7 @@ export function ContinuePrompt({ state, isHost, hostName }: { state: GameState; 
     <View style={styles.wrap} pointerEvents="none">
       <Pulse scale={1.18} duration={650}>
         <Text style={[styles.text, !isHost && styles.waiting]}>
-          {isHost ? 'Click to continue...' : `Waiting for ${hostName}...`}
+          {isHost ? 'Click to continue...' : `Waiting for ${hostName} to continue...`}
         </Text>
       </Pulse>
     </View>

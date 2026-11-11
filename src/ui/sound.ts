@@ -51,7 +51,52 @@ export function playDing() {
   replay(ding, 0.8);
 }
 
+const SFX = {
+  whoosh: require('../../assets/sounds/whoosh.wav'),
+  land: require('../../assets/sounds/land.wav'),
+  fanfare: require('../../assets/sounds/fanfare.wav'),
+  underdog: require('../../assets/sounds/underdog.wav'),
+  coin: require('../../assets/sounds/coin.wav'),
+  lose: require('../../assets/sounds/lose.wav'),
+  reveal: require('../../assets/sounds/reveal.wav'),
+  podium: require('../../assets/sounds/podium.wav'),
+  pop: require('../../assets/sounds/pop.wav'),
+  drumroll: require('../../assets/sounds/drumroll.wav'),
+} as const;
+export type Sfx = keyof typeof SFX;
+const sfxPlayers: Partial<Record<Sfx, AudioPlayer>> = {};
+const sfxVolume: Record<Sfx, number> = {
+  whoosh: 0.6,
+  land: 0.8,
+  fanfare: 0.8,
+  underdog: 0.9,
+  coin: 0.5,
+  lose: 0.6,
+  reveal: 0.6,
+  podium: 0.9,
+  pop: 0.5,
+  drumroll: 0.7,
+};
+
+/** One-shot game sound (winner fanfare, Underdog stinger, podium…). */
+export function playSfx(name: Sfx) {
+  init();
+  try {
+    if (!sfxPlayers[name]) sfxPlayers[name] = createAudioPlayer(SFX[name]);
+    replay(sfxPlayers[name], sfxVolume[name]);
+  } catch {
+    // ignore
+  }
+}
+
 /** Call early (e.g. on game start) so the first tick isn't delayed by loading. */
 export function preloadSounds() {
   init();
+  for (const k of Object.keys(SFX) as Sfx[]) {
+    try {
+      if (!sfxPlayers[k]) sfxPlayers[k] = createAudioPlayer(SFX[k]);
+    } catch {
+      // ignore
+    }
+  }
 }

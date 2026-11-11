@@ -31,9 +31,9 @@ describe('underdogSide', () => {
     const v = bets('ABBBBBA'.slice(0, 7)); // 2 of 7 ≈ 28.6%
     expect(underdogSide(v.bettors, v.bets)).toBe('A');
   });
-  it('exactly one third (33.3%) is NOT an Underdog', () => {
+  it('exactly one third (33%) IS an Underdog', () => {
     const s = bets('ABBABB'); // 2 of 6
-    expect(underdogSide(s.bettors, s.bets)).toBeUndefined();
+    expect(underdogSide(s.bettors, s.bets)).toBe('A');
   });
   it('does not exist on a close split', () => {
     const s = bets('AABB');
@@ -50,8 +50,8 @@ describe('underdogSide', () => {
     expect(underdogSide(u.bettors, u.bets)).toBe('B');
   });
   it('No Votes do not count toward the share', () => {
-    const s = bets('ABB--'); // 1 of 3 = 33.3% → not under 33%
-    expect(underdogSide(s.bettors, s.bets)).toBeUndefined();
+    const s = bets('ABB--'); // 1 of 3 = 33% → Underdog
+    expect(underdogSide(s.bettors, s.bets)).toBe('A');
     const u = bets('ABBB--'); // 25%
     expect(underdogSide(u.bettors, u.bets)).toBe('A');
   });

@@ -8,7 +8,10 @@ import { BetsReveal, Betting, Challenge, Matchup, Result, Spin, UnderdogOverlay,
 import { Podium } from '@/room/Podium';
 import { TimerBar } from '@/room/TimerBar';
 import { ContinuePrompt, ContinueTapArea, waitsForHost } from '@/room/Continue';
-import { host as hostOf } from '@/game/engine';
+import { actingHostId, host as hostOf } from '@/game/engine';
+import { preloadSounds } from '@/ui/sound';
+
+const playerName = (s: { players: { id: string; name: string }[] }, id: string) => s.players.find((p) => p.id === id)?.name ?? 'the host';
 import { View, Text } from 'react-native';
 import { Pulse } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
@@ -34,6 +37,10 @@ export default function Room() {
       joinRoom(code);
     }
   }, [loaded, state, code, joinRoom]);
+
+  useEffect(() => {
+    if (state) preloadSounds();
+  }, [!!state]);
 
   useEffect(() => {
     const t = setTimeout(() => setWaitedLong(true), 6000);
@@ -118,7 +125,7 @@ export default function Room() {
       overlay={
         <>
           {state.phase === 'betsReveal' && <UnderdogOverlay key={state.round?.number} state={state} />}
-          {isHost && waitsForHost(state) && <ContinueTapArea state={state} onContinue={() => dispatch({ type: 'next', now: Date.now() })} />}
+          {actingHostId(state) === myId && waitsForHost(state) && <ContinueTapArea state={state} onContinue={() => dispatch({ type: 'next', now: Date.now() })} />}
           {hostAway && <HostAway name={hostOf(state)?.name ?? 'the host'} />}
         </>
       }
@@ -126,7 +133,7 @@ export default function Room() {
         state.phaseEndsAt !== undefined && phaseDuration(state) ? (
           <TimerBar key={`${state.phase}-${state.round?.number}`} endsAt={state.phaseEndsAt} total={phaseDuration(state)!} />
         ) : waitsForHost(state) ? (
-          <ContinuePrompt state={state} isHost={isHost} hostName={hostOf(state)?.name ?? 'the host'} />
+          <ContinuePrompt state={state} isHost={actingHostId(state) === myId} hostName={playerName(state, actingHostId(state))} />
         ) : undefined
       }
     >
@@ -164,6 +171,9 @@ function HostAway({ name }: { name: string }) {
       <Text style={{ color: colors.white, fontFamily: fonts.display, fontSize: 30, textAlign: 'center' }}>Game paused</Text>
       <Text style={{ color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 17, textAlign: 'center' }}>
         Waiting for {name} to come back to the game…
+      </Text>
+      <Text style={{ color: colors.dim, fontFamily: fonts.body, fontSize: 14, textAlign: 'center', marginTop: 6 }}>
+        If they don't come back soon, another player takes over as host automatically.
       </Text>
     </View>
   );

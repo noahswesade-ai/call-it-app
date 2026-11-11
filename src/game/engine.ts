@@ -1,7 +1,7 @@
 import type { AvatarLoadout, Category, GameSettings, Outcome, Pick, Player, Question, Rng, WheelSlice } from './types';
 import { pairKey, pickChallengers, pickSubject } from './selection';
 import { scoreRound, underdogSide, type RoundScore } from './scoring';
-import { spin } from '@/content/picker';
+import { pickQuestion, spin } from '@/content/picker';
 
 /**
  * The round state machine (PLAN.md §1). The host's phone owns the GameState and is
@@ -67,6 +67,9 @@ export interface PlayerTotals {
   noVotes: number;
   challengeWins: number;
   giantSlays: number; // challenge wins as the Underdog
+  /** Rounds won in a row (face-offs won or right calls). 3+ = on fire. */
+  streak: number;
+  bestStreak: number;
 }
 
 export interface GameState {
@@ -90,6 +93,12 @@ export interface GameState {
   paused?: { remaining?: number };
   /** Players the host removed; their phones can't rejoin this room. */
   kicked?: string[];
+  /** Questions written by players in this lobby (Premium "custom questions"). */
+  custom?: Question[];
+  /** Question swaps used this game (free hosts get one). */
+  regens?: number;
+  /** Bumped whenever another phone takes over as host; phones ignore older states. */
+  epoch?: number;
 }
 
 export type Action =
@@ -111,7 +120,15 @@ export type Action =
   | { type: 'rematch' }
   | { type: 'pause'; now: number }
   | { type: 'resume'; now: number }
-  | { type: 'kick'; playerId: string };
+  | { type: 'kick'; playerId: string }
+  /** Questions this player has already seen this session (sent when they join). */
+  | { type: 'seen'; ids: string[] }
+  | { type: 'regenQuestion'; now: number }
+  | { type: 'addCustom'; question: Question }
+  /** Another phone takes over as host because the host's phone is gone. */
+  | { type: 'takeOver'; newHostId: string }
+  /** "I'm still here" from a guest's phone (handled by the host's connection code). */
+  | { type: 'ping' };
 
 export function emptyTotals(): PlayerTotals {
   return {
@@ -123,6 +140,8 @@ export function emptyTotals(): PlayerTotals {
     noVotes: 0,
     challengeWins: 0,
     giantSlays: 0,
+    streak: 0,
+    bestStreak: 0,
   };
 }
 
@@ -151,6 +170,31 @@ export function createGame(opts: {
 
 export function host(state: GameState): Player | undefined {
   return state.players.find((p) => p.id === state.hostId);
+}
+
+/**
+ * Whoever runs the current round: the host, or, while the host is one of the two
+ * challengers, the stand-in host chosen for that round.
+ */
+export function actingHostId(state: GameState): string {
+  if (state.round && state.phase !== 'lobby' && state.phase !== 'podium') return state.round.judgeId;
+  return state.hostId;
+}
+
+export function actingHost(state: GameState): Player | undefined {
+  const id = actingHostId(state);
+  return state.players.find((p) => p.id === id) ?? host(state);
+}
+
+/** Free hosts can swap the question once per game; Premium hosts as often as they like. */
+export const FREE_REGENS = 1;
+export function canRegen(state: GameState): boolean {
+  return !!host(state)?.premium || (state.regens ?? 0) < FREE_REGENS;
+}
+
+/** Everything the wheel can pick from: the built-in bank plus the lobby's own questions. */
+function fullBank(state: GameState): Question[] {
+  return state.custom?.length ? [...state.bank, ...state.custom] : state.bank;
 }
 
 export function canJoin(state: GameState): boolean {
@@ -212,12 +256,16 @@ function chooseJudge(
   subjectId: string | undefined,
   rng: Rng,
 ): string {
-  // The host always judges: only the host's phone shows the answer.
-  void challengers;
+  // The host runs the round (and is the only one who sees the answer)… unless the host
+  // is one of the challengers: then a stand-in host is picked from the other players.
+  if (!challengers.includes(state.hostId)) return state.hostId;
+  const live = (ids: string[]) => ids.filter((id) => state.players.find((p) => p.id === id)?.connected !== false);
+  const others = state.players.map((p) => p.id).filter((id) => !challengers.includes(id));
+  const prefer = live(others.filter((id) => id !== subjectId));
+  const pool = prefer.length > 0 ? prefer : live(others).length > 0 ? live(others) : others;
   void bettors;
-  void subjectId;
-  void rng;
-  return state.hostId;
+  if (pool.length === 0) return state.hostId;
+  return pool[Math.floor(rng() * pool.length)];
 }
 
 function beginRound(state: GameState, number: number, now: number, rng: Rng): GameState {
@@ -240,16 +288,16 @@ function beginRound(state: GameState, number: number, now: number, rng: Rng): Ga
     .map((p) => p.id);
 
   const result = spin(
-    state.bank,
+    fullBank(state),
     state.settings.categories,
     state.recentCategories,
     new Set(state.usedQuestions),
     rng,
-    { canUseKyf: everyone.length >= 3 },
+    { canUseKyf: everyone.length >= 3, mode: state.settings.mode },
   );
 
   const subjectId =
-    result.category === 'kyf' ? pickSubject(everyone, challengers, state.timesSubject, rng) : undefined;
+    result.question.type === 'SUBJECT_JUDGED' ? pickSubject(everyone, challengers, state.timesSubject, rng) : undefined;
 
   const round: RoundState = {
     number,
@@ -296,7 +344,14 @@ function finishRound(state: GameState, outcome: Outcome, now: number): GameState
 
   const totals = { ...state.totals };
   for (const [id, s] of Object.entries(score.perPlayer)) {
-    const t = { ...(totals[id] ?? emptyTotals()) };
+    const t = { ...emptyTotals(), ...(totals[id] ?? {}) };
+    // Streak: a win (face-off or right call) adds one; any miss resets it; a draw leaves it.
+    if (s.result === 'challengerWin' || s.result === 'betWin') {
+      t.streak += 1;
+      t.bestStreak = Math.max(t.bestStreak, t.streak);
+    } else if (s.result !== 'draw') {
+      t.streak = 0;
+    }
     t.points += s.points;
     t.sips += s.sips;
     if (s.shot) t.shots += 1;
@@ -386,8 +441,19 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
       if (r && next.phase !== 'lobby' && next.phase !== 'podium') {
         const bettors = r.bettors.filter((id) => id !== action.playerId);
         let judgeId = r.judgeId;
-        if (judgeId === action.playerId) judgeId = hostId;
-        next = { ...next, round: { ...r, bettors, judgeId } };
+        if (judgeId === action.playerId || (judgeId === hostId && r.challengers.includes(hostId))) {
+          judgeId = chooseJudge(next, r.challengers, bettors, r.subjectId, Math.random);
+        }
+        const bets = { ...r.bets };
+        delete bets[action.playerId];
+        next = { ...next, round: { ...r, bettors, bets, judgeId } };
+        // A challenger who left can't play this round: skip it.
+        if (r.challengers.includes(action.playerId) && next.phase !== 'result') {
+          return reduce(next, { type: 'skipRound', now: Date.now() }, rng);
+        }
+        if (next.phase === 'betting' && pendingBettors(next).length === 0) {
+          return advance(next, Date.now(), rng);
+        }
       }
       return next;
     }
@@ -474,7 +540,8 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
     case 'judge': {
       const r = state.round;
       if (state.phase !== 'challenge' || !r) return state;
-      if (action.by !== r.judgeId && action.by !== state.hostId) return state;
+      const hostMayOverride = action.by === state.hostId && !r.challengers.includes(state.hostId);
+      if (action.by !== r.judgeId && !hostMayOverride) return state;
       return finishRound(state, action.outcome, action.now);
     }
 
@@ -510,6 +577,49 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
       };
     }
 
+    case 'ping':
+      return state;
+
+    case 'seen': {
+      const known = new Set(state.usedQuestions);
+      const add = action.ids.filter((id) => !known.has(id));
+      return add.length ? { ...state, usedQuestions: [...state.usedQuestions, ...add] } : state;
+    }
+
+    case 'regenQuestion': {
+      const r = state.round;
+      if (!r || state.phase === 'lobby' || state.phase === 'podium' || state.phase === 'result') return state;
+      if (!canRegen(state)) return state;
+      const used = new Set([...state.usedQuestions, r.question.id]);
+      const sameLevel = (q: Question) =>
+        q.id !== r.question.id && q.difficulty === r.question.difficulty && (r.subjectId ? true : q.type !== 'SUBJECT_JUDGED');
+      const anyOther = (q: Question) => q.id !== r.question.id && (r.subjectId ? true : q.type !== 'SUBJECT_JUDGED');
+      const q =
+        pickQuestion(fullBank(state).filter(sameLevel), r.category, used, rng) ??
+        pickQuestion(fullBank(state).filter(anyOther), r.category, used, rng);
+      if (!q) return state;
+      return {
+        ...state,
+        regens: (state.regens ?? 0) + 1,
+        usedQuestions: [...state.usedQuestions, q.id],
+        round: { ...r, question: q, subjectAnswer: undefined, answerShownToAll: false },
+      };
+    }
+
+    case 'addCustom': {
+      if (!state.settings.customQuestions) return state;
+      const q = action.question;
+      if (!q.prompt?.trim() || (state.custom?.length ?? 0) >= 300) return state;
+      return { ...state, custom: [...(state.custom ?? []), { ...q, custom: true, prompt: q.prompt.trim().slice(0, 240) }] };
+    }
+
+    case 'takeOver': {
+      const old = state.hostId;
+      if (old === action.newHostId) return state;
+      const promoted = { ...state, hostId: action.newHostId, epoch: (state.epoch ?? 0) + 1 };
+      return reduce(promoted, { type: 'leave', playerId: old }, rng);
+    }
+
     case 'rematch': {
       const totals = Object.fromEntries(state.players.map((p) => [p.id, emptyTotals()]));
       return {
@@ -523,6 +633,7 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
         timesSubject: {},
         usedPairs: [],
         recentCategories: [],
+        regens: 0,
         // usedQuestions is kept so a rematch doesn't repeat questions.
       };
     }

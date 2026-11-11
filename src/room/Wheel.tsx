@@ -1,6 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
-import { Animated as RNAnimated, Easing as RNEasing, StyleSheet, Text, View } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  Easing,
+  runOnJS,
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import Svg, { Circle, G, Image as SvgImage, Path, Polygon, Text as SvgText } from 'react-native-svg';
 import { CATEGORY_ICONS, CategoryIcon } from '@/content/CategoryIcon';
 import { CATEGORY_BY_ID, DIFFICULTY_LABEL, RANDOM_DESCRIPTION } from '@/content/categories';
@@ -8,7 +17,7 @@ import type { Category, Difficulty, WheelSlice } from '@/game/types';
 import { Confetti } from '@/ui/Confetti';
 import { Pill, tap } from '@/ui/kit';
 import { Bob, PopIn } from '@/ui/motion';
-import { playDing, playTick } from '@/ui/sound';
+import { playSfx, playTick } from '@/ui/sound';
 import { colors, fonts } from '@/ui/theme';
 
 interface Props {
@@ -60,27 +69,71 @@ function arc(i: number, n: number, r: number): string {
   return `M${R} ${R} L${R + r * Math.cos(a0)} ${R + r * Math.sin(a0)} A${r} ${r} 0 ${large} 1 ${R + r * Math.cos(a1)} ${R + r * Math.sin(a1)} Z`;
 }
 
-/** Marquee bulbs around the rim: they chase while spinning and all flash on landing. */
-function Bulbs({ landed }: { landed: boolean }) {
-  const [step, setStep] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setStep((v) => v + 1), landed ? 200 : 90);
-    return () => clearInterval(t);
-  }, [landed]);
+/** Web: keep the spinning layers on the GPU so the wheel doesn't stutter. */
+const GPU = Platform.OS === 'web' ? ({ willChange: 'transform' } as object) : {};
+
+function BulbRing({ lit }: { lit: (i: number) => boolean }) {
   return (
-    <Svg width={SIZE + 24} height={SIZE + 24} style={{ position: 'absolute', left: -12, top: -12 }}>
-      <Circle cx={R + 12} cy={R + 12} r={R + 6} fill="none" stroke={colors.goldLip} strokeWidth={16} />
-      <Circle cx={R + 12} cy={R + 12} r={R + 6} fill="none" stroke={colors.gold} strokeWidth={10} />
+    <Svg width={SIZE + 24} height={SIZE + 24}>
       {Array.from({ length: BULBS }, (_, i) => {
         const a = (i / BULBS) * Math.PI * 2;
-        const lit = landed ? step % 2 === 0 : (i + step) % 4 === 0;
+        const on = lit(i);
         return (
-          <Circle key={i} cx={R + 12 + (R + 6) * Math.cos(a)} cy={R + 12 + (R + 6) * Math.sin(a)} r={lit ? 5.5 : 4} fill={lit ? '#FFFFFF' : '#B86E00'} />
+          <Circle key={i} cx={R + 12 + (R + 6) * Math.cos(a)} cy={R + 12 + (R + 6) * Math.sin(a)} r={on ? 5.5 : 4} fill={on ? '#FFFFFF' : '#B86E00'} />
         );
       })}
     </Svg>
   );
 }
+
+/**
+ * Marquee bulbs around the rim: two pre-drawn rings cross-fade (alternating bulbs while
+ * spinning, all of them flashing on landing). No React re-renders while animating.
+ */
+const Bulbs = memo(function Bulbs({ landed }: { landed: boolean }) {
+  const blink = useSharedValue(0);
+  useEffect(() => {
+    blink.value = 0;
+    blink.value = withRepeat(withTiming(1, { duration: landed ? 220 : 110, easing: Easing.linear }), -1, true);
+  }, [landed, blink]);
+  const a = useAnimatedStyle(() => ({ opacity: blink.value > 0.5 ? 1 : 0 }));
+  const b = useAnimatedStyle(() => ({ opacity: blink.value > 0.5 ? 0 : 1 }));
+  return (
+    <View style={{ position: 'absolute', left: -12, top: -12, width: SIZE + 24, height: SIZE + 24 }} pointerEvents="none">
+      <Svg width={SIZE + 24} height={SIZE + 24} style={StyleSheet.absoluteFill}>
+        <Circle cx={R + 12} cy={R + 12} r={R + 6} fill="none" stroke={colors.goldLip} strokeWidth={16} />
+        <Circle cx={R + 12} cy={R + 12} r={R + 6} fill="none" stroke={colors.gold} strokeWidth={10} />
+      </Svg>
+      <Animated.View style={[StyleSheet.absoluteFill, a]}>
+        <BulbRing lit={(i) => (landed ? true : i % 2 === 0)} />
+      </Animated.View>
+      <Animated.View style={[StyleSheet.absoluteFill, b]}>
+        <BulbRing lit={(i) => (landed ? false : i % 2 === 1)} />
+      </Animated.View>
+    </View>
+  );
+});
+
+/** The wheel face itself. Memoized: it never re-renders while spinning. */
+const WheelFace = memo(function WheelFace({ all, landed, index }: { all: (WheelSlice | 'locked')[]; landed: boolean; index: number }) {
+  const n = all.length;
+  return (
+    <Svg width={SIZE} height={SIZE}>
+      <Circle cx={R} cy={R} r={R} fill={colors.ink} />
+      {all.map((s, i) => {
+        const info = sliceInfo(s);
+        const m = ((i + 0.5) / n) * 2 * Math.PI - Math.PI / 2;
+        const dim = landed && i !== index;
+        return (
+          <G key={`${s}-${i}`} opacity={dim ? 0.3 : 1}>
+            <Path d={arc(i, n, R)} fill={info.color} stroke={colors.ink} strokeWidth={3} />
+            <SliceGlyph slice={s} x={R + R * 0.68 * Math.cos(m)} y={R + R * 0.68 * Math.sin(m)} size={34} />
+          </G>
+        );
+      })}
+    </Svg>
+  );
+});
 
 /** The winning slice, redrawn on top: it grows out of the wheel and glows. */
 function WinningSlice({ index, n, color }: { index: number; n: number; color: string }) {
@@ -111,15 +164,41 @@ function WinningSlice({ index, n, color }: { index: number; n: number; color: st
 }
 
 export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, durationMs }: Props) {
-  const all: (WheelSlice | 'locked')[] = lockedSlice ? [...slices, 'locked'] : slices;
+  const sliceKey = slices.join(',') + (lockedSlice ? ',locked' : '');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const all: (WheelSlice | 'locked')[] = useMemo(() => (lockedSlice ? [...slices, 'locked'] : slices), [sliceKey]);
   const n = all.length;
   const index = Math.max(0, all.indexOf(landOn));
-  const rotation = useRef(new RNAnimated.Value(0)).current;
+  const rotation = useSharedValue(0);
   const [landed, setLanded] = useState(false);
   const [showBox, setShowBox] = useState(false);
-  const lastSlice = useRef(0);
   const flick = useSharedValue(0);
   const enter = useSharedValue(0.6);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const onTick = () => {
+    playTick();
+    tap('light');
+  };
+  const onLanded = () => {
+    playSfx('land');
+    tap('heavy');
+    setLanded(true);
+    timers.current.push(setTimeout(() => setShowBox(true), 450));
+  };
+
+  // Every slice boundary passing the pointer = a click and a pointer flick. Runs on the
+  // animation thread and only calls back into JS when a boundary is actually crossed.
+  useAnimatedReaction(
+    () => Math.floor(rotation.value / (360 / n)),
+    (cur, prev) => {
+      if (prev !== null && cur !== prev) {
+        flick.value = withSequence(withTiming(-22, { duration: 35 }), withTiming(0, { duration: 140, easing: Easing.out(Easing.quad) }));
+        runOnJS(onTick)();
+      }
+    },
+    [n],
+  );
 
   useEffect(() => {
     enter.value = withTiming(1, { duration: 380, easing: Easing.out(Easing.back(1.8)) });
@@ -128,39 +207,24 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
     const jitter = (Math.random() - 0.5) * (300 / n) * 0.55;
     const target = 360 * 7 + (360 - sliceCentre) + jitter;
     const spinMs = Math.max(2500, Math.min(4800, durationMs - AFTER_LANDING_MS));
-    rotation.setValue(0);
-    lastSlice.current = 0;
-    // Every slice boundary passing the pointer = a click, a pointer flick and a tiny buzz.
-    // Because the spin decelerates, the clicks naturally slow down: tick… tick…… tick.
-    const id = rotation.addListener(({ value }) => {
-      const s = Math.floor(value / (360 / n));
-      if (s !== lastSlice.current) {
-        lastSlice.current = s;
-        flick.value = withSequence(withTiming(-22, { duration: 35 }), withTiming(0, { duration: 140, easing: Easing.out(Easing.quad) }));
-        playTick();
-        tap('light');
-      }
-    });
-    const anim = RNAnimated.timing(rotation, {
-      toValue: target,
-      duration: spinMs,
+    rotation.value = 0;
+    playSfx('whoosh');
+    rotation.value = withTiming(
+      target,
       // Fast start, very long slow-down for maximum suspense.
-      easing: RNEasing.bezier(0.1, 0.75, 0.08, 1),
-      useNativeDriver: false,
-    });
-    anim.start(() => {
-      playDing();
-      tap('heavy');
-      setLanded(true);
-      setTimeout(() => setShowBox(true), 450);
-    });
+      { duration: spinMs, easing: Easing.bezier(0.1, 0.75, 0.08, 1) },
+      (finished) => {
+        if (finished) runOnJS(onLanded)();
+      },
+    );
     return () => {
-      anim.stop();
-      rotation.removeListener(id);
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
     };
-  }, [landOn, index, n, durationMs, rotation, flick, enter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [landOn, index, n, durationMs]);
 
-  const spin = rotation.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] });
+  const spinStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${rotation.value}deg` }] }));
   const result = sliceInfo(landOn === 'random' ? randomResult : landOn);
   const landedInfo = sliceInfo(landOn);
   const pointerStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${flick.value}deg` }] }));
@@ -172,21 +236,8 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
       <Animated.View style={[{ width: SIZE, height: SIZE + 20, marginTop: 6 }, wheelIn]}>
         <View style={{ marginTop: 20 }}>
           <Bulbs landed={landed} />
-          <RNAnimated.View style={{ transform: [{ rotate: spin }] }}>
-            <Svg width={SIZE} height={SIZE}>
-              <Circle cx={R} cy={R} r={R} fill={colors.ink} />
-              {all.map((s, i) => {
-                const info = sliceInfo(s);
-                const m = ((i + 0.5) / n) * 2 * Math.PI - Math.PI / 2;
-                const dim = landed && i !== index;
-                return (
-                  <G key={`${s}-${i}`} opacity={dim ? 0.3 : 1}>
-                    <Path d={arc(i, n, R)} fill={info.color} stroke={colors.ink} strokeWidth={3} />
-                    <SliceGlyph slice={s} x={R + R * 0.68 * Math.cos(m)} y={R + R * 0.68 * Math.sin(m)} size={34} />
-                  </G>
-                );
-              })}
-            </Svg>
+          <Animated.View style={[GPU, spinStyle]}>
+            <WheelFace all={all} landed={landed} index={index} />
             {landed && (
               <View style={StyleSheet.absoluteFill} pointerEvents="none">
                 <WinningSlice index={index} n={n} color={landedInfo.color} />
@@ -201,7 +252,7 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
               <Circle cx={R} cy={R} r={30} fill={colors.ink} stroke={colors.gold} strokeWidth={5} />
               <Circle cx={R} cy={R} r={12} fill={colors.gold} />
             </Svg>
-          </RNAnimated.View>
+          </Animated.View>
         </View>
         <Animated.View style={[styles.pointer, pointerStyle]}>
           <Svg width={44} height={46}>

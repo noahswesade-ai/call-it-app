@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
+import { playSfx } from '@/ui/sound';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
@@ -43,6 +44,9 @@ function Step({ rank, children, revealAt }: { rank: number; children: React.Reac
 }
 
 export function Podium({ state }: { state: GameState }) {
+  useEffect(() => {
+    playSfx('podium');
+  }, []);
   const { myId, isHost, dispatch, leaveRoom } = useRoom();
   const { profile, recordGame } = useProfile();
   const ranks = rankings(state);

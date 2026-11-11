@@ -17,6 +17,7 @@ import type { Mode, Player } from '@/game/types';
 import { Confetti } from '@/ui/Confetti';
 import { Bob, PopIn, Pulse, Shake, SlideIn, Sway } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
+import { playSfx } from '@/ui/sound';
 import { EmojiRain, Sunburst } from './fx';
 
 /** A single soft white flash as the screen appears. */
@@ -84,6 +85,9 @@ function TimesThree({ delay }: { delay: number }) {
  * Full-screen green "UNDERDOG!" takeover. Plays when the bets are revealed and one
  * challenger is backed by less than 33% of the room.
  */
+/** How long the UNDERDOG takeover stays on screen before it gets out of the way. */
+export const UNDERDOG_SHOW_MS = 4200;
+
 export function UnderdogAlert({
   underdog,
   share,
@@ -103,6 +107,11 @@ export function UnderdogAlert({
   useEffect(() => {
     const t = setTimeout(() => {
       setLive(true);
+      playSfx('underdog');
+      setTimeout(() => {
+        enter.value = withTiming(0, { duration: 350 });
+      }, UNDERDOG_SHOW_MS - 350);
+      setTimeout(() => setLive(false), UNDERDOG_SHOW_MS);
       // A drumroll of heavy taps.
       [0, 120, 240, 420].forEach((ms) =>
         setTimeout(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => {}), ms),
@@ -113,13 +122,14 @@ export function UnderdogAlert({
   }, [delay, enter]);
 
   const backdrop = useAnimatedStyle(() => ({ opacity: enter.value }));
+  const whole = useAnimatedStyle(() => ({ opacity: Math.min(1, enter.value * 3) }));
   if (!live) return null;
 
   const pct = Math.round(share * 100);
   const party = mode === 'party';
 
   return (
-    <View style={[StyleSheet.absoluteFill, { zIndex: 10 }]}>
+    <Animated.View style={[StyleSheet.absoluteFill, { zIndex: 10 }, whole]} pointerEvents="none">
       <Animated.View style={[StyleSheet.absoluteFill, backdrop]}>
         <LinearGradient colors={['#02391F', '#0B8A4F', '#034D2A']} style={StyleSheet.absoluteFill} />
         <SirenBeams />
@@ -183,7 +193,7 @@ export function UnderdogAlert({
         )}
       </View>
       <Flash />
-    </View>
+    </Animated.View>
   );
 }
 

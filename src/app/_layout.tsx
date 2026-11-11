@@ -7,6 +7,7 @@ import { Platform, Text, View, useWindowDimensions } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ProfileProvider } from '@/state/profile';
 import { RoomProvider } from '@/net/RoomProvider';
+import { FollowGame } from '@/room/FollowGame';
 import { colors } from '@/ui/theme';
 
 /**
@@ -51,6 +52,7 @@ export default function RootLayout() {
       <ProfileProvider>
         <RoomProvider>
           <StatusBar style="light" />
+          <FollowGame />
           <Stack
             screenOptions={{
               headerShown: false,

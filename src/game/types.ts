@@ -40,6 +40,10 @@ export interface Question {
   image?: string; // picture-question key, see src/content/pictures
   minigame?: MinigameId;
   closest?: boolean; // KYF questions answered with a number
+  /** Room games (Truth or Dare, Hot Seat…): different every time, so they may repeat. */
+  repeatable?: boolean;
+  /** Written by players in this lobby. */
+  custom?: boolean;
 }
 
 export type MinigameId =
@@ -82,4 +86,6 @@ export interface GameSettings {
   /** Sips the losing challenger drinks (Party mode), 1–3. */
   /** Categories that can appear on the wheel. */
   categories: Category[];
+  /** Premium: everyone in the lobby can add their own questions. */
+  customQuestions?: boolean;
 }
