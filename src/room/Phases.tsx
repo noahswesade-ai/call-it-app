@@ -18,6 +18,7 @@ import { PlayerBadge, playerById, useTimeLeft } from './shared';
 import { Wheel } from './Wheel';
 import { CategoryIcon } from '@/content/CategoryIcon';
 import { UnderdogAlert, UnderdogTag, UnderdogVictory } from './Underdog';
+import { FinalUnderdogAlert } from './Jackpot';
 import { bounce } from '@/ui/motion';
 import { StreakFlame } from './Streak';
 import { playSfx } from '@/ui/sound';
@@ -26,7 +27,8 @@ function RoundHeader({ state }: { state: GameState }) {
   const r = state.round!;
   return (
     <View style={{ gap: 6 }}>
-      <Row style={{ justifyContent: 'space-between' }}>
+      {/* Left margin leaves room for the 🏠 button in the corner. */}
+      <Row style={{ justifyContent: 'space-between', marginLeft: 46 }}>
         <Pill label={`ROUND ${r.number} / ${state.settings.rounds}`} color="rgba(20,4,40,0.55)" />
         {isFinalRound(state) ? (
           <Pulse scale={1.08} duration={450}>
@@ -345,7 +347,7 @@ export function Betting({ state }: { state: GameState }) {
           <CountdownRing msLeft={left} total={DURATIONS.betting} danger={pressure} size={pressure ? 130 : 116} />
         </Shake>
       </View>
-      <Text style={styles.dogHint}>🐶 Under 33% of the vote = UNDERDOG ×3</Text>
+      <Text style={styles.dogHint}>🐶 33% of the vote or less = UNDERDOG ×3</Text>
 
       {canBet ? (
         <>
@@ -455,6 +457,10 @@ export function UnderdogOverlay({ state }: { state: GameState }) {
   if (!dogPlayer) return null;
   const backers = r.bettors.filter((id) => r.bets[id] === dog).map((id) => playerById(state, id)!).filter(Boolean);
   const total = r.bettors.filter((id) => r.bets[id] === 'A' || r.bets[id] === 'B').length;
+  // Final round + Underdog: both multipliers apply (2× · 3× = 6×), with its own story.
+  if (isFinalRound(state)) {
+    return <FinalUnderdogAlert underdog={dogPlayer} mode={state.settings.mode} delay={revealTimeline(state).ALERT_AT} />;
+  }
   return (
     <UnderdogAlert
       underdog={dogPlayer}
@@ -629,14 +635,30 @@ export function Challenge({ state }: { state: GameState }) {
       <Row style={{ justifyContent: 'center', gap: 6 }}>
         <SlideIn from="left" style={{ alignItems: 'center', gap: 4 }}>
           <PlayerBadge player={playerById(state, a)} size={isChallenger ? 72 : 64} color={A_COLOR} bob mood={dog === 'A' ? 'sad' : 'neutral'} />
-          {dog === 'A' && <UnderdogTag mode={state.settings.mode} />}
+          {dog === 'A' && <UnderdogTag mode={state.settings.mode} final={isFinalRound(state)} />}
         </SlideIn>
         <VsBadge delay={150} />
         <SlideIn from="right" style={{ alignItems: 'center', gap: 4 }}>
           <PlayerBadge player={playerById(state, b)} size={isChallenger ? 72 : 64} color={B_COLOR} bob mood={dog === 'B' ? 'sad' : 'neutral'} />
-          {dog === 'B' && <UnderdogTag mode={state.settings.mode} />}
+          {dog === 'B' && <UnderdogTag mode={state.settings.mode} final={isFinalRound(state)} />}
         </SlideIn>
       </Row>
+      {/* The host's tip comes first: it's about reading out what follows. */}
+      {canJudge && hintOpen && (
+        <PopIn delay={150}>
+          <Pressable onPress={() => setHintOpen(false)} accessibilityRole="button" accessibilityLabel="Dismiss tip">
+            <Pulse scale={1.03} duration={900}>
+              <View style={styles.hint}>
+                <Text style={styles.hintText}>
+                  💡 Read the instructions and the {word} out loud to the room{q.type === 'TURN_BASED' || q.type === 'HOST_JUDGED' ? '' : ' — but keep the answer secret!'}
+                </Text>
+                <Text style={styles.hintClose}>✕</Text>
+              </View>
+            </Pulse>
+          </Pressable>
+        </PopIn>
+      )}
+
       <SlideIn from="top" distance={20}>
         <View style={[styles.rule, isChallenger && styles.ruleBig]}>
           <Text style={styles.ruleLabel}>HOW TO WIN</Text>
@@ -663,21 +685,6 @@ export function Challenge({ state }: { state: GameState }) {
         </PopIn>
       ) : (
         <QuestionCard text={prompt} />
-      )}
-
-      {canJudge && hintOpen && (
-        <PopIn delay={500}>
-          <Pressable onPress={() => setHintOpen(false)} accessibilityRole="button" accessibilityLabel="Dismiss tip">
-            <Pulse scale={1.03} duration={900}>
-              <View style={styles.hint}>
-                <Text style={styles.hintText}>
-                  💡 Read the instructions and the {word} out loud to the room{q.type === 'TURN_BASED' || q.type === 'HOST_JUDGED' ? '' : ' — but keep the answer secret!'}
-                </Text>
-                <Text style={styles.hintClose}>✕</Text>
-              </View>
-            </Pulse>
-          </Pressable>
-        </PopIn>
       )}
 
       {isSubject && (
@@ -973,7 +980,7 @@ export function Result({ state }: { state: GameState }) {
         </PopIn>
       )}
 
-      {score.multiplier > 1 && winner && <UnderdogVictory name={winner.name} mode={state.settings.mode} />}
+      {score.multiplier > 1 && winner && <UnderdogVictory name={winner.name} mode={state.settings.mode} final={isFinalRound(state)} />}
 
       {/* 2. Everyone who backed the winner, one by one, then 3. their +points */}
       {winner && (

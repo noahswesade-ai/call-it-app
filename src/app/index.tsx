@@ -14,9 +14,9 @@ import { useRoom } from '@/net/RoomProvider';
 import { AgeGate } from '@/room/Lobby';
 import { DEV_UNLOCK_PARTY } from '@/state/access';
 import { shouldShowIntro } from '@/state/intro';
-import { useProfile } from '@/state/profile';
+import { PLAYTEST, useProfile } from '@/state/profile';
 import { CoinCounter } from '@/ui/Coin';
-import { Button, Dim, Screen, tap } from '@/ui/kit';
+import { Button, Dim, Screen, tap, Toggle } from '@/ui/kit';
 import { Bob, PopIn, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { bounce } from '@/ui/motion';
@@ -146,9 +146,18 @@ export default function Home() {
   return (
     <Screen scroll style={{ flexGrow: 1, justifyContent: 'space-between' }}>
       <View style={styles.topBar}>
-        <Pressable onPress={() => router.push('/welcome')} style={styles.help} accessibilityRole="button" accessibilityLabel="How to play">
-          <Text style={styles.helpText}>?</Text>
-        </Pressable>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Pressable onPress={() => router.push('/account')} style={styles.me} accessibilityRole="button" accessibilityLabel="Your profile and My questions">
+            <AnimalAvatar avatar={profile.avatar} size={34} mood="happy" />
+            <Text style={styles.meName} numberOfLines={1}>
+              {profile.premium ? '👑 ' : ''}
+              {profile.name}
+            </Text>
+          </Pressable>
+          <Pressable onPress={() => router.push('/welcome')} style={styles.help} accessibilityRole="button" accessibilityLabel="How to play">
+            <Text style={styles.helpText}>?</Text>
+          </Pressable>
+        </View>
         <CoinCounter coins={profile.tokens} onPress={() => router.push('/shop')} />
       </View>
 
@@ -191,6 +200,18 @@ export default function Home() {
         <Dim style={{ textDecorationLine: 'underline' }}>No friends nearby? Practice with bots</Dim>
       </Pressable>
 
+      {PLAYTEST && (
+        // TEST LINK ONLY: compare the free and Premium versions. Remove before release.
+        <View style={styles.testBox}>
+          <Toggle
+            label="🧪 TEST: Premium account"
+            hint="Only on the play-test link. Switch off to see the free version."
+            value={profile.premium}
+            onChange={(v) => update({ premium: v })}
+          />
+        </View>
+      )}
+
       <AgeGate
         visible={ageGate}
         onConfirm={() => {
@@ -215,6 +236,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  me: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(20,4,40,0.55)',
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.35)',
+    borderRadius: 99,
+    paddingLeft: 3,
+    paddingRight: 12,
+    paddingVertical: 2,
+    maxWidth: 170,
+  },
+  meName: { color: colors.white, fontFamily: fonts.display, fontSize: 15, flexShrink: 1 },
+  testBox: { borderWidth: 2, borderStyle: 'dashed', borderColor: colors.cyan, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4 },
   helpText: { color: colors.white, fontFamily: fonts.display, fontSize: 22 },
   topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   logoRow: { flexDirection: 'row', alignItems: 'flex-end', marginTop: 8 },

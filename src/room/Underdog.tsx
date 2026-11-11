@@ -198,19 +198,21 @@ export function UnderdogAlert({
 }
 
 /** Small pulsing tag shown on the Underdog through the challenge. */
-export function UnderdogTag({ mode }: { mode: Mode }) {
+export function UnderdogTag({ mode, final = false }: { mode: Mode; final?: boolean }) {
+  const x = UNDERDOG_MULTIPLIER * (final ? 2 : 1);
   return (
     <Pulse scale={1.1} duration={380}>
-      <View style={styles.tag}>
-        <Text style={styles.tagText}>🐶 UNDERDOG ×{UNDERDOG_MULTIPLIER}</Text>
-        <Text style={styles.tagSub}>{mode === 'party' ? 'points & sips ×3' : 'points ×3'}</Text>
+      <View style={[styles.tag, final && styles.tagJackpot]}>
+        <Text style={styles.tagText}>{final ? '💎 JACKPOT' : '🐶 UNDERDOG'} ×{x}</Text>
+        <Text style={styles.tagSub}>{mode === 'party' ? `points & sips ×${x}` : `points ×${x}`}</Text>
       </View>
     </Pulse>
   );
 }
 
 /** Celebration when the Underdog actually wins. */
-export function UnderdogVictory({ name, mode }: { name: string; mode: Mode }) {
+export function UnderdogVictory({ name, mode, final = false }: { name: string; mode: Mode; final?: boolean }) {
+  const x = UNDERDOG_MULTIPLIER * (final ? 2 : 1);
   useEffect(() => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
   }, []);
@@ -219,11 +221,13 @@ export function UnderdogVictory({ name, mode }: { name: string; mode: Mode }) {
     <PopIn from={0.6}>
       <Pulse scale={1.02} duration={1400}>
         <LinearGradient colors={[colors.gold, '#FFB23C']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.victory}>
-          <Text style={styles.victoryTop}>🐶 THE UNDERDOG WON!</Text>
+          <Text style={styles.victoryTop}>{final ? '💎 JACKPOT! THE UNDERDOG WON!' : '🐶 THE UNDERDOG WON!'}</Text>
           <Text style={styles.victoryName}>{name}</Text>
           <View style={styles.victoryChip}>
-            <Text style={styles.victoryX3}>×{UNDERDOG_MULTIPLIER}</Text>
-            <Text style={styles.victoryRule}>{mode === 'party' ? 'Points & sips tripled' : 'Points tripled 🎯'}</Text>
+            <Text style={styles.victoryX3}>×{x}</Text>
+            <Text style={styles.victoryRule}>
+              {final ? (mode === 'party' ? 'Points & sips ×6' : 'Points ×6 💎') : mode === 'party' ? 'Points & sips tripled' : 'Points tripled 🎯'}
+            </Text>
           </View>
         </LinearGradient>
       </Pulse>
@@ -294,6 +298,7 @@ const styles = StyleSheet.create({
   callerName: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 11, textAlign: 'center' },
   backersLabel: { color: colors.gold, fontFamily: fonts.display, fontSize: 13, letterSpacing: 2 },
   tag: { backgroundColor: colors.gold, borderRadius: 14, paddingHorizontal: 10, paddingVertical: 4, alignItems: 'center', borderWidth: 2.5, borderColor: colors.ink },
+  tagJackpot: { backgroundColor: '#FF7AD9', borderColor: colors.ink },
   tagText: { color: colors.ink, fontFamily: fonts.display, fontSize: 15 },
   tagSub: { color: colors.ink, fontFamily: fonts.bodyBold, fontSize: 10 },
   victory: { borderRadius: 24, padding: 16, alignItems: 'center', gap: 6, borderWidth: 4, borderColor: colors.ink },

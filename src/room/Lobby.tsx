@@ -3,11 +3,11 @@ import * as Linking from 'expo-linking';
 import { Platform } from 'react-native';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { availableCategories, CATEGORIES, CATEGORY_BY_ID } from '@/content/categories';
-import { canJoin, challengerPool, FREE_MAX_PLAYERS, FREE_ROUNDS, host, type GameState } from '@/game/engine';
+import { canJoin, challengerPool, CUSTOM_ONLY_MIN, customOnlyStatus, FREE_MAX_PLAYERS, FREE_ROUNDS, host, type GameState } from '@/game/engine';
 import { notEveryoneWillPlay } from '@/game/selection';
 import type { Category, GameSettings, Mode } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
@@ -19,6 +19,7 @@ import { Body, Button, Card, Dim, H2, Row, Segmented, Toggle, tap } from '@/ui/k
 import { Bob, PopIn, Pulse, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { PlayerBadge } from './shared';
+import { isBotId } from '@/net/RoomProvider';
 import { AddQuestionButton, ModeTiles } from './LobbyExtras';
 import { playSfx } from '@/ui/sound';
 
@@ -161,6 +162,47 @@ function YouCard() {
   );
 }
 
+/** Host only: hand hosting to another player (in "More settings"). */
+function HandOver({
+  state,
+  myId,
+  target,
+  onPick,
+  onConfirm,
+}: {
+  state: GameState;
+  myId: string;
+  target?: { id: string; name: string };
+  onPick: (t?: { id: string; name: string }) => void;
+  onConfirm: () => void;
+}) {
+  const others = state.players.filter((p) => p.id !== myId && !isBotId(p.id) && p.connected !== false);
+  if (others.length === 0) return null;
+  return (
+    <View style={{ gap: 6 }}>
+      <Body>👑 Make someone else the host</Body>
+      {target ? (
+        <View style={styles.handConfirm}>
+          <Text style={styles.gateBody}>Make {target.name} the host? You'll stay in the game as a player.</Text>
+          <Row>
+            <Button style={{ flex: 1 }} small variant="ghost" label="Cancel" onPress={() => onPick(undefined)} />
+            <Button style={{ flex: 1 }} small variant="green" label={`Yes, ${target.name}`} onPress={onConfirm} />
+          </Row>
+        </View>
+      ) : (
+        <View style={styles.cats}>
+          {others.map((p) => (
+            <Pressable key={p.id} onPress={() => onPick({ id: p.id, name: p.name })} style={styles.handChip} accessibilityRole="button" accessibilityLabel={`Make ${p.name} the host`}>
+              <AnimalAvatar avatar={p.avatar} size={26} mood="happy" />
+              <Text style={styles.catText}>{p.name}</Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
+
 export function Lobby({ state }: { state: GameState }) {
   const { isHost, dispatch, connection, leaveRoom, myId } = useRoom();
   const [kickTarget, setKickTarget] = useState<{ id: string; name: string }>();
@@ -178,6 +220,10 @@ export function Lobby({ state }: { state: GameState }) {
     const avail = availableCategories(mode, spicy);
     // Free hosts always have every category on; Premium keeps their toggles.
     const categories = hostPremium ? avail.filter((c) => s.categories.includes(c) || CATEGORY_BY_ID[c].partyOnly) : avail;
+    if (s.onlyCustom && !customOnlyStatus(state, categories).ready) {
+      setOnlyWarn(customOnlyStatus(state, categories).short);
+      return set({ mode, spicy, categories, onlyCustom: false });
+    }
     set({ mode, spicy, categories });
   };
   const setMode = (mode: Mode) => {
@@ -191,8 +237,23 @@ export function Lobby({ state }: { state: GameState }) {
     if (!hostPremium) return router.push('/paywall');
     const on = s.categories.includes(c);
     if (on && s.categories.length <= 1) return;
-    set({ categories: on ? s.categories.filter((x) => x !== c) : [...s.categories, c] });
+    const categories = on ? s.categories.filter((x) => x !== c) : [...s.categories, c];
+    // Adding a category the lobby hasn't written 10 questions for switches "only ours" off.
+    if (s.onlyCustom && !customOnlyStatus(state, categories).ready) {
+      setOnlyWarn(customOnlyStatus(state, categories).short);
+      return set({ categories, onlyCustom: false });
+    }
+    set({ categories });
   };
+  const [onlyWarn, setOnlyWarn] = useState<{ category: Category; count: number }[]>();
+  const setOnlyCustom = (v: boolean) => {
+    if (!hostPremium) return router.push('/paywall');
+    if (!v) return set({ onlyCustom: false });
+    const st = customOnlyStatus(state);
+    if (!st.ready) return setOnlyWarn(st.short);
+    set({ onlyCustom: true });
+  };
+  const [handTo, setHandTo] = useState<{ id: string; name: string }>();
 
   // Spicy can only be on in Party mode: switching it on turns Party on too.
   const setSpicy = (v: boolean) => {
@@ -301,7 +362,7 @@ export function Lobby({ state }: { state: GameState }) {
         </Card>
       )}
 
-      {s.customQuestions && <AddQuestionButton state={state} />}
+      <AddQuestionButton state={state} />
 
       {isHost && (
         <Pulse active={ready} scale={1.03} duration={700}>
@@ -317,17 +378,6 @@ export function Lobby({ state }: { state: GameState }) {
           />
         </Pulse>
       )}
-      <Button
-        label="Leave"
-        variant="ghost"
-        small
-        onPress={() => {
-          leaveRoom();
-          router.replace('/');
-        }}
-      />
-
-
       <Modal visible={!!kickTarget} transparent animationType="fade" onRequestClose={() => setKickTarget(undefined)}>
         <View style={styles.modalBg}>
           <PopIn>
@@ -353,13 +403,14 @@ export function Lobby({ state }: { state: GameState }) {
       <Modal visible={showSettings} transparent animationType="slide" onRequestClose={() => setShowSettings(false)}>
         <View style={styles.sheetBg}>
           <View style={styles.sheet}>
+           <ScrollView contentContainerStyle={{ gap: 10 }}>
             <H2>⚙️ Game settings</H2>
             <Toggle
-              label="✍️ Custom questions"
-              hint={hostPremium ? 'Everyone in the lobby can add their own questions' : 'Premium: let the room write its own questions'}
+              label="✍️ Only our questions"
+              hint={`Play with only the lobby's own questions. Needs at least ${CUSTOM_ONLY_MIN} in every selected category.`}
               locked={!hostPremium}
-              value={!!s.customQuestions}
-              onChange={(v) => (hostPremium ? set({ customQuestions: v }) : router.push('/paywall'))}
+              value={!!s.onlyCustom}
+              onChange={setOnlyCustom}
             />
             <Toggle
               label="I'm playing"
@@ -386,6 +437,8 @@ export function Lobby({ state }: { state: GameState }) {
                 return (
                   <Pressable
                     key={c.id}
+                    accessibilityRole="switch"
+                    accessibilityState={{ checked: on }}
                     onPress={() => {
                       tap();
                       toggleCategory(c.id);
@@ -400,7 +453,33 @@ export function Lobby({ state }: { state: GameState }) {
                 );
               })}
             </View>
+            <HandOver state={state} myId={myId} target={handTo} onPick={setHandTo} onConfirm={() => {
+              if (handTo) dispatch({ type: 'transferHost', to: handTo.id });
+              setHandTo(undefined);
+              setShowSettings(false);
+            }} />
             <Button label="Done" onPress={() => setShowSettings(false)} />
+           </ScrollView>
+            {onlyWarn && (
+              <View style={styles.warnWrap}>
+                <PopIn>
+                  <View style={styles.gate}>
+                    <Text style={{ fontSize: 44, textAlign: 'center' }}>✍️</Text>
+                    <Text style={[styles.gateTitle, { fontSize: 24 }]}>Not enough of your own questions yet</Text>
+                    <Text style={styles.gateBody}>
+                      "Only our questions" needs at least {CUSTOM_ONLY_MIN} of the lobby's own questions in every selected category, so it can't be turned on yet.
+                    </Text>
+                    {onlyWarn.map((x) => (
+                      <Text key={x.category} style={styles.gateSmall}>
+                        {CATEGORY_BY_ID[x.category]?.emoji} {CATEGORY_BY_ID[x.category]?.label}: {x.count} / {CUSTOM_ONLY_MIN}
+                      </Text>
+                    ))}
+                    <Text style={styles.gateSmall}>Add more questions (or bring yours from "My questions"), or turn off the categories that are short.</Text>
+                    <Button label="Got it" onPress={() => setOnlyWarn(undefined)} />
+                  </View>
+                </PopIn>
+              </View>
+            )}
           </View>
         </View>
       </Modal>
@@ -484,8 +563,11 @@ const styles = StyleSheet.create({
   catText: { color: colors.white, fontFamily: fonts.display, fontSize: 15 },
   waiting: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 16 },
   sheetBg: { flex: 1, backgroundColor: 'rgba(10,0,25,0.7)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#2A0E55', borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 20, gap: 10, maxWidth: 560, width: '100%', alignSelf: 'center' },
+  sheet: { backgroundColor: '#2A0E55', borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 20, maxHeight: '92%', maxWidth: 560, width: '100%', alignSelf: 'center' },
   modalBg: { flex: 1, backgroundColor: 'rgba(10,0,25,0.8)', alignItems: 'center', justifyContent: 'center', padding: 20 },
+  warnWrap: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(10,0,25,0.85)', borderTopLeftRadius: 28, borderTopRightRadius: 28, alignItems: 'center', justifyContent: 'center', padding: 14 },
+  handChip: { flexDirection: 'row', alignItems: 'center', gap: 6, borderWidth: 2, borderColor: colors.gold, borderRadius: 99, paddingLeft: 4, paddingRight: 12, paddingVertical: 3 },
+  handConfirm: { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 16, padding: 10, gap: 8 },
   gate: {
     backgroundColor: colors.party,
     borderColor: colors.neon,

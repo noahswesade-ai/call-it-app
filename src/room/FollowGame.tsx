@@ -7,7 +7,7 @@ import { useRoom } from '@/net/RoomProvider';
  * while a player is customizing their avatar or browsing the shop, bring them straight
  * back to the game screen.
  */
-const SIDE_SCREENS = ['/avatar', '/shop', '/paywall', '/welcome'];
+const SIDE_SCREENS = ['/avatar', '/shop', '/paywall', '/welcome', '/account'];
 
 export function FollowGame() {
   const { state } = useRoom();

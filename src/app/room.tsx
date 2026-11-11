@@ -10,6 +10,7 @@ import { TimerBar } from '@/room/TimerBar';
 import { ContinuePrompt, ContinueTapArea, waitsForHost } from '@/room/Continue';
 import { actingHostId, host as hostOf } from '@/game/engine';
 import { preloadSounds } from '@/ui/sound';
+import { HomeButton } from '@/room/HomeButton';
 
 const playerName = (s: { players: { id: string; name: string }[] }, id: string) => s.players.find((p) => p.id === id)?.name ?? 'the host';
 import { View, Text } from 'react-native';
@@ -112,7 +113,9 @@ export default function Room() {
       : state.phase === 'result'
       ? myResultTint(state, myId)
       : state.settings.mode === 'party' && (state.phase === 'lobby' || state.phase === 'podium')
-        ? 'party'
+        ? state.settings.spicy
+          ? 'spicy'
+          : 'party'
         : undefined;
   const entering =
     state.phase === 'matchup' ? ZoomIn.duration(350) : state.phase === 'lobby' ? FadeIn.duration(300) : SlideInRight.duration(320);
@@ -127,6 +130,7 @@ export default function Room() {
           {state.phase === 'betsReveal' && <UnderdogOverlay key={state.round?.number} state={state} />}
           {actingHostId(state) === myId && waitsForHost(state) && <ContinueTapArea state={state} onContinue={() => dispatch({ type: 'next', now: Date.now() })} />}
           {hostAway && <HostAway name={hostOf(state)?.name ?? 'the host'} />}
+          {inRoom && <HomeButton state={state} />}
         </>
       }
       footer={

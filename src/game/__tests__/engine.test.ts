@@ -1,6 +1,6 @@
 import { ALL_QUESTIONS } from '@/content/questions';
 import { availableCategories } from '@/content/categories';
-import { createGame, currentUnderdog, DURATIONS, FREE_MAX_PLAYERS, inPressure, rankings, reduce, type GameState } from '../engine';
+import { createGame, currentUnderdog, customOnlyStatus, DURATIONS, FREE_MAX_PLAYERS, inPressure, rankings, reduce, type GameState } from '../engine';
 import { seededRng } from '../rng';
 import type { GameSettings, Player } from '../types';
 
@@ -380,12 +380,88 @@ describe('pause, kick and category odds', () => {
     expect(g.epoch).toBe(1);
   });
 
-  it('custom questions can be added only when the host turned them on', () => {
+  it('a lobby can add its own questions only when the host has Premium, without duplicates', () => {
     const q = { id: 'custom-1', category: 'geography' as const, type: 'SPOKEN_EXACT' as const, difficulty: 'M' as const, prompt: 'Our town?', answer: 'Here' };
     let g = reduce(newGame(3), { type: 'addCustom', question: q });
     expect(g.custom ?? []).toHaveLength(0);
-    g = reduce(g, { type: 'updateSettings', patch: { customQuestions: true } });
-    g = reduce(g, { type: 'addCustom', question: q });
+    g = reduce(newGame(3, {}, { premium: true }), { type: 'addCustom', question: q });
+    g = reduce(g, { type: 'addCustomMany', questions: [q, { ...q, id: 'c2', prompt: '  our   TOWN? ' }, { ...q, id: 'c3', prompt: 'Our street?' }] });
+    expect(g.custom!.map((x) => x.prompt)).toEqual(['Our town?', 'Our street?']);
+  });
+
+  it("the lobby's questions survive into the next game", () => {
+    const q = { id: 'custom-1', category: 'geography' as const, type: 'SPOKEN_EXACT' as const, difficulty: 'M' as const, prompt: 'Our town?', answer: 'Here' };
+    let g = reduce(newGame(4, {}, { premium: true }), { type: 'addCustom', question: q });
+    g = reduce(g, { type: 'start', now: 1 }, seededRng(3));
+    g = reduce(g, { type: 'backToLobby' });
+    expect(g.phase).toBe('lobby');
     expect(g.custom).toHaveLength(1);
+    g = reduce(g, { type: 'rematch' });
+    expect(g.custom).toHaveLength(1);
+  });
+
+  it('the wheel strongly prefers the lobby\'s own questions in the category it lands on', () => {
+    const cats = ['geography' as const];
+    let g = newGame(4, { categories: cats }, { premium: true });
+    const qs = Array.from({ length: 3 }, (_, i) => ({ id: `c${i}`, category: 'geography' as const, type: 'SPOKEN_EXACT' as const, difficulty: 'M' as const, prompt: `Ours ${i}?`, answer: 'x' }));
+    g = reduce(g, { type: 'addCustomMany', questions: qs });
+    let custom = 0;
+    for (let i = 0; i < 400; i++) {
+      const s = reduce({ ...g, usedQuestions: [] }, { type: 'start', now: 1 }, seededRng(i + 1));
+      if (s.round!.question.custom) custom++;
+    }
+    expect(custom / 400).toBeGreaterThan(0.68);
+  });
+
+  it('"only our questions" needs 10 per selected category, then uses only those', () => {
+    const cats = ['geography' as const, 'history' as const];
+    let g = newGame(4, { categories: cats, onlyCustom: true }, { premium: true });
+    const make = (c: 'geography' | 'history', n: number) =>
+      Array.from({ length: n }, (_, i) => ({ id: `${c}${i}`, category: c, type: 'SPOKEN_EXACT' as const, difficulty: 'M' as const, prompt: `${c} ${i}?`, answer: 'x' }));
+    g = reduce(g, { type: 'addCustomMany', questions: [...make('geography', 10), ...make('history', 4)] });
+    expect(customOnlyStatus(g).ready).toBe(false);
+    expect(customOnlyStatus(g).short.map((x) => x.category)).toEqual(['history']);
+    g = reduce(g, { type: 'addCustomMany', questions: make('history', 10) });
+    expect(customOnlyStatus(g).ready).toBe(true);
+    const rng = seededRng(5);
+    let now = 1;
+    g = reduce(g, { type: 'start', now }, rng);
+    for (let r = 1; r <= 10; r++) {
+      expect(g.round!.question.custom).toBe(true);
+      [g, now] = toChallenge(g, now, rng);
+      g = reduce(g, { type: 'judge', by: g.round!.judgeId, outcome: 'A', now }, rng);
+      g = reduce(g, { type: 'next', now }, rng);
+    }
+  });
+
+  it('the host can hand hosting to another player', () => {
+    let g = newGame(3, {}, { playing: false });
+    g = reduce(g, { type: 'transferHost', to: 'p2' });
+    expect(g.hostId).toBe('p2');
+    expect(g.players.find((p) => p.id === 'p2')!.isHost).toBe(true);
+    expect(g.players.find((p) => p.id === 'h')).toMatchObject({ isHost: false, playing: true });
+    expect(g.epoch).toBe(1);
+  });
+
+  it('when the host leaves (lobby or mid-game) the next connected player becomes host', () => {
+    let g = newGame(4);
+    g = reduce(g, { type: 'setConnected', playerId: 'p1', connected: false });
+    g = reduce(g, { type: 'leave', playerId: 'h' });
+    expect(g.hostId).toBe('p2');
+    expect(g.epoch).toBe(1);
+    let m = reduce(newGame(5), { type: 'start', now: 1 }, seededRng(2));
+    m = reduce(m, { type: 'leave', playerId: 'h' });
+    expect(m.hostId).toBe('p1');
+    expect(m.phase).not.toBe('lobby');
+  });
+
+  it('"back to lobby" ends the game for everyone', () => {
+    let g = reduce(newGame(4), { type: 'start', now: 1 }, seededRng(2));
+    g = reduce(g, { type: 'pause', now: 2 });
+    g = reduce(g, { type: 'backToLobby' });
+    expect(g.phase).toBe('lobby');
+    expect(g.round).toBeUndefined();
+    expect(g.paused).toBeUndefined();
+    expect(g.players).toHaveLength(4);
   });
 });

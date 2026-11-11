@@ -13,7 +13,7 @@ const PERKS: [string, string][] = [
   ['👥', 'Unlimited players (free: 10)'],
   ['🔁', 'Choose how many rounds'],
   ['🎛️', 'Turn categories on and off'],
-  ['✍️', 'Make your own questions'],
+  ['✍️', 'Your own questions in every lobby, and "only our questions" games'],
   ['🚫', 'No ads, ever'],
   ['💰', '2× gold coins every game'],
   ['👑', 'The Royal Crown: Premium-only avatar item'],

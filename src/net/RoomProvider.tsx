@@ -224,12 +224,13 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   const attachHostHandlers = useCallback(
     (transport: RoomTransport) => {
       transport.onAction(({ action, from }) => {
+        if (!isHostRef.current) return; // handed hosting to someone else
         if (from) lastSeenRef.current[from] = Date.now();
         if (action.type === 'ping') return;
         applyLocal(action);
       });
       transport.onStateRequest(() => {
-        if (stateRef.current) {
+        if (isHostRef.current && stateRef.current) {
           transport.publishState({ state: publishable(stateRef.current), sentAt: Date.now() });
         }
       });
@@ -352,7 +353,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   const maybeTakeOver = (gap: number) => {
     const s = stateRef.current;
     const transport = transportRef.current;
-    if (!s || !transport || isHostRef.current || s.phase === 'podium') return;
+    if (!s || !transport || isHostRef.current) return;
     const limit = s.paused ? HOST_PAUSED_GONE_MS : HOST_GONE_MS;
     if (gap < limit) return;
     const line = s.players.filter((p) => p.id !== s.hostId).sort((a, b) => a.joinOrder - b.joinOrder);
@@ -413,10 +414,26 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!stateRef.current) return;
     const mine = stateRef.current.players.find((p) => p.id === profile.id);
-    if (mine && (mine.name !== profile.name || mine.avatar !== profile.avatar)) {
-      dispatch({ type: 'updatePlayer', playerId: profile.id, patch: { name: profile.name, avatar: profile.avatar } });
+    if (mine && (mine.name !== profile.name || mine.avatar !== profile.avatar || mine.premium !== profile.premium)) {
+      dispatch({
+        type: 'updatePlayer',
+        playerId: profile.id,
+        patch: { name: profile.name, avatar: profile.avatar, premium: profile.premium },
+      });
     }
-  }, [profile.name, profile.avatar, profile.id, dispatch]);
+  }, [profile.name, profile.avatar, profile.premium, profile.id, dispatch]);
+
+  // Host: after handing hosting to someone else, this phone goes back to being a guest.
+  useEffect(() => {
+    const transport = transportRef.current;
+    if (!isHost || !state || !transport || state.hostId === profile.id) return;
+    if (!state.players.some((p) => p.id === profile.id)) return; // we left: leaveRoom handles it
+    transport.publishState({ state: publishable(state), sentAt: Date.now() });
+    isHostRef.current = false;
+    setIsHost(false);
+    lastStateAtRef.current = Date.now();
+    startJoinLoop(transport);
+  }, [isHost, state, profile.id, startJoinLoop]);
 
   const api = useMemo<RoomApi>(
     () => ({

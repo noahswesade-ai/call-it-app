@@ -58,7 +58,7 @@ export function Screen({
   children: React.ReactNode;
   scroll?: boolean;
   style?: StyleProp<ViewStyle>;
-  tint?: 'red' | 'green' | 'party' | 'fire';
+  tint?: 'red' | 'green' | 'party' | 'spicy' | 'fire';
   /** Pinned to the bottom of the screen above the content (e.g. the timer bar). */
   footer?: React.ReactNode;
   /** Full-screen layer drawn above everything (e.g. the Underdog takeover). */
@@ -309,6 +309,8 @@ export function Segmented<T extends string | number>({
               onChange(o.value);
             }}
             style={[styles.segmentItem, active && styles.segmentActive]}
+            accessibilityRole="button"
+            accessibilityState={{ selected: active }}
           >
             <Text style={[styles.segmentText, active && { color: colors.ink }]}>
               {locked && !active ? '🔒 ' : ''}

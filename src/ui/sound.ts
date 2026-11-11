@@ -62,6 +62,8 @@ const SFX = {
   podium: require('../../assets/sounds/podium.wav'),
   pop: require('../../assets/sounds/pop.wav'),
   drumroll: require('../../assets/sounds/drumroll.wav'),
+  riser: require('../../assets/sounds/riser.wav'),
+  jackpot: require('../../assets/sounds/jackpot.wav'),
 } as const;
 export type Sfx = keyof typeof SFX;
 const sfxPlayers: Partial<Record<Sfx, AudioPlayer>> = {};
@@ -76,6 +78,8 @@ const sfxVolume: Record<Sfx, number> = {
   podium: 0.9,
   pop: 0.5,
   drumroll: 0.7,
+  riser: 0.7,
+  jackpot: 0.95,
 };
 
 /** One-shot game sound (winner fanfare, Underdog stinger, podium…). */

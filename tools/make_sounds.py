@@ -93,3 +93,20 @@ d = np.convolve(d, np.ones(5) / 5, 'same')
 b = np.zeros(int(SR * 1.8)); place(b, d * .7, 0); place(b, tone(70, .5, 'sine', .002, .25) * 1.4 + noise(.5) * env(int(SR * .5), .001, .04) * .5, 1.35)
 save('drumroll.wav', b, .7)
 print('ok')
+
+# riser: rumbling noise + rising tone (the two multipliers shaking before they merge)
+d = 1.0; n = noise(d); t = np.arange(len(n)) / SR
+lp = np.convolve(n, np.ones(20) / 20, 'same')
+f = 180 + 900 * (t / d) ** 2
+riser = 0.7 * lp * (t / d) + 0.5 * np.sin(2 * np.pi * np.cumsum(f) / SR) * (t / d)
+save('riser.wav', riser, .7)
+
+# jackpot: boom + big major chord + glittering arpeggio (the ×6 merge)
+b = np.zeros(int(SR * 2.6))
+place(b, tone(55, 1.2, 'sine', 0.002, 0.5), 0)
+place(b, 0.6 * np.convolve(noise(0.4), np.ones(30) / 30, 'same') * env(int(SR * .4), .001, .12), 0)
+for f in (261.6, 329.6, 392.0, 523.3):
+    place(b, 0.5 * brass(f, 2.2, 0.9), 0.03)
+for i, f in enumerate((1046.5, 1318.5, 1568.0, 2093.0, 2637.0, 3136.0)):
+    place(b, 0.25 * tone(f, 0.5, 'tri', 0.002, 0.18), 0.15 + i * 0.07)
+save('jackpot.wav', b)

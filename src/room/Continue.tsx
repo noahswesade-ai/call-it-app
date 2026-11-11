@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { currentUnderdog, isFinalRound, type GameState } from '@/game/engine';
 import { UNDERDOG_SHOW_MS } from './Underdog';
+import { JACKPOT_SHOW_MS } from './Jackpot';
 import { tap } from '@/ui/kit';
 import { Pulse } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
@@ -21,7 +22,8 @@ function readyAfter(state: GameState): number {
       return 5400; // the wheel spins ~4.8s, then the category box pops in
     case 'betsReveal': {
       const t = revealTimeline(state);
-      return currentUnderdog(state) ? t.ALERT_AT + UNDERDOG_SHOW_MS + 300 : t.PCT_AT + 1400;
+      if (!currentUnderdog(state)) return t.PCT_AT + 1400;
+      return t.ALERT_AT + (isFinalRound(state) ? JACKPOT_SHOW_MS : UNDERDOG_SHOW_MS) + 300;
     }
     default:
       return 0;

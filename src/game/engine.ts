@@ -105,7 +105,7 @@ export type Action =
   | { type: 'join'; player: Player }
   | { type: 'leave'; playerId: string }
   | { type: 'setConnected'; playerId: string; connected: boolean }
-  | { type: 'updatePlayer'; playerId: string; patch: { name?: string; avatar?: AvatarLoadout } }
+  | { type: 'updatePlayer'; playerId: string; patch: { name?: string; avatar?: AvatarLoadout; premium?: boolean } }
   | { type: 'updateSettings'; patch: Partial<GameSettings> }
   | { type: 'setHostPlaying'; playing: boolean }
   | { type: 'start'; now: number }
@@ -125,6 +125,12 @@ export type Action =
   | { type: 'seen'; ids: string[] }
   | { type: 'regenQuestion'; now: number }
   | { type: 'addCustom'; question: Question }
+  /** Several questions at once (e.g. "add all" from a player's own question bank). */
+  | { type: 'addCustomMany'; questions: Question[] }
+  /** The host hands hosting to another player (lobby "More settings"). */
+  | { type: 'transferHost'; to: string }
+  /** The host ends the game for everyone and takes the whole room back to the lobby. */
+  | { type: 'backToLobby' }
   /** Another phone takes over as host because the host's phone is gone. */
   | { type: 'takeOver'; newHostId: string }
   /** "I'm still here" from a guest's phone (handled by the host's connection code). */
@@ -195,6 +201,40 @@ export function canRegen(state: GameState): boolean {
 /** Everything the wheel can pick from: the built-in bank plus the lobby's own questions. */
 function fullBank(state: GameState): Question[] {
   return state.custom?.length ? [...state.bank, ...state.custom] : state.bank;
+}
+
+/** A lobby's own questions are a Premium feature (the host's Premium unlocks it for the room). */
+export function lobbyIsPremium(state: GameState): boolean {
+  return !!host(state)?.premium;
+}
+
+/** "Only our questions" needs at least this many of the lobby's own questions in every selected category. */
+export const CUSTOM_ONLY_MIN = 10;
+export const MAX_CUSTOM = 500;
+
+/** How many of the lobby's own questions each selected category has, and whether "only ours" can be on. */
+export function customOnlyStatus(state: GameState, categories: Category[] = state.settings.categories) {
+  const counts = categories.map((c) => ({ category: c, count: (state.custom ?? []).filter((q) => q.category === c).length }));
+  const short = counts.filter((c) => c.count < CUSTOM_ONLY_MIN);
+  return { counts, short, ready: categories.length > 0 && short.length === 0 };
+}
+
+function normPrompt(p: string): string {
+  return p.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function addCustomQuestions(state: GameState, qs: Question[]): GameState {
+  if (!lobbyIsPremium(state)) return state;
+  const custom = [...(state.custom ?? [])];
+  const seen = new Set(custom.map((q) => normPrompt(q.prompt)));
+  for (const q of qs) {
+    if (!q?.prompt?.trim() || custom.length >= MAX_CUSTOM) continue;
+    const key = normPrompt(q.prompt);
+    if (seen.has(key)) continue; // the same question twice is no fun
+    seen.add(key);
+    custom.push({ ...q, custom: true, prompt: q.prompt.trim().slice(0, 240) });
+  }
+  return custom.length === (state.custom?.length ?? 0) ? state : { ...state, custom };
 }
 
 export function canJoin(state: GameState): boolean {
@@ -293,7 +333,11 @@ function beginRound(state: GameState, number: number, now: number, rng: Rng): Ga
     state.recentCategories,
     new Set(state.usedQuestions),
     rng,
-    { canUseKyf: everyone.length >= 3, mode: state.settings.mode },
+    {
+      canUseKyf: everyone.length >= 3,
+      mode: state.settings.mode,
+      onlyCustom: !!state.settings.onlyCustom && customOnlyStatus(state).ready,
+    },
   );
 
   const subjectId =
@@ -428,13 +472,17 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
       const players = state.players.filter((p) => p.id !== action.playerId);
       if (players.length === 0) return { ...state, players };
       let hostId = state.hostId;
+      let epoch = state.epoch;
       if (action.playerId === state.hostId) {
-        const next = [...players].sort((a, b) => a.joinOrder - b.joinOrder)[0];
-        hostId = next.id;
+        // The next player in join order takes over, preferring phones that are still here.
+        const line = [...players].sort((a, b) => a.joinOrder - b.joinOrder);
+        hostId = (line.find((p) => p.connected !== false && !p.id.startsWith('bot-')) ?? line[0]).id;
+        epoch = (state.epoch ?? 0) + 1;
       }
       let next: GameState = {
         ...state,
         hostId,
+        epoch,
         players: players.map((p) => ({ ...p, isHost: p.id === hostId, playing: p.id === hostId ? true : p.playing })),
       };
       const r = next.round;
@@ -591,12 +639,13 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
       if (!r || state.phase === 'lobby' || state.phase === 'podium' || state.phase === 'result') return state;
       if (!canRegen(state)) return state;
       const used = new Set([...state.usedQuestions, r.question.id]);
+      const onlyCustom = { onlyCustom: !!state.settings.onlyCustom && customOnlyStatus(state).ready };
       const sameLevel = (q: Question) =>
         q.id !== r.question.id && q.difficulty === r.question.difficulty && (r.subjectId ? true : q.type !== 'SUBJECT_JUDGED');
       const anyOther = (q: Question) => q.id !== r.question.id && (r.subjectId ? true : q.type !== 'SUBJECT_JUDGED');
       const q =
-        pickQuestion(fullBank(state).filter(sameLevel), r.category, used, rng) ??
-        pickQuestion(fullBank(state).filter(anyOther), r.category, used, rng);
+        pickQuestion(fullBank(state).filter(sameLevel), r.category, used, rng, undefined, onlyCustom) ??
+        pickQuestion(fullBank(state).filter(anyOther), r.category, used, rng, undefined, onlyCustom);
       if (!q) return state;
       return {
         ...state,
@@ -606,12 +655,32 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
       };
     }
 
-    case 'addCustom': {
-      if (!state.settings.customQuestions) return state;
-      const q = action.question;
-      if (!q.prompt?.trim() || (state.custom?.length ?? 0) >= 300) return state;
-      return { ...state, custom: [...(state.custom ?? []), { ...q, custom: true, prompt: q.prompt.trim().slice(0, 240) }] };
+    case 'addCustom':
+      return addCustomQuestions(state, [action.question]);
+
+    case 'addCustomMany':
+      return addCustomQuestions(state, action.questions ?? []);
+
+    case 'transferHost': {
+      const to = state.players.find((p) => p.id === action.to);
+      if (!to || to.id === state.hostId) return state;
+      const old = state.hostId;
+      return {
+        ...state,
+        hostId: to.id,
+        epoch: (state.epoch ?? 0) + 1,
+        players: state.players.map((p) => ({
+          ...p,
+          isHost: p.id === to.id,
+          // The old host goes back to being a normal player.
+          playing: p.id === old ? true : p.playing,
+        })),
+      };
     }
+
+    case 'backToLobby':
+      if (state.phase === 'lobby') return state;
+      return { ...reduce(state, { type: 'rematch' }, rng), paused: undefined };
 
     case 'takeOver': {
       const old = state.hostId;

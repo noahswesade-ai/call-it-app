@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ACCESSORY_BY_ID, ANIMAL_BY_ID, FREE_ITEMS, randomStarterAvatar, sanitizeLoadout } from '@/avatar/catalog';
 import { randomId } from '@/game/rng';
-import type { AvatarLoadout } from '@/game/types';
+import type { AvatarLoadout, Question } from '@/game/types';
 
 /**
  * The player's own profile, saved on the device (PLAN.md: "play instantly").
@@ -31,7 +31,18 @@ export interface Profile {
   adCount: number;
   gamesPlayed: number;
   gamesWon: number;
+  /**
+   * "My questions": every question this player has added to any lobby, so they can
+   * reuse them in new lobbies. Saved on the phone for now; moves to the player's
+   * account once sign-in (Supabase) is connected.
+   */
+  myQuestions: Question[];
 }
+
+/** The most questions kept in "My questions". */
+export const MY_QUESTIONS_MAX = 1000;
+
+const samePrompt = (a: string, b: string) => a.trim().toLowerCase().replace(/\s+/g, ' ') === b.trim().toLowerCase().replace(/\s+/g, ' ');
 
 /**
  * On the web, `?as=<name>` gives a browser tab its own profile so several tabs can
@@ -46,8 +57,9 @@ function storageKey(): string {
 const KEY = storageKey();
 
 /**
- * Play-test builds (EXPO_PUBLIC_PLAYTEST=1): everyone gets Premium and a stack of
- * coins so friends can try every feature. Never set this for a store release.
+ * Play-test builds (EXPO_PUBLIC_PLAYTEST=1): everyone starts with Premium and a stack
+ * of coins, and the home screen has a "TEST: Premium" switch to compare the free and
+ * Premium versions. Never set this for a store release (remove the switch too).
  */
 export const PLAYTEST = process.env.EXPO_PUBLIC_PLAYTEST === '1';
 const PLAYTEST_COINS = 5000;
@@ -72,6 +84,7 @@ function newProfile(): Profile {
     adCount: 0,
     gamesPlayed: 0,
     gamesWon: 0,
+    myQuestions: [],
   };
 }
 
@@ -94,6 +107,9 @@ interface ProfileApi {
   buy: (key: string, price: number) => boolean;
   addTokens: (n: number) => void;
   recordGame: (won: boolean, tokens: number) => void;
+  /** Saves questions to "My questions" (skips ones already there). */
+  saveQuestions: (qs: Question[]) => void;
+  removeQuestion: (id: string) => void;
 }
 
 const Ctx = createContext<ProfileApi | null>(null);
@@ -111,7 +127,6 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         const merged = { ...newProfile(), namedByUser: !!saved.name, ...saved };
         // Older versions had different animals, colors and accessory slots.
         merged.avatar = sanitizeLoadout(merged.avatar as never);
-        if (PLAYTEST) merged.premium = true;
         merged.owned = Array.from(new Set([...FREE_ITEMS, ...(merged.owned ?? []).filter((k) => !k.startsWith('color:'))]));
         setProfile(merged);
       })
@@ -157,9 +172,26 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     [],
   );
 
+  const saveQuestions = useCallback(
+    (qs: Question[]) =>
+      setProfile((p) => {
+        const mine = [...(p.myQuestions ?? [])];
+        for (const q of qs) {
+          if (!q.prompt?.trim() || mine.some((m) => samePrompt(m.prompt, q.prompt))) continue;
+          mine.unshift({ ...q, custom: true });
+        }
+        return mine.length === (p.myQuestions ?? []).length ? p : { ...p, myQuestions: mine.slice(0, MY_QUESTIONS_MAX) };
+      }),
+    [],
+  );
+  const removeQuestion = useCallback(
+    (id: string) => setProfile((p) => ({ ...p, myQuestions: (p.myQuestions ?? []).filter((q) => q.id !== id) })),
+    [],
+  );
+
   const api = useMemo(
-    () => ({ profile, loaded, update, owns, buy, addTokens, recordGame }),
-    [profile, loaded, update, owns, buy, addTokens, recordGame],
+    () => ({ profile, loaded, update, owns, buy, addTokens, recordGame, saveQuestions, removeQuestion }),
+    [profile, loaded, update, owns, buy, addTokens, recordGame, saveQuestions, removeQuestion],
   );
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
 }

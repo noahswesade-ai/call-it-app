@@ -86,6 +86,6 @@ export interface GameSettings {
   /** Sips the losing challenger drinks (Party mode), 1–3. */
   /** Categories that can appear on the wheel. */
   categories: Category[];
-  /** Premium: everyone in the lobby can add their own questions. */
-  customQuestions?: boolean;
+  /** Premium: the wheel only uses the lobby's own questions (needs CUSTOM_ONLY_MIN per category). */
+  onlyCustom?: boolean;
 }

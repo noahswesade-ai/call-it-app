@@ -28,12 +28,19 @@ export function wheelSlices(categories: Category[]): WheelSlice[] {
   return [...categories, 'random'];
 }
 
+/**
+ * Once the wheel lands on a category, the lobby's own (unused) questions in it are
+ * asked this often, however few there are: personal questions make the night.
+ */
+export const CUSTOM_SHARE = 0.75;
+
 export function pickQuestion(
   bank: Question[],
   category: Category,
   used: Set<string>,
   rng: Rng,
   filter?: (q: Question) => boolean,
+  opts: { onlyCustom?: boolean } = {},
 ): Question | undefined {
   let inCat = bank.filter((q) => q.category === category);
   if (filter) {
@@ -42,7 +49,13 @@ export function pickQuestion(
   }
   if (inCat.length === 0) return undefined;
   const fresh = inCat.filter((q) => q.repeatable || !used.has(q.id));
-  const pool = fresh.length > 0 ? fresh : inCat;
+  const freshCustom = fresh.filter((q) => q.custom);
+  if (freshCustom.length > 0 && (opts.onlyCustom || rng() < CUSTOM_SHARE)) {
+    return freshCustom[Math.floor(rng() * freshCustom.length)];
+  }
+  const freshBuiltIn = fresh.filter((q) => !q.custom);
+  // In "only our questions" mode built-in questions are a last resort (a category ran dry).
+  const pool = freshBuiltIn.length > 0 ? freshBuiltIn : fresh.length > 0 ? fresh : inCat;
   return pool[Math.floor(rng() * pool.length)];
 }
 
@@ -67,7 +80,7 @@ export function spin(
   history: Category[],
   used: Set<string>,
   rng: Rng,
-  opts: { canUseKyf: boolean; mode?: Mode },
+  opts: { canUseKyf: boolean; mode?: Mode; onlyCustom?: boolean },
 ): SpinResult {
   let usable = categories.filter((c) => bank.some((q) => q.category === c));
   if (!opts.canUseKyf) usable = usable.filter((c) => c !== 'kyf');
@@ -88,6 +101,8 @@ export function spin(
   // The wheel shows a "Random" slice too; landing there is just a different way of
   // revealing the same pick, so it never changes the odds.
   const slice: WheelSlice = rng() < 1 / (usable.length + 1) ? 'random' : category;
-  const question = pickQuestion(bank, category, used, rng, opts.canUseKyf ? undefined : (q) => q.type !== 'SUBJECT_JUDGED')!;
+  const question = pickQuestion(bank, category, used, rng, opts.canUseKyf ? undefined : (q) => q.type !== 'SUBJECT_JUDGED', {
+    onlyCustom: opts.onlyCustom,
+  })!;
   return { slice, category, question };
 }

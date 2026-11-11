@@ -4,11 +4,14 @@ import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 
 import { availableCategories, CATEGORIES } from '@/content/categories';
 import { CategoryIcon } from '@/content/CategoryIcon';
 import { randomId } from '@/game/rng';
-import type { Category, Difficulty, QuestionType } from '@/game/types';
+import type { Category, Difficulty, Question, QuestionType } from '@/game/types';
 import { Button, Segmented, tap } from '@/ui/kit';
 import { PopIn, Pulse } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
-import type { GameState } from '@/game/engine';
+import { CUSTOM_ONLY_MIN, lobbyIsPremium, type GameState } from '@/game/engine';
+import { router } from 'expo-router';
+import { useProfile } from '@/state/profile';
+import { MyQuestionsList } from './MyQuestions';
 import { useRoom } from '@/net/RoomProvider';
 
 /**
@@ -123,23 +126,57 @@ const KINDS: { value: QuestionType; label: string; hint: string }[] = [
   { value: 'HOST_JUDGED', label: 'Challenge', hint: 'A dare or task; the host picks the winner' },
 ];
 
-/** "Add your own question" button + sheet (only when the Premium host turned it on). */
+/**
+ * "Add your own questions": on every lobby screen. In a Premium lobby (the host has
+ * Premium) it opens the sheet; otherwise it's dimmed with a lock and leads to Premium.
+ */
 export function AddQuestionButton({ state }: { state: GameState }) {
   const [open, setOpen] = useState(false);
+  const premium = lobbyIsPremium(state);
   const count = state.custom?.length ?? 0;
+  if (!premium) {
+    return (
+      <Pressable
+        onPress={() => {
+          tap('medium');
+          router.push('/paywall');
+        }}
+        accessibilityRole="button"
+        accessibilityLabel="Add your own questions (Premium)"
+      >
+        <View style={[styles.addBtn, styles.addLocked]}>
+          <Text style={[styles.addTitle, { opacity: 0.6 }]}>✍️ Add your own questions</Text>
+          <Text style={[styles.addSub, { opacity: 0.6 }]}>Inside jokes, your friends, your rules</Text>
+          <View style={styles.lockCorner}>
+            <Text style={{ fontSize: 13 }}>🔒</Text>
+          </View>
+        </View>
+      </Pressable>
+    );
+  }
   return (
     <>
       <Pulse scale={1.02} duration={900}>
-        <Button variant="secondary" label={`✍️ Add your own question${count ? ` (${count} added)` : ''}`} onPress={() => setOpen(true)} />
+        <Pressable onPress={() => setOpen(true)} accessibilityRole="button" accessibilityLabel="Add your own questions">
+          <View style={styles.addBtn}>
+            <Text style={styles.addTitle}>✍️ Add your own questions</Text>
+            <Text style={styles.addSub}>{count ? `${count} in this lobby · they come up much more often` : 'Inside jokes, your friends, your rules'}</Text>
+          </View>
+        </Pressable>
       </Pulse>
       <AddQuestionSheet state={state} visible={open} onClose={() => setOpen(false)} />
     </>
   );
 }
 
+const norm = (p: string) => p.trim().toLowerCase().replace(/\s+/g, ' ');
+
 function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visible: boolean; onClose: () => void }) {
   const { dispatch, myId } = useRoom();
-  const cats = CATEGORIES.filter((c) => availableCategories(state.settings.mode, state.settings.spicy).includes(c.id));
+  const { profile, saveQuestions } = useProfile();
+  const [tab, setTab] = useState<'write' | 'mine'>('write');
+  const available = availableCategories(state.settings.mode, state.settings.spicy);
+  const cats = CATEGORIES.filter((c) => available.includes(c.id));
   const [category, setCategory] = useState<Category>(cats[0]?.id ?? 'basic');
   const [kind, setKind] = useState<QuestionType>('SPOKEN_EXACT');
   const [difficulty, setDifficulty] = useState<Difficulty>('M');
@@ -150,86 +187,146 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
   const numeric = Number(answer.replace(/[^0-9.\-]/g, ''));
   const valid = prompt.trim().length > 4 && (!needsAnswer || answer.trim().length > 0) && (kind !== 'SPOKEN_CLOSEST' || Number.isFinite(numeric));
 
+  const inLobby = new Set((state.custom ?? []).map((q) => norm(q.prompt)));
+  const mine = (profile.myQuestions ?? []).filter((q) => available.includes(q.category));
+  const notYet = mine.filter((q) => !inLobby.has(norm(q.prompt)));
+  const hiddenCount = (profile.myQuestions ?? []).length - mine.length;
+
   const submit = () => {
     if (!valid) return;
-    dispatch({
-      type: 'addCustom',
-      question: {
-        id: `custom-${myId.slice(0, 6)}-${randomId()}`,
-        category,
-        type: kind,
-        difficulty,
-        prompt: prompt.trim(),
-        answer: needsAnswer ? answer.trim() : undefined,
-        numericAnswer: kind === 'SPOKEN_CLOSEST' ? numeric : undefined,
-        custom: true,
-      },
-    });
+    const question: Question = {
+      id: `custom-${myId.slice(0, 6)}-${randomId()}`,
+      category,
+      type: kind,
+      difficulty,
+      prompt: prompt.trim(),
+      answer: needsAnswer ? answer.trim() : undefined,
+      numericAnswer: kind === 'SPOKEN_CLOSEST' ? numeric : undefined,
+      custom: true,
+    };
+    dispatch({ type: 'addCustom', question });
+    // Every question you write is also kept in "My questions" for future lobbies.
+    saveQuestions([question]);
     tap('heavy');
     setPrompt('');
     setAnswer('');
     setAdded((n) => n + 1);
   };
 
+  const lobbyCounts = cats
+    .filter((c) => state.settings.categories.includes(c.id))
+    .map((c) => ({ c, n: (state.custom ?? []).filter((q) => q.category === c.id).length }));
+
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <View style={styles.sheetBg}>
         <View style={styles.sheet}>
           <ScrollView contentContainerStyle={{ gap: 10 }} keyboardShouldPersistTaps="handled">
-            <Text style={styles.sheetTitle}>✍️ Add your own question</Text>
-            <Text style={styles.label}>Category</Text>
-            <View style={styles.cats}>
-              {cats.map((c) => (
-                <Pressable
-                  key={c.id}
-                  onPress={() => setCategory(c.id)}
-                  style={[styles.cat, { borderColor: c.color, backgroundColor: category === c.id ? c.color : 'transparent' }]}
-                >
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                    <CategoryIcon category={c.id} size={18} />
-                    <Text style={[styles.catText, category === c.id && { color: colors.ink }]}>{c.label}</Text>
-                  </View>
-                </Pressable>
+            <Text style={styles.sheetTitle}>✍️ Your own questions</Text>
+            <Segmented<'write' | 'mine'>
+              options={[
+                { value: 'write', label: '✍️ Write new' },
+                { value: 'mine', label: `📚 My questions (${mine.length})` },
+              ]}
+              value={tab}
+              onChange={setTab}
+            />
+            <View style={styles.countRow}>
+              {lobbyCounts.map(({ c, n }) => (
+                <View key={c.id} style={[styles.countChip, n >= CUSTOM_ONLY_MIN && { borderColor: colors.green }]}>
+                  <CategoryIcon category={c.id} size={14} />
+                  <Text style={styles.countText}>{n}</Text>
+                </View>
               ))}
             </View>
-            <Text style={styles.label}>Type</Text>
-            <Segmented<QuestionType> options={KINDS.map((k) => ({ value: k.value, label: k.label }))} value={kind} onChange={setKind} />
-            <Text style={styles.hint}>{KINDS.find((k) => k.value === kind)?.hint}</Text>
-            <Text style={styles.label}>Difficulty</Text>
-            <Segmented<Difficulty>
-              options={[
-                { value: 'E', label: 'Easy' },
-                { value: 'M', label: 'Medium' },
-                { value: 'H', label: 'Hard' },
-              ]}
-              value={difficulty}
-              onChange={setDifficulty}
-            />
-            <TextInput
-              value={prompt}
-              onChangeText={setPrompt}
-              placeholder={kind === 'HOST_JUDGED' ? 'e.g. Who can do the best moonwalk?' : kind === 'TURN_BASED' ? 'e.g. Name songs by Drake.' : 'e.g. Where did we go on our first group trip?'}
-              placeholderTextColor="#8E7CC3"
-              multiline
-              maxLength={240}
-              style={[styles.input, { minHeight: 70 }]}
-            />
-            {needsAnswer && (
-              <TextInput
-                value={answer}
-                onChangeText={setAnswer}
-                placeholder={kind === 'SPOKEN_CLOSEST' ? 'The real number, e.g. 42' : 'The answer (only the host sees it)'}
-                placeholderTextColor="#8E7CC3"
-                keyboardType={kind === 'SPOKEN_CLOSEST' ? 'numeric' : 'default'}
-                style={styles.input}
-              />
+            <Text style={styles.hint}>In this lobby, by category. Your questions come up far more often than ours.</Text>
+
+            {tab === 'write' ? (
+              <>
+                <Text style={styles.label}>Category</Text>
+                <View style={styles.cats}>
+                  {cats.map((c) => (
+                    <Pressable
+                      key={c.id}
+                      accessibilityRole="button"
+                      accessibilityState={{ selected: category === c.id }}
+                      onPress={() => setCategory(c.id)}
+                      style={[styles.cat, { borderColor: c.color, backgroundColor: category === c.id ? c.color : 'transparent' }]}
+                    >
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        <CategoryIcon category={c.id} size={18} />
+                        <Text style={[styles.catText, category === c.id && { color: colors.ink }]}>{c.label}</Text>
+                      </View>
+                    </Pressable>
+                  ))}
+                </View>
+                <Text style={styles.label}>Type</Text>
+                <Segmented<QuestionType> options={KINDS.map((k) => ({ value: k.value, label: k.label }))} value={kind} onChange={setKind} />
+                <Text style={styles.hint}>{KINDS.find((k) => k.value === kind)?.hint}</Text>
+                <Text style={styles.label}>Difficulty</Text>
+                <Segmented<Difficulty>
+                  options={[
+                    { value: 'E', label: 'Easy' },
+                    { value: 'M', label: 'Medium' },
+                    { value: 'H', label: 'Hard' },
+                  ]}
+                  value={difficulty}
+                  onChange={setDifficulty}
+                />
+                <TextInput
+                  value={prompt}
+                  onChangeText={setPrompt}
+                  placeholder={kind === 'HOST_JUDGED' ? 'e.g. Who can do the best moonwalk?' : kind === 'TURN_BASED' ? 'e.g. Name songs by Drake.' : 'e.g. Where did we go on our first group trip?'}
+                  placeholderTextColor="#8E7CC3"
+                  multiline
+                  maxLength={240}
+                  style={[styles.input, { minHeight: 70 }]}
+                />
+                {needsAnswer && (
+                  <TextInput
+                    value={answer}
+                    onChangeText={setAnswer}
+                    placeholder={kind === 'SPOKEN_CLOSEST' ? 'The real number, e.g. 42' : 'The answer (only the host sees it)'}
+                    placeholderTextColor="#8E7CC3"
+                    keyboardType={kind === 'SPOKEN_CLOSEST' ? 'numeric' : 'default'}
+                    style={styles.input}
+                  />
+                )}
+                {added > 0 && (
+                  <PopIn key={added}>
+                    <Text style={styles.added}>✅ Added to this lobby and saved to My questions</Text>
+                  </PopIn>
+                )}
+                <Button label="Add question" variant="green" disabled={!valid} onPress={submit} />
+              </>
+            ) : (
+              <>
+                {mine.length === 0 ? (
+                  <Text style={styles.hint}>
+                    Nothing here yet. Every question you write in any lobby is saved here, so you can bring it to your next game in one tap.
+                  </Text>
+                ) : (
+                  <Button
+                    variant="green"
+                    label={notYet.length ? `➕ Add all (${notYet.length})` : '✅ All added'}
+                    disabled={notYet.length === 0}
+                    onPress={() => {
+                      tap('heavy');
+                      dispatch({ type: 'addCustomMany', questions: notYet });
+                    }}
+                  />
+                )}
+                <MyQuestionsList
+                  questions={mine}
+                  isAdded={(q) => inLobby.has(norm(q.prompt))}
+                  onAdd={(q) => {
+                    tap('medium');
+                    dispatch({ type: 'addCustom', question: q });
+                  }}
+                />
+                {hiddenCount > 0 && <Text style={styles.hint}>{hiddenCount} more of yours are for Party/Spicy and don't fit this lobby's mode.</Text>}
+              </>
             )}
-            {added > 0 && (
-              <PopIn key={added}>
-                <Text style={styles.added}>✅ Added! It can now come up on the wheel.</Text>
-              </PopIn>
-            )}
-            <Button label="Add question" variant="green" disabled={!valid} onPress={submit} />
             <Button label="Done" variant="ghost" onPress={onClose} />
           </ScrollView>
         </View>
@@ -258,5 +355,33 @@ const styles = StyleSheet.create({
   cat: { borderWidth: 2, borderRadius: 99, paddingHorizontal: 10, paddingVertical: 5 },
   catText: { color: colors.white, fontFamily: fonts.display, fontSize: 13 },
   input: { backgroundColor: colors.white, borderRadius: 14, padding: 12, fontSize: 17, fontFamily: fonts.bodySemi, color: colors.ink },
+  addBtn: {
+    borderRadius: 22,
+    borderWidth: 3,
+    borderColor: colors.gold,
+    backgroundColor: 'rgba(255,201,60,0.14)',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+  },
+  addLocked: { borderColor: 'rgba(255,201,60,0.45)', backgroundColor: 'rgba(0,0,0,0.35)' },
+  addTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 20 },
+  addSub: { color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 13, marginTop: 2 },
+  lockCorner: {
+    position: 'absolute',
+    top: -8,
+    right: -6,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: colors.gold,
+    borderWidth: 2,
+    borderColor: colors.ink,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  countRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },
+  countChip: { flexDirection: 'row', alignItems: 'center', gap: 3, borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.3)', borderRadius: 99, paddingHorizontal: 7, paddingVertical: 2 },
+  countText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 12 },
   added: { color: colors.green, fontFamily: fonts.bodyBold, fontSize: 15, textAlign: 'center' },
 });
