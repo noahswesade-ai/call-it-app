@@ -24,3 +24,12 @@
 landmarks (table `L`) and per-accessory rules (`RULES`, plus per-animal `TWEAK`s), writes
 `src/avatar/fit.json`, and renders review sheets:
 `python tools/fit_accessories2.py . /tmp/sheets all`
+
+## Goals tab (Google Doc "Underdog")
+
+The "Goals" tab is generated from `tools/goals_content.py` (goals, implications,
+execution, and one linked source per reason). After changing a feature that the tab
+describes, edit `goals_content.py` and regenerate the tab with
+`python3 tools/goals_to_doc.py <tabId>` (send the requests to an emptied Goals tab).
+If the doc is edited by hand, copy those edits back into `goals_content.py`.
+The research behind it is in the session's `reports/Party game app goals research.md`.

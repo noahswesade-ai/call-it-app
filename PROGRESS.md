@@ -170,3 +170,10 @@ _Last updated: 2026-11-09_
 - Accessories refitted per animal with hand-measured landmarks (tools/fit_accessories2.py).
 - Verified live with 5 simulated phones: link + code joins, kick, avatar-screen pull-back, stand-in host, continue,
   challenger view, answer reveal, host takeover.
+
+## 2026-11-11 (round 3): lobby control, own questions, Jackpot x6, goals pass
+- Home button on every room screen with a leave dialog (host: stay / leave and hand over / take everyone back to the lobby); host hand-over in More settings; host leaving or vanishing in the lobby promotes the next player (~30 s).
+- Lobby questions persist across games; every question you write is saved to "My questions" (profile screen and the add-question sheet: add one, add all, delete). Wheel picks lobby questions 75% of the time in a landed category; "Only our questions" needs 10 per selected category.
+- "Add your own questions" is in every lobby (locked with a padlock unless the host has Premium). Spicy shows floating devils. Play-test only: home-screen Premium test switch (remove before release).
+- Final round + Underdog = x6 "Jackpot round" with its own animation.
+- Goal-driven pass (see Goals tab in the Google Doc): changeable calls, betting time setting, sound/vibration toggles, crash-safety screen, host-only ads, share results, rating prompt, invite share sheet + QR, saved seen-question memory, no countdown offers, birth-year age check, question filter + host removal, practice stand-in fix.
