@@ -2,6 +2,7 @@ import type { AvatarLoadout, Category, GameSettings, Outcome, Pick, Player, Ques
 import { pairKey, pickChallengers, pickSubject } from './selection';
 import { scoreRound, underdogSide, type RoundScore } from './scoring';
 import { pickQuestion, spin } from '@/content/picker';
+import { isAllowedQuestion } from '@/content/moderation';
 
 /**
  * The round state machine (PLAN.md §1). The host's phone owns the GameState and is
@@ -34,6 +35,11 @@ export const DURATIONS = {
   /** Winner, then their supporters, then the +points, then standings. */
   result: 13000,
 } as const;
+
+/** Betting window for these settings (ms). */
+export function bettingMs(state: GameState): number {
+  return (state.settings.betSeconds ?? DURATIONS.betting / 1000) * 1000;
+}
 
 export const FREE_MAX_PLAYERS = 10;
 export const FREE_ROUNDS = 10;
@@ -127,6 +133,8 @@ export type Action =
   | { type: 'addCustom'; question: Question }
   /** Several questions at once (e.g. "add all" from a player's own question bank). */
   | { type: 'addCustomMany'; questions: Question[] }
+  /** The host removes one of the lobby's own questions (moderation); swaps it out if it's live. */
+  | { type: 'removeCustom'; id: string; by: string; now: number }
   /** The host hands hosting to another player (lobby "More settings"). */
   | { type: 'transferHost'; to: string }
   /** The host ends the game for everyone and takes the whole room back to the lobby. */
@@ -229,6 +237,7 @@ function addCustomQuestions(state: GameState, qs: Question[]): GameState {
   const seen = new Set(custom.map((q) => normPrompt(q.prompt)));
   for (const q of qs) {
     if (!q?.prompt?.trim() || custom.length >= MAX_CUSTOM) continue;
+    if (!isAllowedQuestion(`${q.prompt} ${q.answer ?? ''}`)) continue;
     const key = normPrompt(q.prompt);
     if (seen.has(key)) continue; // the same question twice is no fun
     seen.add(key);
@@ -267,7 +276,7 @@ export function phaseDuration(state: GameState): number | undefined {
   if (state.paused) return undefined;
   switch (state.phase) {
     case 'betting':
-      return DURATIONS.betting;
+      return bettingMs(state);
     case 'result':
       return DURATIONS.result;
     default:
@@ -300,7 +309,8 @@ function chooseJudge(
   // is one of the challengers: then a stand-in host is picked from the other players.
   if (!challengers.includes(state.hostId)) return state.hostId;
   const live = (ids: string[]) => ids.filter((id) => state.players.find((p) => p.id === id)?.connected !== false);
-  const others = state.players.map((p) => p.id).filter((id) => !challengers.includes(id));
+  // Practice bots can't run a round: with no other human, the host hosts their own round.
+  const others = state.players.map((p) => p.id).filter((id) => !challengers.includes(id) && !id.startsWith('bot-'));
   const prefer = live(others.filter((id) => id !== subjectId));
   const pool = prefer.length > 0 ? prefer : live(others).length > 0 ? live(others) : others;
   void bettors;
@@ -440,7 +450,7 @@ function advance(state: GameState, now: number, rng: Rng): GameState {
         // Nobody can bet (e.g. 2 players): go straight to the challenge.
         return { ...state, phase: 'challenge', phaseEndsAt: undefined };
       }
-      return { ...state, phase: 'betting', phaseEndsAt: now + DURATIONS.betting };
+      return { ...state, phase: 'betting', phaseEndsAt: now + bettingMs(state) };
     case 'betting':
       return { ...state, phase: 'betsReveal', phaseEndsAt: undefined };
     case 'betsReveal':
@@ -568,7 +578,8 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
     case 'bet': {
       const r = state.round;
       if (state.phase !== 'betting' || !r || !r.bettors.includes(action.playerId)) return state;
-      if (action.playerId in r.bets) return state; // bets are final
+      // A call can be changed while betting is still open (it closes once everyone has called it).
+      if (r.bets[action.playerId] === action.pick) return state;
       const bets = { ...r.bets, [action.playerId]: action.pick };
       const next = { ...state, round: { ...r, bets } };
       return pendingBettors(next).length === 0 ? advance(next, action.now, rng) : next;
@@ -660,6 +671,20 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
 
     case 'addCustomMany':
       return addCustomQuestions(state, action.questions ?? []);
+
+    case 'removeCustom': {
+      if (action.by !== state.hostId && action.by !== actingHostId(state)) return state;
+      if (!state.custom?.some((q) => q.id === action.id)) return state;
+      let next: GameState = { ...state, custom: state.custom.filter((q) => q.id !== action.id) };
+      const r = next.round;
+      if (r && r.question.id === action.id && next.phase !== 'result' && next.phase !== 'podium' && next.phase !== 'lobby') {
+        // Swap in another question for free (doesn't use up the free host's swap).
+        const regens = next.regens ?? 0;
+        const swapped = reduce({ ...next, regens: 0, settings: { ...next.settings } }, { type: 'regenQuestion', now: action.now }, rng);
+        next = { ...swapped, regens };
+      }
+      return next;
+    }
 
     case 'transferHost': {
       const to = state.players.find((p) => p.id === action.to);

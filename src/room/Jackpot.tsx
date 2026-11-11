@@ -11,7 +11,7 @@ import Animated, {
   withTiming,
   type SharedValue,
 } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
+import { Haptics } from '@/ui/prefs';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import type { Mode, Player } from '@/game/types';
 import { Confetti } from '@/ui/Confetti';

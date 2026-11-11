@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
+import { Haptics } from '@/ui/prefs';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { CATEGORY_BY_ID, DIFFICULTY_LABEL } from '@/content/categories';
 import { wheelSlices } from '@/content/picker';
-import { actingHostId, canRegen, currentUnderdog, DURATIONS, FREE_REGENS, host, isFinalRound, pendingBettors, rankings, type GameState } from '@/game/engine';
+import { actingHostId, bettingMs, canRegen, currentUnderdog, DURATIONS, FREE_REGENS, host, isFinalRound, pendingBettors, rankings, type GameState } from '@/game/engine';
 import type { Outcome, Pick } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
 import { useCountUp } from '@/ui/Coin';
@@ -88,6 +88,12 @@ function CategoryLine({ state }: { state: GameState }) {
       <PopIn delay={120}>
         <Pill label={DIFFICULTY_LABEL[r.question.difficulty].toUpperCase()} color="rgba(20,4,40,0.55)" />
       </PopIn>
+      {r.question.custom && (
+        // Written by someone in this lobby: make sure the room notices.
+        <PopIn delay={240}>
+          <Pill label="✍️ YOUR CREW'S" color={colors.gold} textColor={colors.ink} />
+        </PopIn>
+      )}
     </Row>
   );
 }
@@ -344,7 +350,7 @@ export function Betting({ state }: { state: GameState }) {
       <CategoryLine state={state} />
       <View style={{ alignItems: 'center' }}>
         <Shake trigger={pressure ? secs : 0} strength={pressure ? 6 : 0}>
-          <CountdownRing msLeft={left} total={DURATIONS.betting} danger={pressure} size={pressure ? 130 : 116} />
+          <CountdownRing msLeft={left} total={bettingMs(state)} danger={pressure} size={pressure ? 130 : 116} />
         </Shake>
       </View>
       <Text style={styles.dogHint}>🐶 33% of the vote or less = UNDERDOG ×3</Text>
@@ -352,14 +358,15 @@ export function Betting({ state }: { state: GameState }) {
       {canBet ? (
         <>
           <SlideIn from="bottom" distance={20}>
-            <Text style={styles.callIt}>{myBet ? (myBet === 'NONE' ? 'Sitting this one out…' : 'Locked in! 🔒') : 'WHO WINS? CALL IT!'}</Text>
+            <Text style={styles.callIt}>{myBet ? (myBet === 'NONE' ? 'Sitting this one out…' : 'Called it! ✅') : 'WHO WINS? CALL IT!'}</Text>
+            {myBet ? <Text style={styles.changeHint}>Changed your mind? Tap the other side until betting closes.</Text> : null}
           </SlideIn>
           <Row style={{ gap: 12, alignItems: 'stretch' }}>
             <SlideIn from="left" distance={160} style={{ flex: 1 }}>
-              <PickCard state={state} id={a} side="A" onPick={() => bet('A')} chosen={myBet === 'A'} disabled={!!myBet} />
+              <PickCard state={state} id={a} side="A" onPick={() => bet('A')} chosen={myBet === 'A'} disabled={myBet === 'A'} />
             </SlideIn>
             <SlideIn from="right" distance={160} style={{ flex: 1 }}>
-              <PickCard state={state} id={b} side="B" onPick={() => bet('B')} chosen={myBet === 'B'} disabled={!!myBet} />
+              <PickCard state={state} id={b} side="B" onPick={() => bet('B')} chosen={myBet === 'B'} disabled={myBet === 'B'} />
             </SlideIn>
           </Row>
           {!myBet && (
@@ -767,6 +774,17 @@ export function Challenge({ state }: { state: GameState }) {
               dispatch({ type: 'regenQuestion', now: Date.now() });
             }}
           />
+          {q.custom && (
+            <Button
+              small
+              variant="ghost"
+              label="🚩 Remove this question"
+              onPress={() => {
+                tap('medium');
+                dispatch({ type: 'removeCustom', id: q.id, by: myId, now: Date.now() });
+              }}
+            />
+          )}
           <Button small variant="ghost" label="Skip round" onPress={() => dispatch({ type: 'skipRound', now: Date.now() })} />
           <Button small variant="ghost" label={`Swap ${playerById(state, a)?.name}`} onPress={() => dispatch({ type: 'swapChallenger', out: a, now: Date.now() })} />
           <Button small variant="ghost" label={`Swap ${playerById(state, b)?.name}`} onPress={() => dispatch({ type: 'swapChallenger', out: b, now: Date.now() })} />
@@ -1115,6 +1133,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     transform: [{ rotate: '-12deg' }],
   },
+  changeHint: { color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 13, textAlign: 'center', marginTop: -6 },
   dogHint: { color: colors.gold, fontFamily: fonts.bodyBold, fontSize: 14, textAlign: 'center' },
   votedLabel: { color: colors.dim, fontFamily: fonts.display, fontSize: 15, letterSpacing: 1 },
   pct: { fontSize: 44, fontFamily: fonts.display },

@@ -99,7 +99,7 @@ function PartyBox({ locked, trialAvailable, onPress }: { locked: boolean; trialA
       <Animated.View style={[styles.partyBox, boxStyle]}>
         <View style={{ flex: 1, gap: 4 }}>
           <Text style={styles.partyTitle}>🍻 Party Mode</Text>
-          <Text style={styles.partySub}>Sips & shots, drinking challenges, spicy questions & more</Text>
+          <Text style={styles.partySub}>Sips, drinking challenges, spicy questions & more</Text>
           <View style={styles.partyBadgeRow}>
             {!locked ? (
               <Text style={[styles.badge, { backgroundColor: colors.green, color: colors.ink }]}>{DEV_UNLOCK_PARTY ? 'UNLOCKED (TEST BUILD)' : 'UNLOCKED'}</Text>
@@ -196,6 +196,7 @@ export default function Home() {
           router.push('/room');
         }}
         style={{ alignSelf: 'center', padding: 8 }}
+        accessibilityRole="button"
       >
         <Dim style={{ textDecorationLine: 'underline' }}>No friends nearby? Practice with bots</Dim>
       </Pressable>

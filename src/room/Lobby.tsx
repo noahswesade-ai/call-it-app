@@ -1,4 +1,5 @@
-import * as Clipboard from 'expo-clipboard';
+import QRCode from 'react-native-qrcode-svg';
+import { shareOrCopy } from '@/ui/share';
 import * as Linking from 'expo-linking';
 import { Platform } from 'react-native';
 import { router } from 'expo-router';
@@ -48,18 +49,63 @@ function RelayStatus() {
   );
 }
 
+/** Adults only: Party & Spicy. */
+export const ADULT_AGE = 18;
+
+/**
+ * Neutral age check before Party / Spicy: asks for a birth year instead of a
+ * "Yes, I'm old enough" button (FTC COPPA guidance on neutral age screens). An
+ * under-age answer is remembered, so going back and retrying doesn't unlock it.
+ */
 export function AgeGate({ visible, onConfirm, onCancel }: { visible: boolean; onConfirm: () => void; onCancel: () => void }) {
+  const { profile, update } = useProfile();
+  const [year, setYear] = useState('');
+  const thisYear = new Date().getFullYear();
+  const y = Number(year);
+  const valid = /^\d{4}$/.test(year) && y > thisYear - 120 && y <= thisYear;
+  const tooYoung = profile.birthYear !== undefined && thisYear - profile.birthYear < ADULT_AGE;
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
       <View style={styles.modalBg}>
         <PopIn>
           <View style={styles.gate}>
             <Text style={{ fontSize: 54, textAlign: 'center' }}>🍻</Text>
-            <Text style={styles.gateTitle}>Party mode is 18+</Text>
-            <Text style={styles.gateBody}>Please confirm you are of legal drinking age where you live.</Text>
-            <Text style={styles.gateSmall}>Non-alcoholic drinks count too. Know your limits and drink responsibly.</Text>
-            <Button label="I'm of legal drinking age" onPress={onConfirm} />
-            <Button label="Cancel" variant="ghost" onPress={onCancel} />
+            {tooYoung ? (
+              <>
+                <Text style={styles.gateTitle}>Party mode is for adults</Text>
+                <Text style={styles.gateBody}>Classic mode is all yours: trivia, challenges and bragging rights.</Text>
+                <Button label="Back" onPress={onCancel} />
+              </>
+            ) : (
+              <>
+                <Text style={styles.gateTitle}>Party mode is {ADULT_AGE}+</Text>
+                <Text style={styles.gateBody}>What year were you born?</Text>
+                <TextInput
+                  value={year}
+                  onChangeText={(t) => setYear(t.replace(/[^0-9]/g, '').slice(0, 4))}
+                  placeholder="YYYY"
+                  placeholderTextColor="#8E7CC3"
+                  keyboardType="number-pad"
+                  maxLength={4}
+                  style={styles.yearInput}
+                  accessibilityLabel="Birth year"
+                />
+                <Text style={styles.gateSmall}>
+                  Only drink alcohol if you're of legal drinking age where you live. Any drink counts, non-alcoholic too. Know your limits.
+                </Text>
+                <Button
+                  label="Continue"
+                  disabled={!valid}
+                  onPress={() => {
+                    const adult = thisYear - y >= ADULT_AGE;
+                    update({ birthYear: y, ...(adult ? { ageConfirmed: true } : {}) });
+                    setYear('');
+                    if (adult) onConfirm();
+                  }}
+                />
+                <Button label="Cancel" variant="ghost" onPress={onCancel} />
+              </>
+            )}
           </View>
         </PopIn>
       </View>
@@ -206,6 +252,8 @@ function HandOver({
 export function Lobby({ state }: { state: GameState }) {
   const { isHost, dispatch, connection, leaveRoom, myId } = useRoom();
   const [kickTarget, setKickTarget] = useState<{ id: string; name: string }>();
+  const [inviteMsg, setInviteMsg] = useState<string>();
+  const [showQr, setShowQr] = useState(false);
   const { profile, update } = useProfile();
   const [ageGateFor, setAgeGateFor] = useState<'party' | null>(null);
   const [showSettings, setShowSettings] = useState(false);
@@ -283,10 +331,34 @@ export function Lobby({ state }: { state: GameState }) {
     <View style={{ gap: 16 }}>
       <RoomCode code={state.code} practice={connection === 'practice'} />
       {connection !== 'practice' && (
-        <Row style={{ justifyContent: 'center' }}>
-          <Button small variant="secondary" label="🔗 Copy invite link" onPress={() => Clipboard.setStringAsync(link)} />
+        <Row style={{ justifyContent: 'center', gap: 8 }}>
+          <Button
+            small
+            variant="secondary"
+            label={inviteMsg ?? '📲 Invite friends'}
+            onPress={async () => {
+              const r = await shareOrCopy(`Join my Underdog game! Code ${state.code}. No download needed:`, link);
+              setInviteMsg(r === 'copied' ? '✅ Link copied!' : r === 'shared' ? '✅ Invite sent' : undefined);
+              setTimeout(() => setInviteMsg(undefined), 2500);
+            }}
+          />
+          <Button small variant="secondary" label="▦ QR code" onPress={() => setShowQr(true)} />
         </Row>
       )}
+      <Modal visible={showQr} transparent animationType="fade" onRequestClose={() => setShowQr(false)}>
+        <Pressable style={styles.modalBg} onPress={() => setShowQr(false)} accessibilityLabel="Close QR code">
+          <PopIn>
+            <View style={styles.qrCard}>
+              <Text style={styles.gateTitle}>Scan to join</Text>
+              <View style={styles.qrWhite}>
+                <QRCode value={link} size={220} />
+              </View>
+              <Text style={styles.gateBody}>Point a phone camera here. Friends play in the browser, no download needed.</Text>
+              <Text style={styles.gateSmall}>Tap anywhere to close</Text>
+            </View>
+          </PopIn>
+        </Pressable>
+      </Modal>
       {connection === 'relay' && <RelayStatus />}
       {connection === 'broadcast' && (
         <Dim style={{ textAlign: 'center', fontSize: 13 }}>Test mode: open another browser tab and join with this code.</Dim>
@@ -384,11 +456,11 @@ export function Lobby({ state }: { state: GameState }) {
             <View style={styles.gate}>
               <Text style={styles.gateTitle}>Remove {kickTarget?.name} from the lobby?</Text>
               <Row>
-                <Button style={{ flex: 1 }} variant="green" label="No" onPress={() => setKickTarget(undefined)} />
+                <Button style={{ flex: 1 }} variant="green" label="Keep them" onPress={() => setKickTarget(undefined)} />
                 <Button
                   style={{ flex: 1 }}
                   variant="danger"
-                  label="Kick"
+                  label="Remove"
                   onPress={() => {
                     if (kickTarget) dispatch({ type: 'kick', playerId: kickTarget.id });
                     setKickTarget(undefined);
@@ -418,6 +490,13 @@ export function Lobby({ state }: { state: GameState }) {
               value={!!hostPlayer?.playing}
               onChange={(v) => dispatch({ type: 'setHostPlaying', playing: v })}
             />
+            <Body>Betting time</Body>
+            <Segmented<number>
+              options={[30, 45, 60].map((n) => ({ value: n, label: `${n}s` }))}
+              value={s.betSeconds ?? 30}
+              onChange={(n) => set({ betSeconds: n })}
+            />
+            <Dim style={{ fontSize: 12, marginTop: -4 }}>Longer gives everyone time to think (betting ends early once everyone has called it).</Dim>
             <Body>Rounds</Body>
             <Segmented<number>
               locked={!hostPremium}
@@ -565,6 +644,8 @@ const styles = StyleSheet.create({
   sheetBg: { flex: 1, backgroundColor: 'rgba(10,0,25,0.7)', justifyContent: 'flex-end' },
   sheet: { backgroundColor: '#2A0E55', borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 20, maxHeight: '92%', maxWidth: 560, width: '100%', alignSelf: 'center' },
   modalBg: { flex: 1, backgroundColor: 'rgba(10,0,25,0.8)', alignItems: 'center', justifyContent: 'center', padding: 20 },
+  qrCard: { backgroundColor: '#2A0E55', borderColor: colors.gold, borderWidth: 3, borderRadius: 28, padding: 22, gap: 12, alignItems: 'center', maxWidth: 380 },
+  qrWhite: { backgroundColor: colors.white, padding: 14, borderRadius: 18 },
   warnWrap: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(10,0,25,0.85)', borderTopLeftRadius: 28, borderTopRightRadius: 28, alignItems: 'center', justifyContent: 'center', padding: 14 },
   handChip: { flexDirection: 'row', alignItems: 'center', gap: 6, borderWidth: 2, borderColor: colors.gold, borderRadius: 99, paddingLeft: 4, paddingRight: 12, paddingVertical: 3 },
   handConfirm: { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 16, padding: 10, gap: 8 },
@@ -577,6 +658,18 @@ const styles = StyleSheet.create({
     gap: 12,
     maxWidth: 420,
     width: '100%',
+  },
+  yearInput: {
+    backgroundColor: colors.white,
+    color: colors.ink,
+    fontFamily: fonts.display,
+    fontSize: 30,
+    textAlign: 'center',
+    letterSpacing: 6,
+    borderRadius: 14,
+    paddingVertical: 8,
+    alignSelf: 'center',
+    width: 170,
   },
   gateTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 30, textAlign: 'center' },
   gateBody: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 17, textAlign: 'center' },

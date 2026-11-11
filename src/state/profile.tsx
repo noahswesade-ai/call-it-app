@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { ACCESSORY_BY_ID, ANIMAL_BY_ID, FREE_ITEMS, randomStarterAvatar, sanitizeLoadout } from '@/avatar/catalog';
 import { randomId } from '@/game/rng';
+import { prefs } from '@/ui/prefs';
 import type { AvatarLoadout, Question } from '@/game/types';
 
 /**
@@ -37,6 +38,13 @@ export interface Profile {
    * account once sign-in (Supabase) is connected.
    */
   myQuestions: Question[];
+  /** Sound effects and vibration on this phone. */
+  soundOn: boolean;
+  hapticsOn: boolean;
+  /** When this phone last asked for an App Store / Play rating (ms). */
+  reviewAskedAt?: number;
+  /** Birth year from the neutral age check (Party / Spicy). */
+  birthYear?: number;
 }
 
 /** The most questions kept in "My questions". */
@@ -85,6 +93,8 @@ function newProfile(): Profile {
     gamesPlayed: 0,
     gamesWon: 0,
     myQuestions: [],
+    soundOn: true,
+    hapticsOn: true,
   };
 }
 
@@ -136,6 +146,11 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (loaded) void AsyncStorage.setItem(KEY, JSON.stringify(profile));
   }, [profile, loaded]);
+
+  useEffect(() => {
+    prefs.sound = profile.soundOn !== false;
+    prefs.haptics = profile.hapticsOn !== false;
+  }, [profile.soundOn, profile.hapticsOn]);
 
   const update = useCallback((patch: Partial<Profile>) => setProfile((p) => ({ ...p, ...patch })), []);
   const owns = useCallback(

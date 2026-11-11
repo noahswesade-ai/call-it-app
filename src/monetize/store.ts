@@ -25,14 +25,13 @@ export const TOKEN_PACKS = [
   { id: 'coins_35000', tokens: 35000, price: '$49.99', bonus: 40, tag: 'BEST VALUE' },
 ] as const;
 
-/** One-time starter pack: ~4× the value of the base pack. Offered after a player's 3rd game, for 72 hours. */
+/** One-time starter pack: ~4× the value of the base pack. Offered from a player's 3rd game until bought (no countdown). */
 export const STARTER_PACK = {
   id: 'starter_pack',
   price: '$1.99',
   tokens: 2000,
   accessory: 'starglasses',
   offerAfterGames: 3,
-  offerHours: 72,
 } as const;
 
 /** Coins per rewarded video, and the daily cap (so ads don't replace buying). */
@@ -60,10 +59,10 @@ export async function showRewardedAd(): Promise<boolean> {
 }
 
 /**
- * End-of-game interstitial (skippable after 5s). Ads are per person: they are
- * shown to every non-Premium player, even in a Premium host's room.
+ * End-of-game interstitial (skippable after 5s). Shown once per game, only on a free
+ * host's phone; guests never see ads (see the Goals doc: growth & monetization).
  */
-export async function showEndOfGameAd(isPremium: boolean): Promise<void> {
-  if (isPremium) return;
+export async function showEndOfGameAd(skip: boolean): Promise<void> {
+  if (skip) return;
   // TODO(AdMob): InterstitialAd.load() / show()
 }

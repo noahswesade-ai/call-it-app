@@ -182,3 +182,19 @@ function HostAway({ name }: { name: string }) {
     </View>
   );
 }
+
+/**
+ * If a screen ever crashes, don't strand the player on a blank page: they stay in the
+ * room (the connection lives above this screen) and one tap redraws the game.
+ */
+export function ErrorBoundary({ retry }: { error: Error; retry: () => Promise<void> }) {
+  return (
+    <Screen style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ fontSize: 56 }}>🙈</Text>
+      <H1 style={{ textAlign: 'center' }}>Oops, this screen tripped</H1>
+      <Body style={{ textAlign: 'center' }}>You're still in the game. Tap below to jump back in.</Body>
+      <Button label="↻ Back to the game" onPress={() => void retry()} />
+      <Button label="Leave to home" variant="ghost" onPress={() => router.replace('/')} />
+    </Screen>
+  );
+}

@@ -7,13 +7,13 @@ import { CategoryIcon } from '@/content/CategoryIcon';
 import type { Category } from '@/game/types';
 import { MyQuestionsList } from '@/room/MyQuestions';
 import { useProfile } from '@/state/profile';
-import { Button, Card, Dim, H2, Row, Screen } from '@/ui/kit';
+import { Button, Card, Dim, H2, Row, Screen, Toggle } from '@/ui/kit';
 import { Bob } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 
 /** "You": avatar, stats, Premium status and "My questions" (your personal question bank). */
 export default function Account() {
-  const { profile } = useProfile();
+  const { profile, update } = useProfile();
   const [filter, setFilter] = useState<Category | 'all'>('all');
   const mine = profile.myQuestions ?? [];
   const used = CATEGORIES.filter((c) => mine.some((q) => q.category === c.id));
@@ -51,6 +51,12 @@ export default function Account() {
           </View>
         </Pressable>
       )}
+
+      <Card>
+        <H2>⚙️ This phone</H2>
+        <Toggle label="🔊 Sound effects" value={profile.soundOn !== false} onChange={(v) => update({ soundOn: v })} />
+        <Toggle label="📳 Vibration" value={profile.hapticsOn !== false} onChange={(v) => update({ hapticsOn: v })} />
+      </Card>
 
       <Card>
         <Row style={{ justifyContent: 'space-between' }}>

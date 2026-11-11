@@ -4603,7 +4603,7 @@ export const BANK: Question[] = [
  {
   "id": "party-001",
   "category": "party",
-  "prompt": "Who can take a shot (of their drink of choice) with less of a reaction?",
+  "prompt": "Who can take a sip of something sour (lemon juice, pickle juice or any drink) with less of a reaction?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },

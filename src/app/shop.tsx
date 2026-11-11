@@ -25,14 +25,13 @@ export default function Shop() {
   const adsToday = profile.adDay === today() ? profile.adCount : 0;
   const adsLeft = Math.max(0, AD_DAILY_CAP - adsToday);
 
-  // Starter pack: shown once a player has played a few games, for a limited window.
+  // Starter pack: offered once a player has played a few games, until bought. No countdown
+  // timer: time-pressure offers earn a PEGI risk label and feel pushy (Goals doc).
   const eligible = !profile.starterPackBought && profile.gamesPlayed >= STARTER_PACK.offerAfterGames;
   useEffect(() => {
     if (eligible && !profile.starterOfferAt) update({ starterOfferAt: Date.now() });
   }, [eligible, profile.starterOfferAt, update]);
-  const offerEndsAt = (profile.starterOfferAt ?? Date.now()) + STARTER_PACK.offerHours * 3600_000;
-  const hoursLeft = Math.max(0, Math.ceil((offerEndsAt - Date.now()) / 3600_000));
-  const showStarter = eligible && hoursLeft > 0;
+  const showStarter = eligible;
   const starterItem = ACCESSORY_BY_ID[STARTER_PACK.accessory];
 
   return (
@@ -51,7 +50,7 @@ export default function Shop() {
         <PopIn>
           <Pulse scale={1.02} duration={900}>
             <View style={styles.starter}>
-              <Text style={styles.starterTag}>⏳ STARTER PACK · {hoursLeft}h LEFT · ONE TIME ONLY</Text>
+              <Text style={styles.starterTag}>🎁 STARTER PACK · BEST VALUE FOR NEW PLAYERS</Text>
               <Row style={{ gap: 12 }}>
                 <SpinningCoin size={54} every={1500} />
                 <View style={{ flex: 1 }}>

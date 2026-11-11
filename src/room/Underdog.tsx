@@ -10,7 +10,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
+import { Haptics } from '@/ui/prefs';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { UNDERDOG_MULTIPLIER } from '@/game/scoring';
 import type { Mode, Player } from '@/game/types';

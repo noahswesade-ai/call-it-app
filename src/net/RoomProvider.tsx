@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { AppState } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { availableCategories } from '@/content/categories';
 import { ALL_QUESTIONS } from '@/content/questions';
 import { randomStarterAvatar } from '@/avatar/catalog';
@@ -40,8 +41,31 @@ interface RoomApi {
 
 const Ctx = createContext<RoomApi | null>(null);
 
-/** Question ids this phone has seen since the app was opened (shared with any room it hosts). */
+/**
+ * Question ids this phone has seen (shared with any room it joins or hosts). Saved on
+ * the phone, so the next game night doesn't repeat last week's questions either.
+ */
 const sessionSeen = new Set<string>();
+const SEEN_KEY = 'callit.seen.v1';
+const SEEN_MAX = 3000;
+let seenLoaded = false;
+function loadSeen() {
+  if (seenLoaded) return;
+  seenLoaded = true;
+  AsyncStorage.getItem(SEEN_KEY)
+    .then((raw) => {
+      const ids = raw ? (JSON.parse(raw) as string[]) : [];
+      // Older entries first, so newer ones stay "most recent" in insertion order.
+      const now = [...sessionSeen];
+      sessionSeen.clear();
+      for (const id of [...ids, ...now]) sessionSeen.add(id);
+    })
+    .catch(() => {});
+}
+function saveSeen() {
+  const ids = [...sessionSeen].slice(-SEEN_MAX);
+  void AsyncStorage.setItem(SEEN_KEY, JSON.stringify(ids)).catch(() => {});
+}
 const PING_MS = 5000;
 /** A guest silent for this long is removed from the game. */
 const GONE_MS = 45_000;
@@ -129,9 +153,13 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   }, [isHost, !!state]);
 
   // Every phone remembers which questions it has seen since the app was opened.
+  useEffect(loadSeen, []);
   useEffect(() => {
     const id = state?.round?.question.id;
-    if (id && !state?.round?.question.repeatable) sessionSeen.add(id);
+    if (id && !state?.round?.question.repeatable && !sessionSeen.has(id)) {
+      sessionSeen.add(id);
+      saveSeen();
+    }
   }, [state?.round?.question.id, state?.round?.question.repeatable]);
 
   // Guests: tell the host we're still here.

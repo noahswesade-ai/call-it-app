@@ -1,4 +1,5 @@
 import { createAudioPlayer, setAudioModeAsync, type AudioPlayer } from 'expo-audio';
+import { prefs } from './prefs';
 
 /**
  * Tiny sound-effects helper. The wheel's tick fires many times a second while
@@ -28,7 +29,7 @@ function init() {
 }
 
 function replay(p: AudioPlayer | undefined, volume = 1) {
-  if (!p) return;
+  if (!p || !prefs.sound) return;
   try {
     p.volume = volume;
     void p.seekTo(0).then(() => p.play()).catch(() => p.play());

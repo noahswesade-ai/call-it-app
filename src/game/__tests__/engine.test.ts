@@ -91,9 +91,9 @@ describe('engine', () => {
     const [first, ...rest] = g.round!.bettors;
     g = reduce(g, { type: 'bet', playerId: first, pick: 'A', now: tSpinEnd + 100 }, rng);
     expect(g.phase).toBe('betting');
-    // Changing a bet is not allowed.
+    // A call can be changed while betting is open.
     g = reduce(g, { type: 'bet', playerId: first, pick: 'B', now: tSpinEnd + 200 }, rng);
-    expect(g.round!.bets[first]).toBe('A');
+    expect(g.round!.bets[first]).toBe('B');
     for (const id of rest) g = reduce(g, { type: 'bet', playerId: id, pick: 'NONE', now: tSpinEnd + 300 }, rng);
     expect(g.phase).toBe('betsReveal');
   });
@@ -463,5 +463,49 @@ describe('pause, kick and category odds', () => {
     expect(g.round).toBeUndefined();
     expect(g.paused).toBeUndefined();
     expect(g.players).toHaveLength(4);
+  });
+
+  it('a call can be changed until betting closes, and the betting time follows the host setting', () => {
+    let g = reduce(newGame(5, { betSeconds: 60 }), { type: 'start', now: 0 }, seededRng(4));
+    let t = 0;
+    while (g.phase !== 'betting') g = reduce(g, { type: 'next', now: ++t }, seededRng(4));
+    expect(g.phaseEndsAt).toBe(t + 60_000);
+    const [x, y] = g.round!.bettors;
+    g = reduce(g, { type: 'bet', playerId: x, pick: 'A', now: t });
+    g = reduce(g, { type: 'bet', playerId: x, pick: 'B', now: t });
+    expect(g.round!.bets[x]).toBe('B');
+    expect(g.phase).toBe('betting');
+    void y;
+  });
+
+  it('the host can remove a lobby question; it is swapped out if it is being asked', () => {
+    const qs = Array.from({ length: 3 }, (_, i) => ({ id: `c${i}`, category: 'geography' as const, type: 'SPOKEN_EXACT' as const, difficulty: 'M' as const, prompt: `Ours ${i}?`, answer: 'x' }));
+    let g = reduce(newGame(4, { categories: ['geography'], onlyCustom: false }, { premium: true }), { type: 'addCustomMany', questions: qs });
+    g = reduce(g, { type: 'removeCustom', id: 'c0', by: 'p1', now: 1 });
+    expect(g.custom).toHaveLength(3); // only the host
+    g = reduce(g, { type: 'removeCustom', id: 'c0', by: 'h', now: 1 });
+    expect(g.custom!.map((q) => q.id)).toEqual(['c1', 'c2']);
+    let s = reduce(g, { type: 'start', now: 1 }, seededRng(9));
+    const live = s.round!.question.id;
+    if (s.round!.question.custom) {
+      s = reduce(s, { type: 'removeCustom', id: live, by: s.round!.judgeId, now: 2 });
+      expect(s.round!.question.id).not.toBe(live);
+      expect(s.regens ?? 0).toBe(0);
+    }
+  });
+
+  it('player questions with slurs are filtered out', () => {
+    const bad = { id: 'b', category: 'geography' as const, type: 'HOST_JUDGED' as const, difficulty: 'M' as const, prompt: 'kys loser' };
+    const g = reduce(newGame(3, {}, { premium: true }), { type: 'addCustom', question: bad });
+    expect(g.custom ?? []).toHaveLength(0);
+  });
+
+  it('practice bots are never stand-in hosts (the host runs their own round)', () => {
+    let g = createGame({ code: 'ABCD', host: player('h', { isHost: true }), settings: settings(), bank: ALL_QUESTIONS });
+    for (let i = 0; i < 3; i++) g = reduce(g, { type: 'join', player: player(`bot-${i}`) });
+    for (let seed = 1; seed < 60; seed++) {
+      const s = reduce(g, { type: 'start', now: 1 }, seededRng(seed));
+      expect(s.round!.judgeId.startsWith('bot-')).toBe(false);
+    }
   });
 });

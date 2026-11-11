@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as Haptics from 'expo-haptics';
+import { Haptics } from '@/ui/prefs';
 import { Background } from './Background';
 import { useScreenSize } from './screenSize';
 import { A_COLOR as A, B_COLOR as B, colors, fonts } from './theme';

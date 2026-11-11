@@ -88,4 +88,6 @@ export interface GameSettings {
   categories: Category[];
   /** Premium: the wheel only uses the lobby's own questions (needs CUSTOM_ONLY_MIN per category). */
   onlyCustom?: boolean;
+  /** How long betting stays open, in seconds (host setting; longer helps slower or busier rooms). */
+  betSeconds?: number;
 }

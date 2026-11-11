@@ -12,6 +12,7 @@ import { CUSTOM_ONLY_MIN, lobbyIsPremium, type GameState } from '@/game/engine';
 import { router } from 'expo-router';
 import { useProfile } from '@/state/profile';
 import { MyQuestionsList } from './MyQuestions';
+import { isAllowedQuestion } from '@/content/moderation';
 import { useRoom } from '@/net/RoomProvider';
 
 /**
@@ -174,7 +175,9 @@ const norm = (p: string) => p.trim().toLowerCase().replace(/\s+/g, ' ');
 function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visible: boolean; onClose: () => void }) {
   const { dispatch, myId } = useRoom();
   const { profile, saveQuestions } = useProfile();
-  const [tab, setTab] = useState<'write' | 'mine'>('write');
+  const [tab, setTab] = useState<'write' | 'mine' | 'lobby'>('write');
+  const [blocked, setBlocked] = useState(false);
+  const isHost = state.hostId === myId;
   const available = availableCategories(state.settings.mode, state.settings.spicy);
   const cats = CATEGORIES.filter((c) => available.includes(c.id));
   const [category, setCategory] = useState<Category>(cats[0]?.id ?? 'basic');
@@ -194,6 +197,11 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
 
   const submit = () => {
     if (!valid) return;
+    if (!isAllowedQuestion(`${prompt} ${answer}`)) {
+      setBlocked(true);
+      return;
+    }
+    setBlocked(false);
     const question: Question = {
       id: `custom-${myId.slice(0, 6)}-${randomId()}`,
       category,
@@ -223,10 +231,11 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
         <View style={styles.sheet}>
           <ScrollView contentContainerStyle={{ gap: 10 }} keyboardShouldPersistTaps="handled">
             <Text style={styles.sheetTitle}>✍️ Your own questions</Text>
-            <Segmented<'write' | 'mine'>
+            <Segmented<'write' | 'mine' | 'lobby'>
               options={[
-                { value: 'write', label: '✍️ Write new' },
-                { value: 'mine', label: `📚 My questions (${mine.length})` },
+                { value: 'write', label: '✍️ Write' },
+                { value: 'mine', label: `📚 Mine (${mine.length})` },
+                { value: 'lobby', label: `🏠 Lobby (${state.custom?.length ?? 0})` },
               ]}
               value={tab}
               onChange={setTab}
@@ -292,12 +301,44 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
                     style={styles.input}
                   />
                 )}
+                <Text style={styles.hint}>
+                  Keep it fun for everyone: no questions that bully someone or sexually target a real person.
+                </Text>
+                {blocked && <Text style={styles.blocked}>That question contains words we don't allow. Please reword it.</Text>}
                 {added > 0 && (
                   <PopIn key={added}>
                     <Text style={styles.added}>✅ Added to this lobby and saved to My questions</Text>
                   </PopIn>
                 )}
                 <Button label="Add question" variant="green" disabled={!valid} onPress={submit} />
+              </>
+            ) : tab === 'lobby' ? (
+              <>
+                <Text style={styles.hint}>
+                  {isHost ? 'Everything the room has added. Tap 🗑️ to remove a question.' : 'Everything the room has added. The host can remove questions.'}
+                </Text>
+                {(state.custom ?? []).length === 0 ? (
+                  <Text style={styles.hint}>No questions yet. Be the first!</Text>
+                ) : (
+                  (state.custom ?? []).map((q) => (
+                    <View key={q.id} style={styles.lobbyRow}>
+                      <CategoryIcon category={q.category} size={16} />
+                      <Text style={styles.lobbyPrompt}>{q.prompt}</Text>
+                      {isHost && (
+                        <Pressable
+                          accessibilityRole="button"
+                          accessibilityLabel="Remove this question from the lobby"
+                          onPress={() => {
+                            tap('medium');
+                            dispatch({ type: 'removeCustom', id: q.id, by: myId, now: Date.now() });
+                          }}
+                        >
+                          <Text style={{ fontSize: 18 }}>🗑️</Text>
+                        </Pressable>
+                      )}
+                    </View>
+                  ))
+                )}
               </>
             ) : (
               <>
@@ -380,6 +421,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  blocked: { color: colors.red, fontFamily: fonts.bodyBold, fontSize: 14, textAlign: 'center' },
+  lobbyRow: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 12, padding: 8 },
+  lobbyPrompt: { flex: 1, color: colors.white, fontFamily: fonts.bodySemi, fontSize: 14 },
   countRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },
   countChip: { flexDirection: 'row', alignItems: 'center', gap: 3, borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.3)', borderRadius: 99, paddingHorizontal: 7, paddingVertical: 2 },
   countText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 12 },

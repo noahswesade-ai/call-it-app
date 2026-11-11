@@ -590,7 +590,7 @@
 [Room game] Accent swap: the room picks an accent for each challenger — they must tell a story in it. The room votes.
 
 ## Party
-[Challenge · Medium] Who can take a shot (of their drink of choice) with less of a reaction?
+[Challenge · Medium] Who can take a sip of something sour (lemon juice, pickle juice or any drink) with less of a reaction?
 [Challenge · Easy] Who can take a sip with the straightest face while the room tries to make them laugh?
 [Challenge · Medium] Flip cup — first to flip their cup upright wins!
 [Challenge · Hard] Bounce a coin into a cup — first to land it wins!

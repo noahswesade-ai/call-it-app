@@ -1,9 +1,12 @@
 import { router } from 'expo-router';
+import * as StoreReview from 'expo-store-review';
+import { shareOrCopy } from '@/ui/share';
+import { inviteLink } from './Lobby';
 import { useEffect, useRef, useState } from 'react';
 import { playSfx } from '@/ui/sound';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
+import { Haptics } from '@/ui/prefs';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { AWARD_BONUS, computeAwards } from '@/game/awards';
 import { host, rankings, type GameState } from '@/game/engine';
@@ -48,7 +51,7 @@ export function Podium({ state }: { state: GameState }) {
     playSfx('podium');
   }, []);
   const { myId, isHost, dispatch, leaveRoom } = useRoom();
-  const { profile, recordGame } = useProfile();
+  const { profile, recordGame, update } = useProfile();
   const ranks = rankings(state);
   const awards = computeAwards(state);
   const mine = ranks.find((r) => r.player.id === myId);
@@ -78,9 +81,44 @@ export function Podium({ state }: { state: GameState }) {
     const coins = tokensForGame(mine.rank, mine.totals.correctBets, profile.premium) + myAwards * AWARD_BONUS;
     setEarned(coins);
     recordGame(mine.rank === 1 && mine.totals.points > 0, coins);
-    // Ads are per person: every non-Premium player sees one, even in a Premium host's room.
-    void showEndOfGameAd(profile.premium);
-  }, [mine, profile.premium, recordGame, awards]);
+    // One end-of-game ad, for a free host only. Guests never see ads: they are
+    // tomorrow's hosts, and they play free (Goals: growth & monetization).
+    void showEndOfGameAd(profile.premium || !isHost);
+  }, [mine, profile.premium, recordGame, awards, isHost]);
+
+  // Ask for a store rating at a happy moment: a finished real game where this player
+  // hosted or made the podium, at most once every 4 months (Apple allows 3 a year).
+  useEffect(() => {
+    if (stage < 2 || !mine || state.players.some((p) => isBotId(p.id))) return;
+    if (!(isHost || mine.rank <= 3) || profile.gamesPlayed < 2) return;
+    if (profile.reviewAskedAt && Date.now() - profile.reviewAskedAt < 120 * 86_400_000) return;
+    const t = setTimeout(async () => {
+      try {
+        if (await StoreReview.isAvailableAsync()) {
+          await StoreReview.requestReview();
+          update({ reviewAskedAt: Date.now() });
+        }
+      } catch {
+        // Never let the rating prompt get in the way.
+      }
+    }, 2500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage]);
+
+  const [shared, setShared] = useState<string>();
+  const shareResult = async () => {
+    const top = ranks[0];
+    const upset = state.history.find((h) => h.score && h.score.multiplier > 1 && h.outcome && h.outcome !== 'DRAW');
+    const upsetName = upset ? state.players.find((p) => p.id === upset.challengers[upset.outcome === 'A' ? 0 : 1])?.name : undefined;
+    const msg =
+      `🏆 ${top?.player.name ?? 'Someone'} won our Underdog game night with ${top?.totals.points ?? 0} pts!` +
+      (upsetName ? ` 🐶 Biggest upset: ${upsetName} won as the Underdog.` : '') +
+      ` Play free, no download needed for friends:`;
+    const r = await shareOrCopy(msg, inviteLink(state.code).replace(/\/join\?code=.*/, '/'));
+    if (r === 'copied') setShared('Copied! Paste it in your group chat');
+    if (r === 'shared') setShared('Shared 🎉');
+  };
 
   // Visual order on the podium: 2nd, 1st, 3rd.
   const podium = order.length === 3 ? [order[1], order[0], order[2]] : order;
@@ -219,6 +257,7 @@ export function Podium({ state }: { state: GameState }) {
               <Button big variant="green" label="🔁 Rematch!" onPress={() => dispatch({ type: 'rematch' })} />
             </Pulse>
           )}
+          <Button variant="secondary" label={shared ?? '📣 Share the results'} onPress={() => void shareResult()} />
           <Button
             small
             variant="ghost"
