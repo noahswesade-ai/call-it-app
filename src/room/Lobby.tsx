@@ -410,6 +410,7 @@ export function Lobby({ state }: { state: GameState }) {
               party={s.mode === 'party'}
               spicy={s.spicy}
               locked={!partyAllowed}
+              premiumLock={!hostPremium}
               interactive
               onParty={(v) => setMode(v ? 'party' : 'classic')}
               onSpicy={setSpicy}

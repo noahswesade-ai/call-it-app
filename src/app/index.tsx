@@ -1,26 +1,17 @@
 import { Redirect, router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from 'react-native-reanimated';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
-import { ANIMALS } from '@/avatar/catalog';
 import { useRoom } from '@/net/RoomProvider';
 import { AgeGate } from '@/room/Lobby';
 import { DEV_UNLOCK_PARTY } from '@/state/access';
 import { shouldShowIntro } from '@/state/intro';
 import { PLAYTEST, useProfile } from '@/state/profile';
 import { CoinCounter } from '@/ui/Coin';
-import { Button, Dim, Screen, tap, Toggle } from '@/ui/kit';
-import { Bob, PopIn, SlideIn } from '@/ui/motion';
+import { Button, Dim, Screen, Toggle } from '@/ui/kit';
+import { PopIn, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
-import { bounce } from '@/ui/motion';
-import { Icon, IconLabel } from '@/ui/Icon';
+import { Icon } from '@/ui/Icon';
 import { Logo } from '@/ui/Logo';
 
 /** Clean wordmark: one weight, one colour, the accent kept for "dog". Fades in once. */
@@ -30,85 +21,6 @@ function HomeLogo() {
     <PopIn>
       <Logo width={210} />
     </PopIn>
-  );
-}
-
-/** A row of free animals peeking up and bouncing, purely for charm. */
-function AnimalParade() {
-  const parade = ANIMALS.filter((a) => ['dog', 'cat', 'frog', 'bear', 'fox', 'axolotl', 'dragon'].includes(a.id));
-  return (
-    <View style={styles.parade}>
-      {parade.map((a, i) => (
-        <PopIn key={a.id} delay={500 + i * 90}>
-          <Bob amount={4} duration={1600 + (i % 3) * 300} delay={i * 200}>
-            <AnimalAvatar avatar={{ animal: a.id }} size={42} mood={i % 3 === 0 ? 'happy' : 'neutral'} />
-          </Bob>
-        </PopIn>
-      ))}
-    </View>
-  );
-}
-
-/** The darker, glowing, locked Party Mode box. Glows brighter on hover / press. */
-function PartyBox({ locked, trialAvailable, onPress }: { locked: boolean; trialAvailable: boolean; onPress: () => void }) {
-  const glow = useSharedValue(0);
-  const idle = useSharedValue(0);
-  const press = useSharedValue(0);
-  useEffect(() => {
-    idle.value = withRepeat(withTiming(1, { duration: 1600, easing: Easing.inOut(Easing.sin) }), -1, true);
-  }, [idle]);
-  const glowStyle = useAnimatedStyle(() => ({
-    opacity: 0.12 + idle.value * 0.1 + glow.value * 0.3,
-    transform: [{ scale: 1 + glow.value * 0.02 }],
-  }));
-  const boxStyle = useAnimatedStyle(() => ({
-    borderColor: glow.value > 0.5 ? colors.neon : 'rgba(224,79,176,0.55)',
-    transform: [{ scale: 1 - press.value * 0.03 }, { translateY: press.value * 3 }],
-  }));
-  const lockStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${(idle.value - 0.5) * 6}deg` }] }));
-
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel="Host a Party mode game"
-      onHoverIn={() => (glow.value = withTiming(1, { duration: 180 }))}
-      onHoverOut={() => (glow.value = withTiming(0, { duration: 260 }))}
-      onPressIn={() => {
-        glow.value = withTiming(1, { duration: 120 });
-        press.value = withTiming(1, { duration: 80 });
-      }}
-      onPressOut={() => {
-        glow.value = withTiming(0, { duration: 400 });
-        press.value = bounce(0);
-      }}
-      onPress={() => {
-        tap('heavy');
-        onPress();
-      }}
-    >
-      <Animated.View style={[styles.partyGlow, glowStyle]} pointerEvents="none" />
-      <Animated.View style={[styles.partyBox, boxStyle]}>
-        <View style={{ flex: 1, gap: 4 }}>
-          <IconLabel icon="beer" size={22} gap={8} textStyle={styles.partyTitle}>Party Mode</IconLabel>
-          <Text style={styles.partySub}>Sips, drinking challenges, spicy questions & more</Text>
-          <View style={styles.partyBadgeRow}>
-            {!locked ? (
-              <Text style={[styles.badge, { backgroundColor: colors.green, color: colors.ink }]}>{DEV_UNLOCK_PARTY ? 'UNLOCKED (TEST BUILD)' : 'UNLOCKED'}</Text>
-            ) : trialAvailable ? (
-              <Text style={[styles.badge, { backgroundColor: colors.gold, color: colors.ink }]}>1 FREE GAME</Text>
-            ) : (
-              <Text style={[styles.badge, { backgroundColor: colors.neon, color: colors.white }]}>UNLOCK · $4.99</Text>
-            )}
-            <Text style={styles.adult}>18+</Text>
-          </View>
-        </View>
-        {locked && (
-          <Animated.View style={[styles.lockBubble, lockStyle]}>
-            <Icon name="lock" size={22} color={colors.neon} />
-          </Animated.View>
-        )}
-      </Animated.View>
-    </Pressable>
   );
 }
 
@@ -154,9 +66,11 @@ export default function Home() {
       <View style={{ alignItems: 'center', gap: 6 }}>
         <HomeLogo />
         <SlideIn from="bottom" delay={400}>
-          <Text style={styles.tagline}>Call the long shot. Win big.</Text>
+          <Text style={styles.tagline}>
+            Back your friends. Talk your trash.{'\n'}
+            <Text style={{ color: colors.gold }}>Live for the upset.</Text>
+          </Text>
         </SlideIn>
-        <AnimalParade />
       </View>
 
       <View style={{ gap: 16 }}>
@@ -174,10 +88,24 @@ export default function Home() {
           />
         </SlideIn>
         <SlideIn from="right" delay={380}>
-          <PartyBox locked={locked} trialAvailable={trialAvailable} onPress={onParty} />
+          <Button big variant="secondary" icon="phone" label="Join a Game" subtitle="Got a code? Jump in" disabled={!onlineAvailable} onPress={() => router.push('/join')} />
         </SlideIn>
         <SlideIn from="left" delay={510}>
-          <Button big variant="secondary" icon="phone" label="Join a Game" subtitle="Got a code? Jump in" disabled={!onlineAvailable} onPress={() => router.push('/join')} />
+          <Button
+            big
+            variant="party"
+            icon={locked && !trialAvailable ? 'lock' : 'beer'}
+            label="Party Mode"
+            subtitle={
+              !locked
+                ? 'Sips, drinking & spicy challenges · 18+'
+                : trialAvailable
+                  ? 'Try 1 game free · drinking & spicy · 18+'
+                  : 'Unlock with Premium · drinking & spicy · 18+'
+            }
+            disabled={!onlineAvailable}
+            onPress={onParty}
+          />
         </SlideIn>
       </View>
 
@@ -246,45 +174,5 @@ const styles = StyleSheet.create({
   testBox: { borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.cyan, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4 },
   helpText: { color: colors.white, fontFamily: fonts.display, fontSize: 18 },
   topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  logo: { color: colors.white, fontFamily: fonts.display, fontSize: 56, letterSpacing: -2, marginTop: 8 },
-  tagline: { color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 15, textAlign: 'center' },
-  parade: { flexDirection: 'row', gap: 2, marginTop: 6, flexWrap: 'wrap', justifyContent: 'center' },
-  partyGlow: {
-    position: 'absolute',
-    top: -6,
-    left: -6,
-    right: -6,
-    bottom: -6,
-    borderRadius: 24,
-    backgroundColor: colors.neon,
-    shadowColor: colors.neon,
-    shadowOpacity: 1,
-    shadowRadius: 22,
-    shadowOffset: { width: 0, height: 0 },
-  },
-  partyBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#24113D',
-    borderWidth: 1.5,
-    borderRadius: 18,
-    padding: 16,
-    gap: 12,
-    minHeight: 110,
-  },
-  partyTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 24, letterSpacing: -0.3 },
-  partySub: { color: '#D9C4EA', fontFamily: fonts.bodySemi, fontSize: 14, lineHeight: 19 },
-  partyBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4 },
-  badge: { fontFamily: fonts.bodyBold, fontSize: 12, paddingHorizontal: 10, paddingVertical: 3, borderRadius: 99, overflow: 'hidden' },
-  adult: { color: '#D9C4EA', fontFamily: fonts.bodyBold, fontSize: 12, borderWidth: 1, borderColor: '#E9C9F5', borderRadius: 6, paddingHorizontal: 5 },
-  lockBubble: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(255,79,216,0.18)',
-    borderWidth: 2,
-    borderColor: 'rgba(255,79,216,0.6)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  tagline: { color: colors.white, fontFamily: fonts.displaySemi, fontSize: 19, lineHeight: 25, textAlign: 'center', letterSpacing: -0.2, marginTop: 4 },
 });

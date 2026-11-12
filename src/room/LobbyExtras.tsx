@@ -26,6 +26,7 @@ export function ModeTiles({
   party,
   spicy,
   locked,
+  premiumLock = locked,
   interactive,
   onParty,
   onSpicy,
@@ -34,6 +35,8 @@ export function ModeTiles({
   party: boolean;
   spicy: boolean;
   locked: boolean;
+  /** Show the small lock badge (the room isn't Premium), even if a free trial game is left. */
+  premiumLock?: boolean;
   interactive: boolean;
   onParty?: (v: boolean) => void;
   onSpicy?: (v: boolean) => void;
@@ -44,6 +47,7 @@ export function ModeTiles({
       <Tile
         on={party}
         locked={locked}
+        premiumLock={premiumLock}
         interactive={interactive}
         emoji=""
         icon="beer"
@@ -55,6 +59,7 @@ export function ModeTiles({
       <Tile
         on={party && spicy}
         locked={locked}
+        premiumLock={premiumLock}
         interactive={interactive}
         emoji="🌶️"
         title="SPICY"
@@ -69,6 +74,7 @@ export function ModeTiles({
 function Tile({
   on,
   locked,
+  premiumLock,
   interactive,
   emoji,
   icon,
@@ -79,6 +85,7 @@ function Tile({
 }: {
   on: boolean;
   locked: boolean;
+  premiumLock?: boolean;
   interactive: boolean;
   emoji: string;
   icon?: IconName;
@@ -90,12 +97,15 @@ function Tile({
   const body = (
     <View style={[styles.tile, on ? styles.tileOn : locked ? styles.tileLocked : styles.tileOff]}>
       <LinearGradient
-        colors={on ? colorsOn : locked ? ['#2A1E4E', '#1D1538'] : ['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.03)']}
+        colors={on ? colorsOn : locked ? ['#3E1670', '#300F58'] : ['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.03)']}
         style={StyleSheet.absoluteFill}
       />
-      {locked ? (
-        <Icon name="lock" size={28} color={colors.gold} style={{ height: 38, justifyContent: 'center' }} />
-      ) : icon ? (
+      {premiumLock && (
+        <View style={styles.tileLock} accessibilityLabel="Premium">
+          <Icon name="lock" size={12} color={colors.ink} strokeWidth={2.8} />
+        </View>
+      )}
+      {icon ? (
         <Icon name={icon} size={28} color={colors.white} style={{ height: 38, justifyContent: 'center' }} />
       ) : (
         <Text style={styles.tileEmoji}>{emoji}</Text>
@@ -454,6 +464,7 @@ const styles = StyleSheet.create({
   tileOff: { borderColor: colors.cardBorder },
   tileLocked: { borderColor: 'rgba(255,194,61,0.6)', shadowColor: colors.gold, shadowOpacity: 0.25, shadowRadius: 10, shadowOffset: { width: 0, height: 0 } },
   tileEmoji: { fontSize: 30 },
+  tileLock: { position: 'absolute', top: 8, right: 8, width: 24, height: 24, borderRadius: 12, backgroundColor: colors.gold, alignItems: 'center', justifyContent: 'center' },
   tileTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 17, textAlign: 'center', letterSpacing: -0.2 },
   tileSub: { color: '#E2D8F2', fontFamily: fonts.bodySemi, fontSize: 12, textAlign: 'center' },
   tileState: { marginTop: 4, borderRadius: 99, paddingHorizontal: 10, paddingVertical: 2, backgroundColor: 'rgba(255,255,255,0.2)' },
@@ -468,7 +479,7 @@ const styles = StyleSheet.create({
   catText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 13 },
   input: { backgroundColor: colors.white, borderRadius: 14, padding: 12, fontSize: 17, fontFamily: fonts.bodySemi, color: colors.ink },
   addBorder: { borderRadius: 20, padding: 1.5 },
-  addInner: { borderRadius: 19, backgroundColor: '#1D1538', padding: 14, gap: 10, overflow: 'hidden' },
+  addInner: { borderRadius: 19, backgroundColor: '#341059', padding: 14, gap: 10, overflow: 'hidden' },
   addSweep: { position: 'absolute', top: -40, bottom: -40, width: 60, backgroundColor: 'rgba(255,255,255,0.10)' },
   addTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   addIcon: { width: 44, height: 44, borderRadius: 12, backgroundColor: 'rgba(255,194,61,0.18)', alignItems: 'center', justifyContent: 'center' },

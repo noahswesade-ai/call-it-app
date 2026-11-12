@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -120,20 +121,22 @@ function AutoFit({ children, style }: { children: React.ReactNode; style?: Style
   );
 }
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'a' | 'b' | 'green' | 'cyan';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'a' | 'b' | 'green' | 'cyan' | 'party';
 
 const VARIANTS: Record<Variant, { face: string; lip: string; text: string }> = {
   primary: { face: colors.gold, lip: colors.goldLip, text: colors.ink },
-  secondary: { face: colors.surfaceHi, lip: '#1A1438', text: colors.white },
+  secondary: { face: colors.surfaceHi, lip: '#250A45', text: colors.white },
   ghost: { face: 'transparent', lip: 'transparent', text: colors.white },
   danger: { face: colors.red, lip: colors.redLip, text: colors.white },
   a: { face: colors.pink, lip: colors.pinkLip, text: colors.white },
   b: { face: colors.cyan, lip: colors.cyanLip, text: colors.ink },
   green: { face: colors.green, lip: colors.greenLip, text: colors.ink },
   cyan: { face: colors.cyan, lip: colors.cyanLip, text: colors.ink },
+  // Party mode: a dark pink that leans purple, matching the logo's purple.
+  party: { face: '#9C2A7E', lip: '#5A0D45', text: colors.white },
 };
 
-const LIP = 4;
+const LIP = 6;
 
 /** Game button with a slim darker lip: the face sinks onto it when pressed. */
 export function Button({
@@ -163,7 +166,7 @@ export function Button({
   const press = useSharedValue(0);
   const faceStyle = useAnimatedStyle(() => ({ transform: [{ translateY: press.value * (LIP - 1) }] }));
   const ghost = variant === 'ghost';
-  const lip = small ? 3 : LIP;
+  const lip = small ? 4 : LIP;
 
   return (
     <Pressable
@@ -183,7 +186,7 @@ export function Button({
       }}
       style={[{ opacity: disabled ? 0.45 : 1 }, style]}
     >
-      <View style={[styles.lip, { backgroundColor: v.lip, borderRadius: small ? 12 : 16, paddingBottom: ghost ? 0 : lip }]}>
+      <View style={[styles.lip, !ghost && styles.lipShadow, { backgroundColor: v.lip, borderRadius: small ? 12 : 16, paddingBottom: ghost ? 0 : lip }]}>
         <Animated.View
           style={[
             styles.face,
@@ -194,6 +197,13 @@ export function Button({
             faceStyle,
           ]}
         >
+          {!ghost && (
+            <LinearGradient
+              pointerEvents="none"
+              colors={['rgba(255,255,255,0.22)', 'rgba(255,255,255,0)']}
+              style={[styles.sheen, { borderTopLeftRadius: small ? 12 : 16, borderTopRightRadius: small ? 12 : 16 }]}
+            />
+          )}
           {loading ? (
             <ActivityIndicator color={v.text} />
           ) : (
@@ -342,6 +352,9 @@ const styles = StyleSheet.create({
   footer: { position: 'absolute', left: 0, right: 0, bottom: 22, paddingHorizontal: 18, maxWidth: 560, width: '100%', alignSelf: 'center' },
   content: { padding: 18, gap: 14, maxWidth: 560, width: '100%', alignSelf: 'center' },
   lip: {},
+  // Subtle depth: a soft shadow under the button, a slim darker lip, and a light top sheen.
+  lipShadow: { shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 6, shadowOffset: { width: 0, height: 4 }, elevation: 4 },
+  sheen: { position: 'absolute', left: 0, right: 0, top: 0, height: '55%' },
   face: {
     minHeight: 54,
     alignItems: 'center',

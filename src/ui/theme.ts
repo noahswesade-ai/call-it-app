@@ -13,18 +13,20 @@ export const fonts = {
 };
 
 export const colors = {
-  bgTop: '#1E1742',
-  bgMid: '#161132',
-  bgBottom: '#0C0A1C',
-  ink: '#120E24',
+  // One solid background: a deep version of the app icon's purple, so the logo's
+  // cream, yellow and orange pop against it.
+  bgTop: '#2A0B4E',
+  bgMid: '#2A0B4E',
+  bgBottom: '#2A0B4E',
+  ink: '#170530',
   white: '#F7F5FF',
   cream: '#FFF8EC',
-  dim: '#AAA3CC',
+  dim: '#B9A6D9',
   faint: 'rgba(255,255,255,0.08)',
   card: 'rgba(255,255,255,0.06)',
   cardBorder: 'rgba(255,255,255,0.10)',
-  surface: '#221B45',
-  surfaceHi: '#2C2457',
+  surface: '#3A1466',
+  surfaceHi: '#4A1C7C',
 
   gold: '#FFC23D',
   goldLip: '#C48A12',
