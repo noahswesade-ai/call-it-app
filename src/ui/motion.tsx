@@ -162,3 +162,13 @@ export function Sway({ children, deg = 2, style }: { children: React.ReactNode; 
   const s = useAnimatedStyle(() => ({ transform: [{ rotate: `${r.value}deg` }] }));
   return <Animated.View style={[style, s]}>{children}</Animated.View>;
 }
+
+/** Plain fade-in after an optional delay (no movement). */
+export function FadeIn({ children, delay = 0, duration = 380, style }: { children: React.ReactNode; delay?: number; duration?: number; style?: StyleProp<ViewStyle> }) {
+  const o = useSharedValue(0);
+  useEffect(() => {
+    o.value = withDelay(delay, withTiming(1, { duration, easing: Easing.out(Easing.quad) }));
+  }, [delay, duration, o]);
+  const s = useAnimatedStyle(() => ({ opacity: o.value }));
+  return <Animated.View style={[style, s]}>{children}</Animated.View>;
+}

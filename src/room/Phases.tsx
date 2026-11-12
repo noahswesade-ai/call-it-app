@@ -11,7 +11,7 @@ import { useRoom } from '@/net/RoomProvider';
 import { useCountUp } from '@/ui/Coin';
 import { Confetti } from '@/ui/Confetti';
 import { Button, Dim, LiftRing, Pill, Row, tap, useLift } from '@/ui/kit';
-import { Bob, PopIn, Pulse, Shake, SlideIn, Sway, Wobble } from '@/ui/motion';
+import { Bob, FadeIn, PopIn, Pulse, Shake, SlideIn, Sway, Wobble } from '@/ui/motion';
 import { A_COLOR, A_LIP, B_COLOR, B_LIP, colors, fonts } from '@/ui/theme';
 import { CountdownRing, DangerVignette, EmojiRain, GrowBar, Slam, Sunburst } from './fx';
 import { PlayerBadge, playerById, useTimeLeft } from './shared';
@@ -847,30 +847,41 @@ function Standings({ state, delay = 500 }: { state: GameState; delay?: number })
   return (
     <View style={styles.panel}>
       <Text style={styles.panelTitle}>📊 Standings</Text>
-      {rows.map((r, i) => (
-        <SlideIn key={r.player.id} from="right" delay={delay + i * 110} distance={80}>
-          <Row style={{ gap: 8 }}>
-            <Text style={styles.rankNum}>{r.rank}</Text>
+      {rows.map((r, i) => {
+        // The leader's whole row turns gold: the spot everyone wants.
+        const lead = r.rank === 1 && r.totals.points > 0;
+        const ink = lead ? colors.ink : undefined;
+        return (
+        <FadeIn key={r.player.id} delay={delay + i * 260}>
+          <Row style={[styles.standRow, lead && styles.standRowLead]}>
+            <Text style={[styles.rankNum, ink ? { color: ink } : null]}>{r.rank}</Text>
             <AnimalAvatar avatar={r.player.avatar} size={26} mood={i === 0 ? 'happy' : undefined} />
             <View style={{ flex: 1, gap: 3 }}>
               <Row style={{ justifyContent: 'space-between' }}>
                 <Row style={{ flex: 1, gap: 6 }}>
-                  <Text style={[styles.rowName, { flexShrink: 1 }]} numberOfLines={1}>
-                    {i === 0 && r.totals.points > 0 ? '👑 ' : ''}
+                  <Text style={[styles.rowName, { flexShrink: 1 }, ink ? { color: ink } : null]} numberOfLines={1}>
+                    {lead ? '👑 ' : ''}
                     {r.player.name}
                   </Text>
                   <StreakFlame n={r.totals.streak ?? 0} />
                 </Row>
-                <Text style={styles.rowVal}>
+                <Text style={[styles.rowVal, ink ? { color: ink } : null]}>
                   {r.totals.points} pts
-                  {lastRound[r.player.id]?.points ? <Text style={{ color: colors.green }}>  +{lastRound[r.player.id].points}</Text> : null}
+                  {lastRound[r.player.id]?.points ? <Text style={{ color: lead ? '#0E6B3E' : colors.green }}>  +{lastRound[r.player.id].points}</Text> : null}
                 </Text>
               </Row>
-              <GrowBar pct={(r.totals.points / max) * 100} color={i === 0 ? colors.gold : colors.violet} height={8} delay={delay + 100 + i * 110} />
+              <GrowBar
+                pct={(r.totals.points / max) * 100}
+                color={lead ? colors.ink : colors.violet}
+                track={lead ? 'rgba(23,5,48,0.18)' : undefined}
+                height={8}
+                delay={delay + 150 + i * 260}
+              />
             </View>
           </Row>
-        </SlideIn>
-      ))}
+        </FadeIn>
+        );
+      })}
     </View>
   );
 }
@@ -1257,6 +1268,14 @@ const styles = StyleSheet.create({
   winnerText: { color: colors.ink, fontFamily: fonts.display, fontSize: 20 },
   drinkChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(255,71,87,0.3)', borderRadius: 99, paddingRight: 10, paddingLeft: 3, paddingVertical: 2 },
   drinkText: { color: colors.white, fontFamily: fonts.display, fontSize: 15 },
+  standRow: { gap: 8, paddingVertical: 6, paddingHorizontal: 8, borderRadius: 14 },
+  standRowLead: {
+    backgroundColor: colors.gold,
+    shadowColor: colors.gold,
+    shadowOpacity: 0.45,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 0 },
+  },
   rankNum: { color: colors.gold, fontFamily: fonts.display, fontSize: 20, width: 20, textAlign: 'center' },
   rowName: { color: colors.white, fontSize: 16, fontFamily: fonts.display, flexShrink: 1 },
   rowVal: { color: colors.dim, fontSize: 15, fontFamily: fonts.display },

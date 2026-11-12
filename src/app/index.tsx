@@ -96,13 +96,8 @@ export default function Home() {
             variant="party"
             icon={locked && !trialAvailable ? 'lock' : 'beer'}
             label="Party Mode"
-            subtitle={
-              !locked
-                ? 'Sips, drinking & spicy challenges · 18+'
-                : trialAvailable
-                  ? 'Try 1 game free · drinking & spicy · 18+'
-                  : 'Unlock with Premium · drinking & spicy · 18+'
-            }
+            subtitle="Sips, drinking & spicy challenges · 18+"
+            sticker={trialAvailable ? '1 FREE GAME!' : undefined}
             disabled={!onlineAvailable}
             onPress={onParty}
           />

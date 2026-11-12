@@ -17,7 +17,7 @@ import { Haptics } from '@/ui/prefs';
 import { Background } from './Background';
 import { useScreenSize } from './screenSize';
 import { A_COLOR as A, B_COLOR as B, colors, fonts } from './theme';
-import { bounce } from '@/ui/motion';
+import { bounce, Pulse } from '@/ui/motion';
 import { Icon, type IconName } from './Icon';
 
 export const A_COLOR = A;
@@ -187,8 +187,11 @@ export function Button({
   icon,
   subtitle,
   big,
+  sticker,
 }: {
   label: string;
+  /** A small tilted promo sticker on the button's top-right corner (e.g. "1 FREE GAME"). */
+  sticker?: string;
   onPress?: () => void;
   variant?: Variant;
   disabled?: boolean;
@@ -263,6 +266,15 @@ export function Button({
             )}
           </Animated.View>
         </View>
+        {sticker ? (
+          <View pointerEvents="none" style={styles.stickerWrap}>
+            <Pulse scale={1.08} duration={700}>
+              <View style={styles.sticker}>
+                <Text style={styles.stickerText}>{sticker}</Text>
+              </View>
+            </Pulse>
+          </View>
+        ) : null}
       </Animated.View>
     </Pressable>
   );
@@ -399,6 +411,21 @@ const styles = StyleSheet.create({
   footer: { position: 'absolute', left: 0, right: 0, bottom: 22, paddingHorizontal: 18, maxWidth: 560, width: '100%', alignSelf: 'center' },
   content: { padding: 18, gap: 14, maxWidth: 560, width: '100%', alignSelf: 'center' },
   lip: {},
+  stickerWrap: { position: 'absolute', top: -12, right: -6, transform: [{ rotate: '8deg' }] },
+  sticker: {
+    backgroundColor: colors.gold,
+    borderWidth: 2,
+    borderColor: colors.white,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
+  },
+  stickerText: { color: colors.ink, fontFamily: fonts.display, fontSize: 14, letterSpacing: 0.3 },
   // Subtle depth: a soft shadow under the button, a slim darker lip, and a light top sheen.
   lipShadow: { shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 6, shadowOffset: { width: 0, height: 4 }, elevation: 4 },
   sheen: { position: 'absolute', left: 0, right: 0, top: 0, height: '55%' },

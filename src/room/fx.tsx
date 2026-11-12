@@ -126,14 +126,14 @@ export function DangerVignette({ active }: { active: boolean }) {
 }
 
 /** A bar that grows to `pct` (0–100). */
-export function GrowBar({ pct, color, delay = 0, height = 18 }: { pct: number; color: string; delay?: number; height?: number }) {
+export function GrowBar({ pct, color, delay = 0, height = 18, track = 'rgba(255,255,255,0.15)' }: { pct: number; color: string; delay?: number; height?: number; track?: string }) {
   const w = useSharedValue(0);
   useEffect(() => {
     w.value = withDelay(delay, withTiming(pct, { duration: 900, easing: Easing.out(Easing.cubic) }));
   }, [pct, delay, w]);
   const st = useAnimatedStyle(() => ({ width: `${w.value}%` }));
   return (
-    <View style={{ height, borderRadius: height / 2, backgroundColor: 'rgba(255,255,255,0.15)', overflow: 'hidden', width: '100%' }}>
+    <View style={{ height, borderRadius: height / 2, backgroundColor: track, overflow: 'hidden', width: '100%' }}>
       <Animated.View style={[{ height, borderRadius: height / 2, backgroundColor: color }, st]} />
     </View>
   );
