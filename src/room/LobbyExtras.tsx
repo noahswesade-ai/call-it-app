@@ -6,7 +6,7 @@ import { availableCategories, CATEGORIES } from '@/content/categories';
 import { CategoryIcon } from '@/content/CategoryIcon';
 import { randomId } from '@/game/rng';
 import type { Category, Difficulty, Question, QuestionType } from '@/game/types';
-import { Button, Segmented, tap } from '@/ui/kit';
+import { Button, LiftRing, Segmented, tap, useLift } from '@/ui/kit';
 import { PopIn, Pulse } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { CUSTOM_ONLY_MIN, lobbyIsPremium, type GameState } from '@/game/engine';
@@ -118,10 +118,13 @@ function Tile({
     </View>
   );
   const pulsing = locked || !on;
+  const tappable = interactive || locked;
+  const { scaleStyle, ringStyle, handlers } = useLift(tappable);
   return (
     <Pressable
       style={{ flex: 1 }}
-      disabled={!interactive && !locked}
+      disabled={!tappable}
+      {...handlers}
       accessibilityRole="switch"
       accessibilityState={{ checked: on }}
       accessibilityLabel={title}
@@ -130,13 +133,16 @@ function Tile({
         onPress();
       }}
     >
-      {pulsing ? (
-        <Pulse scale={1.035} duration={900}>
-          {body}
-        </Pulse>
-      ) : (
-        body
-      )}
+      <Animated.View style={scaleStyle}>
+        <LiftRing style={ringStyle} radius={18} />
+        {pulsing ? (
+          <Pulse scale={1.035} duration={900}>
+            {body}
+          </Pulse>
+        ) : (
+          body
+        )}
+      </Animated.View>
     </Pressable>
   );
 }
@@ -156,9 +162,11 @@ export function AddQuestionButton({ state }: { state: GameState }) {
   const [open, setOpen] = useState(false);
   const premium = lobbyIsPremium(state);
   const count = state.custom?.length ?? 0;
+  const { scaleStyle, ringStyle, handlers } = useLift();
   return (
     <>
       <Pressable
+        {...handlers}
         onPress={() => {
           tap('medium');
           if (premium) setOpen(true);
@@ -167,7 +175,10 @@ export function AddQuestionButton({ state }: { state: GameState }) {
         accessibilityRole="button"
         accessibilityLabel={premium ? 'Add your own questions' : 'Add your own questions (Premium)'}
       >
-        <AddCard locked={!premium} count={count} />
+        <Animated.View style={scaleStyle}>
+          <LiftRing style={ringStyle} radius={20} />
+          <AddCard locked={!premium} count={count} />
+        </Animated.View>
       </Pressable>
       <AddQuestionSheet state={state} visible={open} onClose={() => setOpen(false)} />
     </>

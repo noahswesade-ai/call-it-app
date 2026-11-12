@@ -10,7 +10,7 @@ import type { Outcome, Pick } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
 import { useCountUp } from '@/ui/Coin';
 import { Confetti } from '@/ui/Confetti';
-import { Button, Dim, Pill, Row, tap } from '@/ui/kit';
+import { Button, Dim, LiftRing, Pill, Row, tap, useLift } from '@/ui/kit';
 import { Bob, PopIn, Pulse, Shake, SlideIn, Sway, Wobble } from '@/ui/motion';
 import { A_COLOR, A_LIP, B_COLOR, B_LIP, colors, fonts } from '@/ui/theme';
 import { CountdownRing, DangerVignette, EmojiRain, GrowBar, Slam, Sunburst } from './fx';
@@ -283,16 +283,27 @@ function PickCard({ state, id, side, onPick, chosen, disabled }: { state: GameSt
   const face = useAnimatedStyle(() => ({ transform: [{ translateY: press.value * 6 }] }));
   const color = side === 'A' ? A_COLOR : B_COLOR;
   const lip = side === 'A' ? A_LIP : B_LIP;
+  const { scaleStyle, ringStyle, handlers } = useLift(!disabled);
   return (
     <Pressable
       style={{ flex: 1 }}
       disabled={disabled}
-      onPressIn={() => (press.value = withTiming(1, { duration: 60 }))}
-      onPressOut={() => (press.value = bounce(0))}
+      onHoverIn={handlers.onHoverIn}
+      onHoverOut={handlers.onHoverOut}
+      onPressIn={() => {
+        handlers.onPressIn();
+        press.value = withTiming(1, { duration: 60 });
+      }}
+      onPressOut={() => {
+        handlers.onPressOut();
+        press.value = bounce(0);
+      }}
       onPress={onPick}
       accessibilityRole="button"
       accessibilityLabel={`Call ${p?.name}`}
     >
+      <Animated.View style={scaleStyle}>
+      <LiftRing style={ringStyle} radius={26} />
       <View style={[styles.pickLip, { backgroundColor: lip }]}>
         <Animated.View style={[styles.pickFace, { backgroundColor: color }, face]}>
           <Bob amount={4} duration={600} delay={side === 'A' ? 0 : 300}>
@@ -314,6 +325,7 @@ function PickCard({ state, id, side, onPick, chosen, disabled }: { state: GameSt
           )}
         </Animated.View>
       </View>
+      </Animated.View>
     </Pressable>
   );
 }

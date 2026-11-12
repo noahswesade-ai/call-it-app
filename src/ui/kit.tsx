@@ -121,6 +121,43 @@ function AutoFit({ children, style }: { children: React.ReactNode; style?: Style
   );
 }
 
+/**
+ * Hover (mouse) / press-and-hold (finger) feedback for large buttons and cards: the
+ * element grows slightly and a ring outlines it, so it's clear what you're touching.
+ * Not used on small controls (?, home, avatar, chips).
+ */
+export function useLift(enabled = true) {
+  const lift = useSharedValue(0);
+  const state = React.useRef({ hover: false, press: false });
+  const set = (k: 'hover' | 'press', v: boolean) => {
+    state.current[k] = v;
+    const on = enabled && (state.current.hover || state.current.press);
+    lift.value = withTiming(on ? 1 : 0, { duration: on ? 140 : 200 });
+  };
+  const scaleStyle = useAnimatedStyle(() => ({ transform: [{ scale: 1 + 0.035 * lift.value }] }));
+  const ringStyle = useAnimatedStyle(() => ({ opacity: lift.value }));
+  return {
+    scaleStyle,
+    ringStyle,
+    handlers: {
+      onHoverIn: () => set('hover', true),
+      onHoverOut: () => set('hover', false),
+      onPressIn: () => set('press', true),
+      onPressOut: () => set('press', false),
+    },
+  };
+}
+
+/** The outline ring drawn around a lifted element (place inside a relatively positioned wrapper). */
+export function LiftRing({ style, radius = 16, color = colors.white }: { style: ReturnType<typeof useLift>['ringStyle']; radius?: number; color?: string }) {
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={[{ position: 'absolute', top: -4, left: -4, right: -4, bottom: -4, borderRadius: radius + 4, borderWidth: 2.5, borderColor: color }, style]}
+    />
+  );
+}
+
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'a' | 'b' | 'green' | 'cyan' | 'party';
 
 const VARIANTS: Record<Variant, { face: string; lip: string; text: string }> = {
@@ -167,16 +204,23 @@ export function Button({
   const faceStyle = useAnimatedStyle(() => ({ transform: [{ translateY: press.value * (LIP - 1) }] }));
   const ghost = variant === 'ghost';
   const lip = small ? 4 : LIP;
+  const radius = small ? 12 : 16;
+  const lifts = !small && !disabled;
+  const { scaleStyle, ringStyle, handlers } = useLift(lifts);
 
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
+      onHoverIn={handlers.onHoverIn}
+      onHoverOut={handlers.onHoverOut}
       onPressIn={() => {
         if (disabled) return;
+        handlers.onPressIn();
         press.value = withTiming(1, { duration: 60 });
       }}
       onPressOut={() => {
+        handlers.onPressOut();
         press.value = bounce(0);
       }}
       onPress={() => {
@@ -186,37 +230,40 @@ export function Button({
       }}
       style={[{ opacity: disabled ? 0.45 : 1 }, style]}
     >
-      <View style={[styles.lip, !ghost && styles.lipShadow, { backgroundColor: v.lip, borderRadius: small ? 12 : 16, paddingBottom: ghost ? 0 : lip }]}>
-        <Animated.View
-          style={[
-            styles.face,
-            small && styles.faceSmall,
-            big && styles.faceBig,
-            { backgroundColor: v.face, borderRadius: small ? 12 : 16 },
-            ghost && styles.ghost,
-            faceStyle,
-          ]}
-        >
-          {!ghost && (
-            <LinearGradient
-              pointerEvents="none"
-              colors={['rgba(255,255,255,0.22)', 'rgba(255,255,255,0)']}
-              style={[styles.sheen, { borderTopLeftRadius: small ? 12 : 16, borderTopRightRadius: small ? 12 : 16 }]}
-            />
-          )}
-          {loading ? (
-            <ActivityIndicator color={v.text} />
-          ) : (
-            <>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: small ? 6 : 8 }}>
-                {icon ? <Icon name={icon} size={small ? 16 : big ? 24 : 20} color={v.text} strokeWidth={2.4} /> : null}
-                <Text style={[styles.buttonText, small && { fontSize: 15 }, big && { fontSize: 24 }, { color: v.text }]}>{label}</Text>
-              </View>
-              {subtitle ? <Text style={[styles.subtitle, { color: v.text }]}>{subtitle}</Text> : null}
-            </>
-          )}
-        </Animated.View>
-      </View>
+      <Animated.View style={scaleStyle}>
+        {lifts && <LiftRing style={ringStyle} radius={radius} color={variant === 'primary' ? colors.white : colors.gold} />}
+        <View style={[styles.lip, !ghost && styles.lipShadow, { backgroundColor: v.lip, borderRadius: radius, paddingBottom: ghost ? 0 : lip }]}>
+          <Animated.View
+            style={[
+              styles.face,
+              small && styles.faceSmall,
+              big && styles.faceBig,
+              { backgroundColor: v.face, borderRadius: radius },
+              ghost && styles.ghost,
+              faceStyle,
+            ]}
+          >
+            {!ghost && (
+              <LinearGradient
+                pointerEvents="none"
+                colors={['rgba(255,255,255,0.22)', 'rgba(255,255,255,0)']}
+                style={[styles.sheen, { borderTopLeftRadius: radius, borderTopRightRadius: radius }]}
+              />
+            )}
+            {loading ? (
+              <ActivityIndicator color={v.text} />
+            ) : (
+              <>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: small ? 6 : 8 }}>
+                  {icon ? <Icon name={icon} size={small ? 16 : big ? 24 : 20} color={v.text} strokeWidth={2.4} /> : null}
+                  <Text style={[styles.buttonText, small && { fontSize: 15 }, big && { fontSize: 24 }, { color: v.text }]}>{label}</Text>
+                </View>
+                {subtitle ? <Text style={[styles.subtitle, { color: v.text }]}>{subtitle}</Text> : null}
+              </>
+            )}
+          </Animated.View>
+        </View>
+      </Animated.View>
     </Pressable>
   );
 }
