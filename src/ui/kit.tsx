@@ -17,6 +17,7 @@ import { Background } from './Background';
 import { useScreenSize } from './screenSize';
 import { A_COLOR as A, B_COLOR as B, colors, fonts } from './theme';
 import { bounce } from '@/ui/motion';
+import { Icon, type IconName } from './Icon';
 
 export const A_COLOR = A;
 export const B_COLOR = B;
@@ -154,7 +155,7 @@ export function Button({
   loading?: boolean;
   style?: StyleProp<ViewStyle>;
   small?: boolean;
-  icon?: string;
+  icon?: IconName;
   subtitle?: string;
   big?: boolean;
 }) {
@@ -197,10 +198,10 @@ export function Button({
             <ActivityIndicator color={v.text} />
           ) : (
             <>
-              <Text style={[styles.buttonText, small && { fontSize: 15 }, big && { fontSize: 24 }, { color: v.text }]}>
-                {icon ? `${icon} ` : ''}
-                {label}
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: small ? 6 : 8 }}>
+                {icon ? <Icon name={icon} size={small ? 16 : big ? 24 : 20} color={v.text} strokeWidth={2.4} /> : null}
+                <Text style={[styles.buttonText, small && { fontSize: 15 }, big && { fontSize: 24 }, { color: v.text }]}>{label}</Text>
+              </View>
               {subtitle ? <Text style={[styles.subtitle, { color: v.text }]}>{subtitle}</Text> : null}
             </>
           )}
@@ -230,9 +231,20 @@ export function Dim({ children, style }: { children: React.ReactNode; style?: St
   return <Text style={[styles.dim, style]}>{children}</Text>;
 }
 
-export function Pill({ label, color = 'rgba(255,255,255,0.18)', textColor = colors.white }: { label: string; color?: string; textColor?: string }) {
+export function Pill({
+  label,
+  color = 'rgba(255,255,255,0.18)',
+  textColor = colors.white,
+  icon,
+}: {
+  label: string;
+  color?: string;
+  textColor?: string;
+  icon?: IconName;
+}) {
   return (
-    <View style={[styles.pill, { backgroundColor: color }]}>
+    <View style={[styles.pill, { backgroundColor: color, flexDirection: 'row', alignItems: 'center', gap: 5 }]}>
+      {icon ? <Icon name={icon} size={13} color={textColor} strokeWidth={2.6} /> : null}
       <Text style={[styles.pillText, { color: textColor }]}>{label}</Text>
     </View>
   );
@@ -248,12 +260,14 @@ export function Toggle({
   onChange,
   locked,
   hint,
+  icon,
 }: {
   label: string;
   value: boolean;
   onChange: (v: boolean) => void;
   locked?: boolean;
   hint?: string;
+  icon?: IconName;
 }) {
   const x = useSharedValue(value && !locked ? 1 : 0);
   React.useEffect(() => {
@@ -272,10 +286,11 @@ export function Toggle({
       accessibilityState={{ checked: value }}
     >
       <View style={{ flex: 1 }}>
-        <Text style={styles.body}>
-          {locked ? '🔒 ' : ''}
-          {label}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+          {locked ? <Icon name="lock" size={15} color={colors.gold} /> : null}
+          {icon ? <Icon name={icon} size={17} color={colors.dim} /> : null}
+          <Text style={[styles.body, { flexShrink: 1 }]}>{label}</Text>
+        </View>
         {hint ? <Text style={[styles.dim, { fontSize: 13 }]}>{hint}</Text> : null}
       </View>
       <Animated.View style={[styles.switch, track]}>
@@ -291,7 +306,7 @@ export function Segmented<T extends string | number>({
   onChange,
   locked,
 }: {
-  options: { value: T; label: string }[];
+  options: { value: T; label: string; icon?: IconName }[];
   value: T;
   onChange: (v: T) => void;
   locked?: boolean;
@@ -311,10 +326,11 @@ export function Segmented<T extends string | number>({
             accessibilityRole="button"
             accessibilityState={{ selected: active }}
           >
-            <Text style={[styles.segmentText, active && { color: colors.ink }]}>
-              {locked && !active ? '🔒 ' : ''}
-              {o.label}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+              {locked && !active ? <Icon name="lock" size={13} color={colors.white} /> : null}
+              {o.icon ? <Icon name={o.icon} size={14} color={active ? colors.ink : colors.white} /> : null}
+              <Text style={[styles.segmentText, active && { color: colors.ink }]}>{o.label}</Text>
+            </View>
           </Pressable>
         );
       })}

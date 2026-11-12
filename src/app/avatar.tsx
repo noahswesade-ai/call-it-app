@@ -19,6 +19,7 @@ import { Coin, CoinCounter } from '@/ui/Coin';
 import { Button, Dim, Row, Screen, tap } from '@/ui/kit';
 import { Bob, PopIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
+import { Icon, IconLabel } from '@/ui/Icon';
 
 type Tab = 'animal' | AccessorySlot;
 
@@ -159,11 +160,12 @@ export default function AvatarEditor() {
               </View>
               <Button
                 small
-                label={tryOn.premiumOnly ? '👑 Get Premium' : `Unlock · ${tryOn.price.toLocaleString()}`}
+                icon={tryOn.premiumOnly ? 'crown' : undefined}
+                label={tryOn.premiumOnly ? 'Get Premium' : `Unlock · ${tryOn.price.toLocaleString()}`}
                 onPress={() => unlock(tryOn)}
               />
               <Pressable onPress={() => setTryOn(undefined)} style={styles.buyClose} accessibilityLabel="Stop trying on">
-                <Text style={{ color: colors.white, fontFamily: fonts.display, fontSize: 16 }}>✕</Text>
+                <Icon name="close" size={16} color={colors.white} />
               </Pressable>
             </View>
           </PopIn>
@@ -212,11 +214,11 @@ export default function AvatarEditor() {
                 </Text>
                 <Text style={[styles.tier, { color: TIER_COLOR[c.tier] }]}>{TIER_LABEL[c.tier].toUpperCase()}</Text>
                 {equipped ? (
-                  <Text style={styles.status}>✓ ON</Text>
+                  <IconLabel icon="check" gap={3} textStyle={styles.status}>ON</IconLabel>
                 ) : owned ? (
                   <Text style={styles.statusDim}>{tab === 'animal' ? 'Owned' : 'Tap to wear'}</Text>
                 ) : c.premiumOnly ? (
-                  <Text style={styles.premiumOnly}>👑 PREMIUM</Text>
+                  <IconLabel icon="crown" gap={3} textStyle={styles.premiumOnly}>PREMIUM</IconLabel>
                 ) : (
                   <Row style={{ gap: 3 }}>
                     <Coin size={15} />

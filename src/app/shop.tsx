@@ -17,6 +17,7 @@ import { CoinCounter, SpinningCoin } from '@/ui/Coin';
 import { Body, Button, Card, Dim, H1, H2, Row, Screen } from '@/ui/kit';
 import { Pulse, PopIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
+import { Icon, IconLabel } from '@/ui/Icon';
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -50,7 +51,7 @@ export default function Shop() {
         <PopIn>
           <Pulse scale={1.02} duration={900}>
             <View style={styles.starter}>
-              <Text style={styles.starterTag}>🎁 STARTER PACK · BEST VALUE FOR NEW PLAYERS</Text>
+              <IconLabel icon="gift" textStyle={styles.starterTag}>STARTER PACK · BEST VALUE FOR NEW PLAYERS</IconLabel>
               <Row style={{ gap: 12 }}>
                 <SpinningCoin size={54} every={1500} />
                 <View style={{ flex: 1 }}>
@@ -117,7 +118,7 @@ export default function Shop() {
           </View>
         </PopIn>
       ))}
-      <Button label="🎨 Customize your avatar" variant="secondary" onPress={() => router.push('/avatar')} />
+      <Button icon="palette" label="Customize your avatar" variant="secondary" onPress={() => router.push('/avatar')} />
       <Button label="Back" variant="ghost" onPress={() => router.back()} />
     </Screen>
   );

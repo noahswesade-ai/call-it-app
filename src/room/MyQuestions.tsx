@@ -6,6 +6,7 @@ import type { Question } from '@/game/types';
 import { useProfile } from '@/state/profile';
 import { tap } from '@/ui/kit';
 import { colors, fonts } from '@/ui/theme';
+import { Icon } from '@/ui/Icon';
 
 /**
  * A player's own question bank ("My questions"): every question they've written in any
@@ -36,7 +37,7 @@ export function MyQuestionsList({
         const body = (
           <View style={[styles.row, selectable && on && styles.rowOn]}>
             {selectable && (
-              <View style={[styles.check, on && styles.checkOn]}>{on ? <Text style={styles.checkMark}>✓</Text> : null}</View>
+              <View style={[styles.check, on && styles.checkOn]}>{on ? <Icon name="check" size={15} color={colors.ink} strokeWidth={3} /> : null}</View>
             )}
             <View style={{ flex: 1, gap: 3 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>

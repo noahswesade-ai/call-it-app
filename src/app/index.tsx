@@ -20,14 +20,15 @@ import { Button, Dim, Screen, tap, Toggle } from '@/ui/kit';
 import { Bob, PopIn, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { bounce } from '@/ui/motion';
+import { Icon, IconLabel } from '@/ui/Icon';
+import { Logo } from '@/ui/Logo';
 
 /** Clean wordmark: one weight, one colour, the accent kept for "dog". Fades in once. */
-function Logo() {
+/** The brand logo, large, as the hero of the home screen. */
+function HomeLogo() {
   return (
     <PopIn>
-      <Text style={styles.logo} accessibilityRole="header">
-        Under<Text style={{ color: colors.gold }}>dog</Text>
-      </Text>
+      <Logo width={210} />
     </PopIn>
   );
 }
@@ -88,7 +89,7 @@ function PartyBox({ locked, trialAvailable, onPress }: { locked: boolean; trialA
       <Animated.View style={[styles.partyGlow, glowStyle]} pointerEvents="none" />
       <Animated.View style={[styles.partyBox, boxStyle]}>
         <View style={{ flex: 1, gap: 4 }}>
-          <Text style={styles.partyTitle}>🍻 Party Mode</Text>
+          <IconLabel icon="beer" size={22} gap={8} textStyle={styles.partyTitle}>Party Mode</IconLabel>
           <Text style={styles.partySub}>Sips, drinking challenges, spicy questions & more</Text>
           <View style={styles.partyBadgeRow}>
             {!locked ? (
@@ -103,7 +104,7 @@ function PartyBox({ locked, trialAvailable, onPress }: { locked: boolean; trialA
         </View>
         {locked && (
           <Animated.View style={[styles.lockBubble, lockStyle]}>
-            <Text style={{ fontSize: 22 }}>🔒</Text>
+            <Icon name="lock" size={22} color={colors.neon} />
           </Animated.View>
         )}
       </Animated.View>
@@ -140,7 +141,6 @@ export default function Home() {
           <Pressable onPress={() => router.push('/account')} style={styles.me} accessibilityRole="button" accessibilityLabel="Your profile and My questions">
             <AnimalAvatar avatar={profile.avatar} size={34} mood="happy" />
             <Text style={styles.meName} numberOfLines={1}>
-              {profile.premium ? '👑 ' : ''}
               {profile.name}
             </Text>
           </Pressable>
@@ -152,7 +152,7 @@ export default function Home() {
       </View>
 
       <View style={{ alignItems: 'center', gap: 6 }}>
-        <Logo />
+        <HomeLogo />
         <SlideIn from="bottom" delay={400}>
           <Text style={styles.tagline}>Call the long shot. Win big.</Text>
         </SlideIn>
@@ -163,7 +163,8 @@ export default function Home() {
         <SlideIn from="left" delay={250}>
           <Button
             big
-            label="🎉 Host a Game"
+            icon="party"
+            label="Host a Game"
             subtitle="Trivia, challenges & bragging rights"
             disabled={!onlineAvailable}
             onPress={() => {
@@ -176,7 +177,7 @@ export default function Home() {
           <PartyBox locked={locked} trialAvailable={trialAvailable} onPress={onParty} />
         </SlideIn>
         <SlideIn from="left" delay={510}>
-          <Button big variant="secondary" label="📲 Join a Game" subtitle="Got a code? Jump in" disabled={!onlineAvailable} onPress={() => router.push('/join')} />
+          <Button big variant="secondary" icon="phone" label="Join a Game" subtitle="Got a code? Jump in" disabled={!onlineAvailable} onPress={() => router.push('/join')} />
         </SlideIn>
       </View>
 
@@ -195,7 +196,8 @@ export default function Home() {
         // TEST LINK ONLY: compare the free and Premium versions. Remove before release.
         <View style={styles.testBox}>
           <Toggle
-            label="🧪 TEST: Premium account"
+            icon="test"
+            label="TEST: Premium account"
             hint="Only on the play-test link. Switch off to see the free version."
             value={profile.premium}
             onChange={(v) => update({ premium: v })}

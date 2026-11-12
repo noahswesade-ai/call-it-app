@@ -22,6 +22,7 @@
     "expo-sensors": "~58.0.4",
     "expo-status-bar": "~58.0.4",
     "expo-store-review": "~58.0.3",
+    "lucide-react-native": "^1.72.0",
     "mqtt": "^5.16.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",

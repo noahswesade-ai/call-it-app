@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { useRoom } from '@/net/RoomProvider';
 import { Body, Button, H1, Screen, theme } from '@/ui/kit';
+import { Logo } from '@/ui/Logo';
 
 export default function Join() {
   const params = useLocalSearchParams<{ code?: string }>();
@@ -18,6 +19,7 @@ export default function Join() {
 
   return (
     <Screen style={{ justifyContent: 'center' }}>
+      <Logo width={150} style={{ alignSelf: 'center' }} />
       <H1 style={{ textAlign: 'center' }}>Join a game</H1>
       <Body style={{ textAlign: 'center' }}>Enter the 4-letter code on the host's phone.</Body>
       <TextInput

@@ -21,6 +21,7 @@ import { colors, fonts } from '@/ui/theme';
 import { Slam, Sunburst } from './fx';
 import { playerById } from './shared';
 import { bounce } from '@/ui/motion';
+import { Logo } from '@/ui/Logo';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 const STEP_H = [120, 86, 60];
@@ -117,7 +118,7 @@ export function Podium({ state }: { state: GameState }) {
       ` Play free, no download needed for friends:`;
     const r = await shareOrCopy(msg, inviteLink(state.code).replace(/\/join\?code=.*/, '/'));
     if (r === 'copied') setShared('Copied! Paste it in your group chat');
-    if (r === 'shared') setShared('Shared 🎉');
+    if (r === 'shared') setShared('Shared!');
   };
 
   // Visual order on the podium: 2nd, 1st, 3rd.
@@ -132,7 +133,10 @@ export function Podium({ state }: { state: GameState }) {
             <Text style={styles.drumroll}>🥁 And the winner is…</Text>
           </Pulse>
         ) : (
-          <Slam text="🏆 WINNER! 🏆" size={46} color={colors.gold} />
+          <View style={{ alignItems: 'center' }}>
+            <Logo width={120} style={{ marginBottom: 2 }} />
+            <Slam text="🏆 WINNER! 🏆" size={46} color={colors.gold} />
+          </View>
         )}
       </View>
 
@@ -239,7 +243,7 @@ export function Podium({ state }: { state: GameState }) {
               <View style={styles.upsell}>
                 <Text style={styles.upsellTitle}>Your crew loved Party Mode? 🍻</Text>
                 <Dim>That was your free game. Unlock it forever for $4.99.</Dim>
-                <Button label="🔓 Unlock Party Mode" onPress={() => router.push('/paywall')} />
+                <Button icon="unlock" label="Unlock Party Mode" onPress={() => router.push('/paywall')} />
               </View>
             </PopIn>
           )}
@@ -247,17 +251,18 @@ export function Podium({ state }: { state: GameState }) {
             <PopIn delay={400}>
               <View style={styles.upsell}>
                 <Text style={styles.upsellTitle}>Want to host Party Mode yourself?</Text>
-                <Button variant="secondary" label="👑 See Premium" onPress={() => router.push('/paywall')} />
+                <Button variant="secondary" icon="crown" label="See Premium" onPress={() => router.push('/paywall')} />
               </View>
             </PopIn>
           )}
 
           {isHost && (
             <Pulse scale={1.03} duration={700}>
-              <Button big variant="green" label="🔁 Rematch!" onPress={() => dispatch({ type: 'rematch' })} />
+              <Button big variant="green" icon="repeat" label="Rematch!" onPress={() => dispatch({ type: 'rematch' })} />
             </Pulse>
           )}
-          <Button variant="secondary" label={shared ?? '📣 Share the results'} onPress={() => void shareResult()} />
+          <Button variant="secondary" icon="share"
+            label={shared ?? 'Share the results'} onPress={() => void shareResult()} />
           <Button
             small
             variant="ghost"

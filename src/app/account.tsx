@@ -10,6 +10,7 @@ import { useProfile } from '@/state/profile';
 import { Button, Card, Dim, H2, Row, Screen, Toggle } from '@/ui/kit';
 import { Bob } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
+import { Icon, IconLabel } from '@/ui/Icon';
 
 /** "You": avatar, stats, Premium status and "My questions" (your personal question bank). */
 export default function Account() {
@@ -24,7 +25,7 @@ export default function Account() {
     <Screen scroll>
       <Row style={{ justifyContent: 'space-between' }}>
         <Button small variant="ghost" label="← Back" onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))} />
-        {profile.premium ? <Text style={styles.premium}>👑 PREMIUM</Text> : null}
+        {profile.premium ? <IconLabel icon="crown" textStyle={styles.premium}>PREMIUM</IconLabel> : null}
       </Row>
 
       <View style={{ alignItems: 'center', gap: 6 }}>
@@ -34,7 +35,7 @@ export default function Account() {
           </Bob>
         </Pressable>
         <Text style={styles.name}>{profile.name}</Text>
-        <Button small variant="secondary" label="🎨 Customize avatar" onPress={() => router.push('/avatar')} />
+        <Button small variant="secondary" icon="palette" label="Customize avatar" onPress={() => router.push('/avatar')} />
       </View>
 
       <Row style={{ gap: 8 }}>
@@ -47,20 +48,20 @@ export default function Account() {
       {!profile.premium && (
         <Pressable onPress={() => router.push('/paywall')}>
           <View style={styles.upsell}>
-            <Text style={styles.upsellText}>👑 Premium: Party & Spicy, your own questions in every lobby, no ads</Text>
+            <Text style={styles.upsellText}>Premium: Party & Spicy, your own questions in every lobby, no ads</Text>
           </View>
         </Pressable>
       )}
 
       <Card>
-        <H2>⚙️ This phone</H2>
-        <Toggle label="🔊 Sound effects" value={profile.soundOn !== false} onChange={(v) => update({ soundOn: v })} />
-        <Toggle label="📳 Vibration" value={profile.hapticsOn !== false} onChange={(v) => update({ hapticsOn: v })} />
+        <IconLabel icon="settings" size={20} textStyle={{ color: colors.white, fontSize: 20, fontFamily: fonts.display }}>This phone</IconLabel>
+        <Toggle icon="sound" label="Sound effects" value={profile.soundOn !== false} onChange={(v) => update({ soundOn: v })} />
+        <Toggle icon="vibrate" label="Vibration" value={profile.hapticsOn !== false} onChange={(v) => update({ hapticsOn: v })} />
       </Card>
 
       <Card>
         <Row style={{ justifyContent: 'space-between' }}>
-          <H2>📚 My questions</H2>
+          <IconLabel icon="book" size={20} textStyle={{ color: colors.white, fontSize: 20, fontFamily: fonts.display }}>My questions</IconLabel>
           <Text style={styles.count}>{mine.length}</Text>
         </Row>
         <Dim style={{ fontSize: 13 }}>

@@ -19,6 +19,8 @@ import { colors, fonts } from '@/ui/theme';
 import { canJoin, isFinalRound, phaseDuration } from '@/game/engine';
 import { Body, Button, Dim, H1, Screen } from '@/ui/kit';
 import { Bob } from '@/ui/motion';
+import { Icon } from '@/ui/Icon';
+import { Logo } from '@/ui/Logo';
 
 /** One screen for the whole game; each phase animates in as the host's state changes. */
 export default function Room() {
@@ -190,10 +192,10 @@ function HostAway({ name }: { name: string }) {
 export function ErrorBoundary({ retry }: { error: Error; retry: () => Promise<void> }) {
   return (
     <Screen style={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 56 }}>🙈</Text>
+      <Logo width={140} />
       <H1 style={{ textAlign: 'center' }}>Oops, this screen tripped</H1>
       <Body style={{ textAlign: 'center' }}>You're still in the game. Tap below to jump back in.</Body>
-      <Button label="↻ Back to the game" onPress={() => void retry()} />
+      <Button icon="refresh" label="Back to the game" onPress={() => void retry()} />
       <Button label="Leave to home" variant="ghost" onPress={() => router.replace('/')} />
     </Screen>
   );

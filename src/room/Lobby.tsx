@@ -23,6 +23,8 @@ import { PlayerBadge } from './shared';
 import { isBotId } from '@/net/RoomProvider';
 import { AddQuestionButton, ModeTiles } from './LobbyExtras';
 import { playSfx } from '@/ui/sound';
+import { Icon, IconLabel } from '@/ui/Icon';
+import { Logo } from '@/ui/Logo';
 
 /**
  * Link that opens the Join screen with the room code filled in. On the web it keeps
@@ -43,7 +45,7 @@ function RelayStatus() {
   return (
     <Row style={{ justifyContent: 'center' }}>
       <View style={[styles.statusPill, { borderColor: online ? colors.green : colors.red }]}>
-        <Text style={styles.statusText}>{online ? '🟢 Online — friends can join' : '🔴 Connecting to the game server…'}</Text>
+        <IconLabel icon="dot" size={14} color={online ? colors.green : colors.red} textStyle={styles.statusText}>{online ? 'Online — friends can join' : 'Connecting to the game server…'}</IconLabel>
       </View>
     </Row>
   );
@@ -130,6 +132,7 @@ function WaitingDots({ text }: { text: string }) {
 function RoomCode({ code, practice }: { code: string; practice: boolean }) {
   return (
     <View style={{ alignItems: 'center' }}>
+      <Logo width={84} style={{ marginBottom: 2 }} />
       <Text style={styles.codeLabel}>{practice ? 'PRACTICE GAME' : 'ROOM CODE'}</Text>
       <Row style={{ gap: 6 }}>
         {code.split('').map((ch, i) => (
@@ -172,7 +175,7 @@ function YouCard() {
             <AnimalAvatar avatar={profile.avatar} size={96} mood="happy" />
           </Bob>
           <View style={styles.editBadge}>
-            <Text style={{ fontSize: 14 }}>🎨</Text>
+            <Icon name="palette" size={14} color={colors.ink} />
           </View>
         </Pressable>
         <View style={{ flex: 1, gap: 8 }}>
@@ -197,11 +200,11 @@ function YouCard() {
                 <Text style={styles.nameText} numberOfLines={1}>
                   {profile.name}
                 </Text>
-                <Text style={{ fontSize: 16 }}>✏️</Text>
+                <Icon name="edit" size={16} color={colors.dim} />
               </Pressable>
             )}
           </View>
-          <Button small variant="secondary" label="🎨 Customize avatar" onPress={() => router.push('/avatar')} />
+          <Button small variant="secondary" icon="palette" label="Customize avatar" onPress={() => router.push('/avatar')} />
         </View>
       </View>
     </SlideIn>
@@ -226,7 +229,7 @@ function HandOver({
   if (others.length === 0) return null;
   return (
     <View style={{ gap: 6 }}>
-      <Body>👑 Make someone else the host</Body>
+      <IconLabel icon="crown" textStyle={{ color: colors.white, fontSize: 16, fontFamily: fonts.bodySemi }}>Make someone else the host</IconLabel>
       {target ? (
         <View style={styles.handConfirm}>
           <Text style={styles.gateBody}>Make {target.name} the host? You'll stay in the game as a player.</Text>
@@ -335,14 +338,15 @@ export function Lobby({ state }: { state: GameState }) {
           <Button
             small
             variant="secondary"
-            label={inviteMsg ?? '📲 Invite friends'}
+            icon={inviteMsg ? 'check' : 'share'}
+            label={inviteMsg ?? 'Invite friends'}
             onPress={async () => {
               const r = await shareOrCopy(`Join my Underdog game! Code ${state.code}. No download needed:`, link);
-              setInviteMsg(r === 'copied' ? '✅ Link copied!' : r === 'shared' ? '✅ Invite sent' : undefined);
+              setInviteMsg(r === 'copied' ? 'Link copied!' : r === 'shared' ? 'Invite sent' : undefined);
               setTimeout(() => setInviteMsg(undefined), 2500);
             }}
           />
-          <Button small variant="secondary" label="▦ QR code" onPress={() => setShowQr(true)} />
+          <Button small variant="secondary" icon="qr" label="QR code" onPress={() => setShowQr(true)} />
         </Row>
       )}
       <Modal visible={showQr} transparent animationType="fade" onRequestClose={() => setShowQr(false)}>
@@ -422,7 +426,7 @@ export function Lobby({ state }: { state: GameState }) {
                 {s.rounds} rounds · {s.categories.length} categories{s.mode === 'party' && s.spicy ? ' · 🌶️ Spicy' : ''}
                 {!hostPlayer?.playing ? ' · you only judge' : ''}
               </Dim>
-              <Button small variant="secondary" label="⚙️ More settings" onPress={() => setShowSettings(true)} />
+              <Button small variant="secondary" icon="settings" label="More settings" onPress={() => setShowSettings(true)} />
             </Row>
           </Card>
         </SlideIn>
@@ -476,9 +480,10 @@ export function Lobby({ state }: { state: GameState }) {
         <View style={styles.sheetBg}>
           <View style={styles.sheet}>
            <ScrollView contentContainerStyle={{ gap: 10 }}>
-            <H2>⚙️ Game settings</H2>
+            <IconLabel icon="settings" size={20} textStyle={{ color: colors.white, fontSize: 20, fontFamily: fonts.display }}>Game settings</IconLabel>
             <Toggle
-              label="✍️ Only our questions"
+              icon="write"
+              label="Only our questions"
               hint={`Play with only the lobby's own questions. Needs at least ${CUSTOM_ONLY_MIN} in every selected category.`}
               locked={!hostPremium}
               value={!!s.onlyCustom}
@@ -509,7 +514,10 @@ export function Lobby({ state }: { state: GameState }) {
                 Not everyone will get a turn with {s.rounds} rounds and {pool.length} players.
               </Dim>
             )}
-            <Body>Categories {hostPremium ? '' : '🔒'}</Body>
+            <Row style={{ gap: 6 }}>
+              <Body>Categories</Body>
+              {hostPremium ? null : <Icon name="lock" size={15} color={colors.gold} />}
+            </Row>
             <View style={styles.cats}>
               {CATEGORIES.filter((c) => availableCategories(s.mode, s.spicy).includes(c.id)).map((c) => {
                 const on = s.categories.includes(c.id);

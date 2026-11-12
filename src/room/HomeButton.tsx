@@ -7,6 +7,7 @@ import { isBotId, useRoom } from '@/net/RoomProvider';
 import { Button, tap } from '@/ui/kit';
 import { PopIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
+import { Icon, IconLabel } from '@/ui/Icon';
 
 /** Who would take over hosting if this host left (next in join order, still connected). */
 function nextHostName(state: GameState): string | undefined {
@@ -17,7 +18,7 @@ function nextHostName(state: GameState): string | undefined {
 }
 
 /**
- * The little 🏠 in the top-left corner of every lobby and game screen. Asks before
+ * The little home icon in the top-left corner of every lobby and game screen. Asks before
  * leaving. The host also gets "take everyone back to the lobby" during a game.
  */
 export function HomeButton({ state }: { state: GameState }) {
@@ -46,7 +47,7 @@ export function HomeButton({ state }: { state: GameState }) {
         accessibilityLabel="Leave the game"
         hitSlop={8}
       >
-        <Text style={styles.icon}>🏠</Text>
+        <Icon name="home" size={20} color={colors.white} strokeWidth={2.3} />
       </Pressable>
       <Modal visible={open} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
         <View style={styles.bg}>
@@ -63,7 +64,8 @@ export function HomeButton({ state }: { state: GameState }) {
               {isHost && inGame && (
                 <Button
                   variant="secondary"
-                  label="🏠 Back to the lobby with everyone"
+                  icon="users"
+                  label="Back to the lobby with everyone"
                   subtitle="Ends this game for the whole room"
                   onPress={() => {
                     tap('heavy');

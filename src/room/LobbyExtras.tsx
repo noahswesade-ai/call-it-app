@@ -15,6 +15,7 @@ import { useProfile } from '@/state/profile';
 import { MyQuestionsList } from './MyQuestions';
 import { isAllowedQuestion } from '@/content/moderation';
 import { useRoom } from '@/net/RoomProvider';
+import { Icon, IconLabel, type IconName } from '@/ui/Icon';
 
 /**
  * The two big Party / Spicy switches. Always on the lobby screen (never hidden in the
@@ -44,7 +45,8 @@ export function ModeTiles({
         on={party}
         locked={locked}
         interactive={interactive}
-        emoji="🍻"
+        emoji=""
+        icon="beer"
         title="PARTY MODE"
         sub="Drinking challenges"
         colorsOn={['#B03A8C', '#5B2A9E']}
@@ -69,6 +71,7 @@ function Tile({
   locked,
   interactive,
   emoji,
+  icon,
   title,
   sub,
   colorsOn,
@@ -78,6 +81,7 @@ function Tile({
   locked: boolean;
   interactive: boolean;
   emoji: string;
+  icon?: IconName;
   title: string;
   sub: string;
   colorsOn: [string, string];
@@ -89,11 +93,17 @@ function Tile({
         colors={on ? colorsOn : locked ? ['#2A1E4E', '#1D1538'] : ['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.03)']}
         style={StyleSheet.absoluteFill}
       />
-      <Text style={styles.tileEmoji}>{locked ? '🔒' : emoji}</Text>
+      {locked ? (
+        <Icon name="lock" size={28} color={colors.gold} style={{ height: 38, justifyContent: 'center' }} />
+      ) : icon ? (
+        <Icon name={icon} size={28} color={colors.white} style={{ height: 38, justifyContent: 'center' }} />
+      ) : (
+        <Text style={styles.tileEmoji}>{emoji}</Text>
+      )}
       <Text style={styles.tileTitle}>{title}</Text>
       <Text style={styles.tileSub}>{locked ? 'Unlock with Premium' : sub}</Text>
       <View style={[styles.tileState, on ? { backgroundColor: colors.green } : locked ? { backgroundColor: colors.gold } : null]}>
-        <Text style={[styles.tileStateText, (on || locked) && { color: colors.ink }]}>{locked ? '👑 PREMIUM' : on ? 'ON' : 'OFF'}</Text>
+        <Text style={[styles.tileStateText, (on || locked) && { color: colors.ink }]}>{locked ? 'PREMIUM' : on ? 'ON' : 'OFF'}</Text>
       </View>
     </View>
   );
@@ -184,7 +194,7 @@ function AddCard({ locked, count }: { locked: boolean; count: number }) {
         <Animated.View pointerEvents="none" style={[styles.addSweep, sweepStyle]} />
         <View style={styles.addTop}>
           <View style={styles.addIcon}>
-            <Text style={{ fontSize: 22 }}>✍️</Text>
+            <Icon name="write" size={22} color={colors.gold} />
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.addTitle}>Add your own questions</Text>
@@ -201,13 +211,13 @@ function AddCard({ locked, count }: { locked: boolean; count: number }) {
         </Animated.View>
         {locked && (
           <View style={styles.addPremium}>
-            <Text style={styles.addPremiumText}>👑 Unlock with Premium</Text>
+            <IconLabel icon="crown" textStyle={styles.addPremiumText}>Unlock with Premium</IconLabel>
           </View>
         )}
       </View>
       {locked && (
         <View style={styles.lockCorner}>
-          <Text style={{ fontSize: 12 }}>🔒</Text>
+          <Icon name="lock" size={12} color={colors.ink} strokeWidth={2.6} />
         </View>
       )}
     </LinearGradient>
@@ -290,12 +300,12 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
       <View style={styles.sheetBg}>
         <View style={styles.sheet}>
           <ScrollView contentContainerStyle={{ gap: 10 }} keyboardShouldPersistTaps="handled">
-            <Text style={styles.sheetTitle}>✍️ Your own questions</Text>
+            <IconLabel icon="write" size={22} gap={8} textStyle={styles.sheetTitle}>Your own questions</IconLabel>
             <Segmented<'write' | 'mine' | 'lobby'>
               options={[
-                { value: 'write', label: '✍️ Write' },
-                { value: 'mine', label: `📚 Mine (${mine.length})` },
-                { value: 'lobby', label: `🏠 Lobby (${state.custom?.length ?? 0})` },
+                { value: 'write', label: 'Write', icon: 'write' },
+                { value: 'mine', label: `Mine (${mine.length})`, icon: 'book' },
+                { value: 'lobby', label: `Lobby (${state.custom?.length ?? 0})`, icon: 'users' },
               ]}
               value={tab}
               onChange={setTab}
@@ -393,7 +403,7 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
                             dispatch({ type: 'removeCustom', id: q.id, by: myId, now: Date.now() });
                           }}
                         >
-                          <Text style={{ fontSize: 18 }}>🗑️</Text>
+                          <Icon name="trash" size={18} color={colors.dim} />
                         </Pressable>
                       )}
                     </View>

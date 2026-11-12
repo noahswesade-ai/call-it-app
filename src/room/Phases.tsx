@@ -22,6 +22,7 @@ import { FinalUnderdogAlert } from './Jackpot';
 import { bounce } from '@/ui/motion';
 import { StreakFlame } from './Streak';
 import { playSfx } from '@/ui/sound';
+import { Icon } from '@/ui/Icon';
 
 function RoundHeader({ state }: { state: GameState }) {
   const r = state.round!;
@@ -371,7 +372,7 @@ export function Betting({ state }: { state: GameState }) {
           </Row>
           {!myBet && (
             <SlideIn from="bottom" delay={250}>
-              <Button small variant="ghost" label={state.settings.mode === 'party' ? 'No Vote (costs 1 sip 🍺)' : 'No Vote'} onPress={() => bet('NONE')} />
+              <Button small variant="ghost" label={state.settings.mode === 'party' ? 'No Vote (costs 1 sip)' : 'No Vote'} onPress={() => bet('NONE')} />
             </SlideIn>
           )}
         </>
@@ -659,7 +660,7 @@ export function Challenge({ state }: { state: GameState }) {
                 <Text style={styles.hintText}>
                   💡 {isChallenger ? 'You’re playing AND hosting this round. ' : ''}Read the instructions and the {word} out loud to the room{q.type === 'TURN_BASED' || q.type === 'HOST_JUDGED' ? '' : ' — but keep the answer secret!'}
                 </Text>
-                <Text style={styles.hintClose}>✕</Text>
+                <Icon name="close" size={16} color={colors.dim} />
               </View>
             </Pulse>
           </Pressable>
@@ -706,7 +707,8 @@ export function Challenge({ state }: { state: GameState }) {
                 <Text style={styles.panelBody}>Type the real answer secretly before they guess.</Text>
                 <TextInput value={subjectDraft} onChangeText={setSubjectDraft} placeholder="Your real answer" placeholderTextColor="#8A84A6" style={styles.input} />
                 <Button
-                  label="🔒 Lock it in"
+                  icon="lock"
+                  label="Lock it in"
                   disabled={!subjectDraft.trim()}
                   onPress={() => dispatch({ type: 'subjectAnswer', playerId: myId, answer: subjectDraft.trim() })}
                 />
@@ -730,7 +732,8 @@ export function Challenge({ state }: { state: GameState }) {
                 <Pulse scale={1.03} duration={800}>
                   <Button
                     variant="secondary"
-                    label="👁️ Reveal answer"
+                    icon="eye"
+                    label="Reveal answer"
                     subtitle="Shows on everyone's phone except the challengers"
                     disabled={q.type === 'SUBJECT_JUDGED' && !r.subjectAnswer}
                     onPress={() => {
@@ -745,7 +748,8 @@ export function Challenge({ state }: { state: GameState }) {
               <Button
                 small
                 variant="ghost"
-                label={stallStart !== undefined && stallLeft > 0 ? `⏱️ ${Math.ceil(stallLeft / 1000)}…` : '⏱️ Start 5s stall timer'}
+                icon="timer"
+                label={stallStart !== undefined && stallLeft > 0 ? `${Math.ceil(stallLeft / 1000)}…` : 'Start 5s stall timer'}
                 onPress={() => setStallStart(Date.now())}
               />
             )}
@@ -754,7 +758,7 @@ export function Challenge({ state }: { state: GameState }) {
               <Button style={{ flex: 1 }} variant="a" label={playerById(state, a)?.name ?? 'A'} onPress={() => judge('A')} />
               <Button style={{ flex: 1 }} variant="b" label={playerById(state, b)?.name ?? 'B'} onPress={() => judge('B')} />
             </Row>
-            <Button small variant="ghost" label="🤝 Draw" onPress={() => judge('DRAW')} />
+            <Button small variant="ghost" icon="handshake" label="Draw" onPress={() => judge('DRAW')} />
           </View>
         </SlideIn>
       ) : (
@@ -769,7 +773,8 @@ export function Challenge({ state }: { state: GameState }) {
             small
             variant="ghost"
             disabled={!regenOk}
-            label={regenOk ? (hostPremium ? '🔄 New question' : `🔄 New question (${freeLeft} left)`) : '🔒 New question (Premium)'}
+            icon={regenOk ? 'refresh' : 'lock'}
+            label={regenOk ? (hostPremium ? 'New question' : `New question (${freeLeft} left)`) : 'New question (Premium)'}
             onPress={() => {
               tap('light');
               dispatch({ type: 'regenQuestion', now: Date.now() });
@@ -779,7 +784,8 @@ export function Challenge({ state }: { state: GameState }) {
             <Button
               small
               variant="ghost"
-              label="🚩 Remove this question"
+              icon="flag"
+              label="Remove this question"
               onPress={() => {
                 tap('medium');
                 dispatch({ type: 'removeCustom', id: q.id, by: myId, now: Date.now() });
@@ -1056,7 +1062,8 @@ export function Result({ state }: { state: GameState }) {
       {isHost ? (
         <Button
           variant="green"
-          label={isFinalRound(state) ? '🏆 Final results' : `Next round ▶ (${Math.ceil(left / 1000)})`}
+          icon={isFinalRound(state) ? 'trophy' : undefined}
+          label={isFinalRound(state) ? 'Final results' : `Next round ▶ (${Math.ceil(left / 1000)})`}
           onPress={() => dispatch({ type: 'next', now: Date.now() })}
         />
       ) : (

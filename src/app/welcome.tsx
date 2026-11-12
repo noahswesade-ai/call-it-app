@@ -7,6 +7,8 @@ import { useProfile } from '@/state/profile';
 import { Button, Screen, tap } from '@/ui/kit';
 import { Bob, PopIn, Pulse, SlideIn, Wobble } from '@/ui/motion';
 import { A_COLOR, B_COLOR, colors, fonts } from '@/ui/theme';
+import { Icon } from '@/ui/Icon';
+import { Logo } from '@/ui/Logo';
 
 /**
  * First-launch "how to play". Deliberately few words: each step is a picture
@@ -45,11 +47,12 @@ export default function Welcome() {
     <Screen scroll>
       <View style={styles.top}>
         <View style={{ width: 44 }} />
-        <PopIn>
+        <PopIn style={{ alignItems: 'center' }}>
+          <Logo width={92} />
           <Text style={styles.title}>How to play</Text>
         </PopIn>
         <Pressable onPress={close} style={styles.x} accessibilityRole="button" accessibilityLabel="Close">
-          <Text style={styles.xText}>✕</Text>
+          <Icon name="close" size={20} color={colors.white} />
         </Pressable>
       </View>
 
@@ -93,7 +96,7 @@ export default function Welcome() {
         <Pulse scale={1.12} duration={350}>
           <Text style={styles.big}>🐶</Text>
         </Pulse>
-        <Text style={styles.dogMath}>{'<33%'}</Text>
+        <Text style={styles.dogMath}>{'≤33%'}</Text>
         <Text style={styles.dogArrow}>→</Text>
         <Pulse scale={1.18} duration={300}>
           <Text style={styles.x3}>×3</Text>
@@ -109,7 +112,7 @@ export default function Welcome() {
       </Step>
 
       <PopIn delay={950}>
-        <Button big label="Let's go! 🐶" onPress={close} />
+        <Button big label="Let's go!" onPress={close} />
       </PopIn>
     </Screen>
   );

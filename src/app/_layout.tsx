@@ -9,6 +9,7 @@ import { ProfileProvider } from '@/state/profile';
 import { RoomProvider } from '@/net/RoomProvider';
 import { FollowGame } from '@/room/FollowGame';
 import { colors } from '@/ui/theme';
+import { Logo } from '@/ui/Logo';
 
 /**
  * On the web (the preview link), show the app inside a phone-sized frame whenever the
@@ -45,7 +46,13 @@ function PhoneFrame({ children }: { children: React.ReactNode }) {
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({ BricolageGrotesque_700Bold, BricolageGrotesque_800ExtraBold, PlusJakartaSans_500Medium, PlusJakartaSans_600SemiBold, PlusJakartaSans_700Bold });
-  if (!fontsLoaded) return <View style={{ flex: 1, backgroundColor: colors.bgBottom }} />;
+  // While fonts load, show the logo instead of a blank screen.
+  if (!fontsLoaded)
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.bgBottom, alignItems: 'center', justifyContent: 'center' }}>
+        <Logo width={200} />
+      </View>
+    );
   return (
     <PhoneFrame>
     <SafeAreaProvider>
