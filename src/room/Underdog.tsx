@@ -237,21 +237,21 @@ export function UnderdogVictory({ name, mode, final = false }: { name: string; m
 
 const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 20, zIndex: 5 },
-  alertTop: { fontSize: 34 },
+  alertTop: { fontSize: 30 },
   underdog: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 50,
-    letterSpacing: 1,
-    textShadowColor: colors.ink,
+    fontSize: 42,
+    letterSpacing: -0.5,
+    textShadowColor: 'rgba(0,0,0,0.35)',
     textShadowOffset: { width: 0, height: 5 },
-    textShadowRadius: 0,
+    textShadowRadius: 8,
   },
   smallPrint: { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 99, paddingHorizontal: 16, paddingVertical: 5 },
   smallPrintText: { color: colors.white, fontFamily: fonts.display, fontSize: 18, letterSpacing: 0.5 },
   ifWins: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 13, marginTop: 2, textAlign: 'center' },
   subtitle: { color: '#D8FFE9', fontFamily: fonts.bodyBold, fontSize: 16, textAlign: 'center' },
-  blink: { fontFamily: fonts.display, textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 4 }, textShadowRadius: 0, textAlign: 'center' },
+  blink: { fontFamily: fonts.display, textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 4 }, textShadowRadius: 8, textAlign: 'center' },
   dogCard: {
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.35)',
@@ -306,5 +306,5 @@ const styles = StyleSheet.create({
   victoryX3: { color: colors.gold, fontFamily: fonts.display, fontSize: 34 },
   victoryRule: { color: colors.white, fontFamily: fonts.display, fontSize: 18 },
   victoryTop: { color: colors.ink, fontFamily: fonts.display, fontSize: 22 },
-  victoryName: { color: colors.white, fontFamily: fonts.display, fontSize: 36, textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 0 },
+  victoryName: { color: colors.white, fontFamily: fonts.display, fontSize: 36, textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 8 },
 });

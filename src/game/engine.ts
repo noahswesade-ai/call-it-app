@@ -130,11 +130,15 @@ export type Action =
   /** Questions this player has already seen this session (sent when they join). */
   | { type: 'seen'; ids: string[] }
   | { type: 'regenQuestion'; now: number }
-  | { type: 'addCustom'; question: Question }
+  | { type: 'addCustom'; question: Question; by?: string }
   /** Several questions at once (e.g. "add all" from a player's own question bank). */
-  | { type: 'addCustomMany'; questions: Question[] }
-  /** The host removes one of the lobby's own questions (moderation); swaps it out if it's live. */
+  | { type: 'addCustomMany'; questions: Question[]; by?: string }
+  /**
+   * Take questions back out of the lobby. The host (or this round's host) may remove any
+   * (moderation); a player may remove the ones they added. A live question is swapped out.
+   */
   | { type: 'removeCustom'; id: string; by: string; now: number }
+  | { type: 'removeCustomMany'; ids: string[]; by: string; now: number }
   /** The host hands hosting to another player (lobby "More settings"). */
   | { type: 'transferHost'; to: string }
   /** The host ends the game for everyone and takes the whole room back to the lobby. */
@@ -231,7 +235,7 @@ function normPrompt(p: string): string {
   return p.trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
-function addCustomQuestions(state: GameState, qs: Question[]): GameState {
+function addCustomQuestions(state: GameState, qs: Question[], by?: string): GameState {
   if (!lobbyIsPremium(state)) return state;
   const custom = [...(state.custom ?? [])];
   const seen = new Set(custom.map((q) => normPrompt(q.prompt)));
@@ -241,7 +245,7 @@ function addCustomQuestions(state: GameState, qs: Question[]): GameState {
     const key = normPrompt(q.prompt);
     if (seen.has(key)) continue; // the same question twice is no fun
     seen.add(key);
-    custom.push({ ...q, custom: true, prompt: q.prompt.trim().slice(0, 240) });
+    custom.push({ ...q, custom: true, prompt: q.prompt.trim().slice(0, 240), addedBy: by ?? q.addedBy });
   }
   return custom.length === (state.custom?.length ?? 0) ? state : { ...state, custom };
 }
@@ -667,17 +671,20 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
     }
 
     case 'addCustom':
-      return addCustomQuestions(state, [action.question]);
+      return addCustomQuestions(state, [action.question], action.by);
 
     case 'addCustomMany':
-      return addCustomQuestions(state, action.questions ?? []);
+      return addCustomQuestions(state, action.questions ?? [], action.by);
 
-    case 'removeCustom': {
-      if (action.by !== state.hostId && action.by !== actingHostId(state)) return state;
-      if (!state.custom?.some((q) => q.id === action.id)) return state;
-      let next: GameState = { ...state, custom: state.custom.filter((q) => q.id !== action.id) };
+    case 'removeCustom':
+    case 'removeCustomMany': {
+      const ids = new Set(action.type === 'removeCustom' ? [action.id] : action.ids ?? []);
+      const moderator = action.by === state.hostId || action.by === actingHostId(state);
+      const gone = (q: Question) => ids.has(q.id) && (moderator || q.addedBy === action.by);
+      if (!state.custom?.some(gone)) return state;
+      let next: GameState = { ...state, custom: state.custom.filter((q) => !gone(q)) };
       const r = next.round;
-      if (r && r.question.id === action.id && next.phase !== 'result' && next.phase !== 'podium' && next.phase !== 'lobby') {
+      if (r && ids.has(r.question.id) && !next.custom!.some((q) => q.id === r.question.id) && next.phase !== 'result' && next.phase !== 'podium' && next.phase !== 'lobby') {
         // Swap in another question for free (doesn't use up the free host's swap).
         const regens = next.regens ?? 0;
         const swapped = reduce({ ...next, regens: 0, settings: { ...next.settings } }, { type: 'regenQuestion', now: action.now }, rng);

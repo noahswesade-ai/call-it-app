@@ -15,12 +15,13 @@ import Animated, {
  * Springy "boing" toward a value. Implemented as a timed overshoot curve rather
  * than withSpring, which stalls on the web build.
  */
-export function bounce(toValue: number, duration = 450, overshoot = 1.8) {
+export function bounce(toValue: number, duration = 380, overshoot = 1.8) {
   'worklet';
-  return withTiming(toValue, { duration, easing: Easing.out(Easing.back(overshoot)) });
+  // v2 style: a hint of overshoot, not a cartoon boing.
+  return withTiming(toValue, { duration, easing: Easing.out(Easing.back(Math.min(overshoot, 1.1))) });
 }
 
-/** Gentle idle float, so nothing on screen is ever fully still. */
+/** Gentle idle float. v2 style: half the travel, a little slower (calm, not bouncy). */
 export function Bob({
   children,
   amount = 4,
@@ -38,14 +39,14 @@ export function Bob({
   useEffect(() => {
     y.value = withDelay(
       delay,
-      withRepeat(withTiming(-amount, { duration, easing: Easing.inOut(Easing.sin) }), -1, true),
+      withRepeat(withTiming(-amount * 0.5, { duration: duration * 1.4, easing: Easing.inOut(Easing.sin) }), -1, true),
     );
   }, [amount, duration, delay, y]);
   const s = useAnimatedStyle(() => ({ transform: [{ translateY: y.value }] }));
   return <Animated.View style={[style, s]}>{children}</Animated.View>;
 }
 
-/** Repeating heartbeat scale. */
+/** Repeating "breathing" scale. v2 style: a third of the old size change, slower. */
 export function Pulse({
   children,
   scale = 1.06,
@@ -62,7 +63,7 @@ export function Pulse({
   const v = useSharedValue(1);
   useEffect(() => {
     v.value = active
-      ? withRepeat(withTiming(scale, { duration, easing: Easing.inOut(Easing.quad) }), -1, true)
+      ? withRepeat(withTiming(1 + (scale - 1) * 0.35, { duration: duration * 1.6, easing: Easing.inOut(Easing.sin) }), -1, true)
       : withTiming(1);
   }, [active, scale, duration, v]);
   const s = useAnimatedStyle(() => ({ transform: [{ scale: v.value }] }));
@@ -71,9 +72,9 @@ export function Pulse({
 
 /** Slight continuous wobble (rotation). */
 export function Wobble({ children, deg = 3, duration = 900, style }: { children: React.ReactNode; deg?: number; duration?: number; style?: StyleProp<ViewStyle> }) {
-  const r = useSharedValue(-deg);
+  const r = useSharedValue(-deg * 0.4);
   useEffect(() => {
-    r.value = withRepeat(withTiming(deg, { duration, easing: Easing.inOut(Easing.sin) }), -1, true);
+    r.value = withRepeat(withTiming(deg * 0.4, { duration, easing: Easing.inOut(Easing.sin) }), -1, true);
   }, [deg, duration, r]);
   const s = useAnimatedStyle(() => ({ transform: [{ rotate: `${r.value}deg` }] }));
   return <Animated.View style={[style, s]}>{children}</Animated.View>;
@@ -96,12 +97,12 @@ export function Shake({ children, trigger, strength = 8, style }: { children: Re
 }
 
 /** Springs from 0 to full size on mount, after an optional delay. */
-export function PopIn({ children, delay = 0, from = 0.3, style }: { children: React.ReactNode; delay?: number; from?: number; style?: StyleProp<ViewStyle> }) {
+export function PopIn({ children, delay = 0, from = 0.85, style }: { children: React.ReactNode; delay?: number; from?: number; style?: StyleProp<ViewStyle> }) {
   const v = useSharedValue(from);
   const o = useSharedValue(0);
   useEffect(() => {
     o.value = withDelay(delay, withTiming(1, { duration: 160 }));
-    v.value = withDelay(delay, withTiming(1, { duration: 450, easing: Easing.out(Easing.back(2.2)) }));
+    v.value = withDelay(delay, withTiming(1, { duration: 320, easing: Easing.out(Easing.cubic) }));
   }, [delay, v, o]);
   const s = useAnimatedStyle(() => ({ opacity: o.value, transform: [{ scale: v.value }] }));
   return <Animated.View style={[style, s]}>{children}</Animated.View>;
@@ -111,7 +112,7 @@ export function PopIn({ children, delay = 0, from = 0.3, style }: { children: Re
 export function SlideIn({
   children,
   from = 'bottom',
-  distance = 60,
+  distance = 24,
   delay = 0,
   style,
 }: {
@@ -127,7 +128,7 @@ export function SlideIn({
   useEffect(() => {
     o.value = withDelay(delay, withTiming(1, { duration: 200 }));
     // Timed with an overshoot curve: bouncy, but always lands exactly in place.
-    v.value = withDelay(delay, withTiming(0, { duration: 520, easing: Easing.out(Easing.back(1.6)) }));
+    v.value = withDelay(delay, withTiming(0, { duration: 380, easing: Easing.out(Easing.cubic) }));
   }, [delay, v, o]);
   const horizontal = from === 'left' || from === 'right';
   const s = useAnimatedStyle(() => ({
@@ -142,7 +143,7 @@ export function SlideIn({
  * starts at a random point with a slightly different speed, so a row of avatars
  * moves organically rather than in lockstep.
  */
-export function Sway({ children, deg = 5, style }: { children: React.ReactNode; deg?: number; style?: StyleProp<ViewStyle> }) {
+export function Sway({ children, deg = 2, style }: { children: React.ReactNode; deg?: number; style?: StyleProp<ViewStyle> }) {
   const seed = React.useMemo(() => ({ delay: Math.random() * 900, duration: 900 + Math.random() * 500 }), []);
   const r = useSharedValue(0);
   useEffect(() => {

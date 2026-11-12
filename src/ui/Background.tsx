@@ -2,49 +2,39 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withRepeat, withTiming } from 'react-native-reanimated';
-import Svg, { Circle, Polygon, Rect } from 'react-native-svg';
+import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
 import { colors } from './theme';
 import { useScreenSize } from '@/ui/screenSize';
 
-type Shape = 'circle' | 'triangle' | 'square' | 'star';
+/**
+ * v2 background: no confetti shapes. Two large, very soft glows drift slowly behind the
+ * content, enough movement to feel alive without competing with it.
+ */
+const GLOWS = [
+  { x: 0.15, y: 0.12, r: 260, key: 'a', dur: 14000, delay: 0 },
+  { x: 0.9, y: 0.78, r: 300, key: 'b', dur: 17000, delay: 2000 },
+] as const;
 
-const SHAPES: { shape: Shape; x: number; y: number; size: number; color: string; dur: number; delay: number }[] = [
-  { shape: 'circle', x: 0.08, y: 0.12, size: 46, color: colors.gold, dur: 7000, delay: 0 },
-  { shape: 'triangle', x: 0.82, y: 0.08, size: 52, color: colors.pink, dur: 8000, delay: 600 },
-  { shape: 'square', x: 0.9, y: 0.45, size: 38, color: colors.cyan, dur: 6500, delay: 300 },
-  { shape: 'star', x: 0.06, y: 0.55, size: 44, color: colors.green, dur: 9000, delay: 900 },
-  { shape: 'circle', x: 0.75, y: 0.82, size: 60, color: colors.violet, dur: 7500, delay: 200 },
-  { shape: 'triangle', x: 0.15, y: 0.88, size: 40, color: colors.gold, dur: 8500, delay: 1200 },
-  { shape: 'square', x: 0.45, y: 0.04, size: 26, color: colors.green, dur: 6000, delay: 400 },
-];
-
-function ShapeSvg({ shape, size, color }: { shape: Shape; size: number; color: string }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 100 100">
-      {shape === 'circle' && <Circle cx={50} cy={50} r={42} fill="none" stroke={color} strokeWidth={14} />}
-      {shape === 'triangle' && <Polygon points="50,8 94,88 6,88" fill="none" stroke={color} strokeWidth={13} strokeLinejoin="round" />}
-      {shape === 'square' && <Rect x={10} y={10} width={80} height={80} rx={14} fill="none" stroke={color} strokeWidth={13} />}
-      {shape === 'star' && (
-        <Polygon
-          points="50,6 61,38 95,38 67,58 78,92 50,71 22,92 33,58 5,38 39,38"
-          fill={color}
-        />
-      )}
-    </Svg>
-  );
-}
-
-function Floater({ s, w, h }: { s: (typeof SHAPES)[number]; w: number; h: number }) {
+function Glow({ g, w, h, color }: { g: (typeof GLOWS)[number]; w: number; h: number; color: string }) {
   const t = useSharedValue(0);
   useEffect(() => {
-    t.value = withDelay(s.delay, withRepeat(withTiming(1, { duration: s.dur, easing: Easing.inOut(Easing.sin) }), -1, true));
-  }, [s.delay, s.dur, t]);
+    t.value = withDelay(g.delay, withRepeat(withTiming(1, { duration: g.dur, easing: Easing.inOut(Easing.sin) }), -1, true));
+  }, [g.delay, g.dur, t]);
   const style = useAnimatedStyle(() => ({
-    transform: [{ translateY: -18 * t.value }, { translateX: 10 * t.value }, { rotate: `${t.value * 40 - 20}deg` }],
+    transform: [{ translateY: -40 * t.value }, { translateX: 30 * t.value }, { scale: 1 + 0.08 * t.value }],
   }));
+  const id = `glow-${g.key}`;
   return (
-    <Animated.View style={[{ position: 'absolute', left: s.x * w - s.size / 2, top: s.y * h, opacity: 0.22 }, style]}>
-      <ShapeSvg shape={s.shape} size={s.size} color={s.color} />
+    <Animated.View style={[{ position: 'absolute', left: g.x * w - g.r, top: g.y * h - g.r }, style]}>
+      <Svg width={g.r * 2} height={g.r * 2}>
+        <Defs>
+          <RadialGradient id={id} cx="50%" cy="50%" r="50%">
+            <Stop offset="0" stopColor={color} stopOpacity={0.32} />
+            <Stop offset="1" stopColor={color} stopOpacity={0} />
+          </RadialGradient>
+        </Defs>
+        <Circle cx={g.r} cy={g.r} r={g.r} fill={`url(#${id})`} />
+      </Svg>
     </Animated.View>
   );
 }
@@ -76,22 +66,22 @@ function Devil({ d, w, h }: { d: (typeof DEVILS)[number]; w: number; h: number }
   );
 }
 
-/** Full-screen party gradient with slowly drifting shapes. */
+/** Full-screen deep gradient with two slowly drifting soft glows. */
 export function Background({ tint }: { tint?: 'red' | 'green' | 'party' | 'spicy' | 'fire' }) {
   const { width, height } = useScreenSize();
-  const gradient = useMemo<[string, string, string]>(() => {
-    if (tint === 'red') return ['#7A0A1E', '#B3122E', '#3D0010'];
-    if (tint === 'green') return ['#05603A', '#0E9F5D', '#023821'];
-    if (tint === 'party' || tint === 'spicy') return ['#2A0040', '#5C0A6B', '#14001F'];
-    if (tint === 'fire') return ['#4A0A00', '#B8360A', '#2A0300'];
-    return [colors.bgTop, colors.bgMid, colors.bgBottom];
+  // Same deep base everywhere; the tint only changes the two glows (and darkens a touch).
+  const [base, glowA, glowB] = useMemo<[[string, string, string], string, string]>(() => {
+    if (tint === 'red') return [['#2A0D1A', '#1C0A16', '#0E060C'], colors.red, '#FF8A5C'];
+    if (tint === 'green') return [['#0D2A24', '#0B1F1C', '#06100E'], colors.green, colors.cyan];
+    if (tint === 'party' || tint === 'spicy') return [['#2A0F3A', '#1C0B2C', '#0E0618'], colors.neon, colors.violet];
+    if (tint === 'fire') return [['#2E1206', '#1E0B05', '#0F0603'], '#FF7A2E', colors.gold];
+    return [[colors.bgTop, colors.bgMid, colors.bgBottom], colors.violet, colors.gold];
   }, [tint]);
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="none">
-      <LinearGradient colors={gradient} start={{ x: 0.1, y: 0 }} end={{ x: 0.9, y: 1 }} style={StyleSheet.absoluteFill} />
-      {SHAPES.map((s, i) => (
-        <Floater key={i} s={s} w={width} h={height} />
-      ))}
+      <LinearGradient colors={base} start={{ x: 0.2, y: 0 }} end={{ x: 0.8, y: 1 }} style={StyleSheet.absoluteFill} />
+      <Glow g={GLOWS[0]} w={width} h={height} color={glowA} />
+      <Glow g={GLOWS[1]} w={width} h={height} color={glowB} />
       {tint === 'spicy' && DEVILS.map((d, i) => <Devil key={i} d={d} w={width} h={height} />)}
     </View>
   );

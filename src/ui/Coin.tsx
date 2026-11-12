@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     borderRadius: 99,
   },
   pillLg: { paddingVertical: 6, paddingRight: 18 },
-  count: { color: colors.gold, fontFamily: fonts.display, fontSize: 20, textShadowColor: '#7A3E00', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
+  count: { color: colors.gold, fontFamily: fonts.display, fontSize: 20, textShadowColor: '#7A3E00', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 8 },
   gain: { position: 'absolute', right: 6, top: 0, color: colors.gold, fontFamily: fonts.display, fontSize: 20 },
 });
 

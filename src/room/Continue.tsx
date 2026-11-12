@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
     color: colors.gold,
     fontFamily: fonts.display,
     fontSize: 22,
-    textShadowColor: colors.ink,
+    textShadowColor: 'rgba(0,0,0,0.35)',
     textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 0,
+    textShadowRadius: 8,
   },
   waiting: { color: colors.dim, fontSize: 17 },
 });

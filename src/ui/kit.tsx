@@ -123,7 +123,7 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'a' | 'b' | 'green
 
 const VARIANTS: Record<Variant, { face: string; lip: string; text: string }> = {
   primary: { face: colors.gold, lip: colors.goldLip, text: colors.ink },
-  secondary: { face: colors.violet, lip: colors.violetLip, text: colors.white },
+  secondary: { face: colors.surfaceHi, lip: '#1A1438', text: colors.white },
   ghost: { face: 'transparent', lip: 'transparent', text: colors.white },
   danger: { face: colors.red, lip: colors.redLip, text: colors.white },
   a: { face: colors.pink, lip: colors.pinkLip, text: colors.white },
@@ -132,9 +132,9 @@ const VARIANTS: Record<Variant, { face: string; lip: string; text: string }> = {
   cyan: { face: colors.cyan, lip: colors.cyanLip, text: colors.ink },
 };
 
-const LIP = 6;
+const LIP = 4;
 
-/** Chunky 3D game button: the face sinks onto its darker lip when pressed. */
+/** Game button with a slim darker lip: the face sinks onto it when pressed. */
 export function Button({
   label,
   onPress,
@@ -162,7 +162,7 @@ export function Button({
   const press = useSharedValue(0);
   const faceStyle = useAnimatedStyle(() => ({ transform: [{ translateY: press.value * (LIP - 1) }] }));
   const ghost = variant === 'ghost';
-  const lip = small ? 4 : LIP;
+  const lip = small ? 3 : LIP;
 
   return (
     <Pressable
@@ -182,13 +182,13 @@ export function Button({
       }}
       style={[{ opacity: disabled ? 0.45 : 1 }, style]}
     >
-      <View style={[styles.lip, { backgroundColor: v.lip, borderRadius: small ? 16 : 22, paddingBottom: ghost ? 0 : lip }]}>
+      <View style={[styles.lip, { backgroundColor: v.lip, borderRadius: small ? 12 : 16, paddingBottom: ghost ? 0 : lip }]}>
         <Animated.View
           style={[
             styles.face,
             small && styles.faceSmall,
             big && styles.faceBig,
-            { backgroundColor: v.face, borderRadius: small ? 16 : 22 },
+            { backgroundColor: v.face, borderRadius: small ? 12 : 16 },
             ghost && styles.ghost,
             faceStyle,
           ]}
@@ -197,14 +197,13 @@ export function Button({
             <ActivityIndicator color={v.text} />
           ) : (
             <>
-              <Text style={[styles.buttonText, small && { fontSize: 16 }, big && { fontSize: 28 }, { color: v.text }]}>
+              <Text style={[styles.buttonText, small && { fontSize: 15 }, big && { fontSize: 24 }, { color: v.text }]}>
                 {icon ? `${icon} ` : ''}
                 {label}
               </Text>
               {subtitle ? <Text style={[styles.subtitle, { color: v.text }]}>{subtitle}</Text> : null}
             </>
           )}
-          {!ghost && <View style={styles.shine} pointerEvents="none" />}
         </Animated.View>
       </View>
     </Pressable>
@@ -328,7 +327,7 @@ const styles = StyleSheet.create({
   content: { padding: 18, gap: 14, maxWidth: 560, width: '100%', alignSelf: 'center' },
   lip: {},
   face: {
-    minHeight: 58,
+    minHeight: 54,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -336,13 +335,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     transform: [{ translateY: 0 }],
   },
-  faceSmall: { minHeight: 42, paddingHorizontal: 14, paddingVertical: 6 },
-  faceBig: { minHeight: 84 },
-  ghost: { borderWidth: 2.5, borderColor: 'rgba(255,255,255,0.35)' },
-  shine: { position: 'absolute', top: 4, left: 12, right: 12, height: 8, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.28)' },
-  buttonText: { fontSize: 22, fontFamily: fonts.display, letterSpacing: 0.3 },
+  faceSmall: { minHeight: 40, paddingHorizontal: 14, paddingVertical: 6 },
+  faceBig: { minHeight: 72 },
+  ghost: { borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.22)' },
+  buttonText: { fontSize: 18, fontFamily: fonts.display, letterSpacing: 0 },
   subtitle: { fontSize: 14, fontFamily: fonts.bodySemi, opacity: 0.85, marginTop: 2, textAlign: 'center' },
-  card: { backgroundColor: colors.card, borderRadius: 24, padding: 16, gap: 10, borderWidth: 1.5, borderColor: colors.cardBorder },
+  card: { backgroundColor: colors.card, borderRadius: 18, padding: 16, gap: 10, borderWidth: 1, borderColor: colors.cardBorder },
   cardWhite: {
     backgroundColor: colors.white,
     borderColor: 'transparent',
@@ -353,22 +351,20 @@ const styles = StyleSheet.create({
   },
   h1: {
     color: colors.white,
-    fontSize: 38,
+    fontSize: 32,
     fontFamily: fonts.display,
-    textShadowColor: 'rgba(0,0,0,0.35)',
-    textShadowOffset: { width: 0, height: 3 },
-    textShadowRadius: 0,
+    letterSpacing: -0.5,
   },
-  h2: { color: colors.white, fontSize: 24, fontFamily: fonts.display },
-  body: { color: colors.white, fontSize: 17, lineHeight: 23, fontFamily: fonts.bodySemi },
+  h2: { color: colors.white, fontSize: 20, fontFamily: fonts.display, letterSpacing: -0.2 },
+  body: { color: colors.white, fontSize: 16, lineHeight: 22, fontFamily: fonts.bodySemi },
   dim: { color: colors.dim, fontSize: 15, lineHeight: 20, fontFamily: fonts.body },
   pill: { paddingHorizontal: 12, paddingVertical: 5, borderRadius: 99, alignSelf: 'flex-start' },
-  pillText: { fontSize: 14, fontFamily: fonts.display, letterSpacing: 0.3 },
+  pillText: { fontSize: 13, fontFamily: fonts.bodyBold, letterSpacing: 0.2 },
   toggleRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 6 },
   switch: { width: 54, height: 30, borderRadius: 15, padding: 3, justifyContent: 'center' },
   knob: { width: 24, height: 24, borderRadius: 12, backgroundColor: '#fff' },
-  segment: { flexDirection: 'row', backgroundColor: 'rgba(20,4,40,0.45)', borderRadius: 16, padding: 4, gap: 4 },
-  segmentItem: { flex: 1, paddingVertical: 10, borderRadius: 12, alignItems: 'center' },
-  segmentActive: { backgroundColor: colors.gold },
-  segmentText: { color: colors.white, fontFamily: fonts.display, fontSize: 16 },
+  segment: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.25)', borderRadius: 12, padding: 3, gap: 3 },
+  segmentItem: { flex: 1, paddingVertical: 9, borderRadius: 9, alignItems: 'center' },
+  segmentActive: { backgroundColor: colors.white },
+  segmentText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 14 },
 });

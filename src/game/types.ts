@@ -44,6 +44,8 @@ export interface Question {
   repeatable?: boolean;
   /** Written by players in this lobby. */
   custom?: boolean;
+  /** Player who put this custom question into the lobby (they may take it back out). */
+  addedBy?: string;
 }
 
 export type MinigameId =

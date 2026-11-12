@@ -84,7 +84,7 @@ export function AgeGate({ visible, onConfirm, onCancel }: { visible: boolean; on
                   value={year}
                   onChangeText={(t) => setYear(t.replace(/[^0-9]/g, '').slice(0, 4))}
                   placeholder="YYYY"
-                  placeholderTextColor="#8E7CC3"
+                  placeholderTextColor="#8A84A6"
                   keyboardType="number-pad"
                   maxLength={4}
                   style={styles.yearInput}
@@ -189,7 +189,7 @@ function YouCard() {
                 autoFocus={profile.namedByUser}
                 selectTextOnFocus
                 placeholder="Your name"
-                placeholderTextColor="#8E7CC3"
+                placeholderTextColor="#8A84A6"
                 style={styles.nameInput}
               />
             ) : (

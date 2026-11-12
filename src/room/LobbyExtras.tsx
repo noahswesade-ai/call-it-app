@@ -1,5 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { availableCategories, CATEGORIES } from '@/content/categories';
 import { CategoryIcon } from '@/content/CategoryIcon';
@@ -46,7 +47,7 @@ export function ModeTiles({
         emoji="🍻"
         title="PARTY MODE"
         sub="Drinking challenges"
-        colorsOn={['#FF4FD8', '#8E2DE2']}
+        colorsOn={['#B03A8C', '#5B2A9E']}
         onPress={() => (locked ? onLocked?.() : onParty?.(!party))}
       />
       <Tile
@@ -56,7 +57,7 @@ export function ModeTiles({
         emoji="🌶️"
         title="SPICY"
         sub="Flirty & dirty 18+"
-        colorsOn={['#FF3B3B', '#B3125A']}
+        colorsOn={['#D8434F', '#8E1F4A']}
         onPress={() => (locked ? onLocked?.() : onSpicy?.(!(party && spicy)))}
       />
     </View>
@@ -85,7 +86,7 @@ function Tile({
   const body = (
     <View style={[styles.tile, on ? styles.tileOn : locked ? styles.tileLocked : styles.tileOff]}>
       <LinearGradient
-        colors={on ? colorsOn : locked ? ['#3A1F5C', '#22103F'] : ['rgba(255,255,255,0.10)', 'rgba(255,255,255,0.04)']}
+        colors={on ? colorsOn : locked ? ['#2A1E4E', '#1D1538'] : ['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.03)']}
         style={StyleSheet.absoluteFill}
       />
       <Text style={styles.tileEmoji}>{locked ? '🔒' : emoji}</Text>
@@ -135,38 +136,81 @@ export function AddQuestionButton({ state }: { state: GameState }) {
   const [open, setOpen] = useState(false);
   const premium = lobbyIsPremium(state);
   const count = state.custom?.length ?? 0;
-  if (!premium) {
-    return (
+  return (
+    <>
       <Pressable
         onPress={() => {
           tap('medium');
-          router.push('/paywall');
+          if (premium) setOpen(true);
+          else router.push('/paywall');
         }}
         accessibilityRole="button"
-        accessibilityLabel="Add your own questions (Premium)"
+        accessibilityLabel={premium ? 'Add your own questions' : 'Add your own questions (Premium)'}
       >
-        <View style={[styles.addBtn, styles.addLocked]}>
-          <Text style={[styles.addTitle, { opacity: 0.6 }]}>✍️ Add your own questions</Text>
-          <Text style={[styles.addSub, { opacity: 0.6 }]}>Inside jokes, your friends, your rules</Text>
-          <View style={styles.lockCorner}>
-            <Text style={{ fontSize: 13 }}>🔒</Text>
-          </View>
-        </View>
+        <AddCard locked={!premium} count={count} />
       </Pressable>
-    );
-  }
-  return (
-    <>
-      <Pulse scale={1.02} duration={900}>
-        <Pressable onPress={() => setOpen(true)} accessibilityRole="button" accessibilityLabel="Add your own questions">
-          <View style={styles.addBtn}>
-            <Text style={styles.addTitle}>✍️ Add your own questions</Text>
-            <Text style={styles.addSub}>{count ? `${count} in this lobby · they come up much more often` : 'Inside jokes, your friends, your rules'}</Text>
-          </View>
-        </Pressable>
-      </Pulse>
       <AddQuestionSheet state={state} visible={open} onClose={() => setOpen(false)} />
     </>
+  );
+}
+
+/** Examples that rotate inside the button: shows what "your own questions" feel like. */
+const EXAMPLES = [
+  'Who can do a better impression of our boss?',
+  'What did Sam order at our first dinner together?',
+  'Name everyone who has ever crashed on our couch.',
+  'Who in this room cried hardest at the end of Toy Story 3?',
+  'Who can recite our group chat name history fastest?',
+];
+
+function AddCard({ locked, count }: { locked: boolean; count: number }) {
+  const [i, setI] = useState(0);
+  const fade = useSharedValue(1);
+  const sweep = useSharedValue(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      fade.value = withSequence(withTiming(0, { duration: 250 }), withTiming(1, { duration: 350 }));
+      setTimeout(() => setI((n) => (n + 1) % EXAMPLES.length), 250);
+    }, 3200);
+    sweep.value = withRepeat(withSequence(withTiming(0, { duration: 2400 }), withTiming(1, { duration: 1100, easing: Easing.inOut(Easing.quad) })), -1);
+    return () => clearInterval(id);
+  }, [fade, sweep]);
+  const fadeStyle = useAnimatedStyle(() => ({ opacity: fade.value }));
+  const sweepStyle = useAnimatedStyle(() => ({ transform: [{ translateX: -160 + sweep.value * 720 }, { rotate: '20deg' }] }));
+  return (
+    <LinearGradient colors={[colors.gold, '#FF8A5C', colors.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.addBorder}>
+      <View style={styles.addInner}>
+        <LinearGradient colors={['rgba(255,194,61,0.22)', 'rgba(255,92,122,0.12)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFill} />
+        <Animated.View pointerEvents="none" style={[styles.addSweep, sweepStyle]} />
+        <View style={styles.addTop}>
+          <View style={styles.addIcon}>
+            <Text style={{ fontSize: 22 }}>✍️</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.addTitle}>Add your own questions</Text>
+            <Text style={styles.addSub}>
+              {count ? `${count} in this lobby · they come up first` : 'Your crew, your inside jokes. They come up first.'}
+            </Text>
+          </View>
+          {!locked && <Text style={styles.addPlus}>＋</Text>}
+        </View>
+        <Animated.View style={[styles.addExample, fadeStyle]}>
+          <Text style={styles.addExampleText} numberOfLines={2}>
+            “{EXAMPLES[i]}”
+          </Text>
+        </Animated.View>
+        {locked && (
+          <View style={styles.addPremium}>
+            <Text style={styles.addPremiumText}>👑 Unlock with Premium</Text>
+          </View>
+        )}
+      </View>
+      {locked && (
+        <View style={styles.lockCorner}>
+          <Text style={{ fontSize: 12 }}>🔒</Text>
+        </View>
+      )}
+    </LinearGradient>
   );
 }
 
@@ -190,9 +234,25 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
   const numeric = Number(answer.replace(/[^0-9.\-]/g, ''));
   const valid = prompt.trim().length > 4 && (!needsAnswer || answer.trim().length > 0) && (kind !== 'SPOKEN_CLOSEST' || Number.isFinite(numeric));
 
-  const inLobby = new Set((state.custom ?? []).map((q) => norm(q.prompt)));
+  const lobbyQs = state.custom ?? [];
+  const inLobby = new Set(lobbyQs.map((q) => norm(q.prompt)));
   const mine = (profile.myQuestions ?? []).filter((q) => available.includes(q.category));
   const notYet = mine.filter((q) => !inLobby.has(norm(q.prompt)));
+  const allIn = mine.length > 0 && notYet.length === 0;
+  // Lobby copies of my questions that I'm allowed to take back out (mine, or any if host).
+  const lobbyCopies = (qs: Question[]) => {
+    const keys = new Set(qs.map((q) => norm(q.prompt)));
+    return lobbyQs.filter((q) => keys.has(norm(q.prompt)) && (isHost || q.addedBy === myId)).map((q) => q.id);
+  };
+  const setInLobby = (qs: Question[], select: boolean) => {
+    if (select) {
+      const add = qs.filter((q) => !inLobby.has(norm(q.prompt)));
+      if (add.length) dispatch({ type: 'addCustomMany', questions: add, by: myId });
+    } else {
+      const ids = lobbyCopies(qs);
+      if (ids.length) dispatch({ type: 'removeCustomMany', ids, by: myId, now: Date.now() });
+    }
+  };
   const hiddenCount = (profile.myQuestions ?? []).length - mine.length;
 
   const submit = () => {
@@ -212,7 +272,7 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
       numericAnswer: kind === 'SPOKEN_CLOSEST' ? numeric : undefined,
       custom: true,
     };
-    dispatch({ type: 'addCustom', question });
+    dispatch({ type: 'addCustom', question, by: myId });
     // Every question you write is also kept in "My questions" for future lobbies.
     saveQuestions([question]);
     tap('heavy');
@@ -260,7 +320,7 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
                       accessibilityRole="button"
                       accessibilityState={{ selected: category === c.id }}
                       onPress={() => setCategory(c.id)}
-                      style={[styles.cat, { borderColor: c.color, backgroundColor: category === c.id ? c.color : 'transparent' }]}
+                      style={[styles.cat, { borderColor: category === c.id ? colors.white : colors.cardBorder, backgroundColor: category === c.id ? colors.white : 'transparent' }]}
                     >
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
                         <CategoryIcon category={c.id} size={18} />
@@ -286,7 +346,7 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
                   value={prompt}
                   onChangeText={setPrompt}
                   placeholder={kind === 'HOST_JUDGED' ? 'e.g. Who can do the best moonwalk?' : kind === 'TURN_BASED' ? 'e.g. Name songs by Drake.' : 'e.g. Where did we go on our first group trip?'}
-                  placeholderTextColor="#8E7CC3"
+                  placeholderTextColor="#8A84A6"
                   multiline
                   maxLength={240}
                   style={[styles.input, { minHeight: 70 }]}
@@ -296,7 +356,7 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
                     value={answer}
                     onChangeText={setAnswer}
                     placeholder={kind === 'SPOKEN_CLOSEST' ? 'The real number, e.g. 42' : 'The answer (only the host sees it)'}
-                    placeholderTextColor="#8E7CC3"
+                    placeholderTextColor="#8A84A6"
                     keyboardType={kind === 'SPOKEN_CLOSEST' ? 'numeric' : 'default'}
                     style={styles.input}
                   />
@@ -315,7 +375,7 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
             ) : tab === 'lobby' ? (
               <>
                 <Text style={styles.hint}>
-                  {isHost ? 'Everything the room has added. Tap 🗑️ to remove a question.' : 'Everything the room has added. The host can remove questions.'}
+                  {isHost ? 'Everything the room has added. Tap 🗑️ to remove a question.' : 'Everything the room has added. You can remove the ones you added; the host can remove any.'}
                 </Text>
                 {(state.custom ?? []).length === 0 ? (
                   <Text style={styles.hint}>No questions yet. Be the first!</Text>
@@ -324,7 +384,7 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
                     <View key={q.id} style={styles.lobbyRow}>
                       <CategoryIcon category={q.category} size={16} />
                       <Text style={styles.lobbyPrompt}>{q.prompt}</Text>
-                      {isHost && (
+                      {(isHost || q.addedBy === myId) && (
                         <Pressable
                           accessibilityRole="button"
                           accessibilityLabel="Remove this question from the lobby"
@@ -347,24 +407,25 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
                     Nothing here yet. Every question you write in any lobby is saved here, so you can bring it to your next game in one tap.
                   </Text>
                 ) : (
-                  <Button
-                    variant="green"
-                    label={notYet.length ? `➕ Add all (${notYet.length})` : '✅ All added'}
-                    disabled={notYet.length === 0}
-                    onPress={() => {
-                      tap('heavy');
-                      dispatch({ type: 'addCustomMany', questions: notYet });
-                    }}
-                  />
+                  <>
+                    <View style={styles.selectRow}>
+                      <Text style={[styles.hint, { flex: 1 }]}>
+                        {mine.length - notYet.length} of {mine.length} in this lobby. Tap a question to add or remove it.
+                      </Text>
+                      <Pressable
+                        accessibilityRole="button"
+                        style={styles.selectAll}
+                        onPress={() => {
+                          tap('medium');
+                          setInLobby(mine, !allIn);
+                        }}
+                      >
+                        <Text style={styles.selectAllText}>{allIn ? 'Unselect all' : 'Select all'}</Text>
+                      </Pressable>
+                    </View>
+                    <MyQuestionsList questions={mine} isSelected={(q) => inLobby.has(norm(q.prompt))} onToggle={(q, on) => setInLobby([q], on)} />
+                  </>
                 )}
-                <MyQuestionsList
-                  questions={mine}
-                  isAdded={(q) => inLobby.has(norm(q.prompt))}
-                  onAdd={(q) => {
-                    tap('medium');
-                    dispatch({ type: 'addCustom', question: q });
-                  }}
-                />
                 {hiddenCount > 0 && <Text style={styles.hint}>{hiddenCount} more of yours are for Party/Spicy and don't fit this lobby's mode.</Text>}
               </>
             )}
@@ -378,43 +439,43 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
 
 const styles = StyleSheet.create({
   tiles: { flexDirection: 'row', gap: 10 },
-  tile: { borderRadius: 20, overflow: 'hidden', paddingVertical: 12, paddingHorizontal: 10, alignItems: 'center', gap: 2, borderWidth: 3, minHeight: 132 },
-  tileOn: { borderColor: '#FFF3', shadowColor: colors.neon, shadowOpacity: 0.9, shadowRadius: 16, shadowOffset: { width: 0, height: 0 } },
-  tileOff: { borderColor: 'rgba(255,255,255,0.25)', borderStyle: 'dashed' },
-  tileLocked: { borderColor: colors.gold, shadowColor: colors.gold, shadowOpacity: 0.6, shadowRadius: 12, shadowOffset: { width: 0, height: 0 } },
-  tileEmoji: { fontSize: 34 },
-  tileTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 19, textAlign: 'center' },
-  tileSub: { color: '#F2E6FF', fontFamily: fonts.bodySemi, fontSize: 12, textAlign: 'center' },
+  tile: { borderRadius: 18, overflow: 'hidden', paddingVertical: 12, paddingHorizontal: 10, alignItems: 'center', gap: 2, borderWidth: 1.5, minHeight: 124 },
+  tileOn: { borderColor: 'rgba(255,255,255,0.3)', shadowColor: colors.neon, shadowOpacity: 0.5, shadowRadius: 14, shadowOffset: { width: 0, height: 0 } },
+  tileOff: { borderColor: colors.cardBorder },
+  tileLocked: { borderColor: 'rgba(255,194,61,0.6)', shadowColor: colors.gold, shadowOpacity: 0.25, shadowRadius: 10, shadowOffset: { width: 0, height: 0 } },
+  tileEmoji: { fontSize: 30 },
+  tileTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 17, textAlign: 'center', letterSpacing: -0.2 },
+  tileSub: { color: '#E2D8F2', fontFamily: fonts.bodySemi, fontSize: 12, textAlign: 'center' },
   tileState: { marginTop: 4, borderRadius: 99, paddingHorizontal: 10, paddingVertical: 2, backgroundColor: 'rgba(255,255,255,0.2)' },
-  tileStateText: { color: colors.white, fontFamily: fonts.display, fontSize: 12, letterSpacing: 1 },
-  sheetBg: { flex: 1, backgroundColor: 'rgba(10,0,25,0.7)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#2A0E55', borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 18, maxHeight: '92%', maxWidth: 560, width: '100%', alignSelf: 'center' },
-  sheetTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 26 },
-  label: { color: colors.gold, fontFamily: fonts.display, fontSize: 14, letterSpacing: 1 },
+  tileStateText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 11, letterSpacing: 0.8 },
+  sheetBg: { flex: 1, backgroundColor: 'rgba(5,3,12,0.7)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: colors.surface, borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 18, maxHeight: '92%', maxWidth: 560, width: '100%', alignSelf: 'center' },
+  sheetTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 24, letterSpacing: -0.4 },
+  label: { color: colors.dim, fontFamily: fonts.bodyBold, fontSize: 12, letterSpacing: 1, textTransform: 'uppercase' },
   hint: { color: colors.dim, fontFamily: fonts.body, fontSize: 13 },
   cats: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  cat: { borderWidth: 2, borderRadius: 99, paddingHorizontal: 10, paddingVertical: 5 },
-  catText: { color: colors.white, fontFamily: fonts.display, fontSize: 13 },
+  cat: { borderWidth: 1.5, borderRadius: 99, paddingHorizontal: 10, paddingVertical: 5 },
+  catText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 13 },
   input: { backgroundColor: colors.white, borderRadius: 14, padding: 12, fontSize: 17, fontFamily: fonts.bodySemi, color: colors.ink },
-  addBtn: {
-    borderRadius: 22,
-    borderWidth: 3,
-    borderColor: colors.gold,
-    backgroundColor: 'rgba(255,201,60,0.14)',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-  },
-  addLocked: { borderColor: 'rgba(255,201,60,0.45)', backgroundColor: 'rgba(0,0,0,0.35)' },
-  addTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 20 },
-  addSub: { color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 13, marginTop: 2 },
+  addBorder: { borderRadius: 20, padding: 1.5 },
+  addInner: { borderRadius: 19, backgroundColor: '#1D1538', padding: 14, gap: 10, overflow: 'hidden' },
+  addSweep: { position: 'absolute', top: -40, bottom: -40, width: 60, backgroundColor: 'rgba(255,255,255,0.10)' },
+  addTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  addIcon: { width: 44, height: 44, borderRadius: 12, backgroundColor: 'rgba(255,194,61,0.18)', alignItems: 'center', justifyContent: 'center' },
+  addTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 19, letterSpacing: -0.3 },
+  addSub: { color: '#E8DDF5', fontFamily: fonts.bodySemi, fontSize: 12.5, marginTop: 1 },
+  addPremium: { backgroundColor: colors.gold, borderRadius: 10, paddingVertical: 8, alignItems: 'center' },
+  addPremiumText: { color: colors.ink, fontFamily: fonts.display, fontSize: 15 },
+  addPlus: { color: colors.gold, fontFamily: fonts.display, fontSize: 28 },
+  addExample: { borderRadius: 12, backgroundColor: 'rgba(0,0,0,0.25)', paddingHorizontal: 12, paddingVertical: 9 },
+  addExampleText: { color: colors.white, fontFamily: fonts.bodySemi, fontStyle: 'italic', fontSize: 13.5, lineHeight: 18 },
   lockCorner: {
     position: 'absolute',
     top: -8,
     right: -6,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
     backgroundColor: colors.gold,
     borderWidth: 2,
     borderColor: colors.ink,
@@ -427,5 +488,8 @@ const styles = StyleSheet.create({
   countRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },
   countChip: { flexDirection: 'row', alignItems: 'center', gap: 3, borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.3)', borderRadius: 99, paddingHorizontal: 7, paddingVertical: 2 },
   countText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 12 },
+  selectRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  selectAll: { borderRadius: 99, backgroundColor: colors.white, paddingHorizontal: 14, paddingVertical: 7 },
+  selectAllText: { color: colors.ink, fontFamily: fonts.bodyBold, fontSize: 13 },
   added: { color: colors.green, fontFamily: fonts.bodyBold, fontSize: 15, textAlign: 'center' },
 });

@@ -4,7 +4,8 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withTimi
 import { colors } from './theme';
 import { useScreenSize } from '@/ui/screenSize';
 
-const PALETTE = [colors.gold, colors.pink, colors.cyan, colors.green, colors.violet, '#FFFFFF'];
+// v2: a restrained palette (brand amber, white and one soft accent) instead of a rainbow.
+const PALETTE = [colors.gold, '#FFFFFF', colors.gold, '#FFE3A3', colors.pink];
 
 function Piece({ i, w, h, origin }: { i: number; w: number; h: number; origin: 'top' | 'center' }) {
   const seed = useMemo(

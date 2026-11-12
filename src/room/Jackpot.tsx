@@ -272,7 +272,7 @@ export function FinalUnderdogAlert({
         <EmojiRain emoji="🐶" count={12} />
       </Layer>
       <Layer v={jackBg}>
-        <LinearGradient colors={['#FF2D95', '#FFB000', '#00D9FF']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFill} />
+        <LinearGradient colors={['#2A1660', '#A0306E', '#E89A2A']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFill} />
         <JackpotRays />
         {merged && <EmojiRain emoji="💎" count={16} />}
       </Layer>
@@ -285,7 +285,7 @@ export function FinalUnderdogAlert({
         <Animated.View style={[styles.multiSlot, sixSt]}>
           <Animated.View style={[styles.sixHalo, haloSt]} />
           {merged && (
-            <Text style={styles.jackpotLabel}>💎 JACKPOT ROUND 💎</Text>
+            <Text style={styles.jackpotLabel} numberOfLines={1} adjustsFontSizeToFit>💎 JACKPOT ROUND 💎</Text>
           )}
           <View style={styles.sixBox}>
             <Text style={styles.sixShadow}>6×</Text>
@@ -318,12 +318,12 @@ const styles = StyleSheet.create({
   multiSlot: { position: 'absolute', alignItems: 'center' },
   multiLabel: {
     fontFamily: fonts.display,
-    fontSize: 34,
+    fontSize: 28,
     marginBottom: 8,
     textAlign: 'center',
-    textShadowColor: colors.ink,
+    textShadowColor: 'rgba(0,0,0,0.35)',
     textShadowOffset: { width: 0, height: 3 },
-    textShadowRadius: 0,
+    textShadowRadius: 8,
   },
   multiBox: {
     alignItems: 'center',
@@ -343,12 +343,12 @@ const styles = StyleSheet.create({
   jackpotLabel: {
     color: colors.white,
     fontFamily: fonts.display,
-    fontSize: 36,
+    fontSize: 28,
     marginBottom: 10,
     textAlign: 'center',
     textShadowColor: '#7A0050',
     textShadowOffset: { width: 0, height: 4 },
-    textShadowRadius: 0,
+    textShadowRadius: 8,
   },
   sixBox: { alignItems: 'center', justifyContent: 'center' },
   six: {

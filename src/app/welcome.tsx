@@ -117,7 +117,7 @@ export default function Welcome() {
 
 const styles = StyleSheet.create({
   top: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  title: { color: colors.white, fontFamily: fonts.display, fontSize: 32, textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 0 },
+  title: { color: colors.white, fontFamily: fonts.display, fontSize: 32, textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 8 },
   x: {
     width: 44,
     height: 44,

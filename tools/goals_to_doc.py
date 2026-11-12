@@ -31,7 +31,7 @@ def para(text, level=None, style=None, bold_all=False, link=None):
     pos_raw += u16(line); pos_clean += u16(text + '\n')
 
 para('Goals', style='HEADING_1')
-para('Every Underdog feature is designed and checked against these ten goals. Each goal lists its Implications (rules for making decisions) and its Execution (how the app already works toward the goal). Under each item, every indented line gives one reason and the single source it comes from. Figures marked "vendor data" come from companies that sell tools to app makers, so treat them as directional. Last updated 11 November 2026.')
+para('Every Underdog feature is designed and checked against these ten goals. Each goal lists its Implications (rules for making decisions) and its Execution (how the app already works toward the goal). Under each item, every indented line gives one reason and the single source it comes from. Figures marked "vendor data" come from companies that sell tools to app makers, so treat them as directional. Last updated 12 November 2026.')
 for n, (title, imps, exes) in enumerate(GOALS, 1):
     para(f'Goal {n}: {title}', level=0, bold_all=True)
     for label, items in (('Implications:', imps), ('Execution:', exes)):

@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
   count: {
     fontFamily: fonts.display,
     marginLeft: 1,
-    textShadowColor: colors.ink,
+    textShadowColor: 'rgba(0,0,0,0.35)',
     textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 0,
+    textShadowRadius: 8,
   },
 });

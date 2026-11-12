@@ -513,7 +513,7 @@ export function BetsReveal({ state }: { state: GameState }) {
               <GrowBar pct={pct(backers.length)} color={color} delay={PCT_AT} />
               {dog === p && (
                 <PopIn delay={CALLOUT_AT + 200} from={2}>
-                  <Text style={styles.under33}>⬆ 33% OR LESS!</Text>
+                  <Text style={styles.under33} numberOfLines={1}>⬆ 33% or less</Text>
                 </PopIn>
               )}
               <View style={styles.stack}>
@@ -657,7 +657,7 @@ export function Challenge({ state }: { state: GameState }) {
             <Pulse scale={1.03} duration={900}>
               <View style={styles.hint}>
                 <Text style={styles.hintText}>
-                  💡 Read the instructions and the {word} out loud to the room{q.type === 'TURN_BASED' || q.type === 'HOST_JUDGED' ? '' : ' — but keep the answer secret!'}
+                  💡 {isChallenger ? 'You’re playing AND hosting this round. ' : ''}Read the instructions and the {word} out loud to the room{q.type === 'TURN_BASED' || q.type === 'HOST_JUDGED' ? '' : ' — but keep the answer secret!'}
                 </Text>
                 <Text style={styles.hintClose}>✕</Text>
               </View>
@@ -675,8 +675,9 @@ export function Challenge({ state }: { state: GameState }) {
         </View>
       </SlideIn>
 
-      {isChallenger ? (
-        // Challengers don't get to read ahead: they hear it from the host.
+      {isChallenger && !canJudge ? (
+        // Challengers don't get to read ahead: they hear it from the host. (A host who is
+        // also a challenger with nobody to stand in still has to see it to read it out.)
         <PopIn delay={300}>
           <View style={styles.listenCard}>
             <Pulse scale={1.08} duration={700}>
@@ -703,7 +704,7 @@ export function Challenge({ state }: { state: GameState }) {
             ) : (
               <>
                 <Text style={styles.panelBody}>Type the real answer secretly before they guess.</Text>
-                <TextInput value={subjectDraft} onChangeText={setSubjectDraft} placeholder="Your real answer" placeholderTextColor="#8E7CC3" style={styles.input} />
+                <TextInput value={subjectDraft} onChangeText={setSubjectDraft} placeholder="Your real answer" placeholderTextColor="#8A84A6" style={styles.input} />
                 <Button
                   label="🔒 Lock it in"
                   disabled={!subjectDraft.trim()}
@@ -1079,7 +1080,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 7,
     borderBottomColor: 'rgba(0,0,0,0.25)',
   },
-  fighterName: { color: colors.white, fontFamily: fonts.display, fontSize: 22, textShadowColor: 'rgba(0,0,0,0.3)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
+  fighterName: { color: colors.white, fontFamily: fonts.display, fontSize: 22, textShadowColor: 'rgba(0,0,0,0.3)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 8 },
   vsWrap: { width: 0, alignItems: 'center', zIndex: 3 },
   vs: {
     width: 64,
@@ -1113,12 +1114,12 @@ const styles = StyleSheet.create({
   finalSub: { color: colors.white, fontFamily: fonts.display, fontSize: 18, textAlign: 'center', marginTop: 10 },
   leaderPill: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'rgba(0,0,0,0.35)', borderRadius: 99, paddingHorizontal: 12, paddingVertical: 4, marginTop: 8 },
   leaderText: { color: colors.gold, fontFamily: fonts.display, fontSize: 15 },
-  youreUp: { color: colors.gold, fontFamily: fonts.display, fontSize: 34, textAlign: 'center', textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 0 },
+  youreUp: { color: colors.gold, fontFamily: fonts.display, fontSize: 34, textAlign: 'center', textShadowColor: 'rgba(0,0,0,0.35)', textShadowOffset: { width: 0, height: 3 }, textShadowRadius: 8 },
   spinTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 24, textAlign: 'center' },
   callIt: { color: colors.white, fontFamily: fonts.display, fontSize: 28, textAlign: 'center' },
   pickLip: { borderRadius: 26, paddingBottom: 7 },
   pickFace: { borderRadius: 26, alignItems: 'center', paddingVertical: 16, paddingHorizontal: 6, overflow: 'hidden' },
-  pickName: { color: colors.white, fontFamily: fonts.display, fontSize: 24, textShadowColor: 'rgba(0,0,0,0.3)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
+  pickName: { color: colors.white, fontFamily: fonts.display, fontSize: 24, textShadowColor: 'rgba(0,0,0,0.3)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 8 },
   stampWrap: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   stamp: {
     color: colors.white,
@@ -1139,7 +1140,7 @@ const styles = StyleSheet.create({
   pct: { fontSize: 44, fontFamily: fonts.display },
   calloutWrap: { position: 'absolute', top: -4, left: -26, right: -26, bottom: -18, alignItems: 'center', justifyContent: 'center' },
   calloutRing: { width: 132, height: 76, borderRadius: 38, borderWidth: 5, borderColor: colors.gold, backgroundColor: 'rgba(255,201,60,0.18)' },
-  under33: { color: colors.gold, fontFamily: fonts.display, fontSize: 20, textShadowColor: colors.ink, textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
+  under33: { color: colors.gold, fontFamily: fonts.display, fontSize: 15, textAlign: 'center', letterSpacing: 0.3 },
   noBackers: { color: colors.dim, fontFamily: fonts.display, fontSize: 15 },
   stack: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4 },
   backerName: { color: colors.white, fontFamily: fonts.bodySemi, fontSize: 11, textAlign: 'center', maxWidth: 52 },
@@ -1227,7 +1228,7 @@ const styles = StyleSheet.create({
   youLose: { backgroundColor: '#E8324A', borderColor: '#8E0F22' },
   youNeutral: { backgroundColor: 'rgba(20,4,40,0.6)', borderColor: 'rgba(255,255,255,0.25)' },
   youLabel: { color: colors.white, fontFamily: fonts.display, fontSize: 19, letterSpacing: 0.5, opacity: 0.95, textAlign: 'center' },
-  youBig: { textAlign: 'center', color: colors.white, fontFamily: fonts.display, fontSize: 40, textShadowColor: 'rgba(0,0,0,0.25)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 0 },
+  youBig: { textAlign: 'center', color: colors.white, fontFamily: fonts.display, fontSize: 40, textShadowColor: 'rgba(0,0,0,0.25)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 8 },
   youStrip: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'rgba(20,4,40,0.6)', borderRadius: 20, padding: 10, borderWidth: 2, borderColor: 'rgba(255,255,255,0.2)' },
   youWin: { backgroundColor: '#1FB866', borderColor: '#0B6B39' },
   youDrink: { borderColor: colors.red, backgroundColor: 'rgba(255,71,87,0.25)' },

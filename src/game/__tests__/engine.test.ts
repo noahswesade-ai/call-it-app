@@ -494,6 +494,15 @@ describe('pause, kick and category odds', () => {
     }
   });
 
+  it('a player can take their own questions back out of the lobby, but not other people’s', () => {
+    const mk = (i: number) => ({ id: `m${i}`, category: 'geography' as const, type: 'SPOKEN_EXACT' as const, difficulty: 'M' as const, prompt: `Mine ${i}?`, answer: 'x' });
+    let g = reduce(newGame(4, {}, { premium: true }), { type: 'addCustomMany', questions: [mk(0), mk(1)], by: 'p1' });
+    g = reduce(g, { type: 'addCustom', question: mk(2), by: 'p2' });
+    expect(g.custom!.map((q) => q.addedBy)).toEqual(['p1', 'p1', 'p2']);
+    g = reduce(g, { type: 'removeCustomMany', ids: ['m0', 'm1', 'm2'], by: 'p1', now: 1 });
+    expect(g.custom!.map((q) => q.id)).toEqual(['m2']);
+  });
+
   it('player questions with slurs are filtered out', () => {
     const bad = { id: 'b', category: 'geography' as const, type: 'HOST_JUDGED' as const, difficulty: 'M' as const, prompt: 'kys loser' };
     const g = reduce(newGame(3, {}, { premium: true }), { type: 'addCustom', question: bad });

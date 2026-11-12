@@ -141,7 +141,7 @@ GOALS = [
    ('Every round screen shows the round number, a host pill ("You\'re hosting this round!" for a stand-in), a countdown ring, "x / y called it", and the Underdog or Jackpot tag on the challenger throughout the challenge.', [
      W('nng10', 'Keeps the state of the round visible on every phone.'),
    ]),
-   ('The host tip ("Read the instructions and the question out loud") sits above the instructions and question it refers to. Challengers see "Ears open!" instead of the question, and the revealed answer appears for everyone except the two challengers.', [
+   ('The host tip ("Read the instructions and the question out loud") sits above the instructions and question it refers to. Challengers see "Ears open!" instead of the question (unless nobody else can stand in, so the challenger is also hosting the round: then they see it to read it out), and the revealed answer appears for everyone except the two challengers.', [
      W('nng10', 'Information appears in a natural, logical order (the instruction before the content it is about); this ordering is our inference from the heuristic.'),
    ]),
    ('A call can be changed until betting closes ("Changed your mind? Tap the other side"), instead of being final on the first tap.', [
@@ -150,9 +150,10 @@ GOALS = [
    ('Confirmation dialogs only appear for leaving and removing a player, with outcome buttons: "Stay" / "Leave", "Keep them" / "Remove".', [
      W('nngconf', 'Confirm only consequential actions and label buttons by outcome.'),
    ]),
-   ('Only three takeovers exist: Underdog x3, Final Round x2 and the rare Jackpot x6, each dismissing itself after a few seconds. The x6 explains itself visually: x2 steps aside, x3 joins, and they merge.', [
-     W('kao', 'Keeps spectacle in the medium range that tested best.'),
+   ('Only three takeovers exist: Underdog x3, Final Round x2 and the rare Jackpot x6, each dismissing itself after a few seconds. The x6 explains itself visually: x2 steps aside, x3 joins, and they merge. New in this pass: everything else is calmer and more grown-up: one modern display font and one clean body font, a deep indigo base with a single amber accent, colour only where it means something (coral and sky for the two challengers, green and red for right and wrong, magenta for Party), much less idle bouncing, and soft, quiet sound effects.', [
+     W('kao', 'Keeps spectacle in the medium range that tested best: idle motion is cut and the spectacle is saved for the three takeovers.'),
      W('juice', 'Layered animation, sound and shake make key moments feel satisfying.'),
+     W('families', 'Google weighs art style and characters when deciding whether an app appeals to children, so an adult-looking style lowers that risk for an 18+ game.'),
    ]),
    ('Haptics reinforce calls, wins and takeovers.', [
      W('singhal', 'Vibration paired with visuals improved enjoyment in testing.'),
@@ -183,7 +184,7 @@ GOALS = [
    ('Animations use Reanimated\'s default setting, which follows the system Reduce Motion option (animations jump to their final state).', [
      W('wcag', 'Covers the motion-off requirement without a separate setting.'),
    ]),
-   ('Multipliers always appear as text ("x3", "33% OR LESS") as well as color, and both sides of a face-off show names, not only pink and blue.', [
+   ('Multipliers always appear as text ("x3", "33% or less") as well as color, and both sides of a face-off show names, not only pink and blue.', [
      W('wcag', 'Color is never the only signal.'),
    ]),
    ('New in this pass: the host can set betting time to 30, 45 or 60 seconds; betting still ends early once everyone has called it.', [
@@ -227,7 +228,7 @@ GOALS = [
    ('The wheel and takeovers animate only position, rotation and opacity on the UI thread.', [
      W('render', 'Matches Android\'s guidance for smooth animation.'),
    ]),
-   ('Every release runs 67 automated rule tests plus scripted multi-phone games. This pass caught and fixed an animation crash and a practice-mode freeze (a bot was chosen as stand-in host).', [
+   ('Every release runs 68 automated rule tests plus scripted multi-phone games. This pass caught and fixed an animation crash and a practice-mode freeze (a bot was chosen as stand-in host).', [
      W('khalid', 'Regressions after updates are a common cause of bad reviews.'),
    ]),
  ]),
@@ -422,7 +423,7 @@ GOALS = [
      W('headsup', 'Heads Up! keeps adding themed decks (40+).'),
    ]),
  ], [
-   ('One short form (category, type, difficulty, question, answer). Every question written is saved to "My questions", which can add them to any Premium lobby one by one or all at once.', [
+   ('One short form (category, type, difficulty, question, answer). Every question written is saved to "My questions". In any Premium lobby, tapping a saved question puts it in or takes it out of the lobby (with Select all / Unselect all); "Delete forever" removes it from My questions after a confirm.', [
      W('ikea', 'Quick to finish and reusable, so the effort pays off.'),
    ]),
    ('When the wheel lands on a category with unused lobby questions, it picks one 75% of the time. "Only our questions" mode needs at least 10 per selected category and warns the host when that is not met.', [
@@ -431,7 +432,7 @@ GOALS = [
    ('New in this pass: a "YOUR CREW\'S" label appears when a player-written question comes up.', [
      W('ikea', 'Players see their own work in play.'),
    ]),
-   ('New in this pass: a filter blocks slurs and threats (checked again on the host phone), the form states the rule against bullying or sexually targeting real people, and the host can remove any lobby question from the lobby list or with "Remove this question" mid-game, which swaps in another question for free.', [
+   ('New in this pass: a filter blocks slurs and threats (checked again on the host phone), the form states the rule against bullying or sexually targeting real people, players can take their own questions back out, and the host can remove any lobby question from the lobby list or with "Remove this question" mid-game, which swaps in another question for free.', [
      W('apple_guide', 'Meets the filtering and removal parts of guideline 1.2.'),
      W('googleugc', 'Covers Google\'s moderation requirement for content shared in a room.'),
    ]),

@@ -9,7 +9,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Circle, Polygon } from 'react-native-svg';
+import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
 import { colors, fonts } from '@/ui/theme';
 import { bounce } from '@/ui/motion';
 import { useScreenSize } from '@/ui/screenSize';
@@ -60,11 +60,12 @@ function SecondTick({ value, danger, size }: { value: number; danger?: boolean; 
 export function Slam({ text, color = colors.white, size = 56, delay = 0 }: { text: string; color?: string; size?: number; delay?: number }) {
   const s = useSharedValue(3);
   const o = useSharedValue(0);
-  const r = useSharedValue(-12);
+  const r = useSharedValue(0);
   useEffect(() => {
+    // v2: a firm scale-in, no cartoon tilt.
+    s.value = 1.6;
     o.value = withDelay(delay, withTiming(1, { duration: 120 }));
-    s.value = withDelay(delay, bounce(1));
-    r.value = withDelay(delay, withSequence(bounce(4), bounce(-2)));
+    s.value = withDelay(delay, withTiming(1, { duration: 320, easing: Easing.out(Easing.cubic) }));
   }, [delay, s, o, r]);
   const st = useAnimatedStyle(() => ({ opacity: o.value, transform: [{ scale: s.value }, { rotate: `${r.value}deg` }] }));
   return (
@@ -73,11 +74,13 @@ export function Slam({ text, color = colors.white, size = 56, delay = 0 }: { tex
         {
           color,
           fontFamily: fonts.display,
-          fontSize: size,
+          // The v2 display face runs wider than the old one: scale headline sizes to fit.
+          fontSize: Math.round(size * 0.82),
+          letterSpacing: -0.5,
           textAlign: 'center',
-          textShadowColor: colors.ink,
-          textShadowOffset: { width: 0, height: 5 },
-          textShadowRadius: 0,
+          textShadowColor: 'rgba(0,0,0,0.35)',
+          textShadowOffset: { width: 0, height: 3 },
+          textShadowRadius: 8,
         },
         st,
       ]}
@@ -136,26 +139,32 @@ export function GrowBar({ pct, color, delay = 0, height = 18 }: { pct: number; c
   );
 }
 
-/** Rotating sunburst rays behind a hero element. */
+/**
+ * Soft spotlight glow behind a hero element (v2: replaces the cartoon sunburst rays).
+ * Breathes very slowly. `color` is an rgba string; its alpha sets the strength.
+ */
 export function Sunburst({ size = 320, color = 'rgba(255,255,255,0.08)' }: { size?: number; color?: string }) {
-  const r = useSharedValue(0);
+  const v = useSharedValue(0);
   useEffect(() => {
-    r.value = withRepeat(withTiming(360, { duration: 18000, easing: Easing.linear }), -1);
-  }, [r]);
-  const st = useAnimatedStyle(() => ({ transform: [{ rotate: `${r.value}deg` }] }));
-  const rays = 14;
-  const c = size / 2;
-  const polys = Array.from({ length: rays }, (_, i) => {
-    const a0 = ((i - 0.25) / rays) * Math.PI * 2;
-    const a1 = ((i + 0.25) / rays) * Math.PI * 2;
-    return `${c},${c} ${c + c * Math.cos(a0)},${c + c * Math.sin(a0)} ${c + c * Math.cos(a1)},${c + c * Math.sin(a1)}`;
-  });
+    v.value = withRepeat(withTiming(1, { duration: 2600, easing: Easing.inOut(Easing.sin) }), -1, true);
+  }, [v]);
+  const st = useAnimatedStyle(() => ({ opacity: 0.8 + 0.2 * v.value, transform: [{ scale: 0.96 + 0.06 * v.value }] }));
+  const m = color.match(/rgba?\(([^)]+)\)/);
+  const parts = m ? m[1].split(',').map((x) => x.trim()) : ['255', '255', '255', '0.1'];
+  const rgb = `rgb(${parts[0]},${parts[1]},${parts[2]})`;
+  const alpha = Math.min(0.5, Number(parts[3] ?? 0.1) * 2.2);
+  const id = useMemo(() => `spot-${Math.random().toString(36).slice(2, 8)}`, []);
   return (
     <Animated.View pointerEvents="none" style={[{ position: 'absolute', width: size, height: size }, st]}>
       <Svg width={size} height={size}>
-        {polys.map((pts, i) => (
-          <Polygon key={i} points={pts} fill={color} />
-        ))}
+        <Defs>
+          <RadialGradient id={id} cx="50%" cy="50%" r="50%">
+            <Stop offset="0" stopColor={rgb} stopOpacity={alpha} />
+            <Stop offset="0.55" stopColor={rgb} stopOpacity={alpha * 0.35} />
+            <Stop offset="1" stopColor={rgb} stopOpacity={0} />
+          </RadialGradient>
+        </Defs>
+        <Circle cx={size / 2} cy={size / 2} r={size / 2} fill={`url(#${id})`} />
       </Svg>
     </Animated.View>
   );

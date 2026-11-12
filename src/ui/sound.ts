@@ -39,7 +39,7 @@ function replay(p: AudioPlayer | undefined, volume = 1) {
 }
 
 /** One wheel-peg click. Rate-limited so a very fast spin doesn't turn into noise. */
-export function playTick(volume = 0.7) {
+export function playTick(volume = 0.35) {
   init();
   const now = Date.now();
   if (now - lastTick < 30) return;
@@ -49,7 +49,7 @@ export function playTick(volume = 0.7) {
 
 export function playDing() {
   init();
-  replay(ding, 0.8);
+  replay(ding, 0.45);
 }
 
 const SFX = {
@@ -68,19 +68,20 @@ const SFX = {
 } as const;
 export type Sfx = keyof typeof SFX;
 const sfxPlayers: Partial<Record<Sfx, AudioPlayer>> = {};
+// Quiet by design: background accents for a loud room, never the main event.
 const sfxVolume: Record<Sfx, number> = {
-  whoosh: 0.6,
-  land: 0.8,
-  fanfare: 0.8,
-  underdog: 0.9,
-  coin: 0.5,
-  lose: 0.6,
-  reveal: 0.6,
-  podium: 0.9,
-  pop: 0.5,
-  drumroll: 0.7,
-  riser: 0.7,
-  jackpot: 0.95,
+  whoosh: 0.35,
+  land: 0.45,
+  fanfare: 0.45,
+  underdog: 0.5,
+  coin: 0.35,
+  lose: 0.4,
+  reveal: 0.4,
+  podium: 0.5,
+  pop: 0.35,
+  drumroll: 0.35,
+  riser: 0.4,
+  jackpot: 0.5,
 };
 
 /** One-shot game sound (winner fanfare, Underdog stinger, podium…). */

@@ -64,8 +64,9 @@ export default function Account() {
           <Text style={styles.count}>{mine.length}</Text>
         </Row>
         <Dim style={{ fontSize: 13 }}>
-          Every question you add to a lobby is saved here automatically. In any Premium lobby, open "Add your own questions" → "My questions" to add
-          them one by one or all at once. Saved on this phone (it will move to your account once sign-in is available).
+          Every question you add to a lobby is saved here automatically. In any Premium lobby, open "Add your own questions" → "Mine" and tap
+          questions to put them in or take them out (or select all). "Delete forever" removes one from here for good. Saved on this phone for now;
+          it moves to your account once sign-in is available.
         </Dim>
         {used.length > 0 && (
           <View style={styles.filters}>

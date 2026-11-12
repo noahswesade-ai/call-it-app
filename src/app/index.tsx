@@ -21,24 +21,14 @@ import { Bob, PopIn, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { bounce } from '@/ui/motion';
 
-const LOGO = ['U', 'n', 'd', 'e', 'r', 'd', 'o', 'g'];
-const LOGO_COLORS = [colors.gold, colors.pink, colors.cyan, colors.green, colors.gold, colors.pink, colors.cyan, colors.green];
-
+/** Clean wordmark: one weight, one colour, the accent kept for "dog". Fades in once. */
 function Logo() {
   return (
-    <View style={styles.logoRow}>
-      {LOGO.map((ch, i) =>
-        ch === ' ' ? (
-          <View key={i} style={{ width: 14 }} />
-        ) : (
-          <PopIn key={i} delay={i * 70}>
-            <Bob amount={6} duration={900 + i * 60} delay={i * 90}>
-              <Text style={[styles.logoLetter, { color: LOGO_COLORS[i], transform: [{ rotate: `${i % 2 ? 6 : -6}deg` }] }]}>{ch}</Text>
-            </Bob>
-          </PopIn>
-        ),
-      )}
-    </View>
+    <PopIn>
+      <Text style={styles.logo} accessibilityRole="header">
+        Under<Text style={{ color: colors.gold }}>dog</Text>
+      </Text>
+    </PopIn>
   );
 }
 
@@ -49,8 +39,8 @@ function AnimalParade() {
     <View style={styles.parade}>
       {parade.map((a, i) => (
         <PopIn key={a.id} delay={500 + i * 90}>
-          <Bob amount={8} duration={700 + (i % 3) * 150} delay={i * 120}>
-            <AnimalAvatar avatar={{ animal: a.id }} size={46} mood={i % 3 === 0 ? 'happy' : 'neutral'} />
+          <Bob amount={4} duration={1600 + (i % 3) * 300} delay={i * 200}>
+            <AnimalAvatar avatar={{ animal: a.id }} size={42} mood={i % 3 === 0 ? 'happy' : 'neutral'} />
           </Bob>
         </PopIn>
       ))}
@@ -67,14 +57,14 @@ function PartyBox({ locked, trialAvailable, onPress }: { locked: boolean; trialA
     idle.value = withRepeat(withTiming(1, { duration: 1600, easing: Easing.inOut(Easing.sin) }), -1, true);
   }, [idle]);
   const glowStyle = useAnimatedStyle(() => ({
-    opacity: 0.35 + idle.value * 0.2 + glow.value * 0.45,
-    transform: [{ scale: 1 + glow.value * 0.03 + idle.value * 0.01 }],
+    opacity: 0.12 + idle.value * 0.1 + glow.value * 0.3,
+    transform: [{ scale: 1 + glow.value * 0.02 }],
   }));
   const boxStyle = useAnimatedStyle(() => ({
-    borderColor: glow.value > 0.5 ? colors.neon : 'rgba(255,79,216,0.65)',
+    borderColor: glow.value > 0.5 ? colors.neon : 'rgba(224,79,176,0.55)',
     transform: [{ scale: 1 - press.value * 0.03 }, { translateY: press.value * 3 }],
   }));
-  const lockStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${(idle.value - 0.5) * 16}deg` }] }));
+  const lockStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${(idle.value - 0.5) * 6}deg` }] }));
 
   return (
     <Pressable
@@ -164,7 +154,7 @@ export default function Home() {
       <View style={{ alignItems: 'center', gap: 6 }}>
         <Logo />
         <SlideIn from="bottom" delay={400}>
-          <Text style={styles.tagline}>Call the long shot. Win big. 🐶 ×3</Text>
+          <Text style={styles.tagline}>Call the long shot. Win big.</Text>
         </SlideIn>
         <AnimalParade />
       </View>
@@ -186,7 +176,7 @@ export default function Home() {
           <PartyBox locked={locked} trialAvailable={trialAvailable} onPress={onParty} />
         </SlideIn>
         <SlideIn from="left" delay={510}>
-          <Button big variant="cyan" label="📲 Join a Game" subtitle="Got a code? Jump in" disabled={!onlineAvailable} onPress={() => router.push('/join')} />
+          <Button big variant="secondary" label="📲 Join a Game" subtitle="Got a code? Jump in" disabled={!onlineAvailable} onPress={() => router.push('/join')} />
         </SlideIn>
       </View>
 
@@ -231,9 +221,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(20,4,40,0.55)',
-    borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.35)',
+    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.cardBorder,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -241,27 +231,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: 'rgba(20,4,40,0.55)',
-    borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.35)',
+    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.cardBorder,
     borderRadius: 99,
     paddingLeft: 3,
     paddingRight: 12,
     paddingVertical: 2,
     maxWidth: 170,
   },
-  meName: { color: colors.white, fontFamily: fonts.display, fontSize: 15, flexShrink: 1 },
-  testBox: { borderWidth: 2, borderStyle: 'dashed', borderColor: colors.cyan, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4 },
-  helpText: { color: colors.white, fontFamily: fonts.display, fontSize: 22 },
+  meName: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 14, flexShrink: 1 },
+  testBox: { borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.cyan, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4 },
+  helpText: { color: colors.white, fontFamily: fonts.display, fontSize: 18 },
   topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  logoRow: { flexDirection: 'row', alignItems: 'flex-end', marginTop: 8 },
-  logoLetter: {
-    fontFamily: fonts.display,
-    fontSize: 60,
-    textShadowColor: colors.ink,
-    textShadowOffset: { width: 0, height: 5 },
-    textShadowRadius: 0,
-  },
+  logo: { color: colors.white, fontFamily: fonts.display, fontSize: 56, letterSpacing: -2, marginTop: 8 },
   tagline: { color: colors.dim, fontFamily: fonts.bodySemi, fontSize: 15, textAlign: 'center' },
   parade: { flexDirection: 'row', gap: 2, marginTop: 6, flexWrap: 'wrap', justifyContent: 'center' },
   partyGlow: {
@@ -270,7 +253,7 @@ const styles = StyleSheet.create({
     left: -6,
     right: -6,
     bottom: -6,
-    borderRadius: 30,
+    borderRadius: 24,
     backgroundColor: colors.neon,
     shadowColor: colors.neon,
     shadowOpacity: 1,
@@ -280,18 +263,18 @@ const styles = StyleSheet.create({
   partyBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.party,
-    borderWidth: 3,
-    borderRadius: 24,
-    padding: 18,
+    backgroundColor: '#24113D',
+    borderWidth: 1.5,
+    borderRadius: 18,
+    padding: 16,
     gap: 12,
     minHeight: 110,
   },
-  partyTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 28 },
-  partySub: { color: '#E9C9F5', fontFamily: fonts.bodySemi, fontSize: 14, lineHeight: 19 },
+  partyTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 24, letterSpacing: -0.3 },
+  partySub: { color: '#D9C4EA', fontFamily: fonts.bodySemi, fontSize: 14, lineHeight: 19 },
   partyBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4 },
-  badge: { fontFamily: fonts.display, fontSize: 13, paddingHorizontal: 10, paddingVertical: 3, borderRadius: 99, overflow: 'hidden' },
-  adult: { color: '#E9C9F5', fontFamily: fonts.display, fontSize: 13, borderWidth: 1.5, borderColor: '#E9C9F5', borderRadius: 6, paddingHorizontal: 5 },
+  badge: { fontFamily: fonts.bodyBold, fontSize: 12, paddingHorizontal: 10, paddingVertical: 3, borderRadius: 99, overflow: 'hidden' },
+  adult: { color: '#D9C4EA', fontFamily: fonts.bodyBold, fontSize: 12, borderWidth: 1, borderColor: '#E9C9F5', borderRadius: 6, paddingHorizontal: 5 },
   lockBubble: {
     width: 48,
     height: 48,
