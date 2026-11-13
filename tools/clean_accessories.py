@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 from scipy import ndimage
 
-AC = Path(sys.argv[1]) / 'assets' / 'accessories'
+AC = Path(sys.argv[1]) / 'assets' / (sys.argv[2] if len(sys.argv) > 2 else 'accessories')
 for p in sorted(AC.glob('*.png')):
     im = np.asarray(Image.open(p).convert('RGBA')).copy()
     solid = im[..., 3] > 20
