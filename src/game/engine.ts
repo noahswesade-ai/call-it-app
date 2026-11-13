@@ -105,6 +105,8 @@ export interface GameState {
   regens?: number;
   /** Bumped whenever another phone takes over as host; phones ignore older states. */
   epoch?: number;
+  /** Counts every change the host makes, so phones can drop updates that arrive late or out of order. */
+  rev?: number;
 }
 
 export type Action =
@@ -697,8 +699,15 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
       const to = state.players.find((p) => p.id === action.to);
       if (!to || to.id === state.hostId) return state;
       const old = state.hostId;
+      const r = state.round;
+      // Mid-round, the new host also takes over running this round (unless they're playing in it).
+      const round =
+        r && r.judgeId === old && !r.challengers.includes(to.id) && state.phase !== 'lobby' && state.phase !== 'podium'
+          ? { ...r, judgeId: to.id }
+          : r;
       return {
         ...state,
+        round,
         hostId: to.id,
         epoch: (state.epoch ?? 0) + 1,
         players: state.players.map((p) => ({

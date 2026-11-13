@@ -60,6 +60,29 @@ L = {
 }
 ANIMALS = list(L)
 
+# Face edges at eye level (percent): where glasses, visors and masks should reach.
+FACE = {
+    'dog': (21, 79), 'cat': (11, 89), 'frog': (7, 93), 'bear': (7, 93), 'bunny': (18, 82),
+    'pig': (11, 89), 'lamb': (20, 80), 'beaver': (9, 91), 'seal': (9, 91), 'squirrel': (12, 86),
+    'owl': (12, 88), 'koala': (18, 82), 'fawn': (17, 83), 'flamingo': (16, 84), 'chameleon': (8, 92),
+    'panda': (12, 88), 'fox': (9, 91), 'redpanda': (9, 91), 'pangolin': (12, 88), 'axolotl': (13, 87),
+    'narwhal': (10, 90), 'dragon': (15, 85),
+}
+
+# Eyewear art, measured: centres of the two lenses / eye holes (fraction of the art,
+# x left, x right, y), the part of the art's width that is frame (rest = side stubs),
+# and an optional crop that removes parts that would sit ON the face (visor arms).
+LENS = {
+    'roundglasses': dict(lx=0.266, rx=0.748, y=0.508),
+    'starglasses': dict(lx=0.26, rx=0.743, y=0.52),
+    'heartglasses': dict(lx=0.265, rx=0.757, y=0.478),
+    'cateyeglasses': dict(lx=0.27, rx=0.73, y=0.54),
+    'heromask': dict(lx=0.264, rx=0.72, y=0.585),
+    'masquerade': dict(lx=0.283, rx=0.712, y=0.698),
+    'lacemask': dict(lx=0.27, rx=0.73, y=0.6),
+    'cybervisor': dict(lx=0.3, rx=0.7, y=0.5, crop=[0.335, 1, 0, 1]),
+}
+
 # How each accessory is worn.
 #  hat:    content width = w × skull width; bottom edge at top + seat × (brow − top)
 #  halo:   floats `gap` (of skull width) above the head
@@ -81,41 +104,41 @@ RULES = {
     'tophat': dict(kind='hat', w=0.80, seat=0.40),
     'piratehat': dict(kind='hat', w=1.05, seat=0.72),
     'flowercrown': dict(kind='hat', w=1.0, seat=0.62),
-    'headphones': dict(kind='phones', w=1.16),
+    'headphones': dict(kind='phones2', cups=(0.12, 0.88), cup_y=0.72, band_top=0.06),
     'chefhat': dict(kind='hat', w=0.78, seat=0.55),
     'wizardhat': dict(kind='hat', w=0.98, seat=0.60),
     'devilhorns': dict(kind='hat', w=1.0, seat=0.85),
     'halo': dict(kind='halo', w=0.70, gap=0.02),
-    'laurel': dict(kind='hat', w=1.12, seat=0.98),
+    'laurel': dict(kind='hat', w=1.0, seat=0.8),
     'mohawk': dict(kind='hat', w=0.82, seat=0.55),
     'rainbowwig': dict(kind='wig', w=1.18, lift=0.30),
     'crown': dict(kind='hat', w=0.66, seat=0.42),
     'tiara': dict(kind='hat', w=0.62, seat=0.55),
     'pokervisor': dict(kind='hat', w=0.86, seat=0.9),
-    'martiniband': dict(kind='hat', w=0.92, seat=0.62),
+    'martiniband': dict(kind='band', ends=(0.22, 0.86), arc_top=0.47, end_y=0.95, drop=0.04),
     'rosetophat': dict(kind='hat', w=0.84, seat=0.42),
     'beerhelmet': dict(kind='hat', w=1.10, seat=0.85),
-    'roundglasses': dict(kind='eyes', w=2.0, lensY=0.5),
-    'starglasses': dict(kind='eyes', w=2.05, lensY=0.5),
-    'heartglasses': dict(kind='eyes', w=2.05, lensY=0.5),
-    'heromask': dict(kind='eyes', w=2.2, lensY=0.52),
+    'roundglasses': dict(kind='eyes', maxStretch=1.3),
+    'starglasses': dict(kind='eyes', maxStretch=1.3),
+    'heartglasses': dict(kind='eyes', maxStretch=1.3),
+    'heromask': dict(kind='eyes', maxStretch=1.5, scale=1.05),
     'monocle': dict(kind='monocle', w=0.62),
-    'cybervisor': dict(kind='eyes', w=2.12, lensY=0.5),
-    'masquerade': dict(kind='eyes', w=1.85, lensY=0.68),
-    'lacemask': dict(kind='eyes', w=2.2, lensY=0.55),
-    'cateyeglasses': dict(kind='eyes', w=2.1, lensY=0.52),
+    'cybervisor': dict(kind='eyes', maxStretch=2.0, reach=1.03),
+    'masquerade': dict(kind='eyes', maxStretch=1.5, scale=1.05),
+    'lacemask': dict(kind='eyes', maxStretch=1.5, scale=1.05),
+    'cateyeglasses': dict(kind='eyes', maxStretch=1.35),
     'mustache': dict(kind='mouth', w=1.05, t=0.55),
     'nosering': dict(kind='mouth', w=0.38, t=0.28),
     'beard': dict(kind='beard', w=0.62),
     'bowtie': dict(kind='neck', w=0.36, under=0.0),
     'tie': dict(kind='neck', w=0.20, under=-0.02),
-    'scarf': dict(kind='neck', w=0.80, under=0.02),
-    'pearls': dict(kind='neck', w=0.44, under=0.0),
-    'shellnecklace': dict(kind='neck', w=0.40, under=0.0),
-    'gemcollar': dict(kind='neck', w=0.44, under=0.02),
-    'goldchain': dict(kind='neck', w=0.38, under=0.0),
-    'spikedcollar': dict(kind='neck', w=0.48, under=0.02),
-    'boa': dict(kind='neck', w=0.90, under=0.02),
+    'scarf': dict(kind='collar', w=0.86, sink=0.07),
+    'pearls': dict(kind='necklace', w=0.62, hide=0.34),
+    'shellnecklace': dict(kind='necklace', w=0.58, hide=0.3),
+    'gemcollar': dict(kind='collar', w=0.64, sink=0.06),
+    'goldchain': dict(kind='necklace', w=0.58, hide=0.22),
+    'spikedcollar': dict(kind='collar', w=0.66, sink=0.06),
+    'boa': dict(kind='drape', w=1.02, sink=0.1),
     'hoops': dict(kind='ears', w=0.17),
     'moonearrings': dict(kind='ears', w=0.15),
     'diamondstuds': dict(kind='ears', w=0.13),
@@ -131,8 +154,14 @@ TWEAK = {
 }
 
 
+def art_path(acc_id):
+    """The 'worn' version (front band only) if there is one, else the shop artwork."""
+    worn = AC / 'worn' / f'{acc_id}.png'
+    return worn if worn.exists() else AC / f'{acc_id}.png'
+
+
 def content_box(acc_id):
-    a = np.asarray(Image.open(AC / f'{acc_id}.png').convert('RGBA'))[..., 3] > 40
+    a = np.asarray(Image.open(art_path(acc_id)).convert('RGBA'))[..., 3] > 40
     ys, xs = np.where(a)
     S = a.shape[0]
     return xs.min() / S, ys.min() / S, (xs.max() + 1) / S, (ys.max() + 1) / S
@@ -198,9 +227,22 @@ def place(animal, acc):
         canvas, ch = sized(cw)
         return [rect(canvas, g['cx'] - cw / 2, g['top'] - r['lift'] * ch, behind=True)]
     if k == 'eyes':
-        cw = r['w'] * g['spacing']
-        canvas, ch = sized(cw)
-        return [rect(canvas, g['ecx'] - cw / 2, g['eye_y'] - r['lensY'] * ch)]
+        # Width: reach the face's edges at eye level (so frames and masks span the face,
+        # with no arms on the face). Height: sized by the eyes, so lenses / eye holes sit
+        # on the pupils. Sideways stretch is capped so shapes don't look squashed.
+        fl, fr = (v / 100 for v in FACE[animal])
+        lens = LENS[acc]
+        face_w = (fr - fl) * r.get('reach', 1.0)
+        canvas_x = face_w / cwf
+        canvas_y = g['spacing'] / (lens['rx'] - lens['lx']) * r.get('scale', 1.0)
+        canvas_x = min(max(canvas_x, canvas_y), canvas_y * r.get('maxStretch', 1.45))
+        mid = (lens['lx'] + lens['rx']) / 2
+        left = g['ecx'] - mid * canvas_x
+        top = g['eye_y'] - lens['y'] * canvas_y
+        out = [round(left, 4), round(top, 4), round(canvas_x, 4), round(canvas_y, 4), False]
+        if lens.get('crop'):
+            out.append(lens['crop'])
+        return [out]
     if k == 'monocle':
         cw = r['w'] * g['spacing']
         canvas, ch = sized(cw)
@@ -227,6 +269,69 @@ def place(animal, acc):
             y1 = by0 + (limit - top) / canvas
             crop = [0, round(y1, 4), 0, 1]
         return [rect(canvas, left, top, crop=crop)]
+    if k == 'band':
+        # A headband: its two ends rest on the sides of the head at brow height and the
+        # inside of its arc follows the top of the skull.
+        e0, e1 = r['ends']
+        canvas_x = W / (e1 - e0)
+        canvas_y = (g['brow'] + r.get('drop', 0) - g['top']) / (r['end_y'] - r['arc_top'])
+        canvas_y = min(max(canvas_y, 0.8 * canvas_x), 1.15 * canvas_x)  # keep its shape
+        left = g['hl'] - e0 * canvas_x
+        top = g['top'] - 0.02 - r['arc_top'] * canvas_y
+        # Behind the head: the arc and decoration show above it, the ends tuck behind.
+        return [[round(left, 4), round(top, 4), round(canvas_x, 4), round(canvas_y, 4), True]]
+    if k == 'phones2':
+        # Worn headphones: drawn behind the head, cups centred on the sides of the face just
+        # below eye level (so only their outsides show) and the band over the top.
+        fl, fr = g['jl'], g['jr']  # outer sides of the head
+        c0, c1 = r['cups']
+        canvas_x = (fr - fl) / (c1 - c0)
+        cup_y = g['eye_y'] + 0.08
+        band_y = g['top'] - 0.05
+        canvas_y = (cup_y - band_y) / (r['cup_y'] - r['band_top'])
+        left = fl - c0 * canvas_x
+        top = band_y - r['band_top'] * canvas_y
+        box = [round(left, 4), round(top, 4), round(canvas_x, 4), round(canvas_y, 4)]
+        # Band behind the head; the two cups again in front, over the sides of the head.
+        return [box + [True], box + [False, None, 'cups']]
+    if k == 'collar':
+        # Front band (worn art) wrapped under the chin: the middle of the band's top edge
+        # sits `sink` above the chin, so it overlaps the bottom of the face like a real collar.
+        cw = r['w'] * jaw
+        canvas, ch = sized(cw)
+        a = np.asarray(Image.open(art_path(acc)).convert('RGBA'))[..., 3] > 40
+        S = a.shape[0]
+        col = a[:, S // 2]
+        mid_top = np.argmax(col) / S  # top of the band at the centre
+        top_art = g['chin'] - r['sink'] - mid_top * canvas
+        left = g['ecx'] - cw / 2 - bx0 * canvas
+        out = [round(left, 4), round(top_art, 4), round(canvas, 4), round(canvas, 4), False]
+        limit = 1.12
+        if top_art + (by1 * canvas) > limit:
+            out.append([0, round((limit - top_art) / canvas, 4), 0, 1])
+        return [out]
+    if k == 'drape':
+        # A feather boa draped around the neck, in front: the top of its arch sits just
+        # under the chin and the ends hang down.
+        cw = r['w'] * jaw
+        canvas, ch = sized(cw)
+        top = g['chin'] - r['sink']
+        out = [round(g['ecx'] - cw / 2 - bx0 * canvas, 4), round(top - by0 * canvas, 4), round(canvas, 4), round(canvas, 4), False]
+        limit = 1.12
+        if top + ch > limit:
+            out.append([0, round(by0 + (limit - top) / canvas, 4), 0, 1])
+        return [out]
+    if k == 'necklace':
+        # Hangs from behind the jaw: drawn behind the head with the top `hide` of it
+        # tucked behind the face, so only the front loop and pendant show below the chin.
+        cw = r['w'] * jaw
+        canvas, ch = sized(cw)
+        top = g['chin'] - r['hide'] * ch
+        out = [round(g['ecx'] - cw / 2 - bx0 * canvas, 4), round(top - by0 * canvas, 4), round(canvas, 4), round(canvas, 4), True]
+        limit = 1.12
+        if top + ch > limit:
+            out.append([0, round(by0 + (limit - top) / canvas, 4), 0, 1])
+        return [out]
     if k == 'ears':
         out = []
         for side, x in ((-1, g['jl']), (1, g['jr'])):
@@ -234,10 +339,11 @@ def place(animal, acc):
             hw = hx1 - hx0
             content_w = r['w'] * W
             canvas = content_w / hw
-            # hang from just inside the jaw corner
-            cxp = x - side * 0.04
+            # Hang from the side of the head (where ears would be), on its outline, a little
+            # below eye level, so they dangle beside the face rather than on the cheeks.
+            cxp = x - side * 0.015
             left = cxp - content_w / 2 - hx0 * canvas
-            top = g['jy'] - 0.07 - hy0 * canvas
+            top = (g['eye_y'] + g['jy']) / 2 - 0.02 - hy0 * canvas
             crop = [0, 1, 0, 0.5] if side < 0 else [0, 1, 0.5, 1]
             out.append([round(left, 4), round(top, 4), round(canvas, 4), round(canvas, 4), False, crop])
         return out
@@ -262,13 +368,14 @@ def render(animal, acc, rects, size=120, mood='neutral'):
     pad = size // 4
     canvas = Image.new('RGBA', (size + 2 * pad, size + 2 * pad), (42, 10, 80, 255))
     ImageDraw.Draw(canvas).rectangle([pad, pad, pad + size, pad + size], outline=(255, 255, 255, 40))
-    art = Image.open(AC / f'{acc}.png').convert('RGBA')
+    art = Image.open(art_path(acc)).convert('RGBA')
 
     def paste(r):
         left, top, w, h = (v * size for v in r[:4])
         w, h = max(1, int(round(w))), max(1, int(round(h)))
-        img = art.resize((w, h))
-        if len(r) > 5:
+        src = Image.open(AC / 'worn' / f'{acc}-{r[6]}.png').convert('RGBA') if len(r) > 6 and r[6] else art
+        img = src.resize((w, h))
+        if len(r) > 5 and r[5]:
             y0, y1, x0, x1 = r[5]
             img = img.crop((int(x0 * w), int(y0 * h), int(x1 * w), int(y1 * h)))
             left += x0 * w

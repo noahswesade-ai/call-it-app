@@ -130,7 +130,7 @@ GOALS = [
      W('kao', 'In a study of about 3,000 players, both no "juice" and extreme juice lowered play time and enjoyment compared with medium juice.'),
      W('singhal', 'Vibration that reinforces what is on screen can increase enjoyment and immersion.'),
    ]),
-   ('The game is designed so players look up at each other, not down at their phones.', [
+   ('The game is designed so players look up at each other, not down at their phones. New in this pass: the social categories (Know Your Friends, Physical, Party, Spicy) get about 60% of rounds in Classic and 75% in Party, never more than two trivia rounds in a row.', [
      W('gajadhar', 'Playing with a co-player in the same room raised fun, challenge and perceived competence, driven by social presence.'),
    ]),
    ('Randomness (wheel, multipliers) creates excitement but is never tied to money.', [
@@ -219,7 +219,7 @@ GOALS = [
    ('The host phone runs the game and every other phone mirrors it; messages go through two relays at once, duplicates are dropped, and the host re-sends the state every 4 seconds.', [
      W('claypool', 'Prioritizes staying in sync over raw speed, which suits a betting game.'),
    ]),
-   ('A guest whose phone goes silent for 45 seconds is removed so voting can continue; if the host disappears, the next player takes over after 30 seconds (45 if the host\'s app was paused); a player who comes back keeps their score; a host who leaves hands hosting to the next player; and the host can hand over hosting from the lobby.', [
+   ('A guest whose phone goes silent for 45 seconds is removed so voting can continue; if the host disappears, the next player takes over after 30 seconds (45 if the host\'s app was paused); a player who comes back keeps their score; a host who leaves hands hosting to the next player; and the host can hand over hosting from the lobby. New in this pass: every update carries a version number, so late, duplicate or stale updates are dropped; a phone that was asleep or offline never takes over hosting; and if two phones ever claim hosting at once, every phone settles on the same one (tested with three phones, one asleep for 40 seconds).', [
      W('amplitude', 'Keeps a broken connection from ending the party.'),
    ]),
    ('New in this pass: if a game screen ever errors, the player sees "Oops, this screen tripped" and one tap redraws the game without leaving the room.', [
@@ -228,7 +228,7 @@ GOALS = [
    ('The wheel and takeovers animate only position, rotation and opacity on the UI thread.', [
      W('render', 'Matches Android\'s guidance for smooth animation.'),
    ]),
-   ('Every release runs 68 automated rule tests plus scripted multi-phone games. This pass caught and fixed an animation crash and a practice-mode freeze (a bot was chosen as stand-in host).', [
+   ('Every release runs 75 automated rule tests plus scripted multi-phone games. This pass caught and fixed an animation crash and a practice-mode freeze (a bot was chosen as stand-in host).', [
      W('khalid', 'Regressions after updates are a common cause of bad reviews.'),
    ]),
  ]),
@@ -344,7 +344,7 @@ GOALS = [
    ('Locked Party and Spicy tiles and the "Add your own questions" button appear in every lobby with a lock and open the Premium screen; a free room\'s 10-player cap and one free Party game also lead there.', [
      W('kahoot', 'Feature and player-count limits are proven upgrade moments.'),
    ]),
-   ('Changed in this pass: the Premium screen leads with what the whole room gets and frames the price as less than $1 per friend.', [
+   ('Changed in this pass: the Premium screen opens with a headline matched to what the host tapped, says "You pay once. Everyone in your room plays Premium, free.", shows real challenge cards, lists room benefits first, keeps the one-time price beside a single "Unlock for everyone" button, and offers an immediate close, "Not now" and Restore, with no countdowns or crossed-out prices.', [
      W('jackbox', 'Host-pays framing (our inference: the price is shared value for the room).'),
    ]),
    ('Points, bets and multipliers cannot be bought; coins only buy looks, and Premium doubles coins earned.', [

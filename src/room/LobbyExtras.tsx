@@ -16,6 +16,7 @@ import { MyQuestionsList } from './MyQuestions';
 import { isAllowedQuestion } from '@/content/moderation';
 import { useRoom } from '@/net/RoomProvider';
 import { Icon, IconLabel, type IconName } from '@/ui/Icon';
+import { openPremium } from '@/monetize/openPremium';
 
 /**
  * The two big Party / Spicy switches. Always on the lobby screen (never hidden in the
@@ -51,8 +52,8 @@ export function ModeTiles({
         interactive={interactive}
         emoji=""
         icon="beer"
-        title="PARTY MODE"
-        sub="Drinking challenges"
+        title="Party Mode"
+        sub="Drinking challenges, bet in sips"
         colorsOn={['#B03A8C', '#5B2A9E']}
         onPress={() => (locked ? onLocked?.() : onParty?.(!party))}
       />
@@ -62,8 +63,8 @@ export function ModeTiles({
         premiumLock={premiumLock}
         interactive={interactive}
         emoji="🌶️"
-        title="SPICY"
-        sub="Flirty & dirty 18+"
+        title="Spicy"
+        sub="Flirty & dirty questions · 18+"
         colorsOn={['#D8434F', '#8E1F4A']}
         onPress={() => (locked ? onLocked?.() : onSpicy?.(!(party && spicy)))}
       />
@@ -94,27 +95,28 @@ function Tile({
   colorsOn: [string, string];
   onPress: () => void;
 }) {
+  // A wide row: icon, name and description, and a clear on/off switch on the right.
   const body = (
     <View style={[styles.tile, on ? styles.tileOn : locked ? styles.tileLocked : styles.tileOff]}>
       <LinearGradient
         colors={on ? colorsOn : locked ? ['#3E1670', '#300F58'] : ['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.03)']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
         style={StyleSheet.absoluteFill}
       />
+      <View style={styles.tileIcon}>
+        {icon ? <Icon name={icon} size={24} color={colors.white} /> : <Text style={styles.tileEmoji}>{emoji}</Text>}
+      </View>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.tileTitle}>{title}</Text>
+        <Text style={styles.tileSub}>{locked ? 'Unlock with Premium' : sub}</Text>
+      </View>
+      <ModeSwitch on={on} locked={locked} />
       {premiumLock && (
         <View style={styles.tileLock} accessibilityLabel="Premium">
-          <Icon name="lock" size={12} color={colors.ink} strokeWidth={2.8} />
+          <Icon name="lock" size={11} color={colors.ink} strokeWidth={2.8} />
         </View>
       )}
-      {icon ? (
-        <Icon name={icon} size={28} color={colors.white} style={{ height: 38, justifyContent: 'center' }} />
-      ) : (
-        <Text style={styles.tileEmoji}>{emoji}</Text>
-      )}
-      <Text style={styles.tileTitle}>{title}</Text>
-      <Text style={styles.tileSub}>{locked ? 'Unlock with Premium' : sub}</Text>
-      <View style={[styles.tileState, on ? { backgroundColor: colors.green } : locked ? { backgroundColor: colors.gold } : null]}>
-        <Text style={[styles.tileStateText, (on || locked) && { color: colors.ink }]}>{locked ? 'PREMIUM' : on ? 'ON' : 'OFF'}</Text>
-      </View>
     </View>
   );
   const pulsing = locked || !on;
@@ -122,7 +124,6 @@ function Tile({
   const { scaleStyle, ringStyle, handlers } = useLift(tappable);
   return (
     <Pressable
-      style={{ flex: 1 }}
       disabled={!tappable}
       {...handlers}
       accessibilityRole="switch"
@@ -134,9 +135,9 @@ function Tile({
       }}
     >
       <Animated.View style={scaleStyle}>
-        <LiftRing style={ringStyle} radius={18} />
+        <LiftRing style={ringStyle} radius={16} />
         {pulsing ? (
-          <Pulse scale={1.035} duration={900}>
+          <Pulse scale={1.015} duration={900}>
             {body}
           </Pulse>
         ) : (
@@ -144,6 +145,20 @@ function Tile({
         )}
       </Animated.View>
     </Pressable>
+  );
+}
+
+/** The on/off switch on a mode row (a padlock knob while it's locked). */
+function ModeSwitch({ on, locked }: { on: boolean; locked: boolean }) {
+  const x = useSharedValue(on ? 1 : 0);
+  useEffect(() => {
+    x.value = withTiming(on ? 1 : 0, { duration: 180 });
+  }, [on, x]);
+  const knob = useAnimatedStyle(() => ({ transform: [{ translateX: x.value * 22 }] }));
+  return (
+    <View style={[styles.switch, on ? { backgroundColor: colors.green } : locked ? { backgroundColor: 'rgba(255,194,61,0.35)' } : null]}>
+      <Animated.View style={[styles.knob, knob]}>{locked ? <Icon name="lock" size={12} color={colors.ink} strokeWidth={2.6} /> : null}</Animated.View>
+    </View>
   );
 }
 
@@ -170,7 +185,7 @@ export function AddQuestionButton({ state }: { state: GameState }) {
         onPress={() => {
           tap('medium');
           if (premium) setOpen(true);
-          else router.push('/paywall');
+          else openPremium('custom');
         }}
         accessibilityRole="button"
         accessibilityLabel={premium ? 'Add your own questions' : 'Add your own questions (Premium)'}
@@ -469,17 +484,18 @@ function AddQuestionSheet({ state, visible, onClose }: { state: GameState; visib
 }
 
 const styles = StyleSheet.create({
-  tiles: { flexDirection: 'row', gap: 10 },
-  tile: { borderRadius: 18, overflow: 'hidden', paddingVertical: 12, paddingHorizontal: 10, alignItems: 'center', gap: 2, borderWidth: 1.5, minHeight: 124 },
-  tileOn: { borderColor: 'rgba(255,255,255,0.3)', shadowColor: colors.neon, shadowOpacity: 0.5, shadowRadius: 14, shadowOffset: { width: 0, height: 0 } },
+  tiles: { gap: 10 },
+  tile: { borderRadius: 16, overflow: 'hidden', paddingVertical: 12, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', gap: 12, borderWidth: 1.5 },
+  tileOn: { borderColor: 'rgba(255,255,255,0.3)', shadowColor: colors.neon, shadowOpacity: 0.45, shadowRadius: 12, shadowOffset: { width: 0, height: 0 } },
   tileOff: { borderColor: colors.cardBorder },
-  tileLocked: { borderColor: 'rgba(255,194,61,0.6)', shadowColor: colors.gold, shadowOpacity: 0.25, shadowRadius: 10, shadowOffset: { width: 0, height: 0 } },
-  tileEmoji: { fontSize: 30 },
-  tileLock: { position: 'absolute', top: 8, right: 8, width: 24, height: 24, borderRadius: 12, backgroundColor: colors.gold, alignItems: 'center', justifyContent: 'center' },
-  tileTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 17, textAlign: 'center', letterSpacing: -0.2 },
-  tileSub: { color: '#E2D8F2', fontFamily: fonts.bodySemi, fontSize: 12, textAlign: 'center' },
-  tileState: { marginTop: 4, borderRadius: 99, paddingHorizontal: 10, paddingVertical: 2, backgroundColor: 'rgba(255,255,255,0.2)' },
-  tileStateText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 11, letterSpacing: 0.8 },
+  tileLocked: { borderColor: 'rgba(255,194,61,0.55)' },
+  tileIcon: { width: 40, height: 40, borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.12)', alignItems: 'center', justifyContent: 'center' },
+  tileEmoji: { fontSize: 24 },
+  tileTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 18, letterSpacing: -0.2 },
+  tileSub: { color: '#E2D8F2', fontFamily: fonts.bodySemi, fontSize: 12.5, marginTop: 1 },
+  tileLock: { position: 'absolute', top: 6, right: 6, width: 20, height: 20, borderRadius: 10, backgroundColor: colors.gold, alignItems: 'center', justifyContent: 'center' },
+  switch: { width: 52, height: 30, borderRadius: 15, padding: 3, backgroundColor: 'rgba(255,255,255,0.22)', justifyContent: 'center' },
+  knob: { width: 24, height: 24, borderRadius: 12, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
   sheetBg: { flex: 1, backgroundColor: 'rgba(5,3,12,0.7)', justifyContent: 'flex-end' },
   sheet: { backgroundColor: colors.surface, borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 18, maxHeight: '92%', maxWidth: 560, width: '100%', alignSelf: 'center' },
   sheetTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 24, letterSpacing: -0.4 },

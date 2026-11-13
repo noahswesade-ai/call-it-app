@@ -11,6 +11,7 @@ import { Button, Card, Dim, H2, Row, Screen, Toggle } from '@/ui/kit';
 import { Bob } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { Icon, IconLabel } from '@/ui/Icon';
+import { openPremium } from '@/monetize/openPremium';
 
 /** "You": avatar, stats, Premium status and "My questions" (your personal question bank). */
 export default function Account() {
@@ -46,7 +47,7 @@ export default function Account() {
       </Row>
 
       {!profile.premium && (
-        <Pressable onPress={() => router.push('/paywall')}>
+        <Pressable onPress={() => openPremium('general')}>
           <View style={styles.upsell}>
             <Text style={styles.upsellText}>Premium: Party & Spicy, your own questions in every lobby, no ads</Text>
           </View>
@@ -65,9 +66,7 @@ export default function Account() {
           <Text style={styles.count}>{mine.length}</Text>
         </Row>
         <Dim style={{ fontSize: 13 }}>
-          Every question you add to a lobby is saved here automatically. In any Premium lobby, open "Add your own questions" → "Mine" and tap
-          questions to put them in or take them out (or select all). "Delete forever" removes one from here for good. Saved on this phone for now;
-          it moves to your account once sign-in is available.
+          Every question you write is saved here. Add them to any Premium lobby from "Mine" in Add your own questions.
         </Dim>
         {used.length > 0 && (
           <View style={styles.filters}>

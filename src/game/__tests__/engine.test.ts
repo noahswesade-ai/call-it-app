@@ -245,8 +245,8 @@ describe('pause, kick and category odds', () => {
     expect(g.players.map((p) => p.id)).toContain('h');
   });
 
-  it('classic: every category is equally likely on the first spin', () => {
-    const { spin } = jest.requireActual('@/content/picker');
+  it('classic: fun categories share ~72% of the first spin; trivia categories are equally likely', () => {
+    const { spin, FUN_CATEGORIES } = jest.requireActual('@/content/picker');
     const cats = availableCategories('classic', false);
     const counts: Record<string, number> = {};
     const rng = seededRng(7);
@@ -255,10 +255,15 @@ describe('pause, kick and category odds', () => {
       const r = spin(ALL_QUESTIONS, cats, [], new Set(), rng, { canUseKyf: true, mode: 'classic' });
       counts[r.category] = (counts[r.category] ?? 0) + 1;
     }
-    for (const c of cats) expect(counts[c] / N).toBeCloseTo(1 / cats.length, 1);
+    const fun = cats.filter((c: string) => FUN_CATEGORIES.includes(c));
+    const trivia = cats.filter((c: string) => !FUN_CATEGORIES.includes(c));
+    const funShare = fun.reduce((a: number, c: string) => a + (counts[c] ?? 0), 0) / N;
+    expect(funShare).toBeGreaterThan(0.68);
+    expect(funShare).toBeLessThan(0.76);
+    for (const c of trivia) expect(counts[c] / N).toBeCloseTo((1 - funShare) / trivia.length, 1);
   });
 
-  it('party: Party/Spicy/Physical/Know Your Friends come up about 70% of the time', () => {
+  it('party: Party/Spicy/Physical/Know Your Friends come up about 80% of the first spins', () => {
     const { spin, FUN_CATEGORIES } = jest.requireActual('@/content/picker');
     const rng = seededRng(8);
     for (const spicy of [true, false]) {
@@ -269,8 +274,8 @@ describe('pause, kick and category odds', () => {
         const r = spin(ALL_QUESTIONS, cats, [], new Set(), rng, { canUseKyf: true, mode: 'party' });
         if (FUN_CATEGORIES.includes(r.category)) fun++;
       }
-      expect(fun / N).toBeGreaterThan(0.66);
-      expect(fun / N).toBeLessThan(0.74);
+      expect(fun / N).toBeGreaterThan(0.76);
+      expect(fun / N).toBeLessThan(0.84);
     }
   });
 

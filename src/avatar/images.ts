@@ -120,3 +120,15 @@ export const ACCESSORY_IMAGES: Record<string, number> = {
   'tophat': require('../../assets/accessories/tophat.png'),
   'wizardhat': require('../../assets/accessories/wizardhat.png'),
 };
+
+/**
+ * "Worn" art for ring-shaped neck pieces: the back of the ring and its hollow middle are
+ * removed (tools/make_worn.py), so on an avatar only the front band shows, as if a neck
+ * were inside it. The shop tiles keep the full art above.
+ */
+export const WORN_IMAGES: Record<string, number> = {
+  gemcollar: require('../../assets/accessories/worn/gemcollar.png'),
+  spikedcollar: require('../../assets/accessories/worn/spikedcollar.png'),
+  scarf: require('../../assets/accessories/worn/scarf.png'),
+  'headphones-cups': require('../../assets/accessories/worn/headphones-cups.png'),
+};

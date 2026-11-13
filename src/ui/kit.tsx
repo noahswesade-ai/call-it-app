@@ -14,7 +14,7 @@ import {
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Haptics } from '@/ui/prefs';
-import { Background } from './Background';
+import { Background, type Tint } from './Background';
 import { useScreenSize } from './screenSize';
 import { A_COLOR as A, B_COLOR as B, colors, fonts } from './theme';
 import { bounce, Pulse } from '@/ui/motion';
@@ -60,7 +60,7 @@ export function Screen({
   children: React.ReactNode;
   scroll?: boolean;
   style?: StyleProp<ViewStyle>;
-  tint?: 'red' | 'green' | 'party' | 'spicy' | 'fire';
+  tint?: Tint;
   /** Pinned to the bottom of the screen above the content (e.g. the timer bar). */
   footer?: React.ReactNode;
   /** Full-screen layer drawn above everything (e.g. the Underdog takeover). */

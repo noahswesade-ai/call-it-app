@@ -12,6 +12,8 @@ import { broadcastAvailable, createBroadcastTransport } from './broadcastTranspo
 import { createSupabaseTransport, supabaseConfigured } from './supabase';
 import { createRelayTransport, relayConfigured } from './relayTransport';
 import { publishable, type RoomTransport } from './transport';
+import { compareStates } from './ordering';
+import { onRelayStatus } from './relayTransport';
 
 /**
  * Runs a room on this phone.
@@ -123,8 +125,10 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   const applyLocal = useCallback((action: Action) => {
     const prev = stateRef.current;
     if (!prev) return;
-    const next = reduce(prev, action);
-    if (next !== prev) {
+    const reduced = reduce(prev, action);
+    if (reduced !== prev) {
+      // Number every change so other phones can drop updates that arrive late or twice.
+      const next = { ...reduced, rev: (prev.rev ?? 0) + 1 };
       stateRef.current = next;
       setState(next);
     }
@@ -143,14 +147,49 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   const [stale, setStale] = useState(false);
   useEffect(() => {
     if (isHost || !state) return setStale(false);
+    let lastTick = Date.now();
     const t = setInterval(() => {
-      const gap = Date.now() - lastStateAtRef.current;
+      const now = Date.now();
+      // Only count silence we actually witnessed while awake and online. A phone that
+      // was asleep (screen locked, app in the background, browser tab throttled) or
+      // offline must not conclude the host is gone: it just asks for the latest state.
+      const slept = now - lastTick > 3000;
+      lastTick = now;
+      if (slept || !onlineRef.current) {
+        lastStateAtRef.current = now;
+        if (slept) transportRef.current?.requestState();
+      }
+      const gap = now - lastStateAtRef.current;
       setStale(gap > 12_000);
       maybeTakeOver(gap);
     }, 1000);
     return () => clearInterval(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHost, !!state]);
+
+  // Is this phone connected to the relay? (Other transports count as always online.)
+  const onlineRef = useRef(true);
+  useEffect(() => {
+    if (connection !== 'relay') {
+      onlineRef.current = true;
+      return;
+    }
+    return onRelayStatus((on) => {
+      onlineRef.current = on;
+      if (on) lastStateAtRef.current = Date.now();
+    });
+  }, [connection]);
+
+  // Any phone coming back to the app: ask for the latest state straight away, and
+  // (guests) restart the "is the host still there?" clock from now.
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (st) => {
+      if (st !== 'active') return;
+      if (!isHostRef.current) lastStateAtRef.current = Date.now();
+      transportRef.current?.requestState();
+    });
+    return () => sub.remove();
+  }, []);
 
   // Every phone remembers which questions it has seen since the app was opened.
   useEffect(loadSeen, []);
@@ -341,6 +380,7 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     (transport: RoomTransport, s: GameState) => {
       let promoted: GameState = { ...s, bank: ALL_QUESTIONS };
       if (promoted.paused) promoted = reduce(promoted, { type: 'resume', now: Date.now() });
+      promoted = { ...promoted, rev: (s.rev ?? 0) + 1 };
       stateRef.current = promoted;
       isHostRef.current = true;
       lastSeenRef.current = {};
@@ -356,10 +396,12 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   const handleStateRef = useRef<(t: RoomTransport, s: GameState, sentAt: number) => void>(() => {});
   handleStateRef.current = (transport, s, sentAt) => {
     const mine = stateRef.current;
-    if (mine && (s.epoch ?? 0) < (mine.epoch ?? 0)) return; // an old host that hasn't noticed yet
+    // Newer, same or older than what we have? (Drops late, duplicate and stale copies,
+    // and settles which phone is host if two ever claim it.)
+    const cmp = mine ? compareStates(s, mine) : 1;
     if (isHostRef.current) {
-      // Someone else took over while this phone was away: go back to being a guest.
-      if (s.hostId !== profile.id && (s.epoch ?? 0) > (mine?.epoch ?? 0)) {
+      // Someone else legitimately took over while this phone was away: back to guest.
+      if (s.hostId !== profile.id && cmp > 0) {
         isHostRef.current = false;
         setIsHost(false);
         lastStateAtRef.current = Date.now();
@@ -369,8 +411,10 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
       }
       return;
     }
+    if (cmp < 0) return; // older than what's on screen: ignore it
     lastStateAtRef.current = Date.now();
     setClockOffset(sentAt - Date.now());
+    if (cmp === 0) return; // a heartbeat of the state we already show
     // Host migration: if the host left and we're next in line, take over.
     if (s.hostId === profile.id) return becomeHost(transport, s);
     stateRef.current = s;

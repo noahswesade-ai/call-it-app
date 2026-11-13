@@ -116,8 +116,8 @@ export default function Room() {
       ? myResultTint(state, myId)
       : state.settings.mode === 'party' && (state.phase === 'lobby' || state.phase === 'podium')
         ? state.settings.spicy
-          ? 'spicy'
-          : 'party'
+          ? 'drinksSpicy'
+          : 'drinks'
         : undefined;
   const entering =
     state.phase === 'matchup' ? ZoomIn.duration(350) : state.phase === 'lobby' ? FadeIn.duration(300) : SlideInRight.duration(320);

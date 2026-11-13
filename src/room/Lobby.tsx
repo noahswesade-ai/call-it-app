@@ -25,6 +25,7 @@ import { AddQuestionButton, ModeTiles } from './LobbyExtras';
 import { playSfx } from '@/ui/sound';
 import { Icon, IconLabel } from '@/ui/Icon';
 import { Logo } from '@/ui/Logo';
+import { openPremium } from '@/monetize/openPremium';
 
 /**
  * Link that opens the Join screen with the room code filled in. On the web it keeps
@@ -279,13 +280,13 @@ export function Lobby({ state }: { state: GameState }) {
   };
   const setMode = (mode: Mode) => {
     if (mode === 'party') {
-      if (!partyAllowed) return router.push('/paywall');
+      if (!partyAllowed) return openPremium('party');
       if (!profile.ageConfirmed) return setAgeGateFor('party');
     }
     applyMode(mode, s.spicy && mode === 'party');
   };
   const toggleCategory = (c: Category) => {
-    if (!hostPremium) return router.push('/paywall');
+    if (!hostPremium) return openPremium('categories');
     const on = s.categories.includes(c);
     if (on && s.categories.length <= 1) return;
     const categories = on ? s.categories.filter((x) => x !== c) : [...s.categories, c];
@@ -298,7 +299,7 @@ export function Lobby({ state }: { state: GameState }) {
   };
   const [onlyWarn, setOnlyWarn] = useState<{ category: Category; count: number }[]>();
   const setOnlyCustom = (v: boolean) => {
-    if (!hostPremium) return router.push('/paywall');
+    if (!hostPremium) return openPremium('custom');
     if (!v) return set({ onlyCustom: false });
     const st = customOnlyStatus(state);
     if (!st.ready) return setOnlyWarn(st.short);
@@ -309,7 +310,7 @@ export function Lobby({ state }: { state: GameState }) {
   // Spicy can only be on in Party mode: switching it on turns Party on too.
   const setSpicy = (v: boolean) => {
     if (!v) return applyMode(s.mode, false);
-    if (!partyAllowed) return router.push('/paywall');
+    if (!partyAllowed) return openPremium('spicy');
     if (!profile.ageConfirmed) {
       setPendingSpicy(true);
       return setAgeGateFor('party');
@@ -396,7 +397,7 @@ export function Lobby({ state }: { state: GameState }) {
         </View>
         {isHost && state.players.length > 1 && <Dim style={{ fontSize: 12, textAlign: 'center' }}>Tap a player to remove them</Dim>}
         {!canJoin(state) && isHost && (
-          <Pressable onPress={() => router.push('/paywall')}>
+          <Pressable onPress={() => openPremium('players')}>
             <Dim style={{ color: colors.gold }}>Room full. Premium hosts can have unlimited players →</Dim>
           </Pressable>
         )}
@@ -414,7 +415,7 @@ export function Lobby({ state }: { state: GameState }) {
               interactive
               onParty={(v) => setMode(v ? 'party' : 'classic')}
               onSpicy={setSpicy}
-              onLocked={() => router.push('/paywall')}
+              onLocked={() => openPremium('party')}
             />
             {s.mode === 'party' && (
               <View style={styles.sipRules}>
@@ -433,7 +434,7 @@ export function Lobby({ state }: { state: GameState }) {
         </SlideIn>
       ) : (
         <Card style={{ alignItems: 'center' }}>
-          <ModeTiles party={s.mode === 'party'} spicy={s.spicy} locked={s.mode !== 'party' && !profile.premium} interactive={false} onLocked={() => router.push('/paywall')} />
+          <ModeTiles party={s.mode === 'party'} spicy={s.spicy} locked={s.mode !== 'party' && !profile.premium} interactive={false} onLocked={() => openPremium('party')} />
           <Dim>{s.rounds} rounds{s.mode !== 'party' && !profile.premium ? ' · Tap a lock to see Premium' : ''}</Dim>
           <WaitingDots text={`Waiting for ${hostPlayer?.name ?? 'the host'} to start`} />
         </Card>
@@ -508,7 +509,7 @@ export function Lobby({ state }: { state: GameState }) {
               locked={!hostPremium}
               options={[5, 10, 15, 20].map((n) => ({ value: n, label: String(n) }))}
               value={s.rounds}
-              onChange={(n) => (hostPremium ? set({ rounds: n }) : n !== FREE_ROUNDS && router.push('/paywall'))}
+              onChange={(n) => (hostPremium ? set({ rounds: n }) : n !== FREE_ROUNDS && openPremium('rounds'))}
             />
             {notEveryoneWillPlay(pool.length, s.rounds) && (
               <Dim>

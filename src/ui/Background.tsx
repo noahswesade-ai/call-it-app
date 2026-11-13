@@ -4,7 +4,7 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withRepe
 import { colors } from './theme';
 import { useScreenSize } from '@/ui/screenSize';
 
-/** Happy little devils floating gently up and down (Spicy mode on). */
+/** Little emojis floating gently up and down: devils for Spicy, drinks for Party. */
 const DEVILS = [
   { x: 0.1, y: 0.18, size: 34, dur: 2600, delay: 0 },
   { x: 0.88, y: 0.14, size: 40, dur: 3100, delay: 400 },
@@ -15,7 +15,7 @@ const DEVILS = [
   { x: 0.5, y: 0.05, size: 28, dur: 3000, delay: 500 },
 ];
 
-function Devil({ d, w, h }: { d: (typeof DEVILS)[number]; w: number; h: number }) {
+function Floater({ d, w, h, emoji }: { d: (typeof DEVILS)[number]; w: number; h: number; emoji: string }) {
   const t = useSharedValue(0);
   const o = useSharedValue(0);
   useEffect(() => {
@@ -27,19 +27,30 @@ function Devil({ d, w, h }: { d: (typeof DEVILS)[number]; w: number; h: number }
     transform: [{ translateY: -14 * t.value }, { rotate: `${(t.value - 0.5) * 12}deg` }],
   }));
   return (
-    <Animated.Text style={[{ position: 'absolute', left: d.x * w - d.size / 2, top: d.y * h, fontSize: d.size }, style]}>😈</Animated.Text>
+    <Animated.Text style={[{ position: 'absolute', left: d.x * w - d.size / 2, top: d.y * h, fontSize: d.size }, style]}>{emoji}</Animated.Text>
   );
 }
 
 /** Full-screen solid background (plus the floating devils in Spicy mode). */
-export function Background({ tint }: { tint?: 'red' | 'green' | 'party' | 'spicy' | 'fire' }) {
+// Same seven spots either way, so turning Spicy on swaps some drinks for devils instead of
+// adding clutter.
+const FLOATERS: Partial<Record<Tint, string[]>> = {
+  spicy: ['😈'],
+  drinks: ['🍺', '🍸'],
+  drinksSpicy: ['🍺', '😈', '🍸', '😈', '🍺', '😈', '🍸'],
+};
+
+export type Tint = 'red' | 'green' | 'party' | 'spicy' | 'fire' | 'drinks' | 'drinksSpicy';
+
+export function Background({ tint }: { tint?: Tint }) {
+  const floaters = tint ? FLOATERS[tint] : undefined;
   const { width, height } = useScreenSize();
   // A single solid colour (no gradients or moving shapes). Tints only swap the colour.
   const bg =
-    tint === 'red' ? '#4A0E26' : tint === 'green' ? '#0C3A2C' : tint === 'party' || tint === 'spicy' ? '#3A0B48' : tint === 'fire' ? '#4A1608' : colors.bgBottom;
+    tint === 'red' ? '#4A0E26' : tint === 'green' ? '#0C3A2C' : tint === 'party' || tint === 'spicy' || tint === 'drinks' || tint === 'drinksSpicy' ? '#3A0B48' : tint === 'fire' ? '#4A1608' : colors.bgBottom;
   return (
     <View style={[StyleSheet.absoluteFill, { backgroundColor: bg }]} pointerEvents="none">
-      {tint === 'spicy' && DEVILS.map((d, i) => <Devil key={i} d={d} w={width} h={height} />)}
+      {floaters && DEVILS.map((d, i) => <Floater key={i} d={d} w={width} h={height} emoji={floaters[i % floaters.length]} />)}
     </View>
   );
 }

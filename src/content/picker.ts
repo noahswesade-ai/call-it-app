@@ -3,9 +3,9 @@ import type { Category, Mode, Question, Rng, WheelSlice } from '@/game/types';
 /**
  * Chooses what the wheel lands on and which question is asked.
  * - The wheel has one slice per enabled category plus "Random".
- * - Classic: every category starts equally likely.
- * - Party: the "fun" categories (Party, Spicy, Physical, Know Your Friends) are boosted
- *   so that together they come up about 70% of the time.
+ * - The "fun" categories (Know Your Friends, Physical, Party, Spicy) are what make the
+ *   night, so they're boosted: together about 60% of rounds in Classic and 75% in Party.
+ *   Trivia keeps the mix fresh, but never more than two trivia rounds in a row.
  * - Every time the wheel lands on a category, that category's odds drop for the rest
  *   of the game, so the same few don't keep coming back.
  * - Questions seen this session (by anyone in the room) are avoided; repeatable room
@@ -19,8 +19,11 @@ export interface SpinResult {
 }
 
 export const FUN_CATEGORIES: Category[] = ['party', 'spicy', 'physical', 'kyf'];
-/** Share of Party-mode rounds that should land on a fun category. */
-export const PARTY_FUN_SHARE = 0.7;
+/** Share of rounds that should land on a fun category. */
+export const CLASSIC_FUN_SHARE = 0.72;
+export const PARTY_FUN_SHARE = 0.8;
+/** After this many trivia rounds in a row, the next round is always a fun one. */
+export const MAX_TRIVIA_STREAK = 2;
 /** Each time a category comes up, its weight is multiplied by this for the rest of the game. */
 export const REPEAT_DECAY = 0.55;
 
@@ -62,13 +65,13 @@ export function pickQuestion(
 /** Starting weight of each usable category (before the repeat decay). */
 export function baseWeights(usable: Category[], mode: Mode): Record<string, number> {
   const w: Record<string, number> = Object.fromEntries(usable.map((c) => [c, 1]));
-  if (mode === 'party') {
-    const fun = usable.filter((c) => FUN_CATEGORIES.includes(c));
-    const trivia = usable.length - fun.length;
-    if (fun.length > 0 && trivia > 0) {
-      const boost = (PARTY_FUN_SHARE * trivia) / ((1 - PARTY_FUN_SHARE) * fun.length);
-      for (const c of fun) w[c] = boost;
-    }
+  const share = mode === 'party' ? PARTY_FUN_SHARE : CLASSIC_FUN_SHARE;
+  const fun = usable.filter((c) => FUN_CATEGORIES.includes(c));
+  const trivia = usable.length - fun.length;
+  if (fun.length > 0 && trivia > 0) {
+    const boost = (share * trivia) / ((1 - share) * fun.length);
+    // Only ever boost: with few trivia categories selected, fun ones are already most rounds.
+    if (boost > 1) for (const c of fun) w[c] = boost;
   }
   return w;
 }
@@ -88,6 +91,11 @@ export function spin(
 
   const weights = baseWeights(usable, opts.mode ?? 'classic');
   for (const c of history) if (c in weights) weights[c] *= REPEAT_DECAY;
+  // Too much trivia in a row: this round is a fun one.
+  const recent = history.slice(-MAX_TRIVIA_STREAK);
+  if (recent.length === MAX_TRIVIA_STREAK && recent.every((c) => !FUN_CATEGORIES.includes(c)) && usable.some((c) => FUN_CATEGORIES.includes(c))) {
+    for (const c of usable) if (!FUN_CATEGORIES.includes(c)) weights[c] = 0;
+  }
   const total = usable.reduce((s, c) => s + weights[c], 0);
   let roll = rng() * total;
   let category = usable[usable.length - 1];

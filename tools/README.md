@@ -33,3 +33,15 @@ describes, edit `goals_content.py` and regenerate the tab with
 `python3 tools/goals_to_doc.py <tabId>` (send the requests to an emptied Goals tab).
 If the doc is edited by hand, copy those edits back into `goals_content.py`.
 The research behind it is in the session's `reports/Party game app goals research.md`.
+
+## Accessory fitting (v3)
+
+- `fit_accessories2.py` fits every accessory to every animal. Eyewear spans each
+  animal's face at eye level (`FACE` table) with lenses/eye holes on the pupils (`LENS`);
+  headbands and headphones sit behind the head; collars use their "worn" art in front of
+  the chin; necklaces hang from behind the jaw; earrings hang at the sides of the head.
+  `python3 tools/fit_accessories2.py . <sheet dir> all` writes `src/avatar/fit.json` and
+  preview sheets.
+- `make_worn.py` makes the "worn" art in `assets/accessories/worn/` (collars and scarf
+  without their back rim and hollow middle; headphone cups only).
+- `clean_accessories.py` removes stray specks and thin cut lines from accessory art.

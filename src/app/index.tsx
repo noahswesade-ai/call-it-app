@@ -13,6 +13,7 @@ import { PopIn, SlideIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { Icon } from '@/ui/Icon';
 import { Logo } from '@/ui/Logo';
+import { openPremium } from '@/monetize/openPremium';
 
 /** Clean wordmark: one weight, one colour, the accent kept for "dog". Fades in once. */
 /** The brand logo, large, as the hero of the home screen. */
@@ -41,7 +42,7 @@ export default function Home() {
   };
 
   const onParty = () => {
-    if (locked && !trialAvailable) return router.push('/paywall');
+    if (locked && !trialAvailable) return openPremium('party');
     if (!profile.ageConfirmed) return setAgeGate(true);
     hostParty();
   };

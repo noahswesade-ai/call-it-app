@@ -3,7 +3,7 @@ import { Image, View } from 'react-native';
 import type { AvatarLoadout } from '@/game/types';
 import { SLOTS, type AccessorySlot } from './catalog';
 import FIT from './fit.json';
-import { ACCESSORY_IMAGES, AVATAR_IMAGES } from './images';
+import { ACCESSORY_IMAGES, AVATAR_IMAGES, WORN_IMAGES } from './images';
 
 /**
  * Draws a player's animal with the right expression plus any accessories.
@@ -18,11 +18,12 @@ import { ACCESSORY_IMAGES, AVATAR_IMAGES } from './images';
  * which measures each animal's eyes, head and chin so every item is fitted to every
  * animal individually. Each entry is one or more rectangles
  * [left, top, width, height, behindFace, crop?] in fractions of the avatar size;
- * crop = [y0, y1, x0, x1] shows only part of the art (earrings, headphone cups).
+ * crop = [y0, y1, x0, x1] shows only part of the art (earrings); a 7th entry names a
+ * variant of the art drawn instead (e.g. 'cups': just the headphone cups, in front).
  */
 export type Mood = 'neutral' | 'happy' | 'sad' | 'drink' | 'nervous';
 
-type Rect = [number, number, number, number, boolean, number[]?];
+type Rect = [number, number, number, number, boolean, (number[] | null)?, string?];
 const FITS = FIT as unknown as Record<string, Record<string, Rect[]>>;
 
 interface Props {
@@ -73,12 +74,12 @@ export function AnimalAvatar({ avatar, size = 64, mood = 'neutral', bare }: Prop
 }
 
 function Layer({ id, rect, size }: { id: string; rect: Rect; size: number }) {
-  const [l, t, w, h, , crop] = rect;
+  const [l, t, w, h, , crop, variant] = rect;
   const left = l * size;
   const top = t * size;
   const width = w * size;
   const height = h * size;
-  const img = ACCESSORY_IMAGES[id];
+  const img = (variant && WORN_IMAGES[`${id}-${variant}`]) || WORN_IMAGES[id] || ACCESSORY_IMAGES[id];
   if (!crop) {
     return <Image source={img} resizeMode="stretch" style={{ position: 'absolute', left, top, width, height }} />;
   }

@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import {
   ACCESSORIES,
@@ -20,6 +20,7 @@ import { Button, Dim, Row, Screen, tap } from '@/ui/kit';
 import { Bob, PopIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
 import { Icon, IconLabel } from '@/ui/Icon';
+import { openPremium } from '@/monetize/openPremium';
 
 type Tab = 'animal' | AccessorySlot;
 
@@ -40,22 +41,6 @@ interface Cell {
   price: number;
   adult?: boolean;
   premiumOnly?: boolean;
-}
-
-function confirmBuy(name: string, price: number): Promise<boolean> {
-  const msg = `Unlock ${name} for ${price.toLocaleString()} gold coins?`;
-  if (Platform.OS === 'web') return Promise.resolve(globalThis.confirm?.(msg) ?? true);
-  return new Promise((resolve) =>
-    Alert.alert('Unlock?', msg, [
-      { text: 'Cancel', style: 'cancel', onPress: () => resolve(false) },
-      { text: 'Unlock', onPress: () => resolve(true) },
-    ]),
-  );
-}
-
-function notify(title: string, msg: string) {
-  if (Platform.OS === 'web') globalThis.alert?.(`${title}\n\n${msg}`);
-  else Alert.alert(title, msg);
 }
 
 export default function AvatarEditor() {
@@ -118,17 +103,20 @@ export default function AvatarEditor() {
     flashHappy();
   };
 
-  const unlock = async (c: Cell) => {
-    if (c.premiumOnly) return router.push('/paywall');
-    if (profile.tokens < c.price) {
-      notify('Not enough coins', `${c.name} costs ${c.price.toLocaleString()} coins. You have ${profile.tokens.toLocaleString()}. Win games, earn awards, or watch a video in the Shop.`);
-      return;
-    }
-    if (await confirmBuy(c.name, c.price)) {
-      if (buy(c.key, c.price)) {
-        tap('heavy');
-        equip(c);
-      }
+  // In-app confirmation (not the browser's/phone's own pop-up, which some browsers and
+  // in-app web views block silently, so "Unlock" seemed to do nothing).
+  const [confirming, setConfirming] = useState<Cell | undefined>();
+  const unlock = (c: Cell) => {
+    if (c.premiumOnly) return openPremium('avatar');
+    tap();
+    setConfirming(c);
+  };
+  const confirmUnlock = () => {
+    const c = confirming;
+    setConfirming(undefined);
+    if (c && buy(c.key, c.price)) {
+      tap('heavy');
+      equip(c);
     }
   };
 
@@ -238,11 +226,55 @@ export default function AvatarEditor() {
           router.back();
         }}
       />
+      <Modal visible={!!confirming} transparent animationType="fade" onRequestClose={() => setConfirming(undefined)}>
+        <View style={styles.sheetBg}>
+          {confirming && (
+            <PopIn from={0.9}>
+              <View style={styles.sheet}>
+                <AnimalAvatar avatar={{ ...profile.avatar, [slotOf(confirming)]: confirming.id }} size={96} mood="happy" />
+                {profile.tokens >= confirming.price ? (
+                  <>
+                    <Text style={styles.sheetTitle}>Unlock {confirming.name}?</Text>
+                    <Row style={{ gap: 6, justifyContent: 'center' }}>
+                      <Coin size={20} />
+                      <Text style={styles.sheetPrice}>{confirming.price.toLocaleString()}</Text>
+                      <Dim style={{ fontSize: 13 }}>· you have {profile.tokens.toLocaleString()}</Dim>
+                    </Row>
+                    <Button label="Unlock" icon="unlock" onPress={confirmUnlock} style={{ alignSelf: 'stretch' }} />
+                    <Button small variant="ghost" label="Not now" onPress={() => setConfirming(undefined)} />
+                  </>
+                ) : (
+                  <>
+                    <Text style={styles.sheetTitle}>Not enough coins yet</Text>
+                    <Dim style={{ textAlign: 'center' }}>
+                      {confirming.name} costs {confirming.price.toLocaleString()} coins and you have {profile.tokens.toLocaleString()}. Win games, earn awards or watch a video in the Shop.
+                    </Dim>
+                    <Button
+                      label="Get coins"
+                      icon="coins"
+                      onPress={() => {
+                        setConfirming(undefined);
+                        router.push('/shop');
+                      }}
+                      style={{ alignSelf: 'stretch' }}
+                    />
+                    <Button small variant="ghost" label="Not now" onPress={() => setConfirming(undefined)} />
+                  </>
+                )}
+              </View>
+            </PopIn>
+          )}
+        </View>
+      </Modal>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  sheetBg: { flex: 1, backgroundColor: 'rgba(10,2,22,0.7)', alignItems: 'center', justifyContent: 'center', padding: 24 },
+  sheet: { width: 320, maxWidth: '100%', backgroundColor: colors.surface, borderRadius: 22, padding: 20, gap: 12, alignItems: 'center' },
+  sheetTitle: { color: colors.white, fontFamily: fonts.display, fontSize: 22, textAlign: 'center' },
+  sheetPrice: { color: colors.gold, fontFamily: fonts.display, fontSize: 20 },
   title: { color: colors.white, fontFamily: fonts.display, fontSize: 30 },
   name: { color: colors.white, fontSize: 24, fontFamily: fonts.display, textAlign: 'center', minWidth: 200, padding: 2 },
   tabsScroll: { flexGrow: 0, flexShrink: 0 },

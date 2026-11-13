@@ -18,9 +18,9 @@ import type { ActionMessage, RoomTransport, StateMessage } from './transport';
  * EXPO_PUBLIC_RELAY_URL: one or more broker URLs, comma-separated.
  */
 
-const RELAY_URLS = (process.env.EXPO_PUBLIC_RELAY_URL ?? '')
+const RELAY_URLS: string[] = String(process.env.EXPO_PUBLIC_RELAY_URL ?? '')
   .split(',')
-  .map((s) => s.trim())
+  .map((s: string) => s.trim())
   .filter(Boolean);
 const PREFIX = 'underdog-party-game-v1';
 
@@ -53,7 +53,7 @@ export function createRelayTransport(code: string): RoomTransport {
   let requestCb: (() => void) | undefined;
   const seen = new Set<string>();
 
-  const clients: MqttClient[] = RELAY_URLS.map((url) => {
+  const clients: MqttClient[] = RELAY_URLS.map((url: string) => {
     const client = mqtt.connect(url, { clean: true, reconnectPeriod: 1500, connectTimeout: 8000, keepalive: 30 });
     let up = false;
     client.on('connect', () => {

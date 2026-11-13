@@ -22,6 +22,7 @@ import { Slam, Sunburst } from './fx';
 import { playerById } from './shared';
 import { bounce } from '@/ui/motion';
 import { Logo } from '@/ui/Logo';
+import { openPremium } from '@/monetize/openPremium';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 const STEP_H = [120, 86, 60];
@@ -243,7 +244,7 @@ export function Podium({ state }: { state: GameState }) {
               <View style={styles.upsell}>
                 <Text style={styles.upsellTitle}>Your crew loved Party Mode? 🍻</Text>
                 <Dim>That was your free game. Unlock it forever for $4.99.</Dim>
-                <Button icon="unlock" label="Unlock Party Mode" onPress={() => router.push('/paywall')} />
+                <Button icon="unlock" label="Unlock Party Mode" onPress={() => openPremium('party')} />
               </View>
             </PopIn>
           )}
@@ -251,7 +252,7 @@ export function Podium({ state }: { state: GameState }) {
             <PopIn delay={400}>
               <View style={styles.upsell}>
                 <Text style={styles.upsellTitle}>Want to host Party Mode yourself?</Text>
-                <Button variant="secondary" icon="crown" label="See Premium" onPress={() => router.push('/paywall')} />
+                <Button variant="secondary" icon="crown" label="See Premium" onPress={() => openPremium('general')} />
               </View>
             </PopIn>
           )}
