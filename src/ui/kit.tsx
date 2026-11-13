@@ -97,7 +97,7 @@ export function Screen({
  * (Layout height is unaffected by transforms, so measuring the inner view gives
  * the natural height even while it's scaled.)
  */
-function AutoFit({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) {
+export function AutoFit({ children, style }: { children: React.ReactNode; style?: StyleProp<ViewStyle> }) {
   // Start from an estimate so the screen draws instantly; the real height arrives via onLayout.
   const estimate = useScreenSize().height - 90;
   const [avail, setAvail] = React.useState(estimate);

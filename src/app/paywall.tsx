@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AnimalAvatar } from '@/avatar/AnimalAvatar';
@@ -13,7 +13,7 @@ import { PREMIUM_PRICE, STORE_IS_PLACEHOLDER, purchasePremium, restorePurchases 
 import { useProfile } from '@/state/profile';
 import { Background } from '@/ui/Background';
 import { Icon, type IconName } from '@/ui/Icon';
-import { Button, tap } from '@/ui/kit';
+import { AutoFit, Button, tap } from '@/ui/kit';
 import { Logo } from '@/ui/Logo';
 import { FadeIn } from '@/ui/motion';
 import { colors, fonts } from '@/ui/theme';
@@ -86,7 +86,7 @@ function Preview({ reason }: { reason: PremiumReason }) {
     return (
       <View style={styles.crowd}>
         {ANIMALS.slice(0, 14).map((a) => (
-          <AnimalAvatar key={a.id} avatar={{ animal: a.id }} size={38} mood="happy" />
+          <AnimalAvatar key={a.id} avatar={{ animal: a.id }} size={30} mood="happy" />
         ))}
       </View>
     );
@@ -94,7 +94,7 @@ function Preview({ reason }: { reason: PremiumReason }) {
   if (reason === 'avatar') {
     return (
       <View style={{ alignItems: 'center' }}>
-        <AnimalAvatar avatar={{ ...profile.avatar, head: 'crown' }} size={120} mood="happy" />
+        <AnimalAvatar avatar={{ ...profile.avatar, head: 'crown' }} size={88} mood="happy" />
       </View>
     );
   }
@@ -151,15 +151,16 @@ export default function Paywall() {
             <Icon name="close" size={20} color={colors.white} />
           </Pressable>
           <Pressable onPress={restore} accessibilityRole="button" hitSlop={10}>
-            <Text style={styles.restore}>Restore</Text>
+            <Text style={styles.restore}>Restore purchases</Text>
           </Pressable>
         </View>
-        <ScrollView contentContainerStyle={styles.body}>
-          <Logo width={90} style={{ alignSelf: 'center' }} />
+        {/* Everything fits on one screen: on short phones the content scales down a little. */}
+        <AutoFit style={styles.body}>
+          <Logo width={64} style={{ alignSelf: 'center' }} />
           <FadeIn>
             <Preview reason={reason} />
           </FadeIn>
-          <View style={{ gap: 6 }}>
+          <View style={{ gap: 4 }}>
             <Text style={styles.title}>{head.title}</Text>
             <Text style={styles.sub}>You pay once. Everyone in your room plays Premium, free.</Text>
           </View>
@@ -177,7 +178,7 @@ export default function Paywall() {
             ))}
           </View>
           <Text style={styles.small}>About the price of one drink: less than $1 per friend at your next game night.</Text>
-        </ScrollView>
+        </AutoFit>
         <View style={styles.footer}>
           {/* The full price is always on screen, next to the button. */}
           <View style={styles.priceRow}>
@@ -213,19 +214,19 @@ export default function Paywall() {
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 18, paddingTop: 6, maxWidth: 560, width: '100%', alignSelf: 'center' },
   x: { width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.12)', alignItems: 'center', justifyContent: 'center' },
-  restore: { color: colors.dim, fontFamily: fonts.bodyBold, fontSize: 14 },
-  body: { padding: 18, paddingTop: 4, gap: 16, maxWidth: 560, width: '100%', alignSelf: 'center' },
-  card: { backgroundColor: colors.white, borderRadius: 18, padding: 16, gap: 8, minHeight: 112, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 10, shadowOffset: { width: 0, height: 6 } },
+  restore: { color: colors.dim, fontFamily: fonts.bodyBold, fontSize: 13, textDecorationLine: 'underline' },
+  body: { padding: 18, paddingTop: 0, gap: 10, justifyContent: 'center' },
+  card: { backgroundColor: colors.white, borderRadius: 16, padding: 12, gap: 6, minHeight: 86, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 10, shadowOffset: { width: 0, height: 6 } },
   cardTop: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   cardLabel: { color: colors.neon, fontFamily: fonts.bodyBold, fontSize: 12, letterSpacing: 1 },
-  cardPrompt: { color: colors.ink, fontFamily: fonts.display, fontSize: 19, lineHeight: 24 },
+  cardPrompt: { color: colors.ink, fontFamily: fonts.display, fontSize: 16, lineHeight: 20 },
   crowd: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4 },
-  title: { color: colors.white, fontFamily: fonts.display, fontSize: 28, lineHeight: 32, textAlign: 'center', letterSpacing: -0.5 },
-  sub: { color: '#E8DDF5', fontFamily: fonts.bodySemi, fontSize: 15, textAlign: 'center' },
-  perks: { gap: 8, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: colors.cardBorder },
+  title: { color: colors.white, fontFamily: fonts.display, fontSize: 24, lineHeight: 27, textAlign: 'center', letterSpacing: -0.5 },
+  sub: { color: '#E8DDF5', fontFamily: fonts.bodySemi, fontSize: 14, textAlign: 'center' },
+  perks: { gap: 6, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 14, paddingVertical: 10, paddingHorizontal: 12, borderWidth: 1, borderColor: colors.cardBorder },
   perk: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   perkIcon: { width: 30, alignItems: 'center' },
-  perkText: { flex: 1, color: colors.white, fontFamily: fonts.bodySemi, fontSize: 15 },
+  perkText: { flex: 1, color: colors.white, fontFamily: fonts.bodySemi, fontSize: 13.5 },
   priceRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 4 },
   price: { color: colors.gold, fontFamily: fonts.display, fontSize: 36, letterSpacing: -1 },
   deal: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 13, lineHeight: 17 },
