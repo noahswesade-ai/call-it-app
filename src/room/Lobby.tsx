@@ -10,7 +10,7 @@ import { AnimalAvatar } from '@/avatar/AnimalAvatar';
 import { availableCategories, CATEGORIES, CATEGORY_BY_ID } from '@/content/categories';
 import { canJoin, challengerPool, CUSTOM_ONLY_MIN, customOnlyStatus, FREE_MAX_PLAYERS, FREE_ROUNDS, host, type GameState } from '@/game/engine';
 import { notEveryoneWillPlay } from '@/game/selection';
-import type { Category, GameSettings, Mode } from '@/game/types';
+import type { Category, Difficulty, GameSettings, Mode } from '@/game/types';
 import { useRoom } from '@/net/RoomProvider';
 import { canHostParty, DEV_UNLOCK_PARTY } from '@/state/access';
 import { CategoryIcon } from '@/content/CategoryIcon';
@@ -31,6 +31,13 @@ import { openPremium } from '@/monetize/openPremium';
  * Link that opens the Join screen with the room code filled in. On the web it keeps
  * the site's sub-path (e.g. /call-it-app on GitHub Pages), which expo-linking drops.
  */
+/** Difficulty chips in More settings (same look as the category chips). */
+const DIFFS: { id: Difficulty; label: string; color: string }[] = [
+  { id: 'E', label: 'Easy', color: colors.green },
+  { id: 'M', label: 'Medium', color: colors.gold },
+  { id: 'H', label: 'Hard', color: colors.red },
+];
+
 export function inviteLink(code: string): string {
   if (Platform.OS === 'web' && typeof window !== 'undefined') {
     const base = window.location.pathname.replace(/\/(room|join|avatar|shop|paywall|welcome)?\/?$/, '');
@@ -542,6 +549,35 @@ export function Lobby({ state }: { state: GameState }) {
                 );
               })}
             </View>
+            <Row style={{ gap: 6 }}>
+              <Body>Difficulty</Body>
+              {hostPremium ? null : <Icon name="lock" size={15} color={colors.gold} />}
+            </Row>
+            <View style={styles.cats}>
+              {DIFFS.map((d) => {
+                const chosen = s.difficulties?.length ? s.difficulties : DIFFS.map((x) => x.id);
+                const on = chosen.includes(d.id);
+                return (
+                  <Pressable
+                    key={d.id}
+                    accessibilityRole="switch"
+                    accessibilityState={{ checked: on }}
+                    accessibilityLabel={`${d.label} questions`}
+                    onPress={() => {
+                      tap();
+                      if (!hostPremium) return openPremium('categories');
+                      if (on && chosen.length <= 1) return; // at least one stays on
+                      const next = on ? chosen.filter((x) => x !== d.id) : [...chosen, d.id];
+                      set({ difficulties: next.length === 3 ? [] : DIFFS.map((x) => x.id).filter((x) => next.includes(x)) });
+                    }}
+                    style={[styles.cat, { borderColor: d.color, backgroundColor: on ? d.color : 'transparent' }]}
+                  >
+                    <Text style={[styles.catText, on && { color: colors.ink }]}>{d.label}</Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+            <Dim style={{ fontSize: 12 }}>Turn off Easy, or play only Hard. Know Your Friends questions aren't affected.</Dim>
             <HandOver state={state} myId={myId} target={handTo} onPick={setHandTo} onConfirm={() => {
               if (handTo) dispatch({ type: 'transferHost', to: handTo.id });
               setHandTo(undefined);

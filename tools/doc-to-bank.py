@@ -15,7 +15,9 @@ for el in tab['documentTab']['body']['content']:
     if not text:
         continue
     style = p.get('paragraphStyle', {}).get('namedStyleType', '')
-    if style.startswith('HEADING') or style == 'TITLE':
+    if style == 'HEADING_3':
+        out += ['', f'### {text}']  # difficulty sub-heading (for reading only)
+    elif style.startswith('HEADING') or style == 'TITLE':
         out += ['', f'## {text}']
     elif text.startswith('['):
         out.append(text)

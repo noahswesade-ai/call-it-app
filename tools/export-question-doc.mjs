@@ -25,9 +25,11 @@ for (const block of text.split(/\n(?=## )/)) {
   const lines = block.split('\n').filter((l) => l.trim() && !l.startsWith('# '));
   const head = lines.find((l) => l.startsWith('## '));
   if (!head) continue;
-  const qs = lines.filter((l) => l.trim().startsWith('['));
   parts.push(`<h2>${esc(head.slice(3).trim())}</h2>`);
-  for (const q of qs) parts.push(`<p>${esc(q.trim())}</p>`);
+  for (const l of lines) {
+    if (l.startsWith('### ')) parts.push(`<h3>${esc(l.slice(4).trim())}</h3>`);
+    else if (l.trim().startsWith('[')) parts.push(`<p>${esc(l.trim())}</p>`);
+  }
 }
 const html = `<html><body>${parts.join('\n')}</body></html>`;
 fs.writeFileSync(path.join(root, 'content', 'question-bank.html'), html);

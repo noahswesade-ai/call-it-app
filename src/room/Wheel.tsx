@@ -274,6 +274,8 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
                 </View>
               </Bob>
               <Text style={styles.boxDesc}>{result.description}</Text>
+              {/* Know Your Friends is about people, so it has no difficulty to show. */}
+              {(landOn === 'random' ? randomResult : landOn) !== 'kyf' && (
               <PopIn delay={250}>
                 <Pill
                   label={`${difficulty === 'H' ? '🔥🔥🔥' : difficulty === 'M' ? '🔥🔥' : '🔥'} ${DIFFICULTY_LABEL[difficulty].toUpperCase()}`}
@@ -281,6 +283,7 @@ export function Wheel({ slices, landOn, randomResult, difficulty, lockedSlice, d
                   textColor={difficulty === 'H' ? colors.white : colors.ink}
                 />
               </PopIn>
+              )}
             </View>
           </PopIn>
         )}

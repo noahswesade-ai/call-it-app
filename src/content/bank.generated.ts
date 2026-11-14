@@ -3,24 +3,7 @@ import type { Question } from '@/game/types';
 
 export const BANK: Question[] = [
  {
-  "id": "geography-001",
-  "category": "geography",
-  "prompt": "Which river is the longest in the world?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "The Nile (accept the Amazon — it’s disputed)"
- },
- {
-  "id": "geography-002",
-  "category": "geography",
-  "prompt": "What is the population of India?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "About 1.45 billion",
-  "numericAnswer": 1450000000
- },
- {
-  "id": "geography-003",
+  "id": "geography-0m669em",
   "category": "geography",
   "prompt": "What is the capital of Australia?",
   "type": "SPOKEN_EXACT",
@@ -28,15 +11,7 @@ export const BANK: Question[] = [
   "answer": "Canberra"
  },
  {
-  "id": "geography-004",
-  "category": "geography",
-  "prompt": "Which country has the most time zones (counting overseas territories)?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "France (12)"
- },
- {
-  "id": "geography-005",
+  "id": "geography-10j3qmg",
   "category": "geography",
   "prompt": "What is the smallest country in the world?",
   "type": "SPOKEN_EXACT",
@@ -44,33 +19,7 @@ export const BANK: Question[] = [
   "answer": "Vatican City"
  },
  {
-  "id": "geography-006",
-  "category": "geography",
-  "prompt": "How tall is Mount Everest, in meters?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "8,849 m",
-  "numericAnswer": 8849
- },
- {
-  "id": "geography-007",
-  "category": "geography",
-  "prompt": "How many countries are in Africa?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "54",
-  "numericAnswer": 54
- },
- {
-  "id": "geography-008",
-  "category": "geography",
-  "prompt": "Which US state has the longest coastline?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "Alaska"
- },
- {
-  "id": "geography-009",
+  "id": "geography-0m6svdh",
   "category": "geography",
   "prompt": "What is the deepest point in the ocean?",
   "type": "SPOKEN_EXACT",
@@ -78,24 +27,7 @@ export const BANK: Question[] = [
   "answer": "The Mariana Trench (Challenger Deep)"
  },
  {
-  "id": "geography-010",
-  "category": "geography",
-  "prompt": "What is the largest desert on Earth?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Antarctica (the Sahara is the largest hot desert)"
- },
- {
-  "id": "geography-011",
-  "category": "geography",
-  "prompt": "How many US states border Canada?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "13",
-  "numericAnswer": 13
- },
- {
-  "id": "geography-012",
+  "id": "geography-1ouciet",
   "category": "geography",
   "prompt": "What is the most populous country in South America?",
   "type": "SPOKEN_EXACT",
@@ -103,31 +35,7 @@ export const BANK: Question[] = [
   "answer": "Brazil"
  },
  {
-  "id": "geography-013",
-  "category": "geography",
-  "prompt": "How far is New York from Los Angeles in a straight line, in miles?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 2,450 miles",
-  "numericAnswer": 2450
- },
- {
-  "id": "geography-014",
-  "category": "geography",
-  "prompt": "Name the countries that border Germany.",
-  "type": "TURN_BASED",
-  "difficulty": "H",
-  "answer": "Denmark, Poland, Czechia, Austria, Switzerland, France, Luxembourg, Belgium, Netherlands"
- },
- {
-  "id": "geography-015",
-  "category": "geography",
-  "prompt": "Name countries in Europe.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "geography-016",
+  "id": "geography-0h35cug",
   "category": "geography",
   "prompt": "What is the capital of Canada?",
   "type": "SPOKEN_EXACT",
@@ -135,43 +43,7 @@ export const BANK: Question[] = [
   "answer": "Ottawa"
  },
  {
-  "id": "geography-017",
-  "category": "geography",
-  "prompt": "How many countries are members of the United Nations?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "193",
-  "numericAnswer": 193
- },
- {
-  "id": "geography-018",
-  "category": "geography",
-  "prompt": "How long is the Great Wall of China, in miles (all its branches)?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 13,170 miles",
-  "numericAnswer": 13170
- },
- {
-  "id": "geography-019",
-  "category": "geography",
-  "prompt": "Roughly how many islands make up Indonesia?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 17,000",
-  "numericAnswer": 17000
- },
- {
-  "id": "geography-020",
-  "category": "geography",
-  "prompt": "How tall is the Eiffel Tower, in meters?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "About 330 m",
-  "numericAnswer": 330
- },
- {
-  "id": "geography-021",
+  "id": "geography-0efih1y",
   "category": "geography",
   "prompt": "What percentage of Earth’s surface is covered by water?",
   "type": "SPOKEN_CLOSEST",
@@ -180,7 +52,185 @@ export const BANK: Question[] = [
   "numericAnswer": 71
  },
  {
-  "id": "geography-022",
+  "id": "geography-02qzso0",
+  "category": "geography",
+  "prompt": "Which country is shaped like a boot?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Italy"
+ },
+ {
+  "id": "geography-0qfl5ra",
+  "category": "geography",
+  "prompt": "What is the largest ocean on Earth?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "The Pacific Ocean"
+ },
+ {
+  "id": "geography-05i9wzc",
+  "category": "geography",
+  "prompt": "Which continent is the Sahara Desert on?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Africa"
+ },
+ {
+  "id": "geography-0sy47lp",
+  "category": "geography",
+  "prompt": "What is the largest country in South America by area?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Brazil"
+ },
+ {
+  "id": "geography-0jasmo2",
+  "category": "geography",
+  "prompt": "Name US states.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "geography-0l7exkf",
+  "category": "geography",
+  "prompt": "What is the capital of Spain?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Madrid"
+ },
+ {
+  "id": "geography-0ydy9ya",
+  "category": "geography",
+  "prompt": "Which country has a maple leaf on its flag?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Canada"
+ },
+ {
+  "id": "geography-02c22xo",
+  "category": "geography",
+  "prompt": "In which country would you find the Great Barrier Reef?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Australia"
+ },
+ {
+  "id": "geography-14z3kdu",
+  "category": "geography",
+  "prompt": "What is the largest US state by area?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Alaska"
+ },
+ {
+  "id": "geography-08svdgd",
+  "category": "geography",
+  "prompt": "Which ocean lies between Africa and Australia?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "The Indian Ocean"
+ },
+ {
+  "id": "geography-1eunkuo",
+  "category": "geography",
+  "prompt": "Which country is famous for tulips, windmills and clogs?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "The Netherlands"
+ },
+ {
+  "id": "geography-0ti436w",
+  "category": "geography",
+  "prompt": "What is the capital of Japan?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Tokyo"
+ },
+ {
+  "id": "geography-1igs9j5",
+  "category": "geography",
+  "prompt": "What is the capital of Egypt?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Cairo"
+ },
+ {
+  "id": "geography-0zeepvg",
+  "category": "geography",
+  "prompt": "Name countries in South America.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "geography-11h1h68",
+  "category": "geography",
+  "prompt": "Which river is the longest in the world?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The Nile (accept the Amazon — it’s disputed)"
+ },
+ {
+  "id": "geography-16rtg0e",
+  "category": "geography",
+  "prompt": "What is the population of India?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "About 1.45 billion",
+  "numericAnswer": 1450000000
+ },
+ {
+  "id": "geography-1ipicwd",
+  "category": "geography",
+  "prompt": "How tall is Mount Everest, in meters?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "8,849 m",
+  "numericAnswer": 8849
+ },
+ {
+  "id": "geography-0semhiw",
+  "category": "geography",
+  "prompt": "How many countries are in Africa?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "54",
+  "numericAnswer": 54
+ },
+ {
+  "id": "geography-0nf8len",
+  "category": "geography",
+  "prompt": "Which US state has the longest coastline?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Alaska"
+ },
+ {
+  "id": "geography-1kz9y47",
+  "category": "geography",
+  "prompt": "Name countries in Europe.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "geography-1hfh3f7",
+  "category": "geography",
+  "prompt": "How many countries are members of the United Nations?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "193",
+  "numericAnswer": 193
+ },
+ {
+  "id": "geography-0ho9wjv",
+  "category": "geography",
+  "prompt": "How tall is the Eiffel Tower, in meters?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "About 330 m",
+  "numericAnswer": 330
+ },
+ {
+  "id": "geography-0kdkxqr",
   "category": "geography",
   "prompt": "How many time zones does Russia stretch across?",
   "type": "SPOKEN_CLOSEST",
@@ -189,33 +239,7 @@ export const BANK: Question[] = [
   "numericAnswer": 11
  },
  {
-  "id": "geography-023",
-  "category": "geography",
-  "prompt": "How many countries share a land border with China?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "14",
-  "numericAnswer": 14
- },
- {
-  "id": "geography-024",
-  "category": "geography",
-  "prompt": "Which African country has THREE capital cities?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "South Africa (Pretoria, Cape Town, Bloemfontein)"
- },
- {
-  "id": "geography-025",
-  "category": "geography",
-  "prompt": "What’s the hottest temperature ever recorded on Earth, in °F?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "134°F (Death Valley, 1913)",
-  "numericAnswer": 134
- },
- {
-  "id": "geography-026",
+  "id": "geography-0osuavl",
   "category": "geography",
   "prompt": "How many US states start with the letter M?",
   "type": "SPOKEN_CLOSEST",
@@ -224,24 +248,7 @@ export const BANK: Question[] = [
   "numericAnswer": 8
  },
  {
-  "id": "geography-027",
-  "category": "geography",
-  "prompt": "Which city is further north: Rome or New York?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Rome (just barely!)"
- },
- {
-  "id": "geography-028",
-  "category": "geography",
-  "prompt": "How long is the Amazon River, in miles?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 4,000 miles",
-  "numericAnswer": 4000
- },
- {
-  "id": "geography-029",
+  "id": "geography-1l3q3x5",
   "category": "geography",
   "prompt": "What is the capital of Turkey? (Careful…)",
   "type": "SPOKEN_EXACT",
@@ -249,22 +256,14 @@ export const BANK: Question[] = [
   "answer": "Ankara — not Istanbul!"
  },
  {
-  "id": "geography-030",
-  "category": "geography",
-  "prompt": "Which country has the most natural lakes?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Canada"
- },
- {
-  "id": "geography-031",
+  "id": "geography-0uwdw5a",
   "category": "geography",
   "prompt": "Name US state capitals.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
  {
-  "id": "geography-032",
+  "id": "geography-0sdqzqh",
   "category": "geography",
   "prompt": "What is the capital of New Zealand?",
   "type": "SPOKEN_EXACT",
@@ -272,7 +271,7 @@ export const BANK: Question[] = [
   "answer": "Wellington (not Auckland!)"
  },
  {
-  "id": "geography-033",
+  "id": "geography-1efravg",
   "category": "geography",
   "prompt": "What is the capital of Brazil?",
   "type": "SPOKEN_EXACT",
@@ -280,15 +279,7 @@ export const BANK: Question[] = [
   "answer": "Brasília"
  },
  {
-  "id": "geography-034",
-  "category": "geography",
-  "prompt": "What is the capital of Kazakhstan?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Astana"
- },
- {
-  "id": "geography-035",
+  "id": "geography-0i5grej",
   "category": "geography",
   "prompt": "What is the capital of Switzerland?",
   "type": "SPOKEN_EXACT",
@@ -296,23 +287,7 @@ export const BANK: Question[] = [
   "answer": "Bern"
  },
  {
-  "id": "geography-036",
-  "category": "geography",
-  "prompt": "What is the capital of Nigeria?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Abuja (not Lagos)"
- },
- {
-  "id": "geography-037",
-  "category": "geography",
-  "prompt": "Which country is shaped like a boot?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Italy"
- },
- {
-  "id": "geography-038",
+  "id": "geography-0shohvq",
   "category": "geography",
   "prompt": "Which country has the most pyramids in the world?",
   "type": "SPOKEN_EXACT",
@@ -320,15 +295,7 @@ export const BANK: Question[] = [
   "answer": "Sudan (more than Egypt!)"
  },
  {
-  "id": "geography-039",
-  "category": "geography",
-  "prompt": "What is the only country in the world with a non-rectangular flag?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Nepal"
- },
- {
-  "id": "geography-040",
+  "id": "geography-0skjwz1",
   "category": "geography",
   "prompt": "Which country is home to the most volcanoes?",
   "type": "SPOKEN_EXACT",
@@ -336,15 +303,7 @@ export const BANK: Question[] = [
   "answer": "Indonesia (also accept the USA for total counted)"
  },
  {
-  "id": "geography-041",
-  "category": "geography",
-  "prompt": "What is the largest ocean on Earth?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "The Pacific Ocean"
- },
- {
-  "id": "geography-042",
+  "id": "geography-1olt1va",
   "category": "geography",
   "prompt": "What is the longest river in Europe?",
   "type": "SPOKEN_EXACT",
@@ -352,15 +311,7 @@ export const BANK: Question[] = [
   "answer": "The Volga"
  },
  {
-  "id": "geography-043",
-  "category": "geography",
-  "prompt": "Which two countries share the longest international border?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Canada and the USA"
- },
- {
-  "id": "geography-044",
+  "id": "geography-1ipof4i",
   "category": "geography",
   "prompt": "In which country would you find the ancient city of Petra?",
   "type": "SPOKEN_EXACT",
@@ -368,23 +319,7 @@ export const BANK: Question[] = [
   "answer": "Jordan"
  },
  {
-  "id": "geography-045",
-  "category": "geography",
-  "prompt": "Which continent is the Sahara Desert on?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Africa"
- },
- {
-  "id": "geography-046",
-  "category": "geography",
-  "prompt": "In which country is the legendary city of Timbuktu?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Mali"
- },
- {
-  "id": "geography-047",
+  "id": "geography-1gg4ycg",
   "category": "geography",
   "prompt": "Which US state is known as the Sunshine State?",
   "type": "SPOKEN_EXACT",
@@ -392,15 +327,7 @@ export const BANK: Question[] = [
   "answer": "Florida"
  },
  {
-  "id": "geography-048",
-  "category": "geography",
-  "prompt": "What is the smallest US state by area?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Rhode Island"
- },
- {
-  "id": "geography-049",
+  "id": "geography-11zv9qu",
   "category": "geography",
   "prompt": "Which country has the largest population in Africa?",
   "type": "SPOKEN_EXACT",
@@ -408,15 +335,7 @@ export const BANK: Question[] = [
   "answer": "Nigeria"
  },
  {
-  "id": "geography-050",
-  "category": "geography",
-  "prompt": "Which river flows through Baghdad?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "The Tigris"
- },
- {
-  "id": "geography-051",
+  "id": "geography-1jv3fvk",
   "category": "geography",
   "prompt": "What is the tallest waterfall in the world?",
   "type": "SPOKEN_EXACT",
@@ -424,15 +343,7 @@ export const BANK: Question[] = [
   "answer": "Angel Falls (Venezuela)"
  },
  {
-  "id": "geography-052",
-  "category": "geography",
-  "prompt": "Which country has the longest coastline in the world?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Canada"
- },
- {
-  "id": "geography-053",
+  "id": "geography-15t9x62",
   "category": "geography",
   "prompt": "Mount Kilimanjaro is in which country?",
   "type": "SPOKEN_EXACT",
@@ -440,15 +351,7 @@ export const BANK: Question[] = [
   "answer": "Tanzania"
  },
  {
-  "id": "geography-054",
-  "category": "geography",
-  "prompt": "What is the largest country in South America by area?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Brazil"
- },
- {
-  "id": "geography-055",
+  "id": "geography-1achvga",
   "category": "geography",
   "prompt": "What is the largest island in the world?",
   "type": "SPOKEN_EXACT",
@@ -456,15 +359,7 @@ export const BANK: Question[] = [
   "answer": "Greenland"
  },
  {
-  "id": "geography-056",
-  "category": "geography",
-  "prompt": "Istanbul sits on two continents. Which two?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Europe and Asia"
- },
- {
-  "id": "geography-057",
+  "id": "geography-0fwp5e6",
   "category": "geography",
   "prompt": "How many countries are there in Europe?",
   "type": "SPOKEN_CLOSEST",
@@ -473,16 +368,7 @@ export const BANK: Question[] = [
   "numericAnswer": 44
  },
  {
-  "id": "geography-058",
-  "category": "geography",
-  "prompt": "How many countries are there in South America?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "12",
-  "numericAnswer": 12
- },
- {
-  "id": "geography-059",
+  "id": "geography-09lsuq3",
   "category": "geography",
   "prompt": "How many US states are there that touch the Pacific Ocean?",
   "type": "SPOKEN_CLOSEST",
@@ -491,25 +377,7 @@ export const BANK: Question[] = [
   "numericAnswer": 5
  },
  {
-  "id": "geography-060",
-  "category": "geography",
-  "prompt": "How deep is the Mariana Trench, in meters?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 10,935 m",
-  "numericAnswer": 10935
- },
- {
-  "id": "geography-061",
-  "category": "geography",
-  "prompt": "How many square miles is Russia?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 6.6 million",
-  "numericAnswer": 6600000
- },
- {
-  "id": "geography-062",
+  "id": "geography-01qy7m1",
   "category": "geography",
   "prompt": "What is the population of Australia?",
   "type": "SPOKEN_CLOSEST",
@@ -518,25 +386,7 @@ export const BANK: Question[] = [
   "numericAnswer": 27000000
  },
  {
-  "id": "geography-063",
-  "category": "geography",
-  "prompt": "What is the population of Tokyo's metro area?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 37 million",
-  "numericAnswer": 37000000
- },
- {
-  "id": "geography-064",
-  "category": "geography",
-  "prompt": "How long is the Nile River, in miles?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 4,130 miles",
-  "numericAnswer": 4130
- },
- {
-  "id": "geography-065",
+  "id": "geography-11brhiw",
   "category": "geography",
   "prompt": "How many countries does the Equator pass through?",
   "type": "SPOKEN_CLOSEST",
@@ -545,16 +395,7 @@ export const BANK: Question[] = [
   "numericAnswer": 13
  },
  {
-  "id": "geography-066",
-  "category": "geography",
-  "prompt": "How many islands make up the Philippines?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 7,600",
-  "numericAnswer": 7600
- },
- {
-  "id": "geography-067",
+  "id": "geography-0ffrwfs",
   "category": "geography",
   "prompt": "How tall is the Burj Khalifa, in meters?",
   "type": "SPOKEN_CLOSEST",
@@ -563,25 +404,7 @@ export const BANK: Question[] = [
   "numericAnswer": 828
  },
  {
-  "id": "geography-068",
-  "category": "geography",
-  "prompt": "How long is the Panama Canal, in miles?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 51 miles",
-  "numericAnswer": 51
- },
- {
-  "id": "geography-069",
-  "category": "geography",
-  "prompt": "How many countries border Brazil?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "10",
-  "numericAnswer": 10
- },
- {
-  "id": "geography-070",
+  "id": "geography-1qwests",
   "category": "geography",
   "prompt": "How many time zones does the mainland USA (lower 48) have?",
   "type": "SPOKEN_CLOSEST",
@@ -590,25 +413,7 @@ export const BANK: Question[] = [
   "numericAnswer": 4
  },
  {
-  "id": "geography-071",
-  "category": "geography",
-  "prompt": "What is the highest mountain in Africa, in meters?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "5,895 m (Kilimanjaro)",
-  "numericAnswer": 5895
- },
- {
-  "id": "geography-072",
-  "category": "geography",
-  "prompt": "What is the coldest temperature ever recorded on Earth, in °C?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "−89.2°C (Antarctica, 1983)",
-  "numericAnswer": -89.2
- },
- {
-  "id": "geography-073",
+  "id": "geography-1k364wo",
   "category": "geography",
   "prompt": "What percentage of the world's population lives in China or India?",
   "type": "SPOKEN_CLOSEST",
@@ -617,7 +422,350 @@ export const BANK: Question[] = [
   "numericAnswer": 35
  },
  {
-  "id": "geography-074",
+  "id": "geography-1sksii7",
+  "category": "geography",
+  "prompt": "Name countries in Africa.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "geography-0i9axt3",
+  "category": "geography",
+  "prompt": "Name countries in Asia.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "geography-17ac995",
+  "category": "geography",
+  "prompt": "Name countries that start with the letter S.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "geography-05ry3eh",
+  "category": "geography",
+  "prompt": "Which has more people: Canada or the state of California?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Canada (about 41 million vs about 39 million)"
+ },
+ {
+  "id": "geography-1j72huc",
+  "category": "geography",
+  "prompt": "Which US state is closest to Africa?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Maine (not Florida!)"
+ },
+ {
+  "id": "geography-0jtm02v",
+  "category": "geography",
+  "prompt": "Reykjavik is the capital of which country?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Iceland"
+ },
+ {
+  "id": "geography-0t8f5j8",
+  "category": "geography",
+  "prompt": "Which mountain range is the traditional border between Europe and Asia?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The Ural Mountains"
+ },
+ {
+  "id": "geography-0eva5dc",
+  "category": "geography",
+  "prompt": "Which river flows through Paris?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The Seine"
+ },
+ {
+  "id": "geography-1ebs5l3",
+  "category": "geography",
+  "prompt": "How many countries are in the European Union?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "27",
+  "numericAnswer": 27
+ },
+ {
+  "id": "geography-0aeemgf",
+  "category": "geography",
+  "prompt": "Which country has the most time zones (counting overseas territories)?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "France (12)"
+ },
+ {
+  "id": "geography-0a8nlet",
+  "category": "geography",
+  "prompt": "What is the largest desert on Earth?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Antarctica (the Sahara is the largest hot desert)"
+ },
+ {
+  "id": "geography-1kbima7",
+  "category": "geography",
+  "prompt": "How many US states border Canada?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "13",
+  "numericAnswer": 13
+ },
+ {
+  "id": "geography-0vomf6y",
+  "category": "geography",
+  "prompt": "How far is New York from Los Angeles in a straight line, in miles?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 2,450 miles",
+  "numericAnswer": 2450
+ },
+ {
+  "id": "geography-1f5gc27",
+  "category": "geography",
+  "prompt": "Name the countries that border Germany.",
+  "type": "TURN_BASED",
+  "difficulty": "H",
+  "answer": "Denmark, Poland, Czechia, Austria, Switzerland, France, Luxembourg, Belgium, Netherlands"
+ },
+ {
+  "id": "geography-1ga2vxd",
+  "category": "geography",
+  "prompt": "How long is the Great Wall of China, in miles (all its branches)?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 13,170 miles",
+  "numericAnswer": 13170
+ },
+ {
+  "id": "geography-0az9cv6",
+  "category": "geography",
+  "prompt": "Roughly how many islands make up Indonesia?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 17,000",
+  "numericAnswer": 17000
+ },
+ {
+  "id": "geography-1sft9p3",
+  "category": "geography",
+  "prompt": "How many countries share a land border with China?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "14",
+  "numericAnswer": 14
+ },
+ {
+  "id": "geography-0366k04",
+  "category": "geography",
+  "prompt": "Which African country has THREE capital cities?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "South Africa (Pretoria, Cape Town, Bloemfontein)"
+ },
+ {
+  "id": "geography-1e005fq",
+  "category": "geography",
+  "prompt": "What’s the hottest temperature ever recorded on Earth, in °F?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "134°F (Death Valley, 1913)",
+  "numericAnswer": 134
+ },
+ {
+  "id": "geography-194zr40",
+  "category": "geography",
+  "prompt": "Which city is further north: Rome or New York?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Rome (just barely!)"
+ },
+ {
+  "id": "geography-0waeg9k",
+  "category": "geography",
+  "prompt": "How long is the Amazon River, in miles?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 4,000 miles",
+  "numericAnswer": 4000
+ },
+ {
+  "id": "geography-0eej4l0",
+  "category": "geography",
+  "prompt": "Which country has the most natural lakes?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Canada"
+ },
+ {
+  "id": "geography-0nja6ls",
+  "category": "geography",
+  "prompt": "What is the capital of Kazakhstan?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Astana"
+ },
+ {
+  "id": "geography-1k7j8zp",
+  "category": "geography",
+  "prompt": "What is the capital of Nigeria?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Abuja (not Lagos)"
+ },
+ {
+  "id": "geography-1waxdoc",
+  "category": "geography",
+  "prompt": "What is the only country in the world with a non-rectangular flag?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Nepal"
+ },
+ {
+  "id": "geography-1ut5k17",
+  "category": "geography",
+  "prompt": "Which two countries share the longest international border?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Canada and the USA"
+ },
+ {
+  "id": "geography-1kcpjox",
+  "category": "geography",
+  "prompt": "In which country is the legendary city of Timbuktu?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Mali"
+ },
+ {
+  "id": "geography-0k25axf",
+  "category": "geography",
+  "prompt": "What is the smallest US state by area?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Rhode Island"
+ },
+ {
+  "id": "geography-1az3c7c",
+  "category": "geography",
+  "prompt": "Which river flows through Baghdad?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The Tigris"
+ },
+ {
+  "id": "geography-1qqu6xo",
+  "category": "geography",
+  "prompt": "Which country has the longest coastline in the world?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Canada"
+ },
+ {
+  "id": "geography-0h98mdi",
+  "category": "geography",
+  "prompt": "Istanbul sits on two continents. Which two?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Europe and Asia"
+ },
+ {
+  "id": "geography-18jm2od",
+  "category": "geography",
+  "prompt": "How many countries are there in South America?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "12",
+  "numericAnswer": 12
+ },
+ {
+  "id": "geography-07emp7v",
+  "category": "geography",
+  "prompt": "How deep is the Mariana Trench, in meters?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 10,935 m",
+  "numericAnswer": 10935
+ },
+ {
+  "id": "geography-139wr6p",
+  "category": "geography",
+  "prompt": "How many square miles is Russia?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 6.6 million",
+  "numericAnswer": 6600000
+ },
+ {
+  "id": "geography-0x9rwxh",
+  "category": "geography",
+  "prompt": "What is the population of Tokyo's metro area?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 37 million",
+  "numericAnswer": 37000000
+ },
+ {
+  "id": "geography-1bzdtim",
+  "category": "geography",
+  "prompt": "How long is the Nile River, in miles?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 4,130 miles",
+  "numericAnswer": 4130
+ },
+ {
+  "id": "geography-1lyafze",
+  "category": "geography",
+  "prompt": "How many islands make up the Philippines?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 7,600",
+  "numericAnswer": 7600
+ },
+ {
+  "id": "geography-1kg8407",
+  "category": "geography",
+  "prompt": "How long is the Panama Canal, in miles?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 51 miles",
+  "numericAnswer": 51
+ },
+ {
+  "id": "geography-12hxu03",
+  "category": "geography",
+  "prompt": "How many countries border Brazil?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "10",
+  "numericAnswer": 10
+ },
+ {
+  "id": "geography-16aghvi",
+  "category": "geography",
+  "prompt": "What is the highest mountain in Africa, in meters?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "5,895 m (Kilimanjaro)",
+  "numericAnswer": 5895
+ },
+ {
+  "id": "geography-0ahq2m6",
+  "category": "geography",
+  "prompt": "What is the coldest temperature ever recorded on Earth, in °C?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "−89.2°C (Antarctica, 1983)",
+  "numericAnswer": -89.2
+ },
+ {
+  "id": "geography-1qfaq0j",
   "category": "geography",
   "prompt": "How far is London from New York, in miles?",
   "type": "SPOKEN_CLOSEST",
@@ -626,7 +774,7 @@ export const BANK: Question[] = [
   "numericAnswer": 3460
  },
  {
-  "id": "geography-075",
+  "id": "geography-1d6ab3e",
   "category": "geography",
   "prompt": "How many lakes does Finland have?",
   "type": "SPOKEN_CLOSEST",
@@ -635,58 +783,54 @@ export const BANK: Question[] = [
   "numericAnswer": 188000
  },
  {
-  "id": "geography-076",
-  "category": "geography",
-  "prompt": "Name countries in Africa.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "geography-077",
-  "category": "geography",
-  "prompt": "Name countries in Asia.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "geography-078",
-  "category": "geography",
-  "prompt": "Name US states.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
- },
- {
-  "id": "geography-079",
+  "id": "geography-0nibvd4",
   "category": "geography",
   "prompt": "Name capital cities in Europe.",
   "type": "TURN_BASED",
   "difficulty": "H"
  },
  {
-  "id": "geography-080",
-  "category": "geography",
-  "prompt": "Name countries that start with the letter S.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "geography-081",
+  "id": "geography-0ephs1y",
   "category": "geography",
   "prompt": "Name islands.",
   "type": "TURN_BASED",
   "difficulty": "H"
  },
  {
-  "id": "history-001",
-  "category": "history",
-  "prompt": "In what year did the Industrial Revolution begin?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "About 1760",
-  "numericAnswer": 1760
+  "id": "geography-0nun6l1",
+  "category": "geography",
+  "prompt": "Which country has the most islands in the world?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Sweden (about 267,000)"
  },
  {
-  "id": "history-002",
+  "id": "geography-0e3ivf9",
+  "category": "geography",
+  "prompt": "What is the capital of the Canadian province British Columbia?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Victoria (not Vancouver!)"
+ },
+ {
+  "id": "geography-0qqkckz",
+  "category": "geography",
+  "prompt": "How many countries are completely surrounded by just one other country?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "3 (Lesotho, Vatican City, San Marino)",
+  "numericAnswer": 3
+ },
+ {
+  "id": "geography-0hrj9me",
+  "category": "geography",
+  "prompt": "Which is the only country with coastline on both the Atlantic and the Indian Ocean?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "South Africa"
+ },
+ {
+  "id": "history-04ymuo4",
   "category": "history",
   "prompt": "Which American town became famous for its witch trials?",
   "type": "SPOKEN_EXACT",
@@ -694,7 +838,7 @@ export const BANK: Question[] = [
   "answer": "Salem, Massachusetts"
  },
  {
-  "id": "history-003",
+  "id": "history-02x70qd",
   "category": "history",
   "prompt": "In what year did the Titanic sink?",
   "type": "SPOKEN_CLOSEST",
@@ -703,7 +847,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1912
  },
  {
-  "id": "history-004",
+  "id": "history-07xl3fy",
   "category": "history",
   "prompt": "Who was the first person to walk on the Moon?",
   "type": "SPOKEN_EXACT",
@@ -711,25 +855,7 @@ export const BANK: Question[] = [
   "answer": "Neil Armstrong (1969)"
  },
  {
-  "id": "history-005",
-  "category": "history",
-  "prompt": "In what year did the Berlin Wall fall?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "1989",
-  "numericAnswer": 1989
- },
- {
-  "id": "history-006",
-  "category": "history",
-  "prompt": "How many years did the Hundred Years’ War actually last?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "116 years",
-  "numericAnswer": 116
- },
- {
-  "id": "history-007",
+  "id": "history-1hhppa2",
   "category": "history",
   "prompt": "Who was the 16th president of the United States?",
   "type": "SPOKEN_EXACT",
@@ -737,7 +863,7 @@ export const BANK: Question[] = [
   "answer": "Abraham Lincoln"
  },
  {
-  "id": "history-008",
+  "id": "history-051eyrq",
   "category": "history",
   "prompt": "In what year did Columbus first reach the Americas?",
   "type": "SPOKEN_CLOSEST",
@@ -746,15 +872,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1492
  },
  {
-  "id": "history-009",
-  "category": "history",
-  "prompt": "Which civilization built Machu Picchu?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "The Inca"
- },
- {
-  "id": "history-010",
+  "id": "history-0u0sqm6",
   "category": "history",
   "prompt": "In what year did World War II end?",
   "type": "SPOKEN_CLOSEST",
@@ -763,23 +881,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1945
  },
  {
-  "id": "history-011",
-  "category": "history",
-  "prompt": "Who was the first woman to win a Nobel Prize?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "Marie Curie (1903)"
- },
- {
-  "id": "history-012",
-  "category": "history",
-  "prompt": "Which of the Seven Wonders of the Ancient World is still standing?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "The Great Pyramid of Giza"
- },
- {
-  "id": "history-013",
+  "id": "history-14faymn",
   "category": "history",
   "prompt": "How many wives did Henry VIII have?",
   "type": "SPOKEN_CLOSEST",
@@ -788,7 +890,7 @@ export const BANK: Question[] = [
   "numericAnswer": 6
  },
  {
-  "id": "history-014",
+  "id": "history-11hdp54",
   "category": "history",
   "prompt": "In what year was the US Declaration of Independence adopted?",
   "type": "SPOKEN_CLOSEST",
@@ -797,7 +899,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1776
  },
  {
-  "id": "history-015",
+  "id": "history-05qarlq",
   "category": "history",
   "prompt": "Which country gave the Statue of Liberty to the United States?",
   "type": "SPOKEN_EXACT",
@@ -805,14 +907,128 @@ export const BANK: Question[] = [
   "answer": "France"
  },
  {
-  "id": "history-016",
+  "id": "history-0bx1ytd",
+  "category": "history",
+  "prompt": "Who was the first President of the United States?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "George Washington"
+ },
+ {
+  "id": "history-1t8jgz3",
+  "category": "history",
+  "prompt": "Which country did the US declare independence from?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Great Britain"
+ },
+ {
+  "id": "history-0o9y65i",
+  "category": "history",
+  "prompt": "In which country did the Olympic Games originate?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Greece"
+ },
+ {
+  "id": "history-1dg8x25",
+  "category": "history",
+  "prompt": "In which country did the Renaissance begin?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Italy"
+ },
+ {
+  "id": "history-0pymi64",
+  "category": "history",
+  "prompt": "Which part of Europe did the Vikings come from?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Scandinavia (Norway, Denmark, Sweden)"
+ },
+ {
+  "id": "history-14ua3uo",
+  "category": "history",
+  "prompt": "Which country put the first astronauts on the Moon?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "The United States"
+ },
+ {
+  "id": "history-04m7tzk",
+  "category": "history",
+  "prompt": "Which ancient civilization gave us democracy, from the city of Athens?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Ancient Greece"
+ },
+ {
+  "id": "history-1xny3ei",
+  "category": "history",
+  "prompt": "Which Jewish teenager wrote a famous diary while hiding in Amsterdam during World War II?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Anne Frank"
+ },
+ {
+  "id": "history-1xjt9rd",
+  "category": "history",
+  "prompt": "Which teenage girl led the French army against the English in the 1400s?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Joan of Arc"
+ },
+ {
+  "id": "history-197f821",
+  "category": "history",
+  "prompt": "In what year did the Industrial Revolution begin?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "About 1760",
+  "numericAnswer": 1760
+ },
+ {
+  "id": "history-1ovspqh",
+  "category": "history",
+  "prompt": "In what year did the Berlin Wall fall?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "1989",
+  "numericAnswer": 1989
+ },
+ {
+  "id": "history-0x1w1mc",
+  "category": "history",
+  "prompt": "Which civilization built Machu Picchu?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The Inca"
+ },
+ {
+  "id": "history-1a80uf6",
+  "category": "history",
+  "prompt": "Who was the first woman to win a Nobel Prize?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Marie Curie (1903)"
+ },
+ {
+  "id": "history-1m3ydn4",
+  "category": "history",
+  "prompt": "Which of the Seven Wonders of the Ancient World is still standing?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The Great Pyramid of Giza"
+ },
+ {
+  "id": "history-0ldvk3v",
   "category": "history",
   "prompt": "Name US presidents.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
  {
-  "id": "history-017",
+  "id": "history-0hfnmoh",
   "category": "history",
   "prompt": "How many years did the Berlin Wall stand?",
   "type": "SPOKEN_CLOSEST",
@@ -821,34 +1037,7 @@ export const BANK: Question[] = [
   "numericAnswer": 28
  },
  {
-  "id": "history-018",
-  "category": "history",
-  "prompt": "The shortest war ever (Britain vs Zanzibar, 1896) lasted how many minutes?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 38–45 minutes",
-  "numericAnswer": 40
- },
- {
-  "id": "history-019",
-  "category": "history",
-  "prompt": "How many different people have been President of the United States?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "45 (Cleveland and Trump each served twice)",
-  "numericAnswer": 45
- },
- {
-  "id": "history-020",
-  "category": "history",
-  "prompt": "In what year did the Black Death reach Europe?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "1347",
-  "numericAnswer": 1347
- },
- {
-  "id": "history-021",
+  "id": "history-1xxmm7i",
   "category": "history",
   "prompt": "How tall was Napoleon, in centimeters?",
   "type": "SPOKEN_CLOSEST",
@@ -857,7 +1046,7 @@ export const BANK: Question[] = [
   "numericAnswer": 170
  },
  {
-  "id": "history-022",
+  "id": "history-1lj9ted",
   "category": "history",
   "prompt": "In what year did the Wright brothers make the first powered flight?",
   "type": "SPOKEN_CLOSEST",
@@ -866,7 +1055,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1903
  },
  {
-  "id": "history-023",
+  "id": "history-0a5h7qx",
   "category": "history",
   "prompt": "How many years did Queen Elizabeth II reign?",
   "type": "SPOKEN_CLOSEST",
@@ -875,52 +1064,7 @@ export const BANK: Question[] = [
   "numericAnswer": 70
  },
  {
-  "id": "history-024",
-  "category": "history",
-  "prompt": "Around what year did Gutenberg invent the printing press?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 1440",
-  "numericAnswer": 1440
- },
- {
-  "id": "history-025",
-  "category": "history",
-  "prompt": "How many minutes did Yuri Gagarin’s first trip to space last?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "108 minutes",
-  "numericAnswer": 108
- },
- {
-  "id": "history-026",
-  "category": "history",
-  "prompt": "For how many million dollars did the US buy Alaska from Russia in 1867?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "$7.2 million",
-  "numericAnswer": 7.2
- },
- {
-  "id": "history-027",
-  "category": "history",
-  "prompt": "How many people signed the US Declaration of Independence?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "56",
-  "numericAnswer": 56
- },
- {
-  "id": "history-028",
-  "category": "history",
-  "prompt": "How many years did the Western Roman Empire last (27 BC to 476 AD)?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 500 years",
-  "numericAnswer": 503
- },
- {
-  "id": "history-029",
+  "id": "history-0tdgbu6",
   "category": "history",
   "prompt": "Who was the first emperor of Rome?",
   "type": "SPOKEN_EXACT",
@@ -928,7 +1072,7 @@ export const BANK: Question[] = [
   "answer": "Augustus (Octavian)"
  },
  {
-  "id": "history-030",
+  "id": "history-07683wm",
   "category": "history",
   "prompt": "Which ancient wonder stood in the harbour of Alexandria?",
   "type": "SPOKEN_EXACT",
@@ -936,22 +1080,14 @@ export const BANK: Question[] = [
   "answer": "The Lighthouse (Pharos) of Alexandria"
  },
  {
-  "id": "history-031",
+  "id": "history-0pgin0t",
   "category": "history",
   "prompt": "Name Greek or Roman gods.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
  {
-  "id": "history-032",
-  "category": "history",
-  "prompt": "Who was the first President of the United States?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "George Washington"
- },
- {
-  "id": "history-033",
+  "id": "history-1n3d837",
   "category": "history",
   "prompt": "Which ship brought the Pilgrims to America in 1620?",
   "type": "SPOKEN_EXACT",
@@ -959,7 +1095,7 @@ export const BANK: Question[] = [
   "answer": "The Mayflower"
  },
  {
-  "id": "history-034",
+  "id": "history-0zkd15f",
   "category": "history",
   "prompt": "Who painted the ceiling of the Sistine Chapel?",
   "type": "SPOKEN_EXACT",
@@ -967,15 +1103,7 @@ export const BANK: Question[] = [
   "answer": "Michelangelo"
  },
  {
-  "id": "history-035",
-  "category": "history",
-  "prompt": "Which empire was ruled by Genghis Khan?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "The Mongol Empire"
- },
- {
-  "id": "history-036",
+  "id": "history-1rxxmhm",
   "category": "history",
   "prompt": "Who was the British Prime Minister for most of World War II?",
   "type": "SPOKEN_EXACT",
@@ -983,23 +1111,7 @@ export const BANK: Question[] = [
   "answer": "Winston Churchill"
  },
  {
-  "id": "history-037",
-  "category": "history",
-  "prompt": "Which country did the US declare independence from?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Great Britain"
- },
- {
-  "id": "history-038",
-  "category": "history",
-  "prompt": "Who was the last Pharaoh of ancient Egypt?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Cleopatra VII"
- },
- {
-  "id": "history-039",
+  "id": "history-1m1jfj4",
   "category": "history",
   "prompt": "Which city was buried by the eruption of Mount Vesuvius in 79 AD?",
   "type": "SPOKEN_EXACT",
@@ -1007,15 +1119,7 @@ export const BANK: Question[] = [
   "answer": "Pompeii"
  },
  {
-  "id": "history-040",
-  "category": "history",
-  "prompt": "Which French queen supposedly said \"Let them eat cake\"?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Marie Antoinette (she probably never said it!)"
- },
- {
-  "id": "history-041",
+  "id": "history-04vnq8l",
   "category": "history",
   "prompt": "What was the name of the first artificial satellite, launched in 1957?",
   "type": "SPOKEN_EXACT",
@@ -1023,15 +1127,7 @@ export const BANK: Question[] = [
   "answer": "Sputnik 1"
  },
  {
-  "id": "history-042",
-  "category": "history",
-  "prompt": "Who was the first woman to fly solo across the Atlantic?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Amelia Earhart"
- },
- {
-  "id": "history-043",
+  "id": "history-0yhroaz",
   "category": "history",
   "prompt": "Which wall was built to keep invaders out of northern Britain under Roman rule?",
   "type": "SPOKEN_EXACT",
@@ -1039,15 +1135,7 @@ export const BANK: Question[] = [
   "answer": "Hadrian's Wall"
  },
  {
-  "id": "history-044",
-  "category": "history",
-  "prompt": "In which country did the Olympic Games originate?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Greece"
- },
- {
-  "id": "history-045",
+  "id": "history-194rvft",
   "category": "history",
   "prompt": "Who wrote the \"I Have a Dream\" speech?",
   "type": "SPOKEN_EXACT",
@@ -1055,39 +1143,7 @@ export const BANK: Question[] = [
   "answer": "Martin Luther King Jr."
  },
  {
-  "id": "history-046",
-  "category": "history",
-  "prompt": "What was the name of the plane that dropped the atomic bomb on Hiroshima?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Enola Gay"
- },
- {
-  "id": "history-047",
-  "category": "history",
-  "prompt": "Which famous ship sank in 1915 after being hit by a German torpedo?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "The Lusitania"
- },
- {
-  "id": "history-048",
-  "category": "history",
-  "prompt": "Who was the first Emperor of China to unify the country?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Qin Shi Huang"
- },
- {
-  "id": "history-049",
-  "category": "history",
-  "prompt": "Which explorer's crew made the first trip all the way around the world?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Ferdinand Magellan's"
- },
- {
-  "id": "history-050",
+  "id": "history-1dawxu5",
   "category": "history",
   "prompt": "Who discovered penicillin?",
   "type": "SPOKEN_EXACT",
@@ -1095,15 +1151,7 @@ export const BANK: Question[] = [
   "answer": "Alexander Fleming"
  },
  {
-  "id": "history-051",
-  "category": "history",
-  "prompt": "What was Abraham Lincoln's job before politics (one of them)?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Lawyer (also rail-splitter, postmaster, shopkeeper)"
- },
- {
-  "id": "history-052",
+  "id": "history-04h8oom",
   "category": "history",
   "prompt": "Which country was Adolf Hitler born in?",
   "type": "SPOKEN_EXACT",
@@ -1111,15 +1159,7 @@ export const BANK: Question[] = [
   "answer": "Austria"
  },
  {
-  "id": "history-053",
-  "category": "history",
-  "prompt": "Which revolution began with the storming of the Bastille?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "The French Revolution (1789)"
- },
- {
-  "id": "history-054",
+  "id": "history-13zv7xg",
   "category": "history",
   "prompt": "Which ancient civilization built the city of Tenochtitlan?",
   "type": "SPOKEN_EXACT",
@@ -1127,15 +1167,7 @@ export const BANK: Question[] = [
   "answer": "The Aztecs"
  },
  {
-  "id": "history-055",
-  "category": "history",
-  "prompt": "Who was the longest-reigning French king?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Louis XIV (72 years)"
- },
- {
-  "id": "history-056",
+  "id": "history-1qmpfrs",
   "category": "history",
   "prompt": "Who invented the telephone?",
   "type": "SPOKEN_EXACT",
@@ -1143,7 +1175,7 @@ export const BANK: Question[] = [
   "answer": "Alexander Graham Bell"
  },
  {
-  "id": "history-057",
+  "id": "history-0ycazv7",
   "category": "history",
   "prompt": "In what year did humans first land on the Moon?",
   "type": "SPOKEN_CLOSEST",
@@ -1152,7 +1184,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1969
  },
  {
-  "id": "history-058",
+  "id": "history-0f4sgxk",
   "category": "history",
   "prompt": "In what year did the Soviet Union collapse?",
   "type": "SPOKEN_CLOSEST",
@@ -1161,16 +1193,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1991
  },
  {
-  "id": "history-059",
-  "category": "history",
-  "prompt": "In what year was the Magna Carta signed?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "1215",
-  "numericAnswer": 1215
- },
- {
-  "id": "history-060",
+  "id": "history-11zwjrd",
   "category": "history",
   "prompt": "In what year did World War I begin?",
   "type": "SPOKEN_CLOSEST",
@@ -1179,34 +1202,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1914
  },
  {
-  "id": "history-061",
-  "category": "history",
-  "prompt": "In what year was Julius Caesar assassinated (BC)?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "44 BC",
-  "numericAnswer": 44
- },
- {
-  "id": "history-062",
-  "category": "history",
-  "prompt": "How many people could the Roman Colosseum hold?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 50,000",
-  "numericAnswer": 50000
- },
- {
-  "id": "history-063",
-  "category": "history",
-  "prompt": "How old was Alexander the Great when he died?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "32",
-  "numericAnswer": 32
- },
- {
-  "id": "history-064",
+  "id": "history-0imr78z",
   "category": "history",
   "prompt": "In what year did Martin Luther King Jr. give his \"I Have a Dream\" speech?",
   "type": "SPOKEN_CLOSEST",
@@ -1215,25 +1211,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1963
  },
  {
-  "id": "history-065",
-  "category": "history",
-  "prompt": "How many years did the Great Pyramid of Giza stay the tallest man-made structure?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 3,800 years",
-  "numericAnswer": 3800
- },
- {
-  "id": "history-066",
-  "category": "history",
-  "prompt": "In what year did the American Civil War end?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "1865",
-  "numericAnswer": 1865
- },
- {
-  "id": "history-067",
+  "id": "history-1mxdl3e",
   "category": "history",
   "prompt": "In what year did the Wall Street Crash happen?",
   "type": "SPOKEN_CLOSEST",
@@ -1242,43 +1220,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1929
  },
  {
-  "id": "history-068",
-  "category": "history",
-  "prompt": "How many days did the D-Day landings' Battle of Normandy last?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 77 days (June 6 – Aug 25, 1944)",
-  "numericAnswer": 77
- },
- {
-  "id": "history-069",
-  "category": "history",
-  "prompt": "How long did the Cold War last, in years?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 44 years (1947–1991)",
-  "numericAnswer": 44
- },
- {
-  "id": "history-070",
-  "category": "history",
-  "prompt": "In what year did the Spanish flu pandemic begin?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "1918",
-  "numericAnswer": 1918
- },
- {
-  "id": "history-071",
-  "category": "history",
-  "prompt": "How many people lived on Earth in the year 1800?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 1 billion",
-  "numericAnswer": 1000000000
- },
- {
-  "id": "history-072",
+  "id": "history-1uxtzof",
   "category": "history",
   "prompt": "How many years did Nelson Mandela spend in prison?",
   "type": "SPOKEN_CLOSEST",
@@ -1287,25 +1229,7 @@ export const BANK: Question[] = [
   "numericAnswer": 27
  },
  {
-  "id": "history-073",
-  "category": "history",
-  "prompt": "How long did Apollo 11's crew spend walking on the Moon, in hours?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 2.5 hours",
-  "numericAnswer": 2.5
- },
- {
-  "id": "history-074",
-  "category": "history",
-  "prompt": "In what year did the Ottoman Empire capture Constantinople?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "1453",
-  "numericAnswer": 1453
- },
- {
-  "id": "history-075",
+  "id": "history-13unbrx",
   "category": "history",
   "prompt": "In what year did the Chernobyl disaster happen?",
   "type": "SPOKEN_CLOSEST",
@@ -1314,7 +1238,379 @@ export const BANK: Question[] = [
   "numericAnswer": 1986
  },
  {
-  "id": "history-076",
+  "id": "history-1txn411",
+  "category": "history",
+  "prompt": "Name famous inventors.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "history-07q3fxm",
+  "category": "history",
+  "prompt": "Name ancient civilizations.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "history-00ro6pn",
+  "category": "history",
+  "prompt": "Name famous explorers.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "history-1hcfh37",
+  "category": "history",
+  "prompt": "Which empire was the largest in history by land area?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The British Empire (accept the Mongol Empire: largest connected empire)"
+ },
+ {
+  "id": "history-0xv9q82",
+  "category": "history",
+  "prompt": "Who was the first woman to become Prime Minister of the UK?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Margaret Thatcher"
+ },
+ {
+  "id": "history-1inofgm",
+  "category": "history",
+  "prompt": "In what year was the first email sent?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "1971",
+  "numericAnswer": 1971
+ },
+ {
+  "id": "history-0epieej",
+  "category": "history",
+  "prompt": "In what year was the Eiffel Tower completed?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "1889",
+  "numericAnswer": 1889
+ },
+ {
+  "id": "history-004riqx",
+  "category": "history",
+  "prompt": "Which city fell for the trick of the wooden horse?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Troy"
+ },
+ {
+  "id": "history-11dmc05",
+  "category": "history",
+  "prompt": "How old was Mozart when he composed his first music?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "5",
+  "numericAnswer": 5
+ },
+ {
+  "id": "history-0tk741s",
+  "category": "history",
+  "prompt": "What was the first permanent English settlement in America, founded in 1607?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Jamestown"
+ },
+ {
+  "id": "history-1w9jhua",
+  "category": "history",
+  "prompt": "The month of March is named after which Roman god?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Mars, the god of war"
+ },
+ {
+  "id": "history-1ib4q0b",
+  "category": "history",
+  "prompt": "Name famous leaders from history.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "history-16bo7sh",
+  "category": "history",
+  "prompt": "How many years did the Hundred Years’ War actually last?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "116 years",
+  "numericAnswer": 116
+ },
+ {
+  "id": "history-0m7nxu4",
+  "category": "history",
+  "prompt": "The shortest war ever (Britain vs Zanzibar, 1896) lasted how many minutes?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 38–45 minutes",
+  "numericAnswer": 40
+ },
+ {
+  "id": "history-1m8mgbu",
+  "category": "history",
+  "prompt": "How many different people have been President of the United States?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "45 (Cleveland and Trump each served twice)",
+  "numericAnswer": 45
+ },
+ {
+  "id": "history-1xp90ci",
+  "category": "history",
+  "prompt": "In what year did the Black Death reach Europe?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "1347",
+  "numericAnswer": 1347
+ },
+ {
+  "id": "history-0l7mf6l",
+  "category": "history",
+  "prompt": "Around what year did Gutenberg invent the printing press?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 1440",
+  "numericAnswer": 1440
+ },
+ {
+  "id": "history-1xa0lqb",
+  "category": "history",
+  "prompt": "How many minutes did Yuri Gagarin’s first trip to space last?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "108 minutes",
+  "numericAnswer": 108
+ },
+ {
+  "id": "history-1i5t98w",
+  "category": "history",
+  "prompt": "For how many million dollars did the US buy Alaska from Russia in 1867?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "$7.2 million",
+  "numericAnswer": 7.2
+ },
+ {
+  "id": "history-0x7b4qk",
+  "category": "history",
+  "prompt": "How many people signed the US Declaration of Independence?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "56",
+  "numericAnswer": 56
+ },
+ {
+  "id": "history-1m14162",
+  "category": "history",
+  "prompt": "How many years did the Western Roman Empire last (27 BC to 476 AD)?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 500 years",
+  "numericAnswer": 503
+ },
+ {
+  "id": "history-1q2s09y",
+  "category": "history",
+  "prompt": "Which empire was ruled by Genghis Khan?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The Mongol Empire"
+ },
+ {
+  "id": "history-1ihv8mx",
+  "category": "history",
+  "prompt": "Who was the last Pharaoh of ancient Egypt?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Cleopatra VII"
+ },
+ {
+  "id": "history-0fwl96v",
+  "category": "history",
+  "prompt": "Which French queen supposedly said \"Let them eat cake\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Marie Antoinette (she probably never said it!)"
+ },
+ {
+  "id": "history-1mpgbgl",
+  "category": "history",
+  "prompt": "Who was the first woman to fly solo across the Atlantic?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Amelia Earhart"
+ },
+ {
+  "id": "history-02rpnl5",
+  "category": "history",
+  "prompt": "What was the name of the plane that dropped the atomic bomb on Hiroshima?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Enola Gay"
+ },
+ {
+  "id": "history-0yn7ow1",
+  "category": "history",
+  "prompt": "Which famous ship sank in 1915 after being hit by a German torpedo?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The Lusitania"
+ },
+ {
+  "id": "history-0yn5lcf",
+  "category": "history",
+  "prompt": "Who was the first Emperor of China to unify the country?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Qin Shi Huang"
+ },
+ {
+  "id": "history-0phf4e3",
+  "category": "history",
+  "prompt": "Which explorer's crew made the first trip all the way around the world?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Ferdinand Magellan's"
+ },
+ {
+  "id": "history-0c403wn",
+  "category": "history",
+  "prompt": "What was Abraham Lincoln's job before politics (one of them)?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Lawyer (also rail-splitter, postmaster, shopkeeper)"
+ },
+ {
+  "id": "history-1ibytnd",
+  "category": "history",
+  "prompt": "Which revolution began with the storming of the Bastille?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The French Revolution (1789)"
+ },
+ {
+  "id": "history-17sg0jv",
+  "category": "history",
+  "prompt": "Who was the longest-reigning French king?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Louis XIV (72 years)"
+ },
+ {
+  "id": "history-002jcbx",
+  "category": "history",
+  "prompt": "In what year was the Magna Carta signed?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "1215",
+  "numericAnswer": 1215
+ },
+ {
+  "id": "history-0zwrtw1",
+  "category": "history",
+  "prompt": "In what year was Julius Caesar assassinated (BC)?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "44 BC",
+  "numericAnswer": 44
+ },
+ {
+  "id": "history-0ivnh6g",
+  "category": "history",
+  "prompt": "How many people could the Roman Colosseum hold?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 50,000",
+  "numericAnswer": 50000
+ },
+ {
+  "id": "history-1t3ci0l",
+  "category": "history",
+  "prompt": "How old was Alexander the Great when he died?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "32",
+  "numericAnswer": 32
+ },
+ {
+  "id": "history-03zwo2u",
+  "category": "history",
+  "prompt": "How many years did the Great Pyramid of Giza stay the tallest man-made structure?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 3,800 years",
+  "numericAnswer": 3800
+ },
+ {
+  "id": "history-1x4czrc",
+  "category": "history",
+  "prompt": "In what year did the American Civil War end?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "1865",
+  "numericAnswer": 1865
+ },
+ {
+  "id": "history-17un5xb",
+  "category": "history",
+  "prompt": "How many days did the D-Day landings' Battle of Normandy last?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 77 days (June 6 – Aug 25, 1944)",
+  "numericAnswer": 77
+ },
+ {
+  "id": "history-0pty6en",
+  "category": "history",
+  "prompt": "How long did the Cold War last, in years?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 44 years (1947–1991)",
+  "numericAnswer": 44
+ },
+ {
+  "id": "history-1ehewrd",
+  "category": "history",
+  "prompt": "In what year did the Spanish flu pandemic begin?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "1918",
+  "numericAnswer": 1918
+ },
+ {
+  "id": "history-1l352bd",
+  "category": "history",
+  "prompt": "How many people lived on Earth in the year 1800?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 1 billion",
+  "numericAnswer": 1000000000
+ },
+ {
+  "id": "history-0dc86g7",
+  "category": "history",
+  "prompt": "How long did Apollo 11's crew spend walking on the Moon, in hours?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 2.5 hours",
+  "numericAnswer": 2.5
+ },
+ {
+  "id": "history-1hela1h",
+  "category": "history",
+  "prompt": "In what year did the Ottoman Empire capture Constantinople?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "1453",
+  "numericAnswer": 1453
+ },
+ {
+  "id": "history-1dbhmmv",
   "category": "history",
   "prompt": "How many US presidents have been assassinated?",
   "type": "SPOKEN_CLOSEST",
@@ -1323,42 +1619,54 @@ export const BANK: Question[] = [
   "numericAnswer": 4
  },
  {
-  "id": "history-077",
-  "category": "history",
-  "prompt": "Name famous inventors.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "history-078",
+  "id": "history-0e2fzoc",
   "category": "history",
   "prompt": "Name kings or queens of England.",
   "type": "TURN_BASED",
   "difficulty": "H"
  },
  {
-  "id": "history-079",
-  "category": "history",
-  "prompt": "Name ancient civilizations.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "history-080",
+  "id": "history-0c80zkd",
   "category": "history",
   "prompt": "Name wars.",
   "type": "TURN_BASED",
   "difficulty": "H"
  },
  {
-  "id": "history-081",
+  "id": "history-044qkgw",
   "category": "history",
-  "prompt": "Name famous explorers.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
+  "prompt": "Which country was the first to give all women the right to vote, in 1893?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "New Zealand"
  },
  {
-  "id": "basic-001",
+  "id": "history-0fxszay",
+  "category": "history",
+  "prompt": "Did Cleopatra live closer in time to the building of the Great Pyramid or to the Moon landing?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The Moon landing"
+ },
+ {
+  "id": "history-1n4jy6e",
+  "category": "history",
+  "prompt": "Which is older: Oxford University or the Aztec Empire?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Oxford University (teaching from 1096; the Aztec Empire began in 1428)"
+ },
+ {
+  "id": "history-1hilb3p",
+  "category": "history",
+  "prompt": "About how many years ago did the last woolly mammoths die out?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 4,000 years ago (after the pyramids were built!)",
+  "numericAnswer": 4000
+ },
+ {
+  "id": "basic-1bh86g0",
   "category": "basic",
   "prompt": "What is the fastest land animal?",
   "type": "SPOKEN_EXACT",
@@ -1366,48 +1674,7 @@ export const BANK: Question[] = [
   "answer": "The cheetah"
  },
  {
-  "id": "basic-002",
-  "category": "basic",
-  "prompt": "How much does a blue whale’s heart weigh, in kg?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 180 kg",
-  "numericAnswer": 180
- },
- {
-  "id": "basic-003",
-  "category": "basic",
-  "prompt": "Name capital cities.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "basic-004",
-  "category": "basic",
-  "prompt": "How many bones are in the adult human body?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "206",
-  "numericAnswer": 206
- },
- {
-  "id": "basic-005",
-  "category": "basic",
-  "prompt": "What is the chemical symbol for gold?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "Au"
- },
- {
-  "id": "basic-006",
-  "category": "basic",
-  "prompt": "How many hearts does an octopus have?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "3"
- },
- {
-  "id": "basic-007",
+  "id": "basic-14jnq5g",
   "category": "basic",
   "prompt": "What is the boiling point of water in °F?",
   "type": "SPOKEN_CLOSEST",
@@ -1416,7 +1683,7 @@ export const BANK: Question[] = [
   "numericAnswer": 212
  },
  {
-  "id": "basic-008",
+  "id": "basic-0djs4ae",
   "category": "basic",
   "prompt": "What is the largest planet in our solar system?",
   "type": "SPOKEN_EXACT",
@@ -1424,7 +1691,170 @@ export const BANK: Question[] = [
   "answer": "Jupiter"
  },
  {
-  "id": "basic-009",
+  "id": "basic-19hv3ib",
+  "category": "basic",
+  "prompt": "What is the hardest natural substance?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Diamond"
+ },
+ {
+  "id": "basic-1yx3wy4",
+  "category": "basic",
+  "prompt": "Which gas do plants take in from the air?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Carbon dioxide (CO₂)"
+ },
+ {
+  "id": "basic-10a3sc1",
+  "category": "basic",
+  "prompt": "Name animals that start with “B”.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "basic-1ljyozp",
+  "category": "basic",
+  "prompt": "How many legs does a spider have?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "8"
+ },
+ {
+  "id": "basic-0sn7cqz",
+  "category": "basic",
+  "prompt": "What is the largest organ of the human body?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "The skin"
+ },
+ {
+  "id": "basic-1vgazfx",
+  "category": "basic",
+  "prompt": "What color do you get when you mix blue and yellow?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Green"
+ },
+ {
+  "id": "basic-16dutn2",
+  "category": "basic",
+  "prompt": "How many continents are there?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "7"
+ },
+ {
+  "id": "basic-14v5j8d",
+  "category": "basic",
+  "prompt": "Name fruits.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "basic-0ig6q8t",
+  "category": "basic",
+  "prompt": "Name things you find in a kitchen.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "basic-097gn1t",
+  "category": "basic",
+  "prompt": "How many days are in a leap year?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "366"
+ },
+ {
+  "id": "basic-0zcqwoo",
+  "category": "basic",
+  "prompt": "What do caterpillars turn into?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Butterflies or moths"
+ },
+ {
+  "id": "basic-1efn01w",
+  "category": "basic",
+  "prompt": "What is the tallest animal in the world?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "The giraffe"
+ },
+ {
+  "id": "basic-1rrxf76",
+  "category": "basic",
+  "prompt": "Which planet is closest to the Sun?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Mercury"
+ },
+ {
+  "id": "basic-1tidygc",
+  "category": "basic",
+  "prompt": "What is the largest animal on Earth?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "The blue whale"
+ },
+ {
+  "id": "basic-1o5bnac",
+  "category": "basic",
+  "prompt": "At what temperature does water freeze, in °C?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "0°C"
+ },
+ {
+  "id": "basic-0h0cy4w",
+  "category": "basic",
+  "prompt": "Name things that are yellow.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "basic-16ok83g",
+  "category": "basic",
+  "prompt": "Name breakfast foods.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "basic-04vn0nd",
+  "category": "basic",
+  "prompt": "Name capital cities.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "basic-1myb74v",
+  "category": "basic",
+  "prompt": "How many bones are in the adult human body?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "206",
+  "numericAnswer": 206
+ },
+ {
+  "id": "basic-1qwmw0u",
+  "category": "basic",
+  "prompt": "What is the chemical symbol for gold?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Au"
+ },
+ {
+  "id": "basic-1u1keub",
+  "category": "basic",
+  "prompt": "How many hearts does an octopus have?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "3"
+ },
+ {
+  "id": "basic-06rq6ko",
   "category": "basic",
   "prompt": "How many minutes are in a week?",
   "type": "SPOKEN_CLOSEST",
@@ -1433,15 +1863,7 @@ export const BANK: Question[] = [
   "numericAnswer": 10080
  },
  {
-  "id": "basic-010",
-  "category": "basic",
-  "prompt": "What is the hardest natural substance?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Diamond"
- },
- {
-  "id": "basic-011",
+  "id": "basic-0ykkwtt",
   "category": "basic",
   "prompt": "How many keys are on a standard piano?",
   "type": "SPOKEN_CLOSEST",
@@ -1450,24 +1872,7 @@ export const BANK: Question[] = [
   "numericAnswer": 88
  },
  {
-  "id": "basic-012",
-  "category": "basic",
-  "prompt": "What is the speed of light, in km per second?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 300,000 km/s (299,792)",
-  "numericAnswer": 299792
- },
- {
-  "id": "basic-013",
-  "category": "basic",
-  "prompt": "Which gas do plants take in from the air?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Carbon dioxide (CO₂)"
- },
- {
-  "id": "basic-014",
+  "id": "basic-17g7bqs",
   "category": "basic",
   "prompt": "How many teaspoons are in a tablespoon?",
   "type": "SPOKEN_EXACT",
@@ -1475,58 +1880,7 @@ export const BANK: Question[] = [
   "answer": "3"
  },
  {
-  "id": "basic-015",
-  "category": "basic",
-  "prompt": "Name animals that start with “B”.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
- },
- {
-  "id": "basic-016",
-  "category": "basic",
-  "prompt": "How many legs does a spider have?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "8"
- },
- {
-  "id": "basic-017",
-  "category": "basic",
-  "prompt": "How many hairs are on the average human head?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 100,000",
-  "numericAnswer": 100000
- },
- {
-  "id": "basic-018",
-  "category": "basic",
-  "prompt": "How far is the Moon from Earth, in miles?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 238,900 miles",
-  "numericAnswer": 238900
- },
- {
-  "id": "basic-019",
-  "category": "basic",
-  "prompt": "How many times does your heart beat in one day?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 100,000",
-  "numericAnswer": 100000
- },
- {
-  "id": "basic-020",
-  "category": "basic",
-  "prompt": "How many muscles are in the human body?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 600",
-  "numericAnswer": 600
- },
- {
-  "id": "basic-021",
+  "id": "basic-1u4mht8",
   "category": "basic",
   "prompt": "How many minutes does sunlight take to reach Earth?",
   "type": "SPOKEN_CLOSEST",
@@ -1535,7 +1889,7 @@ export const BANK: Question[] = [
   "numericAnswer": 8.3
  },
  {
-  "id": "basic-022",
+  "id": "basic-0v5sl1h",
   "category": "basic",
   "prompt": "How many liters of blood are in an adult body?",
   "type": "SPOKEN_CLOSEST",
@@ -1544,16 +1898,7 @@ export const BANK: Question[] = [
   "numericAnswer": 5
  },
  {
-  "id": "basic-023",
-  "category": "basic",
-  "prompt": "How many bones is a newborn baby born with?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 300",
-  "numericAnswer": 300
- },
- {
-  "id": "basic-024",
+  "id": "basic-0zz1hzp",
   "category": "basic",
   "prompt": "What is a cheetah’s top speed, in mph?",
   "type": "SPOKEN_CLOSEST",
@@ -1562,16 +1907,7 @@ export const BANK: Question[] = [
   "numericAnswer": 70
  },
  {
-  "id": "basic-025",
-  "category": "basic",
-  "prompt": "How many months is an elephant pregnant for?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 22 months",
-  "numericAnswer": 22
- },
- {
-  "id": "basic-026",
+  "id": "basic-1kzd5dq",
   "category": "basic",
   "prompt": "How many hours a day does a koala sleep?",
   "type": "SPOKEN_CLOSEST",
@@ -1580,7 +1916,7 @@ export const BANK: Question[] = [
   "numericAnswer": 20
  },
  {
-  "id": "basic-027",
+  "id": "basic-0hg1y6o",
   "category": "basic",
   "prompt": "What percentage of the human body is water?",
   "type": "SPOKEN_CLOSEST",
@@ -1589,15 +1925,7 @@ export const BANK: Question[] = [
   "numericAnswer": 60
  },
  {
-  "id": "basic-028",
-  "category": "basic",
-  "prompt": "Which letter doesn’t appear in any US state name?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Q"
- },
- {
-  "id": "basic-029",
+  "id": "basic-1bv2n39",
   "category": "basic",
   "prompt": "How many elements are on the periodic table?",
   "type": "SPOKEN_CLOSEST",
@@ -1606,7 +1934,7 @@ export const BANK: Question[] = [
   "numericAnswer": 118
  },
  {
-  "id": "basic-030",
+  "id": "basic-0y3cfax",
   "category": "basic",
   "prompt": "How many seconds are in one day?",
   "type": "SPOKEN_CLOSEST",
@@ -1615,23 +1943,7 @@ export const BANK: Question[] = [
   "numericAnswer": 86400
  },
  {
-  "id": "basic-031",
-  "category": "basic",
-  "prompt": "Which planet has the most moons?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Saturn"
- },
- {
-  "id": "basic-032",
-  "category": "basic",
-  "prompt": "What is the largest organ of the human body?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "The skin"
- },
- {
-  "id": "basic-033",
+  "id": "basic-0baht18",
   "category": "basic",
   "prompt": "What is the only mammal that can truly fly?",
   "type": "SPOKEN_EXACT",
@@ -1639,7 +1951,7 @@ export const BANK: Question[] = [
   "answer": "The bat"
  },
  {
-  "id": "basic-034",
+  "id": "basic-187v6xm",
   "category": "basic",
   "prompt": "What is the chemical symbol for iron?",
   "type": "SPOKEN_EXACT",
@@ -1647,23 +1959,7 @@ export const BANK: Question[] = [
   "answer": "Fe"
  },
  {
-  "id": "basic-035",
-  "category": "basic",
-  "prompt": "What is the chemical symbol for potassium?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "K"
- },
- {
-  "id": "basic-036",
-  "category": "basic",
-  "prompt": "What color do you get when you mix blue and yellow?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Green"
- },
- {
-  "id": "basic-037",
+  "id": "basic-0u370ku",
   "category": "basic",
   "prompt": "Which planet is known as the Red Planet?",
   "type": "SPOKEN_EXACT",
@@ -1671,15 +1967,7 @@ export const BANK: Question[] = [
   "answer": "Mars"
  },
  {
-  "id": "basic-038",
-  "category": "basic",
-  "prompt": "Which planet spins on its side?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Uranus"
- },
- {
-  "id": "basic-039",
+  "id": "basic-1s0ws21",
   "category": "basic",
   "prompt": "What is the hottest planet in our solar system?",
   "type": "SPOKEN_EXACT",
@@ -1687,15 +1975,7 @@ export const BANK: Question[] = [
   "answer": "Venus (not Mercury!)"
  },
  {
-  "id": "basic-040",
-  "category": "basic",
-  "prompt": "What is the most common gas in Earth's air?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Nitrogen (about 78%)"
- },
- {
-  "id": "basic-041",
+  "id": "basic-06xfqco",
   "category": "basic",
   "prompt": "Which animal has the longest lifespan of any mammal?",
   "type": "SPOKEN_EXACT",
@@ -1703,15 +1983,7 @@ export const BANK: Question[] = [
   "answer": "The bowhead whale (200+ years)"
  },
  {
-  "id": "basic-042",
-  "category": "basic",
-  "prompt": "What is the only food that never spoils?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Honey"
- },
- {
-  "id": "basic-043",
+  "id": "basic-1fwqz06",
   "category": "basic",
   "prompt": "What do bees collect to make honey?",
   "type": "SPOKEN_EXACT",
@@ -1719,15 +1991,7 @@ export const BANK: Question[] = [
   "answer": "Nectar"
  },
  {
-  "id": "basic-044",
-  "category": "basic",
-  "prompt": "How many continents are there?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "7"
- },
- {
-  "id": "basic-045",
+  "id": "basic-1q0m0g6",
   "category": "basic",
   "prompt": "What is a baby kangaroo called?",
   "type": "SPOKEN_EXACT",
@@ -1735,15 +1999,7 @@ export const BANK: Question[] = [
   "answer": "A joey"
  },
  {
-  "id": "basic-046",
-  "category": "basic",
-  "prompt": "What is a group of crows called?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "A murder"
- },
- {
-  "id": "basic-047",
+  "id": "basic-1r12p6x",
   "category": "basic",
   "prompt": "Which blood type is the universal donor?",
   "type": "SPOKEN_EXACT",
@@ -1751,15 +2007,7 @@ export const BANK: Question[] = [
   "answer": "O negative"
  },
  {
-  "id": "basic-048",
-  "category": "basic",
-  "prompt": "Which bone is the longest in the human body?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "The femur (thigh bone)"
- },
- {
-  "id": "basic-049",
+  "id": "basic-0tmmf9w",
   "category": "basic",
   "prompt": "What is frozen carbon dioxide called?",
   "type": "SPOKEN_EXACT",
@@ -1767,15 +2015,7 @@ export const BANK: Question[] = [
   "answer": "Dry ice"
  },
  {
-  "id": "basic-050",
-  "category": "basic",
-  "prompt": "What is the smallest bone in the human body?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "The stapes (in the ear)"
- },
- {
-  "id": "basic-051",
+  "id": "basic-1wxskb5",
   "category": "basic",
   "prompt": "Which vitamin do you get from sunlight?",
   "type": "SPOKEN_EXACT",
@@ -1783,15 +2023,7 @@ export const BANK: Question[] = [
   "answer": "Vitamin D"
  },
  {
-  "id": "basic-052",
-  "category": "basic",
-  "prompt": "Which animal's fingerprints are almost identical to humans'?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "The koala"
- },
- {
-  "id": "basic-053",
+  "id": "basic-1jgdu4d",
   "category": "basic",
   "prompt": "How many sides does a hexagon have?",
   "type": "SPOKEN_EXACT",
@@ -1799,15 +2031,7 @@ export const BANK: Question[] = [
   "answer": "6"
  },
  {
-  "id": "basic-054",
-  "category": "basic",
-  "prompt": "What is the only even prime number?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "2"
- },
- {
-  "id": "basic-055",
+  "id": "basic-055hz40",
   "category": "basic",
   "prompt": "What is the square root of 144?",
   "type": "SPOKEN_EXACT",
@@ -1815,15 +2039,7 @@ export const BANK: Question[] = [
   "answer": "12"
  },
  {
-  "id": "basic-056",
-  "category": "basic",
-  "prompt": "What is a group of flamingos called?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "A flamboyance"
- },
- {
-  "id": "basic-057",
+  "id": "basic-1uioggw",
   "category": "basic",
   "prompt": "How many teeth does an adult human have?",
   "type": "SPOKEN_CLOSEST",
@@ -1832,25 +2048,7 @@ export const BANK: Question[] = [
   "numericAnswer": 32
  },
  {
-  "id": "basic-058",
-  "category": "basic",
-  "prompt": "How many taste buds does the human tongue have?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 10,000",
-  "numericAnswer": 10000
- },
- {
-  "id": "basic-059",
-  "category": "basic",
-  "prompt": "How many eggs does a hen lay in a year, on average?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 250–300",
-  "numericAnswer": 280
- },
- {
-  "id": "basic-060",
+  "id": "basic-0t6dysf",
   "category": "basic",
   "prompt": "How many legs does a lobster have?",
   "type": "SPOKEN_CLOSEST",
@@ -1859,16 +2057,7 @@ export const BANK: Question[] = [
   "numericAnswer": 10
  },
  {
-  "id": "basic-061",
-  "category": "basic",
-  "prompt": "How many times can a hummingbird flap its wings per second?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 50–80",
-  "numericAnswer": 70
- },
- {
-  "id": "basic-062",
+  "id": "basic-0j6p6a6",
   "category": "basic",
   "prompt": "What is the normal human body temperature in °F?",
   "type": "SPOKEN_CLOSEST",
@@ -1877,34 +2066,7 @@ export const BANK: Question[] = [
   "numericAnswer": 98.6
  },
  {
-  "id": "basic-063",
-  "category": "basic",
-  "prompt": "How many kilometers is the Earth around the Equator?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 40,075 km",
-  "numericAnswer": 40075
- },
- {
-  "id": "basic-064",
-  "category": "basic",
-  "prompt": "How old is the universe, in billions of years?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 13.8 billion years",
-  "numericAnswer": 13.8
- },
- {
-  "id": "basic-065",
-  "category": "basic",
-  "prompt": "How old is the Earth, in billions of years?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 4.5 billion",
-  "numericAnswer": 4.5
- },
- {
-  "id": "basic-066",
+  "id": "basic-1bw0e2u",
   "category": "basic",
   "prompt": "How many hours does it take the Earth to spin once?",
   "type": "SPOKEN_CLOSEST",
@@ -1913,25 +2075,7 @@ export const BANK: Question[] = [
   "numericAnswer": 24
  },
  {
-  "id": "basic-067",
-  "category": "basic",
-  "prompt": "How many words are in the English dictionary (Oxford English Dictionary entries)?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 500,000",
-  "numericAnswer": 500000
- },
- {
-  "id": "basic-068",
-  "category": "basic",
-  "prompt": "How many times does the average person blink in a day?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 15,000–20,000",
-  "numericAnswer": 17000
- },
- {
-  "id": "basic-069",
+  "id": "basic-0ai6f78",
   "category": "basic",
   "prompt": "How many dots are on a standard pair of dice?",
   "type": "SPOKEN_CLOSEST",
@@ -1940,25 +2084,7 @@ export const BANK: Question[] = [
   "numericAnswer": 42
  },
  {
-  "id": "basic-070",
-  "category": "basic",
-  "prompt": "How fast does a sneeze travel, in mph?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 100 mph (estimates vary)",
-  "numericAnswer": 100
- },
- {
-  "id": "basic-071",
-  "category": "basic",
-  "prompt": "How long is a giraffe's tongue, in inches?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 18–20 inches",
-  "numericAnswer": 19
- },
- {
-  "id": "basic-072",
+  "id": "basic-19d4yrc",
   "category": "basic",
   "prompt": "How many stomachs does a cow have?",
   "type": "SPOKEN_CLOSEST",
@@ -1967,16 +2093,7 @@ export const BANK: Question[] = [
   "numericAnswer": 4
  },
  {
-  "id": "basic-073",
-  "category": "basic",
-  "prompt": "How many bones are in the human hand (one hand)?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "27",
-  "numericAnswer": 27
- },
- {
-  "id": "basic-074",
+  "id": "basic-0x6b5nw",
   "category": "basic",
   "prompt": "How many degrees are in a triangle?",
   "type": "SPOKEN_CLOSEST",
@@ -1985,7 +2102,347 @@ export const BANK: Question[] = [
   "numericAnswer": 180
  },
  {
-  "id": "basic-075",
+  "id": "basic-0c1m9pq",
+  "category": "basic",
+  "prompt": "Name animals that live in the ocean.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "basic-1qgwdhv",
+  "category": "basic",
+  "prompt": "Name chemical elements.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "basic-1adusrs",
+  "category": "basic",
+  "prompt": "What color is a polar bear's skin under its fur?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Black"
+ },
+ {
+  "id": "basic-0yxp9iy",
+  "category": "basic",
+  "prompt": "Which planet spins the opposite way to most others, so the Sun rises in the west?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Venus"
+ },
+ {
+  "id": "basic-0bpi9g1",
+  "category": "basic",
+  "prompt": "How many bones does a shark have?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "0 (its skeleton is cartilage)",
+  "numericAnswer": 0
+ },
+ {
+  "id": "basic-0fe3unt",
+  "category": "basic",
+  "prompt": "How many legs does a butterfly have?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "6",
+  "numericAnswer": 6
+ },
+ {
+  "id": "basic-1umz2py",
+  "category": "basic",
+  "prompt": "What is the largest organ inside the human body?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The liver"
+ },
+ {
+  "id": "basic-1imp4uv",
+  "category": "basic",
+  "prompt": "Botanically, which one is a berry: a strawberry or a banana?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The banana"
+ },
+ {
+  "id": "basic-0v8adi4",
+  "category": "basic",
+  "prompt": "How many minutes are in a day?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "1,440",
+  "numericAnswer": 1440
+ },
+ {
+  "id": "basic-0sb3tk1",
+  "category": "basic",
+  "prompt": "How much does a blue whale’s heart weigh, in kg?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 180 kg",
+  "numericAnswer": 180
+ },
+ {
+  "id": "basic-0sab4nd",
+  "category": "basic",
+  "prompt": "What is the speed of light, in km per second?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 300,000 km/s (299,792)",
+  "numericAnswer": 299792
+ },
+ {
+  "id": "basic-1bqq0ni",
+  "category": "basic",
+  "prompt": "How many hairs are on the average human head?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 100,000",
+  "numericAnswer": 100000
+ },
+ {
+  "id": "basic-1y9l24q",
+  "category": "basic",
+  "prompt": "How far is the Moon from Earth, in miles?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 238,900 miles",
+  "numericAnswer": 238900
+ },
+ {
+  "id": "basic-0jeubzw",
+  "category": "basic",
+  "prompt": "How many times does your heart beat in one day?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 100,000",
+  "numericAnswer": 100000
+ },
+ {
+  "id": "basic-03mh8pa",
+  "category": "basic",
+  "prompt": "How many muscles are in the human body?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 600",
+  "numericAnswer": 600
+ },
+ {
+  "id": "basic-06ru6g9",
+  "category": "basic",
+  "prompt": "How many bones is a newborn baby born with?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 300",
+  "numericAnswer": 300
+ },
+ {
+  "id": "basic-1ig57mi",
+  "category": "basic",
+  "prompt": "How many months is an elephant pregnant for?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 22 months",
+  "numericAnswer": 22
+ },
+ {
+  "id": "basic-1gpfyxh",
+  "category": "basic",
+  "prompt": "Which letter doesn’t appear in any US state name?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Q"
+ },
+ {
+  "id": "basic-1uwvx2l",
+  "category": "basic",
+  "prompt": "Which planet has the most moons?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Saturn"
+ },
+ {
+  "id": "basic-08jxxih",
+  "category": "basic",
+  "prompt": "What is the chemical symbol for potassium?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "K"
+ },
+ {
+  "id": "basic-10mzf84",
+  "category": "basic",
+  "prompt": "Which planet spins on its side?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Uranus"
+ },
+ {
+  "id": "basic-0bywep9",
+  "category": "basic",
+  "prompt": "What is the most common gas in Earth's air?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Nitrogen (about 78%)"
+ },
+ {
+  "id": "basic-1a24pz8",
+  "category": "basic",
+  "prompt": "What is the only food that never spoils?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Honey"
+ },
+ {
+  "id": "basic-0cys9hk",
+  "category": "basic",
+  "prompt": "What is a group of crows called?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "A murder"
+ },
+ {
+  "id": "basic-1t1uf6z",
+  "category": "basic",
+  "prompt": "Which bone is the longest in the human body?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The femur (thigh bone)"
+ },
+ {
+  "id": "basic-03i4b81",
+  "category": "basic",
+  "prompt": "What is the smallest bone in the human body?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The stapes (in the ear)"
+ },
+ {
+  "id": "basic-0cecfib",
+  "category": "basic",
+  "prompt": "Which animal's fingerprints are almost identical to humans'?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The koala"
+ },
+ {
+  "id": "basic-05353cp",
+  "category": "basic",
+  "prompt": "What is the only even prime number?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "2"
+ },
+ {
+  "id": "basic-1uc4wai",
+  "category": "basic",
+  "prompt": "What is a group of flamingos called?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "A flamboyance"
+ },
+ {
+  "id": "basic-092qf1v",
+  "category": "basic",
+  "prompt": "How many taste buds does the human tongue have?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 10,000",
+  "numericAnswer": 10000
+ },
+ {
+  "id": "basic-0b9me87",
+  "category": "basic",
+  "prompt": "How many eggs does a hen lay in a year, on average?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 250–300",
+  "numericAnswer": 280
+ },
+ {
+  "id": "basic-0siwesm",
+  "category": "basic",
+  "prompt": "How many times can a hummingbird flap its wings per second?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 50–80",
+  "numericAnswer": 70
+ },
+ {
+  "id": "basic-09zli7y",
+  "category": "basic",
+  "prompt": "How many kilometers is the Earth around the Equator?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 40,075 km",
+  "numericAnswer": 40075
+ },
+ {
+  "id": "basic-0atv0wx",
+  "category": "basic",
+  "prompt": "How old is the universe, in billions of years?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 13.8 billion years",
+  "numericAnswer": 13.8
+ },
+ {
+  "id": "basic-05tknw2",
+  "category": "basic",
+  "prompt": "How old is the Earth, in billions of years?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 4.5 billion",
+  "numericAnswer": 4.5
+ },
+ {
+  "id": "basic-1tkfqsv",
+  "category": "basic",
+  "prompt": "How many words are in the English dictionary (Oxford English Dictionary entries)?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 500,000",
+  "numericAnswer": 500000
+ },
+ {
+  "id": "basic-14st9od",
+  "category": "basic",
+  "prompt": "How many times does the average person blink in a day?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 15,000–20,000",
+  "numericAnswer": 17000
+ },
+ {
+  "id": "basic-10nmepk",
+  "category": "basic",
+  "prompt": "How fast does a sneeze travel, in mph?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 100 mph (estimates vary)",
+  "numericAnswer": 100
+ },
+ {
+  "id": "basic-1gjj0yg",
+  "category": "basic",
+  "prompt": "How long is a giraffe's tongue, in inches?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 18–20 inches",
+  "numericAnswer": 19
+ },
+ {
+  "id": "basic-11smzbm",
+  "category": "basic",
+  "prompt": "How many bones are in the human hand (one hand)?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "27",
+  "numericAnswer": 27
+ },
+ {
+  "id": "basic-0iysv6m",
   "category": "basic",
   "prompt": "How many liters of saliva does a person make in a day?",
   "type": "SPOKEN_CLOSEST",
@@ -1994,7 +2451,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1.25
  },
  {
-  "id": "basic-076",
+  "id": "basic-0j4sg9z",
   "category": "basic",
   "prompt": "How many species of bird are there in the world?",
   "type": "SPOKEN_CLOSEST",
@@ -2003,42 +2460,47 @@ export const BANK: Question[] = [
   "numericAnswer": 11000
  },
  {
-  "id": "basic-077",
-  "category": "basic",
-  "prompt": "Name fruits.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
- },
- {
-  "id": "basic-078",
-  "category": "basic",
-  "prompt": "Name animals that live in the ocean.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "basic-079",
-  "category": "basic",
-  "prompt": "Name chemical elements.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "basic-080",
+  "id": "basic-1j3sdi4",
   "category": "basic",
   "prompt": "Name bones in the human body.",
   "type": "TURN_BASED",
   "difficulty": "H"
  },
  {
-  "id": "basic-081",
+  "id": "basic-0p1qmha",
   "category": "basic",
-  "prompt": "Name things you find in a kitchen.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
+  "prompt": "What is the most common element in the universe?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Hydrogen"
  },
  {
-  "id": "popculture-001",
+  "id": "basic-0g9rcfx",
+  "category": "basic",
+  "prompt": "About how many trillion cells are in the human body?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 30 trillion",
+  "numericAnswer": 30
+ },
+ {
+  "id": "basic-10wfhob",
+  "category": "basic",
+  "prompt": "What is a group of owls called?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "A parliament"
+ },
+ {
+  "id": "basic-0hct99p",
+  "category": "basic",
+  "prompt": "What is the chemical symbol for sodium?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Na"
+ },
+ {
+  "id": "popculture-0rde23h",
   "category": "popculture",
   "prompt": "Which TV show features “the Upside Down”?",
   "type": "SPOKEN_EXACT",
@@ -2046,7 +2508,7 @@ export const BANK: Question[] = [
   "answer": "Stranger Things"
  },
  {
-  "id": "popculture-002",
+  "id": "popculture-1wzemti",
   "category": "popculture",
   "prompt": "How many main Harry Potter books are there?",
   "type": "SPOKEN_EXACT",
@@ -2054,15 +2516,7 @@ export const BANK: Question[] = [
   "answer": "7"
  },
  {
-  "id": "popculture-003",
-  "category": "popculture",
-  "prompt": "What is the highest-grossing film of all time (not adjusted for inflation)?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "Avatar (2009)"
- },
- {
-  "id": "popculture-004",
+  "id": "popculture-0igfidt",
   "category": "popculture",
   "prompt": "Which artist released the album “1989”?",
   "type": "SPOKEN_EXACT",
@@ -2070,7 +2524,163 @@ export const BANK: Question[] = [
   "answer": "Taylor Swift"
  },
  {
-  "id": "popculture-005",
+  "id": "popculture-1qp3gnj",
+  "category": "popculture",
+  "prompt": "Who played Jack in Titanic?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Leonardo DiCaprio"
+ },
+ {
+  "id": "popculture-00t4ru4",
+  "category": "popculture",
+  "prompt": "Which band was Harry Styles in?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "One Direction"
+ },
+ {
+  "id": "popculture-0aqtz7j",
+  "category": "popculture",
+  "prompt": "What is the name of Shrek’s wife?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Fiona"
+ },
+ {
+  "id": "popculture-0zphddt",
+  "category": "popculture",
+  "prompt": "Which streaming service released Squid Game?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Netflix"
+ },
+ {
+  "id": "popculture-1ju5vs4",
+  "category": "popculture",
+  "prompt": "Name Marvel superheroes.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "popculture-1l8lhkx",
+  "category": "popculture",
+  "prompt": "What’s the name of the hidden African nation in Black Panther?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Wakanda"
+ },
+ {
+  "id": "popculture-1y65d9e",
+  "category": "popculture",
+  "prompt": "What’s the name of the paper company in The Office (US)?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Dunder Mifflin"
+ },
+ {
+  "id": "popculture-1njejzd",
+  "category": "popculture",
+  "prompt": "Name Disney princesses.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "popculture-1ymr91n",
+  "category": "popculture",
+  "prompt": "What is the name of Harry Potter's owl?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Hedwig"
+ },
+ {
+  "id": "popculture-00cixwx",
+  "category": "popculture",
+  "prompt": "Who is SpongeBob's best friend?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Patrick Star"
+ },
+ {
+  "id": "popculture-0n1l2yj",
+  "category": "popculture",
+  "prompt": "Which superhero is also known as the Man of Steel?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Superman"
+ },
+ {
+  "id": "popculture-0jj73dk",
+  "category": "popculture",
+  "prompt": "Name Harry Potter characters.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "popculture-0abmhv2",
+  "category": "popculture",
+  "prompt": "Which wizard has a lightning-bolt scar?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Harry Potter"
+ },
+ {
+  "id": "popculture-1ocy1jw",
+  "category": "popculture",
+  "prompt": "What is the name of the snowman in \"Frozen\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Olaf"
+ },
+ {
+  "id": "popculture-0tosjuw",
+  "category": "popculture",
+  "prompt": "Which superhero is secretly Peter Parker?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Spider-Man"
+ },
+ {
+  "id": "popculture-0932y1t",
+  "category": "popculture",
+  "prompt": "Which singer's fans call themselves \"Swifties\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Taylor Swift"
+ },
+ {
+  "id": "popculture-09mvonf",
+  "category": "popculture",
+  "prompt": "What color are the Minions?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Yellow"
+ },
+ {
+  "id": "popculture-1lrbfh5",
+  "category": "popculture",
+  "prompt": "What is the name of the cowboy in \"Toy Story\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Woody"
+ },
+ {
+  "id": "popculture-052ix4r",
+  "category": "popculture",
+  "prompt": "Name Disney movies.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "popculture-1vyvzou",
+  "category": "popculture",
+  "prompt": "What is the highest-grossing film of all time (not adjusted for inflation)?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Avatar (2009)"
+ },
+ {
+  "id": "popculture-11485r8",
   "category": "popculture",
   "prompt": "How many seasons did Friends run?",
   "type": "SPOKEN_CLOSEST",
@@ -2079,7 +2689,7 @@ export const BANK: Question[] = [
   "numericAnswer": 10
  },
  {
-  "id": "popculture-006",
+  "id": "popculture-1yj2vv7",
   "category": "popculture",
   "prompt": "In what year did the first iPhone come out?",
   "type": "SPOKEN_CLOSEST",
@@ -2088,23 +2698,7 @@ export const BANK: Question[] = [
   "numericAnswer": 2007
  },
  {
-  "id": "popculture-007",
-  "category": "popculture",
-  "prompt": "Who played Jack in Titanic?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Leonardo DiCaprio"
- },
- {
-  "id": "popculture-008",
-  "category": "popculture",
-  "prompt": "Which band was Harry Styles in?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "One Direction"
- },
- {
-  "id": "popculture-009",
+  "id": "popculture-0h2ee92",
   "category": "popculture",
   "prompt": "What is the name of the coffee shop in Friends?",
   "type": "SPOKEN_EXACT",
@@ -2112,16 +2706,7 @@ export const BANK: Question[] = [
   "answer": "Central Perk"
  },
  {
-  "id": "popculture-010",
-  "category": "popculture",
-  "prompt": "How many Oscars did Titanic win?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "11",
-  "numericAnswer": 11
- },
- {
-  "id": "popculture-011",
+  "id": "popculture-1wujszr",
   "category": "popculture",
   "prompt": "Which video game series stars Master Chief?",
   "type": "SPOKEN_EXACT",
@@ -2129,23 +2714,7 @@ export const BANK: Question[] = [
   "answer": "Halo"
  },
  {
-  "id": "popculture-012",
-  "category": "popculture",
-  "prompt": "What is the name of Shrek’s wife?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Fiona"
- },
- {
-  "id": "popculture-013",
-  "category": "popculture",
-  "prompt": "Which streaming service released Squid Game?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Netflix"
- },
- {
-  "id": "popculture-014",
+  "id": "popculture-128m2r5",
   "category": "popculture",
   "prompt": "In what year did YouTube launch?",
   "type": "SPOKEN_CLOSEST",
@@ -2154,30 +2723,14 @@ export const BANK: Question[] = [
   "numericAnswer": 2005
  },
  {
-  "id": "popculture-015",
-  "category": "popculture",
-  "prompt": "Name Marvel superheroes.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
- },
- {
-  "id": "popculture-016",
+  "id": "popculture-13rsed5",
   "category": "popculture",
   "prompt": "Name Pixar movies.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
  {
-  "id": "popculture-017",
-  "category": "popculture",
-  "prompt": "How many episodes of Friends were made?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "236",
-  "numericAnswer": 236
- },
- {
-  "id": "popculture-018",
+  "id": "popculture-0e64w9t",
   "category": "popculture",
   "prompt": "In what year did the first Toy Story come out?",
   "type": "SPOKEN_CLOSEST",
@@ -2186,7 +2739,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1995
  },
  {
-  "id": "popculture-019",
+  "id": "popculture-02fvl3o",
   "category": "popculture",
   "prompt": "How many Pokémon were in the original Red & Blue games?",
   "type": "SPOKEN_CLOSEST",
@@ -2195,7 +2748,7 @@ export const BANK: Question[] = [
   "numericAnswer": 151
  },
  {
-  "id": "popculture-020",
+  "id": "popculture-0x3gs4s",
   "category": "popculture",
   "prompt": "What is the best-selling video game of all time?",
   "type": "SPOKEN_EXACT",
@@ -2203,24 +2756,7 @@ export const BANK: Question[] = [
   "answer": "Minecraft"
  },
  {
-  "id": "popculture-021",
-  "category": "popculture",
-  "prompt": "How many Oscars did The Lord of the Rings: The Return of the King win?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "11",
-  "numericAnswer": 11
- },
- {
-  "id": "popculture-022",
-  "category": "popculture",
-  "prompt": "What’s the name of the hidden African nation in Black Panther?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Wakanda"
- },
- {
-  "id": "popculture-023",
+  "id": "popculture-1glhq34",
   "category": "popculture",
   "prompt": "In what year did Facebook launch?",
   "type": "SPOKEN_CLOSEST",
@@ -2229,81 +2765,14 @@ export const BANK: Question[] = [
   "numericAnswer": 2004
  },
  {
-  "id": "popculture-024",
-  "category": "popculture",
-  "prompt": "How many Grammys has Beyoncé won?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "35 (as of 2025)",
-  "numericAnswer": 35
- },
- {
-  "id": "popculture-025",
-  "category": "popculture",
-  "prompt": "What’s the name of the paper company in The Office (US)?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Dunder Mifflin"
- },
- {
-  "id": "popculture-026",
-  "category": "popculture",
-  "prompt": "What is Lady Gaga’s real first name?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Stefani"
- },
- {
-  "id": "popculture-027",
-  "category": "popculture",
-  "prompt": "In what year did Netflix start streaming movies online?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "2007",
-  "numericAnswer": 2007
- },
- {
-  "id": "popculture-028",
-  "category": "popculture",
-  "prompt": "How long is Queen’s “Bohemian Rhapsody”, in seconds?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 354 seconds (5:54)",
-  "numericAnswer": 354
- },
- {
-  "id": "popculture-029",
-  "category": "popculture",
-  "prompt": "How many UK studio albums did the Beatles release?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "12",
-  "numericAnswer": 12
- },
- {
-  "id": "popculture-030",
-  "category": "popculture",
-  "prompt": "Name Disney princesses.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
- },
- {
-  "id": "popculture-031",
+  "id": "popculture-19rx7je",
   "category": "popculture",
   "prompt": "Name Taylor Swift songs.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
  {
-  "id": "popculture-032",
-  "category": "popculture",
-  "prompt": "What is the name of Harry Potter's owl?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Hedwig"
- },
- {
-  "id": "popculture-033",
+  "id": "popculture-0cgujhr",
   "category": "popculture",
   "prompt": "Which band sang \"Mr. Brightside\"?",
   "type": "SPOKEN_EXACT",
@@ -2311,7 +2780,7 @@ export const BANK: Question[] = [
   "answer": "The Killers"
  },
  {
-  "id": "popculture-034",
+  "id": "popculture-1vuntpv",
   "category": "popculture",
   "prompt": "In \"Breaking Bad\", what is Walter White's alias?",
   "type": "SPOKEN_EXACT",
@@ -2319,23 +2788,7 @@ export const BANK: Question[] = [
   "answer": "Heisenberg"
  },
  {
-  "id": "popculture-035",
-  "category": "popculture",
-  "prompt": "What was the first feature-length animated Disney film?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Snow White and the Seven Dwarfs (1937)"
- },
- {
-  "id": "popculture-036",
-  "category": "popculture",
-  "prompt": "Who is SpongeBob's best friend?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Patrick Star"
- },
- {
-  "id": "popculture-037",
+  "id": "popculture-1518w9a",
   "category": "popculture",
   "prompt": "Which rapper's real name is Marshall Mathers?",
   "type": "SPOKEN_EXACT",
@@ -2343,15 +2796,7 @@ export const BANK: Question[] = [
   "answer": "Eminem"
  },
  {
-  "id": "popculture-038",
-  "category": "popculture",
-  "prompt": "What is the name of the kingdom in \"Frozen\"?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Arendelle"
- },
- {
-  "id": "popculture-039",
+  "id": "popculture-1mtj6qc",
   "category": "popculture",
   "prompt": "Who directed \"Jurassic Park\"?",
   "type": "SPOKEN_EXACT",
@@ -2359,15 +2804,7 @@ export const BANK: Question[] = [
   "answer": "Steven Spielberg"
  },
  {
-  "id": "popculture-040",
-  "category": "popculture",
-  "prompt": "Which actor has played the Joker AND won an Oscar for it — name one.",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Heath Ledger or Joaquin Phoenix"
- },
- {
-  "id": "popculture-041",
+  "id": "popculture-1pn0ogf",
   "category": "popculture",
   "prompt": "What is the name of the fictional town in \"Stranger Things\"?",
   "type": "SPOKEN_EXACT",
@@ -2375,15 +2812,7 @@ export const BANK: Question[] = [
   "answer": "Hawkins, Indiana"
  },
  {
-  "id": "popculture-042",
-  "category": "popculture",
-  "prompt": "Which superhero is also known as the Man of Steel?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Superman"
- },
- {
-  "id": "popculture-043",
+  "id": "popculture-1qytaex",
   "category": "popculture",
   "prompt": "Which singer is known as the \"Queen of Pop\"?",
   "type": "SPOKEN_EXACT",
@@ -2391,15 +2820,7 @@ export const BANK: Question[] = [
   "answer": "Madonna"
  },
  {
-  "id": "popculture-044",
-  "category": "popculture",
-  "prompt": "What was Freddie Mercury's real first name?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Farrokh"
- },
- {
-  "id": "popculture-045",
+  "id": "popculture-0weun9y",
   "category": "popculture",
   "prompt": "In \"The Lion King\", what is Simba's father called?",
   "type": "SPOKEN_EXACT",
@@ -2407,15 +2828,7 @@ export const BANK: Question[] = [
   "answer": "Mufasa"
  },
  {
-  "id": "popculture-046",
-  "category": "popculture",
-  "prompt": "What is the highest-selling album of all time?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Michael Jackson's \"Thriller\""
- },
- {
-  "id": "popculture-047",
+  "id": "popculture-0ghpq4f",
   "category": "popculture",
   "prompt": "In which TV show would you find the Iron Throne?",
   "type": "SPOKEN_EXACT",
@@ -2423,7 +2836,7 @@ export const BANK: Question[] = [
   "answer": "Game of Thrones"
  },
  {
-  "id": "popculture-048",
+  "id": "popculture-1exzwls",
   "category": "popculture",
   "prompt": "Who sang \"Rolling in the Deep\"?",
   "type": "SPOKEN_EXACT",
@@ -2431,15 +2844,7 @@ export const BANK: Question[] = [
   "answer": "Adele"
  },
  {
-  "id": "popculture-049",
-  "category": "popculture",
-  "prompt": "Which film features the quote \"Here's looking at you, kid\"?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Casablanca"
- },
- {
-  "id": "popculture-050",
+  "id": "popculture-18k8l12",
   "category": "popculture",
   "prompt": "In \"Friends\", what is Chandler's last name?",
   "type": "SPOKEN_EXACT",
@@ -2447,15 +2852,7 @@ export const BANK: Question[] = [
   "answer": "Bing"
  },
  {
-  "id": "popculture-051",
-  "category": "popculture",
-  "prompt": "What was the name of the dog in \"The Wizard of Oz\"?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Toto"
- },
- {
-  "id": "popculture-052",
+  "id": "popculture-0350ai9",
   "category": "popculture",
   "prompt": "Which video game character is a blue hedgehog?",
   "type": "SPOKEN_EXACT",
@@ -2463,7 +2860,7 @@ export const BANK: Question[] = [
   "answer": "Sonic"
  },
  {
-  "id": "popculture-053",
+  "id": "popculture-15guodu",
   "category": "popculture",
   "prompt": "Who sang \"Shape of You\"?",
   "type": "SPOKEN_EXACT",
@@ -2471,7 +2868,7 @@ export const BANK: Question[] = [
   "answer": "Ed Sheeran"
  },
  {
-  "id": "popculture-054",
+  "id": "popculture-05zrhr2",
   "category": "popculture",
   "prompt": "What is the name of the wizarding school in Harry Potter?",
   "type": "SPOKEN_EXACT",
@@ -2479,15 +2876,7 @@ export const BANK: Question[] = [
   "answer": "Hogwarts"
  },
  {
-  "id": "popculture-055",
-  "category": "popculture",
-  "prompt": "Who played Hermione Granger in the Harry Potter films?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Emma Watson"
- },
- {
-  "id": "popculture-056",
+  "id": "popculture-0o0ts27",
   "category": "popculture",
   "prompt": "Which TV family lives at 742 Evergreen Terrace?",
   "type": "SPOKEN_EXACT",
@@ -2495,7 +2884,7 @@ export const BANK: Question[] = [
   "answer": "The Simpsons"
  },
  {
-  "id": "popculture-057",
+  "id": "popculture-02qogmq",
   "category": "popculture",
   "prompt": "How many seasons of \"The Office\" (US) are there?",
   "type": "SPOKEN_CLOSEST",
@@ -2504,16 +2893,7 @@ export const BANK: Question[] = [
   "numericAnswer": 9
  },
  {
-  "id": "popculture-058",
-  "category": "popculture",
-  "prompt": "How many Star Wars films are in the main \"Skywalker saga\"?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "9",
-  "numericAnswer": 9
- },
- {
-  "id": "popculture-059",
+  "id": "popculture-1axmwin",
   "category": "popculture",
   "prompt": "In what year was the first Harry Potter book published?",
   "type": "SPOKEN_CLOSEST",
@@ -2522,16 +2902,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1997
  },
  {
-  "id": "popculture-060",
-  "category": "popculture",
-  "prompt": "How many Marvel films are in the \"Infinity Saga\" (Iron Man to Far From Home)?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "23",
-  "numericAnswer": 23
- },
- {
-  "id": "popculture-061",
+  "id": "popculture-1229mp6",
   "category": "popculture",
   "prompt": "In what year did Michael Jackson release \"Thriller\"?",
   "type": "SPOKEN_CLOSEST",
@@ -2540,16 +2911,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1982
  },
  {
-  "id": "popculture-062",
-  "category": "popculture",
-  "prompt": "How many Academy Awards did Walt Disney personally win?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "22 (plus 4 honorary)",
-  "numericAnswer": 22
- },
- {
-  "id": "popculture-063",
+  "id": "popculture-1o8ayi8",
   "category": "popculture",
   "prompt": "In what year did Instagram launch?",
   "type": "SPOKEN_CLOSEST",
@@ -2558,16 +2920,7 @@ export const BANK: Question[] = [
   "numericAnswer": 2010
  },
  {
-  "id": "popculture-064",
-  "category": "popculture",
-  "prompt": "How many episodes of \"The Simpsons\" are there (roughly)?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 790+ (and counting)",
-  "numericAnswer": 790
- },
- {
-  "id": "popculture-065",
+  "id": "popculture-1apgpk7",
   "category": "popculture",
   "prompt": "How many Toy Story movies are there?",
   "type": "SPOKEN_CLOSEST",
@@ -2576,25 +2929,7 @@ export const BANK: Question[] = [
   "numericAnswer": 4
  },
  {
-  "id": "popculture-066",
-  "category": "popculture",
-  "prompt": "In what year was the first Super Mario Bros. game released?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "1985",
-  "numericAnswer": 1985
- },
- {
-  "id": "popculture-067",
-  "category": "popculture",
-  "prompt": "How many followers does Cristiano Ronaldo have on Instagram (in millions)?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 650 million (it keeps growing!)",
-  "numericAnswer": 650
- },
- {
-  "id": "popculture-068",
+  "id": "popculture-0x6zb3v",
   "category": "popculture",
   "prompt": "In what year did TikTok launch worldwide?",
   "type": "SPOKEN_CLOSEST",
@@ -2603,16 +2938,7 @@ export const BANK: Question[] = [
   "numericAnswer": 2018
  },
  {
-  "id": "popculture-069",
-  "category": "popculture",
-  "prompt": "How long is the movie \"Titanic\", in minutes?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "194 minutes",
-  "numericAnswer": 194
- },
- {
-  "id": "popculture-070",
+  "id": "popculture-1gpcyyz",
   "category": "popculture",
   "prompt": "How many members were in the original Spice Girls?",
   "type": "SPOKEN_CLOSEST",
@@ -2621,25 +2947,7 @@ export const BANK: Question[] = [
   "numericAnswer": 5
  },
  {
-  "id": "popculture-071",
-  "category": "popculture",
-  "prompt": "In what year did MTV launch?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "1981",
-  "numericAnswer": 1981
- },
- {
-  "id": "popculture-072",
-  "category": "popculture",
-  "prompt": "How many weeks did \"Old Town Road\" spend at #1 on the Billboard Hot 100?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "19 weeks",
-  "numericAnswer": 19
- },
- {
-  "id": "popculture-073",
+  "id": "popculture-063mhip",
   "category": "popculture",
   "prompt": "How many Pirates of the Caribbean movies are there?",
   "type": "SPOKEN_CLOSEST",
@@ -2648,16 +2956,7 @@ export const BANK: Question[] = [
   "numericAnswer": 5
  },
  {
-  "id": "popculture-074",
-  "category": "popculture",
-  "prompt": "In what year did \"The Matrix\" come out?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "1999",
-  "numericAnswer": 1999
- },
- {
-  "id": "popculture-075",
+  "id": "popculture-0iken47",
   "category": "popculture",
   "prompt": "How many dwarfs are there in Snow White?",
   "type": "SPOKEN_CLOSEST",
@@ -2666,7 +2965,318 @@ export const BANK: Question[] = [
   "numericAnswer": 7
  },
  {
-  "id": "popculture-076",
+  "id": "popculture-16fyzdz",
+  "category": "popculture",
+  "prompt": "Name Disney or Pixar villains.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "popculture-0uyxe18",
+  "category": "popculture",
+  "prompt": "Name TV sitcoms.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "popculture-1vl2yl9",
+  "category": "popculture",
+  "prompt": "Name rappers.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "popculture-1kllk33",
+  "category": "popculture",
+  "prompt": "Which K-pop group had the hit \"Dynamite\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "BTS"
+ },
+ {
+  "id": "popculture-0pq6hwx",
+  "category": "popculture",
+  "prompt": "Which children's game is the first deadly game in \"Squid Game\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Red Light, Green Light"
+ },
+ {
+  "id": "popculture-0d62z10",
+  "category": "popculture",
+  "prompt": "Which movie made the line \"I'll be back\" famous?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The Terminator"
+ },
+ {
+  "id": "popculture-06paw1t",
+  "category": "popculture",
+  "prompt": "In what year did \"Avengers: Endgame\" come out?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "2019",
+  "numericAnswer": 2019
+ },
+ {
+  "id": "popculture-0gm58m6",
+  "category": "popculture",
+  "prompt": "Which rapper released the album \"DAMN.\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Kendrick Lamar"
+ },
+ {
+  "id": "popculture-05isqm8",
+  "category": "popculture",
+  "prompt": "Which TV show follows the Roy family fighting over a media empire?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Succession"
+ },
+ {
+  "id": "popculture-14ce7vg",
+  "category": "popculture",
+  "prompt": "How many seasons of \"Game of Thrones\" are there?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "8",
+  "numericAnswer": 8
+ },
+ {
+  "id": "popculture-0o7ifng",
+  "category": "popculture",
+  "prompt": "Name Netflix original series.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "popculture-0q8oq1x",
+  "category": "popculture",
+  "prompt": "How many Oscars did Titanic win?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "11",
+  "numericAnswer": 11
+ },
+ {
+  "id": "popculture-130pc1l",
+  "category": "popculture",
+  "prompt": "How many episodes of Friends were made?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "236",
+  "numericAnswer": 236
+ },
+ {
+  "id": "popculture-18zq5iu",
+  "category": "popculture",
+  "prompt": "How many Oscars did The Lord of the Rings: The Return of the King win?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "11",
+  "numericAnswer": 11
+ },
+ {
+  "id": "popculture-1ueh4r4",
+  "category": "popculture",
+  "prompt": "How many Grammys has Beyoncé won?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "35 (as of 2025)",
+  "numericAnswer": 35
+ },
+ {
+  "id": "popculture-04pejfl",
+  "category": "popculture",
+  "prompt": "What is Lady Gaga’s real first name?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Stefani"
+ },
+ {
+  "id": "popculture-1pnppht",
+  "category": "popculture",
+  "prompt": "In what year did Netflix start streaming movies online?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "2007",
+  "numericAnswer": 2007
+ },
+ {
+  "id": "popculture-1azk1mw",
+  "category": "popculture",
+  "prompt": "How long is Queen’s “Bohemian Rhapsody”, in seconds?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 354 seconds (5:54)",
+  "numericAnswer": 354
+ },
+ {
+  "id": "popculture-0pvnbne",
+  "category": "popculture",
+  "prompt": "How many UK studio albums did the Beatles release?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "12",
+  "numericAnswer": 12
+ },
+ {
+  "id": "popculture-0frm58s",
+  "category": "popculture",
+  "prompt": "What was the first feature-length animated Disney film?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Snow White and the Seven Dwarfs (1937)"
+ },
+ {
+  "id": "popculture-15yx0uk",
+  "category": "popculture",
+  "prompt": "What is the name of the kingdom in \"Frozen\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Arendelle"
+ },
+ {
+  "id": "popculture-087rlhd",
+  "category": "popculture",
+  "prompt": "Which actor has played the Joker AND won an Oscar for it — name one.",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Heath Ledger or Joaquin Phoenix"
+ },
+ {
+  "id": "popculture-0wrr2em",
+  "category": "popculture",
+  "prompt": "What was Freddie Mercury's real first name?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Farrokh"
+ },
+ {
+  "id": "popculture-1dwb09c",
+  "category": "popculture",
+  "prompt": "What is the highest-selling album of all time?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Michael Jackson's \"Thriller\""
+ },
+ {
+  "id": "popculture-0uw4h3a",
+  "category": "popculture",
+  "prompt": "Which film features the quote \"Here's looking at you, kid\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Casablanca"
+ },
+ {
+  "id": "popculture-17blgry",
+  "category": "popculture",
+  "prompt": "What was the name of the dog in \"The Wizard of Oz\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Toto"
+ },
+ {
+  "id": "popculture-0v0l81n",
+  "category": "popculture",
+  "prompt": "Who played Hermione Granger in the Harry Potter films?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Emma Watson"
+ },
+ {
+  "id": "popculture-1j0jd3n",
+  "category": "popculture",
+  "prompt": "How many Star Wars films are in the main \"Skywalker saga\"?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "9",
+  "numericAnswer": 9
+ },
+ {
+  "id": "popculture-1ctmsxz",
+  "category": "popculture",
+  "prompt": "How many Marvel films are in the \"Infinity Saga\" (Iron Man to Far From Home)?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "23",
+  "numericAnswer": 23
+ },
+ {
+  "id": "popculture-1w48niv",
+  "category": "popculture",
+  "prompt": "How many Academy Awards did Walt Disney personally win?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "22 (plus 4 honorary)",
+  "numericAnswer": 22
+ },
+ {
+  "id": "popculture-1njlmqo",
+  "category": "popculture",
+  "prompt": "How many episodes of \"The Simpsons\" are there (roughly)?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 790+ (and counting)",
+  "numericAnswer": 790
+ },
+ {
+  "id": "popculture-10fi8uk",
+  "category": "popculture",
+  "prompt": "In what year was the first Super Mario Bros. game released?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "1985",
+  "numericAnswer": 1985
+ },
+ {
+  "id": "popculture-1qxux0i",
+  "category": "popculture",
+  "prompt": "How many followers does Cristiano Ronaldo have on Instagram (in millions)?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 650 million (it keeps growing!)",
+  "numericAnswer": 650
+ },
+ {
+  "id": "popculture-0lmsss9",
+  "category": "popculture",
+  "prompt": "How long is the movie \"Titanic\", in minutes?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "194 minutes",
+  "numericAnswer": 194
+ },
+ {
+  "id": "popculture-0zm49pp",
+  "category": "popculture",
+  "prompt": "In what year did MTV launch?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "1981",
+  "numericAnswer": 1981
+ },
+ {
+  "id": "popculture-1ax0ocs",
+  "category": "popculture",
+  "prompt": "How many weeks did \"Old Town Road\" spend at #1 on the Billboard Hot 100?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "19 weeks",
+  "numericAnswer": 19
+ },
+ {
+  "id": "popculture-0gv0yc9",
+  "category": "popculture",
+  "prompt": "In what year did \"The Matrix\" come out?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "1999",
+  "numericAnswer": 1999
+ },
+ {
+  "id": "popculture-08s9rs4",
   "category": "popculture",
   "prompt": "How many Grand Theft Auto main games have been released (numbered + major titles, e.g. GTA I–V)?",
   "type": "SPOKEN_CLOSEST",
@@ -2675,42 +3285,47 @@ export const BANK: Question[] = [
   "numericAnswer": 5
  },
  {
-  "id": "popculture-077",
-  "category": "popculture",
-  "prompt": "Name Harry Potter characters.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
- },
- {
-  "id": "popculture-078",
-  "category": "popculture",
-  "prompt": "Name Disney or Pixar villains.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "popculture-079",
-  "category": "popculture",
-  "prompt": "Name TV sitcoms.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "popculture-080",
+  "id": "popculture-0ngn8rc",
   "category": "popculture",
   "prompt": "Name Oscar Best Picture winners.",
   "type": "TURN_BASED",
   "difficulty": "H"
  },
  {
-  "id": "popculture-081",
+  "id": "popculture-1l4y8i7",
   "category": "popculture",
-  "prompt": "Name rappers.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
+  "prompt": "What is the name of Lady Gaga's character in \"A Star Is Born\" (2018)?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Ally"
  },
  {
-  "id": "sports-001",
+  "id": "popculture-0iuqncf",
+  "category": "popculture",
+  "prompt": "How many weeks did The Weeknd's \"Blinding Lights\" spend in the Billboard Hot 100 top 10?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "57 weeks (a record)",
+  "numericAnswer": 57
+ },
+ {
+  "id": "popculture-19kgj1g",
+  "category": "popculture",
+  "prompt": "What is the name of the company in the TV show \"Severance\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Lumon Industries"
+ },
+ {
+  "id": "popculture-1yq6bzh",
+  "category": "popculture",
+  "prompt": "Which was the first non-English-language film to win the Oscar for Best Picture?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Parasite (2020)"
+ },
+ {
+  "id": "sports-049fyb9",
   "category": "sports",
   "prompt": "How many players does a soccer team have on the field?",
   "type": "SPOKEN_EXACT",
@@ -2718,15 +3333,7 @@ export const BANK: Question[] = [
   "answer": "11"
  },
  {
-  "id": "sports-002",
-  "category": "sports",
-  "prompt": "Which country has won the most men’s FIFA World Cups?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "Brazil (5)"
- },
- {
-  "id": "sports-003",
+  "id": "sports-0g2d7xx",
   "category": "sports",
   "prompt": "How many rings are on the Olympic flag?",
   "type": "SPOKEN_EXACT",
@@ -2734,7 +3341,7 @@ export const BANK: Question[] = [
   "answer": "5"
  },
  {
-  "id": "sports-004",
+  "id": "sports-10j10v6",
   "category": "sports",
   "prompt": "What was Michael Jordan’s famous jersey number?",
   "type": "SPOKEN_EXACT",
@@ -2742,25 +3349,7 @@ export const BANK: Question[] = [
   "answer": "23"
  },
  {
-  "id": "sports-005",
-  "category": "sports",
-  "prompt": "How long is a marathon, in miles?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "26.2 miles",
-  "numericAnswer": 26.2
- },
- {
-  "id": "sports-006",
-  "category": "sports",
-  "prompt": "What is Usain Bolt’s 100m world record, in seconds?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "9.58 s",
-  "numericAnswer": 9.58
- },
- {
-  "id": "sports-007",
+  "id": "sports-1meeo6n",
   "category": "sports",
   "prompt": "Which sport uses a shuttlecock?",
   "type": "SPOKEN_EXACT",
@@ -2768,7 +3357,7 @@ export const BANK: Question[] = [
   "answer": "Badminton"
  },
  {
-  "id": "sports-008",
+  "id": "sports-0ggk1ue",
   "category": "sports",
   "prompt": "How many points is a touchdown worth?",
   "type": "SPOKEN_EXACT",
@@ -2776,7 +3365,7 @@ export const BANK: Question[] = [
   "answer": "6"
  },
  {
-  "id": "sports-009",
+  "id": "sports-1s4409k",
   "category": "sports",
   "prompt": "How many holes are in a standard round of golf?",
   "type": "SPOKEN_EXACT",
@@ -2784,24 +3373,7 @@ export const BANK: Question[] = [
   "answer": "18"
  },
  {
-  "id": "sports-010",
-  "category": "sports",
-  "prompt": "Which city hosted the 2016 Summer Olympics?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "Rio de Janeiro"
- },
- {
-  "id": "sports-011",
-  "category": "sports",
-  "prompt": "What is a perfect score in ten-pin bowling?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "300",
-  "numericAnswer": 300
- },
- {
-  "id": "sports-012",
+  "id": "sports-1swr6dy",
   "category": "sports",
   "prompt": "How many players does a baseball team have on the field?",
   "type": "SPOKEN_EXACT",
@@ -2809,66 +3381,7 @@ export const BANK: Question[] = [
   "answer": "9"
  },
  {
-  "id": "sports-013",
-  "category": "sports",
-  "prompt": "How many Grand Slam singles titles has Novak Djokovic won?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "24",
-  "numericAnswer": 24
- },
- {
-  "id": "sports-014",
-  "category": "sports",
-  "prompt": "How many minutes long is an NBA game, not counting overtime?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "48",
-  "numericAnswer": 48
- },
- {
-  "id": "sports-015",
-  "category": "sports",
-  "prompt": "Name NBA teams.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "sports-016",
-  "category": "sports",
-  "prompt": "Name Premier League clubs.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "sports-017",
-  "category": "sports",
-  "prompt": "How many dimples are on a standard golf ball?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 336 (usually 300–500)",
-  "numericAnswer": 336
- },
- {
-  "id": "sports-018",
-  "category": "sports",
-  "prompt": "How long is an Olympic swimming pool, in meters?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "50 m",
-  "numericAnswer": 50
- },
- {
-  "id": "sports-019",
-  "category": "sports",
-  "prompt": "How many Olympic GOLD medals did Michael Phelps win?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "23",
-  "numericAnswer": 23
- },
- {
-  "id": "sports-020",
+  "id": "sports-04kxuuf",
   "category": "sports",
   "prompt": "How high is a basketball hoop, in feet?",
   "type": "SPOKEN_CLOSEST",
@@ -2877,78 +3390,7 @@ export const BANK: Question[] = [
   "numericAnswer": 10
  },
  {
-  "id": "sports-021",
-  "category": "sports",
-  "prompt": "How many players does a rugby union team have on the field?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "15",
-  "numericAnswer": 15
- },
- {
-  "id": "sports-022",
-  "category": "sports",
-  "prompt": "In what year were the first modern Olympics held?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "1896 (Athens)",
-  "numericAnswer": 1896
- },
- {
-  "id": "sports-023",
-  "category": "sports",
-  "prompt": "How many Super Bowls have the New England Patriots won?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "6",
-  "numericAnswer": 6
- },
- {
-  "id": "sports-024",
-  "category": "sports",
-  "prompt": "How wide is a basketball hoop, in inches?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "18 inches",
-  "numericAnswer": 18
- },
- {
-  "id": "sports-025",
-  "category": "sports",
-  "prompt": "In cricket, how many balls are bowled in one over?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "M",
-  "answer": "6",
-  "numericAnswer": 6
- },
- {
-  "id": "sports-026",
-  "category": "sports",
-  "prompt": "Which country hosted the very first FIFA World Cup?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Uruguay (1930)"
- },
- {
-  "id": "sports-027",
-  "category": "sports",
-  "prompt": "What is the fastest tennis serve ever recorded, in mph?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 163.7 mph (Sam Groth, 2012)",
-  "numericAnswer": 163.7
- },
- {
-  "id": "sports-028",
-  "category": "sports",
-  "prompt": "How long is a soccer goal, in feet?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "24 feet (8 yards)",
-  "numericAnswer": 24
- },
- {
-  "id": "sports-029",
+  "id": "sports-0vho310",
   "category": "sports",
   "prompt": "How many players per team are on the ice in hockey (goalie included)?",
   "type": "SPOKEN_CLOSEST",
@@ -2957,21 +3399,21 @@ export const BANK: Question[] = [
   "numericAnswer": 6
  },
  {
-  "id": "sports-030",
+  "id": "sports-1vkxbty",
   "category": "sports",
   "prompt": "Name Olympic sports.",
   "type": "TURN_BASED",
   "difficulty": "E"
  },
  {
-  "id": "sports-031",
+  "id": "sports-1umc0qm",
   "category": "sports",
   "prompt": "Name famous soccer players.",
   "type": "TURN_BASED",
   "difficulty": "E"
  },
  {
-  "id": "sports-032",
+  "id": "sports-0vhttnf",
   "category": "sports",
   "prompt": "In which sport would you perform a slam dunk?",
   "type": "SPOKEN_EXACT",
@@ -2979,39 +3421,7 @@ export const BANK: Question[] = [
   "answer": "Basketball"
  },
  {
-  "id": "sports-033",
-  "category": "sports",
-  "prompt": "Which country invented the sport of judo?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "Japan"
- },
- {
-  "id": "sports-034",
-  "category": "sports",
-  "prompt": "Which tennis tournament is played on grass?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "Wimbledon"
- },
- {
-  "id": "sports-035",
-  "category": "sports",
-  "prompt": "Which country won the first ever Rugby World Cup in 1987?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "New Zealand"
- },
- {
-  "id": "sports-036",
-  "category": "sports",
-  "prompt": "What color is the jersey worn by the leader of the Tour de France?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "M",
-  "answer": "Yellow"
- },
- {
-  "id": "sports-037",
+  "id": "sports-1eb0wyr",
   "category": "sports",
   "prompt": "In which sport do you use a puck?",
   "type": "SPOKEN_EXACT",
@@ -3019,15 +3429,207 @@ export const BANK: Question[] = [
   "answer": "Ice hockey"
  },
  {
-  "id": "sports-038",
+  "id": "sports-02mkz86",
   "category": "sports",
-  "prompt": "Which boxer was known as \"The Greatest\"?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Muhammad Ali"
+  "prompt": "Name sports played with a ball.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
  },
  {
-  "id": "sports-039",
+  "id": "sports-01jim10",
+  "category": "sports",
+  "prompt": "How many players does a basketball team have on the court?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "E",
+  "answer": "5",
+  "numericAnswer": 5
+ },
+ {
+  "id": "sports-0wdiuwk",
+  "category": "sports",
+  "prompt": "Which sport does Lionel Messi play?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Soccer (football)"
+ },
+ {
+  "id": "sports-0vtq3zo",
+  "category": "sports",
+  "prompt": "In which sport do you score a \"try\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Rugby"
+ },
+ {
+  "id": "sports-0axayja",
+  "category": "sports",
+  "prompt": "Which sport's champions win the Stanley Cup?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Ice hockey"
+ },
+ {
+  "id": "sports-1xffwmr",
+  "category": "sports",
+  "prompt": "How many bases are on a baseball field, counting home plate?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "E",
+  "answer": "4",
+  "numericAnswer": 4
+ },
+ {
+  "id": "sports-1e6ibyj",
+  "category": "sports",
+  "prompt": "Which sport made Simone Biles famous?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Gymnastics"
+ },
+ {
+  "id": "sports-003ebfl",
+  "category": "sports",
+  "prompt": "Which sport made Serena Williams famous?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Tennis"
+ },
+ {
+  "id": "sports-18b1bp0",
+  "category": "sports",
+  "prompt": "Which country has won the most men’s FIFA World Cups?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Brazil (5)"
+ },
+ {
+  "id": "sports-0k6i1v8",
+  "category": "sports",
+  "prompt": "How long is a marathon, in miles?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "26.2 miles",
+  "numericAnswer": 26.2
+ },
+ {
+  "id": "sports-0juth0s",
+  "category": "sports",
+  "prompt": "Which city hosted the 2016 Summer Olympics?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Rio de Janeiro"
+ },
+ {
+  "id": "sports-0899dh2",
+  "category": "sports",
+  "prompt": "What is a perfect score in ten-pin bowling?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "300",
+  "numericAnswer": 300
+ },
+ {
+  "id": "sports-023nt2r",
+  "category": "sports",
+  "prompt": "How many minutes long is an NBA game, not counting overtime?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "48",
+  "numericAnswer": 48
+ },
+ {
+  "id": "sports-05xwgzr",
+  "category": "sports",
+  "prompt": "Name NBA teams.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "sports-0x1zi6k",
+  "category": "sports",
+  "prompt": "Name Premier League clubs.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "sports-1ezx550",
+  "category": "sports",
+  "prompt": "How long is an Olympic swimming pool, in meters?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "50 m",
+  "numericAnswer": 50
+ },
+ {
+  "id": "sports-1vyla3u",
+  "category": "sports",
+  "prompt": "How many Olympic GOLD medals did Michael Phelps win?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "23",
+  "numericAnswer": 23
+ },
+ {
+  "id": "sports-15hlujm",
+  "category": "sports",
+  "prompt": "How many players does a rugby union team have on the field?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "15",
+  "numericAnswer": 15
+ },
+ {
+  "id": "sports-0x9remu",
+  "category": "sports",
+  "prompt": "In what year were the first modern Olympics held?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "1896 (Athens)",
+  "numericAnswer": 1896
+ },
+ {
+  "id": "sports-1e5ah6x",
+  "category": "sports",
+  "prompt": "How many Super Bowls have the New England Patriots won?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "6",
+  "numericAnswer": 6
+ },
+ {
+  "id": "sports-0vgkgrz",
+  "category": "sports",
+  "prompt": "In cricket, how many balls are bowled in one over?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "6",
+  "numericAnswer": 6
+ },
+ {
+  "id": "sports-11vyzso",
+  "category": "sports",
+  "prompt": "Which country invented the sport of judo?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Japan"
+ },
+ {
+  "id": "sports-09nlf8j",
+  "category": "sports",
+  "prompt": "Which tennis tournament is played on grass?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Wimbledon"
+ },
+ {
+  "id": "sports-0vc1wcp",
+  "category": "sports",
+  "prompt": "What color is the jersey worn by the leader of the Tour de France?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Yellow"
+ },
+ {
+  "id": "sports-0t2swbl",
   "category": "sports",
   "prompt": "Which NFL team has the most Super Bowl wins (tied)?",
   "type": "SPOKEN_EXACT",
@@ -3035,15 +3637,7 @@ export const BANK: Question[] = [
   "answer": "New England Patriots and Pittsburgh Steelers (6 each)"
  },
  {
-  "id": "sports-040",
-  "category": "sports",
-  "prompt": "What is the only country to have played in every men's FIFA World Cup?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Brazil"
- },
- {
-  "id": "sports-041",
+  "id": "sports-020iijz",
   "category": "sports",
   "prompt": "Which footballer is nicknamed \"CR7\"?",
   "type": "SPOKEN_EXACT",
@@ -3051,15 +3645,7 @@ export const BANK: Question[] = [
   "answer": "Cristiano Ronaldo"
  },
  {
-  "id": "sports-042",
-  "category": "sports",
-  "prompt": "In which city were the 2012 Summer Olympics held?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "London"
- },
- {
-  "id": "sports-043",
+  "id": "sports-1dh1ivk",
   "category": "sports",
   "prompt": "What sport is played at Augusta National?",
   "type": "SPOKEN_EXACT",
@@ -3067,15 +3653,7 @@ export const BANK: Question[] = [
   "answer": "Golf (the Masters)"
  },
  {
-  "id": "sports-044",
-  "category": "sports",
-  "prompt": "Which country has won the most Olympic gold medals of all time?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "The United States"
- },
- {
-  "id": "sports-045",
+  "id": "sports-0qkfkba",
   "category": "sports",
   "prompt": "In bowling, what is it called when you knock down all ten pins with your first ball?",
   "type": "SPOKEN_EXACT",
@@ -3083,15 +3661,7 @@ export const BANK: Question[] = [
   "answer": "A strike"
  },
  {
-  "id": "sports-046",
-  "category": "sports",
-  "prompt": "Which swimmer is nicknamed \"The Thorpedo\"?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Ian Thorpe"
- },
- {
-  "id": "sports-047",
+  "id": "sports-1e4c6ry",
   "category": "sports",
   "prompt": "In which sport would you find a \"home run\"?",
   "type": "SPOKEN_EXACT",
@@ -3099,15 +3669,7 @@ export const BANK: Question[] = [
   "answer": "Baseball"
  },
  {
-  "id": "sports-048",
-  "category": "sports",
-  "prompt": "Which F1 driver has the most world championships (tied)?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Lewis Hamilton and Michael Schumacher (7 each)"
- },
- {
-  "id": "sports-049",
+  "id": "sports-05j8jka",
   "category": "sports",
   "prompt": "Which country hosts the Grand Prix held in Monte Carlo?",
   "type": "SPOKEN_EXACT",
@@ -3115,15 +3677,7 @@ export const BANK: Question[] = [
   "answer": "Monaco"
  },
  {
-  "id": "sports-050",
-  "category": "sports",
-  "prompt": "What is the national sport of Canada (summer)?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Lacrosse"
- },
- {
-  "id": "sports-051",
+  "id": "sports-01coqic",
   "category": "sports",
   "prompt": "Which NBA player is nicknamed \"King James\"?",
   "type": "SPOKEN_EXACT",
@@ -3131,15 +3685,7 @@ export const BANK: Question[] = [
   "answer": "LeBron James"
  },
  {
-  "id": "sports-052",
-  "category": "sports",
-  "prompt": "Which club has won the most UEFA Champions League titles?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Real Madrid"
- },
- {
-  "id": "sports-053",
+  "id": "sports-0to2mqm",
   "category": "sports",
   "prompt": "What's the term for three goals by one player in a single game?",
   "type": "SPOKEN_EXACT",
@@ -3147,15 +3693,7 @@ export const BANK: Question[] = [
   "answer": "A hat-trick"
  },
  {
-  "id": "sports-054",
-  "category": "sports",
-  "prompt": "What is the maximum break in snooker?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "147"
- },
- {
-  "id": "sports-055",
+  "id": "sports-16ursbj",
   "category": "sports",
   "prompt": "Which country has won the most cricket World Cups?",
   "type": "SPOKEN_EXACT",
@@ -3163,15 +3701,7 @@ export const BANK: Question[] = [
   "answer": "Australia"
  },
  {
-  "id": "sports-056",
-  "category": "sports",
-  "prompt": "In golf, what is a score of three under par on one hole called?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "An albatross (or double eagle)"
- },
- {
-  "id": "sports-057",
+  "id": "sports-1umqf2x",
   "category": "sports",
   "prompt": "How many players are on a volleyball team on the court?",
   "type": "SPOKEN_CLOSEST",
@@ -3180,7 +3710,7 @@ export const BANK: Question[] = [
   "numericAnswer": 6
  },
  {
-  "id": "sports-058",
+  "id": "sports-03wustq",
   "category": "sports",
   "prompt": "How long is a tennis court, in feet?",
   "type": "SPOKEN_CLOSEST",
@@ -3189,16 +3719,7 @@ export const BANK: Question[] = [
   "numericAnswer": 78
  },
  {
-  "id": "sports-059",
-  "category": "sports",
-  "prompt": "How heavy is an Olympic men's shot put, in kg?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "7.26 kg",
-  "numericAnswer": 7.26
- },
- {
-  "id": "sports-060",
+  "id": "sports-1itw6vu",
   "category": "sports",
   "prompt": "How many minutes are in a regular soccer match?",
   "type": "SPOKEN_CLOSEST",
@@ -3207,16 +3728,7 @@ export const BANK: Question[] = [
   "numericAnswer": 90
  },
  {
-  "id": "sports-061",
-  "category": "sports",
-  "prompt": "What is the men's marathon world record, in minutes?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 121 minutes (2:00:35, Kelvin Kiptum, 2023)",
-  "numericAnswer": 121
- },
- {
-  "id": "sports-062",
+  "id": "sports-0a6wvk8",
   "category": "sports",
   "prompt": "How many NBA championships did Michael Jordan win?",
   "type": "SPOKEN_CLOSEST",
@@ -3225,25 +3737,7 @@ export const BANK: Question[] = [
   "numericAnswer": 6
  },
  {
-  "id": "sports-063",
-  "category": "sports",
-  "prompt": "Roughly how many career NBA points has LeBron James scored?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "Over 40,000 (still counting!)",
-  "numericAnswer": 41000
- },
- {
-  "id": "sports-064",
-  "category": "sports",
-  "prompt": "How fast was Usain Bolt's top speed, in mph?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 27.8 mph",
-  "numericAnswer": 27.8
- },
- {
-  "id": "sports-065",
+  "id": "sports-000t6or",
   "category": "sports",
   "prompt": "How many rounds are there in a championship boxing match?",
   "type": "SPOKEN_CLOSEST",
@@ -3252,25 +3746,7 @@ export const BANK: Question[] = [
   "numericAnswer": 12
  },
  {
-  "id": "sports-066",
-  "category": "sports",
-  "prompt": "How long is an NFL field including end zones, in yards?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "120 yards",
-  "numericAnswer": 120
- },
- {
-  "id": "sports-067",
-  "category": "sports",
-  "prompt": "How many Wimbledon singles titles has Roger Federer won?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "8",
-  "numericAnswer": 8
- },
- {
-  "id": "sports-068",
+  "id": "sports-0fvbzgu",
   "category": "sports",
   "prompt": "How many World Cups has Germany won (men's)?",
   "type": "SPOKEN_CLOSEST",
@@ -3279,25 +3755,7 @@ export const BANK: Question[] = [
   "numericAnswer": 4
  },
  {
-  "id": "sports-069",
-  "category": "sports",
-  "prompt": "How heavy is a regulation NBA basketball, in ounces?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 22 oz",
-  "numericAnswer": 22
- },
- {
-  "id": "sports-070",
-  "category": "sports",
-  "prompt": "What is the world record for the men's high jump, in meters?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "2.45 m (Javier Sotomayor)",
-  "numericAnswer": 2.45
- },
- {
-  "id": "sports-071",
+  "id": "sports-1m7ru0d",
   "category": "sports",
   "prompt": "How many teams are in the NFL?",
   "type": "SPOKEN_CLOSEST",
@@ -3306,25 +3764,7 @@ export const BANK: Question[] = [
   "numericAnswer": 32
  },
  {
-  "id": "sports-072",
-  "category": "sports",
-  "prompt": "How many teams are in the Premier League?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "20",
-  "numericAnswer": 20
- },
- {
-  "id": "sports-073",
-  "category": "sports",
-  "prompt": "How long did the longest tennis match ever last, in hours?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "11 hours 5 minutes (Isner vs Mahut, 2010)",
-  "numericAnswer": 11
- },
- {
-  "id": "sports-074",
+  "id": "sports-1ufqpu4",
   "category": "sports",
   "prompt": "How many pins are used in ten-pin bowling?",
   "type": "SPOKEN_CLOSEST",
@@ -3333,7 +3773,333 @@ export const BANK: Question[] = [
   "numericAnswer": 10
  },
  {
-  "id": "sports-075",
+  "id": "sports-0o3g36a",
+  "category": "sports",
+  "prompt": "Name NFL teams.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "sports-1r36q4z",
+  "category": "sports",
+  "prompt": "Name tennis players.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "sports-0uik89y",
+  "category": "sports",
+  "prompt": "Name famous basketball players.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "sports-1fvcjzk",
+  "category": "sports",
+  "prompt": "Which country won the 2022 men's FIFA World Cup?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Argentina"
+ },
+ {
+  "id": "sports-1lcymm5",
+  "category": "sports",
+  "prompt": "How many players does a cricket team have on the field?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "11",
+  "numericAnswer": 11
+ },
+ {
+  "id": "sports-1pzm523",
+  "category": "sports",
+  "prompt": "In golf, what is one under par on a hole called?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "A birdie"
+ },
+ {
+  "id": "sports-0ogm28h",
+  "category": "sports",
+  "prompt": "In which country was basketball invented?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The United States (Springfield, Massachusetts)"
+ },
+ {
+  "id": "sports-1mi0qle",
+  "category": "sports",
+  "prompt": "How long is the NBA shot clock, in seconds?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "24",
+  "numericAnswer": 24
+ },
+ {
+  "id": "sports-0zz82li",
+  "category": "sports",
+  "prompt": "Which sport is the Ryder Cup played in?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Golf"
+ },
+ {
+  "id": "sports-1nq9pc3",
+  "category": "sports",
+  "prompt": "Which Grand Slam tennis tournament is played on clay?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "The French Open (Roland-Garros)"
+ },
+ {
+  "id": "sports-0rrw1ny",
+  "category": "sports",
+  "prompt": "Name cities that have hosted the Olympics.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "sports-0wjkc8a",
+  "category": "sports",
+  "prompt": "What is Usain Bolt’s 100m world record, in seconds?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "9.58 s",
+  "numericAnswer": 9.58
+ },
+ {
+  "id": "sports-0phbdq8",
+  "category": "sports",
+  "prompt": "How many Grand Slam singles titles has Novak Djokovic won?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "24",
+  "numericAnswer": 24
+ },
+ {
+  "id": "sports-1epgzwf",
+  "category": "sports",
+  "prompt": "How many dimples are on a standard golf ball?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 336 (usually 300–500)",
+  "numericAnswer": 336
+ },
+ {
+  "id": "sports-1ouqs9y",
+  "category": "sports",
+  "prompt": "How wide is a basketball hoop, in inches?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "18 inches",
+  "numericAnswer": 18
+ },
+ {
+  "id": "sports-1h7colf",
+  "category": "sports",
+  "prompt": "Which country hosted the very first FIFA World Cup?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Uruguay (1930)"
+ },
+ {
+  "id": "sports-05f2q51",
+  "category": "sports",
+  "prompt": "What is the fastest tennis serve ever recorded, in mph?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 163.7 mph (Sam Groth, 2012)",
+  "numericAnswer": 163.7
+ },
+ {
+  "id": "sports-1s3y5c8",
+  "category": "sports",
+  "prompt": "How long is a soccer goal, in feet?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "24 feet (8 yards)",
+  "numericAnswer": 24
+ },
+ {
+  "id": "sports-1yfr3ir",
+  "category": "sports",
+  "prompt": "Which country won the first ever Rugby World Cup in 1987?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "New Zealand"
+ },
+ {
+  "id": "sports-1gewxsd",
+  "category": "sports",
+  "prompt": "Which boxer was known as \"The Greatest\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Muhammad Ali"
+ },
+ {
+  "id": "sports-185jg9p",
+  "category": "sports",
+  "prompt": "What is the only country to have played in every men's FIFA World Cup?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Brazil"
+ },
+ {
+  "id": "sports-15f2jee",
+  "category": "sports",
+  "prompt": "In which city were the 2012 Summer Olympics held?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "London"
+ },
+ {
+  "id": "sports-0g2hhw5",
+  "category": "sports",
+  "prompt": "Which country has won the most Olympic gold medals of all time?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The United States"
+ },
+ {
+  "id": "sports-1qwfhnt",
+  "category": "sports",
+  "prompt": "Which swimmer is nicknamed \"The Thorpedo\"?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Ian Thorpe"
+ },
+ {
+  "id": "sports-1ojm0u7",
+  "category": "sports",
+  "prompt": "Which F1 driver has the most world championships (tied)?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Lewis Hamilton and Michael Schumacher (7 each)"
+ },
+ {
+  "id": "sports-1skalnm",
+  "category": "sports",
+  "prompt": "What is the national sport of Canada (summer)?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Lacrosse"
+ },
+ {
+  "id": "sports-1pzvo1s",
+  "category": "sports",
+  "prompt": "Which club has won the most UEFA Champions League titles?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Real Madrid"
+ },
+ {
+  "id": "sports-0g2hohi",
+  "category": "sports",
+  "prompt": "What is the maximum break in snooker?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "147"
+ },
+ {
+  "id": "sports-0v6k0ck",
+  "category": "sports",
+  "prompt": "In golf, what is a score of three under par on one hole called?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "An albatross (or double eagle)"
+ },
+ {
+  "id": "sports-13qwktl",
+  "category": "sports",
+  "prompt": "How heavy is an Olympic men's shot put, in kg?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "7.26 kg",
+  "numericAnswer": 7.26
+ },
+ {
+  "id": "sports-0cqagti",
+  "category": "sports",
+  "prompt": "What is the men's marathon world record, in minutes?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 121 minutes (2:00:35, Kelvin Kiptum, 2023)",
+  "numericAnswer": 121
+ },
+ {
+  "id": "sports-1wvxz3n",
+  "category": "sports",
+  "prompt": "Roughly how many career NBA points has LeBron James scored?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "Over 40,000 (still counting!)",
+  "numericAnswer": 41000
+ },
+ {
+  "id": "sports-0x255l6",
+  "category": "sports",
+  "prompt": "How fast was Usain Bolt's top speed, in mph?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 27.8 mph",
+  "numericAnswer": 27.8
+ },
+ {
+  "id": "sports-0d4yo4e",
+  "category": "sports",
+  "prompt": "How long is an NFL field including end zones, in yards?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "120 yards",
+  "numericAnswer": 120
+ },
+ {
+  "id": "sports-1yr13i8",
+  "category": "sports",
+  "prompt": "How many Wimbledon singles titles has Roger Federer won?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "8",
+  "numericAnswer": 8
+ },
+ {
+  "id": "sports-1wh88ys",
+  "category": "sports",
+  "prompt": "How heavy is a regulation NBA basketball, in ounces?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 22 oz",
+  "numericAnswer": 22
+ },
+ {
+  "id": "sports-035gs31",
+  "category": "sports",
+  "prompt": "What is the world record for the men's high jump, in meters?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "2.45 m (Javier Sotomayor)",
+  "numericAnswer": 2.45
+ },
+ {
+  "id": "sports-0j8w3xm",
+  "category": "sports",
+  "prompt": "How many teams are in the Premier League?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "20",
+  "numericAnswer": 20
+ },
+ {
+  "id": "sports-0olmjdu",
+  "category": "sports",
+  "prompt": "How long did the longest tennis match ever last, in hours?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "11 hours 5 minutes (Isner vs Mahut, 2010)",
+  "numericAnswer": 11
+ },
+ {
+  "id": "sports-0xc7tej",
   "category": "sports",
   "prompt": "In what year did Tiger Woods win his first Masters?",
   "type": "SPOKEN_CLOSEST",
@@ -3342,7 +4108,7 @@ export const BANK: Question[] = [
   "numericAnswer": 1997
  },
  {
-  "id": "sports-076",
+  "id": "sports-012n1ig",
   "category": "sports",
   "prompt": "How far is the pitcher's mound from home plate, in feet?",
   "type": "SPOKEN_CLOSEST",
@@ -3351,609 +4117,749 @@ export const BANK: Question[] = [
   "numericAnswer": 60.5
  },
  {
-  "id": "sports-077",
-  "category": "sports",
-  "prompt": "Name NFL teams.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "sports-078",
-  "category": "sports",
-  "prompt": "Name tennis players.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "sports-079",
+  "id": "sports-1x9g5fy",
   "category": "sports",
   "prompt": "Name Formula 1 drivers.",
   "type": "TURN_BASED",
   "difficulty": "H"
  },
  {
-  "id": "sports-080",
+  "id": "sports-0k2rj54",
   "category": "sports",
-  "prompt": "Name sports played with a ball.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
+  "prompt": "How many stitches are on an official MLB baseball?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "108",
+  "numericAnswer": 108
  },
  {
-  "id": "sports-081",
+  "id": "sports-04x7jcs",
   "category": "sports",
-  "prompt": "Name famous basketball players.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
+  "prompt": "How long is a cricket pitch, in yards?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "22",
+  "numericAnswer": 22
  },
  {
-  "id": "physical-001",
-  "category": "physical",
-  "prompt": "Who can do the most push-ups in 30 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
+  "id": "sports-1tr69zf",
+  "category": "sports",
+  "prompt": "Which NBA team drafted Kobe Bryant before he was traded to the Lakers?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "The Charlotte Hornets"
  },
  {
-  "id": "physical-002",
-  "category": "physical",
-  "prompt": "Who can hold their breath the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
+  "id": "sports-1fbjgae",
+  "category": "sports",
+  "prompt": "How heavy is an official soccer ball, in grams?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "410–450 g",
+  "numericAnswer": 430
  },
  {
-  "id": "physical-003",
+  "id": "physical-15b8zj6",
   "category": "physical",
   "prompt": "Rock, Paper, Scissors — best of 3!",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-004",
-  "category": "physical",
-  "prompt": "Who can hold a wall sit the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-005",
-  "category": "physical",
-  "prompt": "Who can hold a plank the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-006",
-  "category": "physical",
-  "prompt": "Who can stand on one leg with their eyes closed the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-007",
+  "id": "physical-0mz1d6m",
   "category": "physical",
   "prompt": "Thumb war — best of 3!",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-008",
-  "category": "physical",
-  "prompt": "Who can do the most jumping jacks in 30 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-009",
+  "id": "physical-0qonqu1",
   "category": "physical",
   "prompt": "Staring contest — first to blink loses!",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-010",
-  "category": "physical",
-  "prompt": "Who can balance a spoon on their nose the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-011",
-  "category": "physical",
-  "prompt": "Who can say the alphabet backwards the fastest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-012",
-  "category": "physical",
-  "prompt": "Say “Red lorry, yellow lorry” three times fast — fewest mistakes wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-013",
-  "category": "physical",
-  "prompt": "Who can do the most squats in 30 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-014",
-  "category": "physical",
-  "prompt": "Who can hop on one foot the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-015",
-  "category": "physical",
-  "prompt": "Bottle flip — first to land one wins!",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-016",
-  "category": "physical",
-  "prompt": "Who can stack the most coins in 30 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-017",
-  "category": "physical",
-  "prompt": "Arm wrestling — best of 3!",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-018",
-  "category": "physical",
-  "prompt": "Who can do the most burpees in 30 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-019",
-  "category": "physical",
-  "prompt": "Who can hold their arms straight out to the sides the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-020",
-  "category": "physical",
-  "prompt": "Who can hold a lunge the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-021",
-  "category": "physical",
-  "prompt": "Who can do the most sit-ups in 30 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-022",
-  "category": "physical",
-  "prompt": "Who can stay up on their tiptoes the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-023",
-  "category": "physical",
-  "prompt": "Who can hold a one-arm plank the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-024",
-  "category": "physical",
-  "prompt": "Hold a plank and name 10 animals — first to finish wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-025",
-  "category": "physical",
-  "prompt": "Walk across the room and back with a book on your head — fastest without dropping it wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-026",
-  "category": "physical",
-  "prompt": "Stand up from sitting cross-legged without using your hands — first to do it 3 times wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-027",
+  "id": "physical-0gcx8u4",
   "category": "physical",
   "prompt": "Hand-slap game — first to land 3 slaps wins.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-028",
+  "id": "physical-00mucr5",
   "category": "physical",
   "prompt": "No-laugh stare-down: face each other — first to smile or laugh loses.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-029",
+  "id": "physical-04a03ko",
   "category": "physical",
   "prompt": "Who can touch their nose with their tongue? The room judges who gets closest.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-030",
-  "category": "physical",
-  "prompt": "Elbow coin catch: balance coins on your elbow, flip and catch — most caught wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-031",
-  "category": "physical",
-  "prompt": "Spin around 10 times, then walk a straight line — the room judges who wobbles less.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-032",
-  "category": "physical",
-  "prompt": "Who can hold a squat the longest — thighs parallel to the floor?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-033",
-  "category": "physical",
-  "prompt": "Who can hold a handstand against the wall the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-034",
-  "category": "physical",
-  "prompt": "Who can do the most lunges in 30 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-035",
+  "id": "physical-0ilxfor",
   "category": "physical",
   "prompt": "Who can balance on one foot the longest while the room tries to distract them?",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-036",
-  "category": "physical",
-  "prompt": "Who can do the most star jumps in 20 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-037",
-  "category": "physical",
-  "prompt": "Who can hold a superman pose (lying on your belly, arms and legs up) the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-038",
-  "category": "physical",
-  "prompt": "Who can keep a piece of paper stuck to their forehead the longest without hands while dancing?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-039",
+  "id": "physical-1dg18sy",
   "category": "physical",
   "prompt": "Who can spin a pen (or coin) on the table the longest?",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-040",
-  "category": "physical",
-  "prompt": "Who can toss a coin into a glass from 2 meters away first?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-041",
+  "id": "physical-1fs0xsp",
   "category": "physical",
   "prompt": "Who can do the best cartwheel (or attempt)? The host judges.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-042",
-  "category": "physical",
-  "prompt": "Who can hold a hollow body hold (lying on your back, legs and shoulders up) the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-043",
-  "category": "physical",
-  "prompt": "Who can do the most pull-ups (or dead hang the longest if no bar)?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-044",
-  "category": "physical",
-  "prompt": "Who can stand up and sit down on a chair the most times in 30 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-045",
+  "id": "physical-1tkfqri",
   "category": "physical",
   "prompt": "Who can do the best robot dance for 15 seconds? The host judges.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-046",
-  "category": "physical",
-  "prompt": "Who can walk heel-to-toe along a straight line the fastest without wobbling?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-047",
-  "category": "physical",
-  "prompt": "Who can touch their toes and hold it the longest without bending their knees?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-048",
-  "category": "physical",
-  "prompt": "Who can hold their leg straight out in front of them the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-049",
+  "id": "physical-021srba",
   "category": "physical",
   "prompt": "Who can blow a ping-pong ball (or a scrunched paper ball) across the table first?",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-050",
-  "category": "physical",
-  "prompt": "Who can keep a balloon (or rolled sock) in the air the longest using only their head?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-051",
+  "id": "physical-172q0dr",
   "category": "physical",
   "prompt": "Who can do the most convincing slow-motion run? The host judges.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-052",
-  "category": "physical",
-  "prompt": "Who can stack 5 cups or coins on the back of their hand and walk across the room first?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-053",
-  "category": "physical",
-  "prompt": "Mirror match: copy every move the host makes. First to mess up loses.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-054",
-  "category": "physical",
-  "prompt": "Who can do the most push-ups with their feet up on a chair?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-055",
+  "id": "physical-0a3duv5",
   "category": "physical",
   "prompt": "Simon says — the host gives the commands, first to slip up loses.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-056",
-  "category": "physical",
-  "prompt": "Who can crab-walk to the other side of the room and back first?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-057",
-  "category": "physical",
-  "prompt": "Who can hold a book out at arm's length the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-058",
-  "category": "physical",
-  "prompt": "Who can hold a side plank the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-059",
+  "id": "physical-05rtb9g",
   "category": "physical",
   "prompt": "Who can do the best breakdance move? The host judges.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-060",
-  "category": "physical",
-  "prompt": "Who can pick up a coin from the floor without bending their knees first?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-061",
+  "id": "physical-1e9zlhn",
   "category": "physical",
   "prompt": "Who can do the funniest walk across the room? The host judges.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-062",
-  "category": "physical",
-  "prompt": "Leg wrestling — best of 3!",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-063",
-  "category": "physical",
-  "prompt": "Finger-pull tug-of-war — first to pull the other over the line wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-064",
+  "id": "physical-1w7zg3p",
   "category": "physical",
   "prompt": "Who can whistle a song the room recognizes first?",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-065",
-  "category": "physical",
-  "prompt": "Who can roll their tongue, wiggle their ears or do the weirdest body trick? The room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-066",
-  "category": "physical",
-  "prompt": "Who can jump the furthest from a standing start?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-067",
-  "category": "physical",
-  "prompt": "Who can do the most sit-ups with their arms crossed in 30 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-068",
+  "id": "physical-16e8g4c",
   "category": "physical",
   "prompt": "Who can stand without blinking or laughing while the room makes faces?",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-069",
-  "category": "physical",
-  "prompt": "Who can rub their belly and pat their head the longest without mixing them up?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-070",
-  "category": "physical",
-  "prompt": "Who can stay frozen like a statue the longest while the room tries to make them move?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-071",
-  "category": "physical",
-  "prompt": "Who can hold a deep squat with their arms straight up the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-072",
+  "id": "physical-0eoujum",
   "category": "physical",
   "prompt": "Who can throw a piece of popcorn (or paper) in the air and catch it in their mouth first?",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-073",
-  "category": "physical",
-  "prompt": "Who can draw a perfect circle on paper? The host judges.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-074",
-  "category": "physical",
-  "prompt": "Who can say the longest sentence on one breath?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-075",
+  "id": "physical-1hb54d6",
   "category": "physical",
   "prompt": "Who can spin around the most times in 10 seconds?",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-076",
-  "category": "physical",
-  "prompt": "Who can hop on one leg across the room and back fastest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-077",
-  "category": "physical",
-  "prompt": "Who can do the most burpees in 45 seconds?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "physical-078",
-  "category": "physical",
-  "prompt": "Who can keep a coin balanced on their nose (head tilted back) the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-079",
+  "id": "physical-0v0nvdc",
   "category": "physical",
   "prompt": "Shadow boxing: best 15-second fight routine. The room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "physical-080",
+  "id": "physical-1u5p1hp",
+  "category": "physical",
+  "prompt": "Nose-to-nose freeze: stand still with your noses almost touching. First to laugh or step back loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "physical-1674ubi",
+  "category": "physical",
+  "prompt": "Paper-ball basketball: 5 shots each into a cup, mug or bin from 2 meters. Most baskets wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "physical-1uxrbr3",
+  "category": "physical",
+  "prompt": "Most dramatic fake sneeze. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "physical-164m7oz",
+  "category": "physical",
+  "prompt": "Best impression of a T-rex walking across the room. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "physical-03ayp23",
+  "category": "physical",
+  "prompt": "Who can wink with each eye, one after the other, the most times in 10 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "physical-07edmc5",
+  "category": "physical",
+  "prompt": "Air guitar solo for 15 seconds. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "physical-17l6fc4",
+  "category": "physical",
+  "prompt": "Pull your weirdest face and hold it for 10 seconds without laughing. The room votes on the weirdest.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "physical-0v9mas9",
+  "category": "physical",
+  "prompt": "Who can do the most push-ups in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0r238dy",
+  "category": "physical",
+  "prompt": "Who can hold their breath the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-00r2g6u",
+  "category": "physical",
+  "prompt": "Who can stand on one leg with their eyes closed the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0m8ezrs",
+  "category": "physical",
+  "prompt": "Who can do the most jumping jacks in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1sypgxm",
+  "category": "physical",
+  "prompt": "Say “Red lorry, yellow lorry” three times fast — fewest mistakes wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0l2pn91",
+  "category": "physical",
+  "prompt": "Who can do the most squats in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0kaza0p",
+  "category": "physical",
+  "prompt": "Who can hop on one foot the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-15to512",
+  "category": "physical",
+  "prompt": "Bottle flip — first to land one wins!",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-02ujjmt",
+  "category": "physical",
+  "prompt": "Who can stack the most coins in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0w55b9f",
+  "category": "physical",
+  "prompt": "Arm wrestling — best of 3!",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-19tonih",
+  "category": "physical",
+  "prompt": "Who can hold their arms straight out to the sides the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0b5b849",
+  "category": "physical",
+  "prompt": "Who can do the most sit-ups in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0ov7btq",
+  "category": "physical",
+  "prompt": "Who can stay up on their tiptoes the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0yg1jti",
+  "category": "physical",
+  "prompt": "Hold a plank and name 10 animals — first to finish wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0h134ro",
+  "category": "physical",
+  "prompt": "Walk across the room and back with a book on your head — fastest without dropping it wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1cpr6ix",
+  "category": "physical",
+  "prompt": "Stand up from sitting cross-legged without using your hands — first to do it 3 times wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-076s0bt",
+  "category": "physical",
+  "prompt": "Spin around 10 times, then walk a straight line — the room judges who wobbles less.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0gacez3",
+  "category": "physical",
+  "prompt": "Who can hold a squat the longest — thighs parallel to the floor?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1jbefgw",
+  "category": "physical",
+  "prompt": "Who can do the most lunges in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1humgsc",
+  "category": "physical",
+  "prompt": "Who can do the most star jumps in 20 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1iqr7uc",
+  "category": "physical",
+  "prompt": "Who can keep a piece of paper stuck to their forehead the longest without hands while dancing?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-03vm0tg",
+  "category": "physical",
+  "prompt": "Who can toss a coin into a glass from 2 meters away first?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-16qrlja",
+  "category": "physical",
+  "prompt": "Who can hold a hollow body hold (lying on your back, legs and shoulders up) the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0b6qq50",
+  "category": "physical",
+  "prompt": "Who can stand up and sit down on a chair the most times in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0k7gdu3",
+  "category": "physical",
+  "prompt": "Who can walk heel-to-toe along a straight line the fastest without wobbling?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0t60gxp",
+  "category": "physical",
+  "prompt": "Who can touch their toes and hold it the longest without bending their knees?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-07ndzn2",
+  "category": "physical",
+  "prompt": "Who can keep a balloon (or rolled sock) in the air the longest using only their head?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1pfsy27",
+  "category": "physical",
+  "prompt": "Who can stack 5 cups or coins on the back of their hand and walk across the room first?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1x4st50",
+  "category": "physical",
+  "prompt": "Mirror match: copy every move the host makes. First to mess up loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1a0qb8g",
+  "category": "physical",
+  "prompt": "Who can crab-walk to the other side of the room and back first?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1x473v9",
+  "category": "physical",
+  "prompt": "Who can hold a book out at arm's length the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-01i7gum",
+  "category": "physical",
+  "prompt": "Who can pick up a coin from the floor without bending their knees first?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0sxwgqh",
+  "category": "physical",
+  "prompt": "Leg wrestling — best of 3!",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1bcns7k",
+  "category": "physical",
+  "prompt": "Finger-pull tug-of-war — first to pull the other over the line wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-17kws9x",
+  "category": "physical",
+  "prompt": "Who can roll their tongue, wiggle their ears or do the weirdest body trick? The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1v38vir",
+  "category": "physical",
+  "prompt": "Who can do the most sit-ups with their arms crossed in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0orez4x",
+  "category": "physical",
+  "prompt": "Who can rub their belly and pat their head the longest without mixing them up?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-072wici",
+  "category": "physical",
+  "prompt": "Who can stay frozen like a statue the longest while the room tries to make them move?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-10g8ziu",
+  "category": "physical",
+  "prompt": "Who can draw a perfect circle on paper? The host judges.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0hj2n86",
+  "category": "physical",
+  "prompt": "Who can say the longest sentence on one breath?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1x5phw9",
+  "category": "physical",
+  "prompt": "Who can hop on one leg across the room and back fastest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1padhea",
+  "category": "physical",
+  "prompt": "Who can keep a coin balanced on their nose (head tilted back) the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-11s7b9q",
   "category": "physical",
   "prompt": "Who can walk backwards across the room and back fastest without bumping into anything?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "physical-081",
+  "id": "physical-054xj3h",
   "category": "physical",
   "prompt": "Who can do the longest wall sit with a full glass of water in their hands (no spilling)?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "kyf-001",
+  "id": "physical-1aj9xgt",
+  "category": "physical",
+  "prompt": "Name things in the room that start with \"S\" while hopping on one foot. Most in 20 seconds wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0vl6afv",
+  "category": "physical",
+  "prompt": "Sock toss: take off one sock and throw it. Furthest landing wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0u9be9e",
+  "category": "physical",
+  "prompt": "Who can move the most coins (or small items) from one plate to another with two pens as chopsticks in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1qryewf",
+  "category": "physical",
+  "prompt": "Who can tie a shoelace (or a string around a bottle) the fastest using only one hand?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0qrqfue",
+  "category": "physical",
+  "prompt": "Cookie face: put a cookie or cracker on your forehead and get it into your mouth without using your hands. First wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0tevp9p",
+  "category": "physical",
+  "prompt": "Build a pyramid of 6 cups (or coasters), knock it down and rebuild it. Fastest wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-1tv71pi",
+  "category": "physical",
+  "prompt": "Carry a ball of paper on a spoon held in your mouth across the room and back, no hands. First back wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-05tw0wn",
+  "category": "physical",
+  "prompt": "Draw an animal the room picks using your other hand in 20 seconds. The room picks the best.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-0iil2em",
+  "category": "physical",
+  "prompt": "Fold a paper airplane in 60 seconds, then fly it. Furthest flight wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "physical-19l0ahb",
+  "category": "physical",
+  "prompt": "Who can hold a wall sit the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0an5fed",
+  "category": "physical",
+  "prompt": "Who can hold a plank the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0jakmfz",
+  "category": "physical",
+  "prompt": "Who can balance a spoon on their nose the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0v2umw8",
+  "category": "physical",
+  "prompt": "Who can say the alphabet backwards the fastest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0xqxn8a",
+  "category": "physical",
+  "prompt": "Who can do the most burpees in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0i972js",
+  "category": "physical",
+  "prompt": "Who can hold a lunge the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-1uy1rk8",
+  "category": "physical",
+  "prompt": "Who can hold a one-arm plank the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0mbd7iq",
+  "category": "physical",
+  "prompt": "Elbow coin catch: balance coins on your elbow, flip and catch — most caught wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0ete6tc",
+  "category": "physical",
+  "prompt": "Who can hold a handstand against the wall the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-1srs13z",
+  "category": "physical",
+  "prompt": "Who can hold a superman pose (lying on your belly, arms and legs up) the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0quq78l",
+  "category": "physical",
+  "prompt": "Who can do the most pull-ups (or dead hang the longest if no bar)?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0a3gdtt",
+  "category": "physical",
+  "prompt": "Who can hold their leg straight out in front of them the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-14njxr8",
+  "category": "physical",
+  "prompt": "Who can do the most push-ups with their feet up on a chair?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-045i10y",
+  "category": "physical",
+  "prompt": "Who can hold a side plank the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-06x54rn",
+  "category": "physical",
+  "prompt": "Who can jump the furthest from a standing start?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-1v4zo5j",
+  "category": "physical",
+  "prompt": "Who can hold a deep squat with their arms straight up the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0ykkwne",
+  "category": "physical",
+  "prompt": "Who can do the most burpees in 45 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0v474ak",
+  "category": "physical",
+  "prompt": "Stand on one foot on a cushion. Longest wins (the other foot can't touch anything).",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-0akuvlp",
+  "category": "physical",
+  "prompt": "Who can go from lying flat on the floor to standing up the most times in 30 seconds?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "physical-1nnsaol",
+  "category": "physical",
+  "prompt": "Do 5 squats with a book balanced on your head. First to finish without dropping it wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "kyf-1hx8gz9",
   "category": "kyf",
   "prompt": "What is {S}’s favorite food?",
   "type": "SUBJECT_JUDGED",
@@ -3961,7 +4867,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-002",
+  "id": "kyf-1l6jpdf",
   "category": "kyf",
   "prompt": "What is {S}’s go-to drink order?",
   "type": "SUBJECT_JUDGED",
@@ -3969,7 +4875,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-003",
+  "id": "kyf-03bhl7e",
   "category": "kyf",
   "prompt": "Which month is {S}’s birthday in?",
   "type": "SUBJECT_JUDGED",
@@ -3977,7 +4883,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-004",
+  "id": "kyf-09pgfcu",
   "category": "kyf",
   "prompt": "What is {S}’s dream travel destination?",
   "type": "SUBJECT_JUDGED",
@@ -3985,7 +4891,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-005",
+  "id": "kyf-0ynkedl",
   "category": "kyf",
   "prompt": "What is {S}’s middle name?",
   "type": "SUBJECT_JUDGED",
@@ -3993,7 +4899,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-006",
+  "id": "kyf-09k8axm",
   "category": "kyf",
   "prompt": "What is {S}’s biggest fear?",
   "type": "SUBJECT_JUDGED",
@@ -4001,7 +4907,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-007",
+  "id": "kyf-17j53nl",
   "category": "kyf",
   "prompt": "Which celebrity would {S} most want to meet?",
   "type": "SUBJECT_JUDGED",
@@ -4009,7 +4915,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-008",
+  "id": "kyf-01x1vdz",
   "category": "kyf",
   "prompt": "What was {S}’s dream job as a kid?",
   "type": "SUBJECT_JUDGED",
@@ -4017,7 +4923,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-009",
+  "id": "kyf-11np558",
   "category": "kyf",
   "prompt": "What is {S}’s go-to karaoke song?",
   "type": "SUBJECT_JUDGED",
@@ -4025,7 +4931,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-010",
+  "id": "kyf-0gp6ppa",
   "category": "kyf",
   "prompt": "What is {S}’s most-used emoji?",
   "type": "SUBJECT_JUDGED",
@@ -4033,7 +4939,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-011",
+  "id": "kyf-02okuzh",
   "category": "kyf",
   "prompt": "What is {S}’s favorite movie?",
   "type": "SUBJECT_JUDGED",
@@ -4041,31 +4947,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-012",
-  "category": "kyf",
-  "prompt": "What is {S}’s phone battery % right now?",
-  "type": "SUBJECT_JUDGED",
-  "difficulty": "M",
-  "closest": true
- },
- {
-  "id": "kyf-013",
-  "category": "kyf",
-  "prompt": "How many unread texts does {S} have?",
-  "type": "SUBJECT_JUDGED",
-  "difficulty": "M",
-  "closest": true
- },
- {
-  "id": "kyf-014",
-  "category": "kyf",
-  "prompt": "How many hours of screen time did {S} have yesterday?",
-  "type": "SUBJECT_JUDGED",
-  "difficulty": "M",
-  "closest": true
- },
- {
-  "id": "kyf-015",
+  "id": "kyf-03b5sq4",
   "category": "kyf",
   "prompt": "What was {S}’s first car (or first phone)?",
   "type": "SUBJECT_JUDGED",
@@ -4073,7 +4955,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-016",
+  "id": "kyf-1lwxgr7",
   "category": "kyf",
   "prompt": "What is {S}’s go-to fast food order?",
   "type": "SUBJECT_JUDGED",
@@ -4081,7 +4963,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-017",
+  "id": "kyf-18i3z84",
   "category": "kyf",
   "prompt": "What is {S}’s biggest pet peeve?",
   "type": "SUBJECT_JUDGED",
@@ -4089,7 +4971,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-018",
+  "id": "kyf-1x3g3qe",
   "category": "kyf",
   "prompt": "What is {S}’s guilty-pleasure TV show?",
   "type": "SUBJECT_JUDGED",
@@ -4097,47 +4979,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-019",
-  "category": "kyf",
-  "prompt": "How many countries has {S} visited?",
-  "type": "SUBJECT_JUDGED",
-  "difficulty": "M",
-  "closest": true
- },
- {
-  "id": "kyf-020",
-  "category": "kyf",
-  "prompt": "What is {S}’s shoe size?",
-  "type": "SUBJECT_JUDGED",
-  "difficulty": "M",
-  "closest": true
- },
- {
-  "id": "kyf-021",
-  "category": "kyf",
-  "prompt": "How many photos are in {S}’s camera roll?",
-  "type": "SUBJECT_JUDGED",
-  "difficulty": "M",
-  "closest": true
- },
- {
-  "id": "kyf-022",
-  "category": "kyf",
-  "prompt": "How many hours did {S} sleep last night?",
-  "type": "SUBJECT_JUDGED",
-  "difficulty": "M",
-  "closest": true
- },
- {
-  "id": "kyf-023",
-  "category": "kyf",
-  "prompt": "How many pairs of shoes does {S} own?",
-  "type": "SUBJECT_JUDGED",
-  "difficulty": "M",
-  "closest": true
- },
- {
-  "id": "kyf-024",
+  "id": "kyf-09ajfia",
   "category": "kyf",
   "prompt": "What is {S}’s go-to pizza topping?",
   "type": "SUBJECT_JUDGED",
@@ -4145,7 +4987,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-025",
+  "id": "kyf-03i5mo6",
   "category": "kyf",
   "prompt": "Who was {S}’s celebrity crush growing up?",
   "type": "SUBJECT_JUDGED",
@@ -4153,7 +4995,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-026",
+  "id": "kyf-0b7wy8s",
   "category": "kyf",
   "prompt": "What’s the first thing {S} would buy after winning $1 million?",
   "type": "SUBJECT_JUDGED",
@@ -4161,7 +5003,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-027",
+  "id": "kyf-1rrn543",
   "category": "kyf",
   "prompt": "What is {S}’s secret hidden talent?",
   "type": "SUBJECT_JUDGED",
@@ -4169,7 +5011,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-028",
+  "id": "kyf-0g0mjg5",
   "category": "kyf",
   "prompt": "What was the last thing {S} bought online?",
   "type": "SUBJECT_JUDGED",
@@ -4177,7 +5019,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-029",
+  "id": "kyf-0kq9fnq",
   "category": "kyf",
   "prompt": "What food does {S} hate the most?",
   "type": "SUBJECT_JUDGED",
@@ -4185,7 +5027,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-030",
+  "id": "kyf-1f3i6si",
   "category": "kyf",
   "prompt": "What is {S}’s favorite season?",
   "type": "SUBJECT_JUDGED",
@@ -4193,7 +5035,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-031",
+  "id": "kyf-0vb8v5e",
   "category": "kyf",
   "prompt": "What was {S}’s most embarrassing phase growing up?",
   "type": "SUBJECT_JUDGED",
@@ -4201,7 +5043,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-032",
+  "id": "kyf-0o30sj4",
   "category": "kyf",
   "prompt": "What is {S}'s go-to order at Starbucks (or their usual coffee)?",
   "type": "SUBJECT_JUDGED",
@@ -4209,7 +5051,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-033",
+  "id": "kyf-014fsb2",
   "category": "kyf",
   "prompt": "What was {S}'s first concert?",
   "type": "SUBJECT_JUDGED",
@@ -4217,7 +5059,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-034",
+  "id": "kyf-13nizoj",
   "category": "kyf",
   "prompt": "What is {S}'s comfort movie?",
   "type": "SUBJECT_JUDGED",
@@ -4225,7 +5067,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-035",
+  "id": "kyf-1so27qo",
   "category": "kyf",
   "prompt": "What is {S}'s worst habit?",
   "type": "SUBJECT_JUDGED",
@@ -4233,7 +5075,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-036",
+  "id": "kyf-0hjehuj",
   "category": "kyf",
   "prompt": "Which app does {S} use the most?",
   "type": "SUBJECT_JUDGED",
@@ -4241,7 +5083,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-037",
+  "id": "kyf-18oxmsk",
   "category": "kyf",
   "prompt": "What is {S}'s dream car?",
   "type": "SUBJECT_JUDGED",
@@ -4249,7 +5091,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-038",
+  "id": "kyf-1t7vjd4",
   "category": "kyf",
   "prompt": "Which country would {S} move to tomorrow if they could?",
   "type": "SUBJECT_JUDGED",
@@ -4257,7 +5099,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-039",
+  "id": "kyf-0yv63uu",
   "category": "kyf",
   "prompt": "What's {S}'s go-to excuse for being late?",
   "type": "SUBJECT_JUDGED",
@@ -4265,7 +5107,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-040",
+  "id": "kyf-0ccu89z",
   "category": "kyf",
   "prompt": "Who in this room has {S} known the longest?",
   "type": "SUBJECT_JUDGED",
@@ -4273,7 +5115,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-041",
+  "id": "kyf-0l4fhyq",
   "category": "kyf",
   "prompt": "What is {S}'s favorite song right now?",
   "type": "SUBJECT_JUDGED",
@@ -4281,7 +5123,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-042",
+  "id": "kyf-0jhtwt4",
   "category": "kyf",
   "prompt": "What is {S}'s star sign?",
   "type": "SUBJECT_JUDGED",
@@ -4289,7 +5131,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-043",
+  "id": "kyf-1kpmk5a",
   "category": "kyf",
   "prompt": "What did {S} want to be when they grew up?",
   "type": "SUBJECT_JUDGED",
@@ -4297,7 +5139,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-044",
+  "id": "kyf-1x0z6bh",
   "category": "kyf",
   "prompt": "What is {S}'s most irrational fear?",
   "type": "SUBJECT_JUDGED",
@@ -4305,7 +5147,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-045",
+  "id": "kyf-0sjczol",
   "category": "kyf",
   "prompt": "What's the worst job {S} has ever had?",
   "type": "SUBJECT_JUDGED",
@@ -4313,7 +5155,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-046",
+  "id": "kyf-0k6nd2r",
   "category": "kyf",
   "prompt": "Which celebrity does {S} get told they look like?",
   "type": "SUBJECT_JUDGED",
@@ -4321,7 +5163,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-047",
+  "id": "kyf-0oj30tv",
   "category": "kyf",
   "prompt": "What is {S}'s favorite cereal?",
   "type": "SUBJECT_JUDGED",
@@ -4329,7 +5171,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-048",
+  "id": "kyf-117607j",
   "category": "kyf",
   "prompt": "What's {S}'s go-to dance move?",
   "type": "SUBJECT_JUDGED",
@@ -4337,7 +5179,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-049",
+  "id": "kyf-1lpdgba",
   "category": "kyf",
   "prompt": "What was {S}'s first pet's name (or what pet do they want)?",
   "type": "SUBJECT_JUDGED",
@@ -4345,7 +5187,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-050",
+  "id": "kyf-0xucxpr",
   "category": "kyf",
   "prompt": "What is {S}'s favorite holiday?",
   "type": "SUBJECT_JUDGED",
@@ -4353,7 +5195,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-051",
+  "id": "kyf-0msv03p",
   "category": "kyf",
   "prompt": "What subject was {S} worst at in school?",
   "type": "SUBJECT_JUDGED",
@@ -4361,7 +5203,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-052",
+  "id": "kyf-106ttxf",
   "category": "kyf",
   "prompt": "What's {S}'s most-watched TV show of all time?",
   "type": "SUBJECT_JUDGED",
@@ -4369,7 +5211,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-053",
+  "id": "kyf-0wj0kde",
   "category": "kyf",
   "prompt": "What's {S}'s go-to snack at 2am?",
   "type": "SUBJECT_JUDGED",
@@ -4377,7 +5219,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-054",
+  "id": "kyf-1s3nap0",
   "category": "kyf",
   "prompt": "Which fictional character is {S} most like?",
   "type": "SUBJECT_JUDGED",
@@ -4385,7 +5227,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-055",
+  "id": "kyf-1p6unlr",
   "category": "kyf",
   "prompt": "What's the most expensive thing {S} has ever bought?",
   "type": "SUBJECT_JUDGED",
@@ -4393,7 +5235,7 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-056",
+  "id": "kyf-0h99ibg",
   "category": "kyf",
   "prompt": "What would {S}'s last meal be?",
   "type": "SUBJECT_JUDGED",
@@ -4401,7 +5243,175 @@ export const BANK: Question[] = [
   "closest": false
  },
  {
-  "id": "kyf-057",
+  "id": "kyf-11z1n7o",
+  "category": "kyf",
+  "prompt": "What is the last song {S} listened to? (Check their phone!)",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-0lwvo3n",
+  "category": "kyf",
+  "prompt": "What did {S} eat for breakfast today?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-0aumhcy",
+  "category": "kyf",
+  "prompt": "What is on {S}'s phone lock screen? (Check it!)",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-1j1atqn",
+  "category": "kyf",
+  "prompt": "Who did {S} text most recently? (Check it!)",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-0gmgpro",
+  "category": "kyf",
+  "prompt": "What was {S}'s top artist on their last Spotify Wrapped (or most-played artist)?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-1hea1rd",
+  "category": "kyf",
+  "prompt": "What would {S} name a pet goldfish?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-0g5r6m4",
+  "category": "kyf",
+  "prompt": "If {S} could only eat one cuisine forever, which would it be?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-1kxka0z",
+  "category": "kyf",
+  "prompt": "What is the strangest food combination {S} actually likes?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-0nzd8kl",
+  "category": "kyf",
+  "prompt": "What does {S} do first when they're bored?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-0qh9kwg",
+  "category": "kyf",
+  "prompt": "Which superpower would {S} pick?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-0w53nsm",
+  "category": "kyf",
+  "prompt": "Which reality TV show would {S} go on (and think they'd win)?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-1i75ncn",
+  "category": "kyf",
+  "prompt": "What is {S}'s most-used word or catchphrase?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-1bovaz0",
+  "category": "kyf",
+  "prompt": "What was {S}'s first username or email address (roughly)?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": false
+ },
+ {
+  "id": "kyf-1o26cbd",
+  "category": "kyf",
+  "prompt": "What is {S}’s phone battery % right now?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-1eagm9a",
+  "category": "kyf",
+  "prompt": "How many unread texts does {S} have?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-12wraeq",
+  "category": "kyf",
+  "prompt": "How many hours of screen time did {S} have yesterday?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-1le8j6u",
+  "category": "kyf",
+  "prompt": "How many countries has {S} visited?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-075y1j9",
+  "category": "kyf",
+  "prompt": "What is {S}’s shoe size?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-0re81oa",
+  "category": "kyf",
+  "prompt": "How many photos are in {S}’s camera roll?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-1jac1uj",
+  "category": "kyf",
+  "prompt": "How many hours did {S} sleep last night?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-0dhu3pn",
+  "category": "kyf",
+  "prompt": "How many pairs of shoes does {S} own?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-1mepoae",
   "category": "kyf",
   "prompt": "How many siblings does {S} have (including step/half)?",
   "type": "SUBJECT_JUDGED",
@@ -4409,7 +5419,7 @@ export const BANK: Question[] = [
   "closest": true
  },
  {
-  "id": "kyf-058",
+  "id": "kyf-055v3yl",
   "category": "kyf",
   "prompt": "What's the most hours {S} has ever slept in one go?",
   "type": "SUBJECT_JUDGED",
@@ -4417,7 +5427,7 @@ export const BANK: Question[] = [
   "closest": true
  },
  {
-  "id": "kyf-059",
+  "id": "kyf-053z851",
   "category": "kyf",
   "prompt": "How many apps are on {S}'s phone?",
   "type": "SUBJECT_JUDGED",
@@ -4425,7 +5435,7 @@ export const BANK: Question[] = [
   "closest": true
  },
  {
-  "id": "kyf-060",
+  "id": "kyf-1ol35dy",
   "category": "kyf",
   "prompt": "How many tabs does {S} have open on their phone right now?",
   "type": "SUBJECT_JUDGED",
@@ -4433,7 +5443,7 @@ export const BANK: Question[] = [
   "closest": true
  },
  {
-  "id": "kyf-061",
+  "id": "kyf-0d6he4d",
   "category": "kyf",
   "prompt": "How many times has {S} moved house?",
   "type": "SUBJECT_JUDGED",
@@ -4441,7 +5451,7 @@ export const BANK: Question[] = [
   "closest": true
  },
  {
-  "id": "kyf-062",
+  "id": "kyf-02alkwm",
   "category": "kyf",
   "prompt": "How old was {S} when they had their first kiss?",
   "type": "SUBJECT_JUDGED",
@@ -4449,7 +5459,7 @@ export const BANK: Question[] = [
   "closest": true
  },
  {
-  "id": "kyf-063",
+  "id": "kyf-1m8w290",
   "category": "kyf",
   "prompt": "How many countries does {S} want to visit before 40?",
   "type": "SUBJECT_JUDGED",
@@ -4457,7 +5467,7 @@ export const BANK: Question[] = [
   "closest": true
  },
  {
-  "id": "kyf-064",
+  "id": "kyf-0zkqscm",
   "category": "kyf",
   "prompt": "How many cups of coffee does {S} drink a day?",
   "type": "SUBJECT_JUDGED",
@@ -4465,7 +5475,39 @@ export const BANK: Question[] = [
   "closest": true
  },
  {
-  "id": "kyf-065",
+  "id": "kyf-0rkkbel",
+  "category": "kyf",
+  "prompt": "How many alarms does {S} have set on their phone? (Check it!)",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-1w1zc6c",
+  "category": "kyf",
+  "prompt": "How many unread emails does {S} have? (Check it!)",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-1uqid6t",
+  "category": "kyf",
+  "prompt": "At what hour did {S} wake up today?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-1i9p0q9",
+  "category": "kyf",
+  "prompt": "How many contacts are saved in {S}'s phone?",
+  "type": "SUBJECT_JUDGED",
+  "difficulty": "M",
+  "closest": true
+ },
+ {
+  "id": "kyf-0ktn988",
   "category": "kyf",
   "prompt": "Truth or Dare: the room picks a truth or a dare for each challenger. Best effort wins — the room votes.",
   "type": "HOST_JUDGED",
@@ -4473,7 +5515,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-066",
+  "id": "kyf-0hwsl63",
   "category": "kyf",
   "prompt": "Truth or Dare (dare edition): everyone else agrees on ONE dare for both challengers. Whoever does it better wins.",
   "type": "HOST_JUDGED",
@@ -4481,7 +5523,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-067",
+  "id": "kyf-0niovox",
   "category": "kyf",
   "prompt": "Hot Seat: the room fires questions at each challenger for 30 seconds. Most entertaining answers win.",
   "type": "HOST_JUDGED",
@@ -4489,7 +5531,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-068",
+  "id": "kyf-1fmi6vg",
   "category": "kyf",
   "prompt": "Two Truths and a Lie: each challenger tells two truths and one lie. Whoever fools more of the room wins.",
   "type": "HOST_JUDGED",
@@ -4497,7 +5539,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-069",
+  "id": "kyf-1gr25qy",
   "category": "kyf",
   "prompt": "Would You Rather: the room makes up a tough \"would you rather\" — both answer and defend it. Best argument wins.",
   "type": "HOST_JUDGED",
@@ -4505,7 +5547,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-070",
+  "id": "kyf-0ay4kw7",
   "category": "kyf",
   "prompt": "Impressions: the room names someone everyone knows — both do an impression. The room votes.",
   "type": "HOST_JUDGED",
@@ -4513,7 +5555,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-071",
+  "id": "kyf-1g2vb8f",
   "category": "kyf",
   "prompt": "Charades: the room whispers a movie to each challenger. Whoever gets the room to guess it faster wins.",
   "type": "HOST_JUDGED",
@@ -4521,7 +5563,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-072",
+  "id": "kyf-171nfyi",
   "category": "kyf",
   "prompt": "Roast battle: 30 seconds each to (lovingly) roast the other. The room votes.",
   "type": "HOST_JUDGED",
@@ -4529,7 +5571,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-073",
+  "id": "kyf-0jrflkf",
   "category": "kyf",
   "prompt": "Pitch it: the room picks a ridiculous product — each challenger has 20 seconds to sell it. Best pitch wins.",
   "type": "HOST_JUDGED",
@@ -4537,7 +5579,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-074",
+  "id": "kyf-0e218my",
   "category": "kyf",
   "prompt": "Story time: the room gives three random words — each challenger tells a 30-second story using all three.",
   "type": "HOST_JUDGED",
@@ -4545,7 +5587,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-075",
+  "id": "kyf-0xmcoj5",
   "category": "kyf",
   "prompt": "Lip sync battle: the room picks a song for each challenger. Best performance wins.",
   "type": "HOST_JUDGED",
@@ -4553,7 +5595,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-076",
+  "id": "kyf-1tepoad",
   "category": "kyf",
   "prompt": "Who knows who? The room picks a player — each challenger says 3 facts about them. Most correct wins.",
   "type": "HOST_JUDGED",
@@ -4561,7 +5603,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-077",
+  "id": "kyf-0hqo6us",
   "category": "kyf",
   "prompt": "Never Have I Ever: the room writes 5 statements — whoever has done FEWER of them wins.",
   "type": "HOST_JUDGED",
@@ -4569,7 +5611,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-078",
+  "id": "kyf-0cgss97",
   "category": "kyf",
   "prompt": "Desert island: the room names 3 items — each challenger explains how they'd survive with them. Best plan wins.",
   "type": "HOST_JUDGED",
@@ -4577,7 +5619,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-079",
+  "id": "kyf-1wlaf0h",
   "category": "kyf",
   "prompt": "Interview: the room plays a job interviewer for a silly job they choose. Most hireable challenger wins.",
   "type": "HOST_JUDGED",
@@ -4585,7 +5627,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-080",
+  "id": "kyf-1p10kfm",
   "category": "kyf",
   "prompt": "Truth or Dare (truth edition): the room asks each challenger one juicy question. Most honest answer wins; refusing = loss.",
   "type": "HOST_JUDGED",
@@ -4593,7 +5635,7 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "kyf-081",
+  "id": "kyf-0jqrokj",
   "category": "kyf",
   "prompt": "Accent swap: the room picks an accent for each challenger — they must tell a story in it. The room votes.",
   "type": "HOST_JUDGED",
@@ -4601,84 +5643,44 @@ export const BANK: Question[] = [
   "repeatable": true
  },
  {
-  "id": "party-001",
-  "category": "party",
-  "prompt": "Who can take a sip of something sour (lemon juice, pickle juice or any drink) with less of a reaction?",
+  "id": "kyf-0cvjmoo",
+  "category": "kyf",
+  "prompt": "Who said it? The room quotes something one person here says all the time. First challenger to name who it is wins.",
   "type": "HOST_JUDGED",
-  "difficulty": "M"
+  "difficulty": "M",
+  "repeatable": true
  },
  {
-  "id": "party-002",
+  "id": "kyf-0xsi80f",
+  "category": "kyf",
+  "prompt": "Emoji week: each challenger sums up their week in exactly 3 emojis and explains them. The room picks the best.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M",
+  "repeatable": true
+ },
+ {
+  "id": "party-0nb3bqe",
   "category": "party",
   "prompt": "Who can take a sip with the straightest face while the room tries to make them laugh?",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "party-003",
-  "category": "party",
-  "prompt": "Flip cup — first to flip their cup upright wins!",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "party-004",
-  "category": "party",
-  "prompt": "Bounce a coin into a cup — first to land it wins!",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "party-005",
-  "category": "party",
-  "prompt": "Who can balance their drink on the back of their hand the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "party-006",
-  "category": "party",
-  "prompt": "Who can hold their drink at arm’s length the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "party-007",
-  "category": "party",
-  "prompt": "Name beer brands.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "party-008",
-  "category": "party",
-  "prompt": "Name cocktails.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "party-009",
+  "id": "party-1ae99dp",
   "category": "party",
   "prompt": "Pour exactly half a glass — the room judges who’s closer.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "party-010",
+  "id": "party-1h7lffv",
   "category": "party",
   "prompt": "Give the best 20-second toast — the room picks the winner.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "party-011",
-  "category": "party",
-  "prompt": "One beer-pong shot each — closest to sinking it wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "party-012",
+  "id": "party-1vm12jn",
   "category": "party",
   "prompt": "Which country does tequila come from?",
   "type": "SPOKEN_EXACT",
@@ -4686,7 +5688,193 @@ export const BANK: Question[] = [
   "answer": "Mexico"
  },
  {
-  "id": "party-013",
+  "id": "party-0wp628g",
+  "category": "party",
+  "prompt": "Name things you can find in a bar.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-1snnndw",
+  "category": "party",
+  "prompt": "Which country does Guinness come from?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Ireland"
+ },
+ {
+  "id": "party-0jx6s8a",
+  "category": "party",
+  "prompt": "Best impression of the most tipsy person you know — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-1rz2afj",
+  "category": "party",
+  "prompt": "Most convincing “I’m totally sober” speech — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-18gi7je",
+  "category": "party",
+  "prompt": "Keep a straight face while the room tells terrible jokes — first to laugh loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-0rjwoo8",
+  "category": "party",
+  "prompt": "Best drinking toast that rhymes — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-1yvwkqu",
+  "category": "party",
+  "prompt": "Who can do the best impression of a bartender taking an order? The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-17l27hk",
+  "category": "party",
+  "prompt": "Best dance move with a drink in hand (no spilling!) — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-03a4owc",
+  "category": "party",
+  "prompt": "Cheers in the most languages — take turns, first to run out loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-0xtwxd1",
+  "category": "party",
+  "prompt": "Best karaoke chorus of a song the room picks — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-1tsa2o6",
+  "category": "party",
+  "prompt": "Most dramatic slow-motion \"cheers\" — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-1ksvk0y",
+  "category": "party",
+  "prompt": "Best bar-fight-style trash talk (all friendly!) in 15 seconds — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-0b6fxkt",
+  "category": "party",
+  "prompt": "Name famous party songs.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-1cm0bn2",
+  "category": "party",
+  "prompt": "Which drink is traditionally popped at midnight on New Year's Eve?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Champagne (or sparkling wine)"
+ },
+ {
+  "id": "party-04p72lg",
+  "category": "party",
+  "prompt": "Which fruit is traditionally pushed into the neck of a Corona bottle?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "A lime"
+ },
+ {
+  "id": "party-0o5bl0y",
+  "category": "party",
+  "prompt": "Which German festival is world-famous for beer?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "E",
+  "answer": "Oktoberfest"
+ },
+ {
+  "id": "party-1jofe6u",
+  "category": "party",
+  "prompt": "Cheers freeze: hold your goofiest \"cheers\" pose and face for 10 seconds. First to laugh loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-0h8ksfs",
+  "category": "party",
+  "prompt": "Hold an ice cube in your open palm. First to drop it loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-0ovcn3n",
+  "category": "party",
+  "prompt": "Name things you'd bring to a party.",
+  "type": "TURN_BASED",
+  "difficulty": "E"
+ },
+ {
+  "id": "party-03ctgzf",
+  "category": "party",
+  "prompt": "Who can take a sip of something sour (lemon juice, pickle juice or any drink) with less of a reaction?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-0fo2rx7",
+  "category": "party",
+  "prompt": "Flip cup — first to flip their cup upright wins!",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-0p2tjxi",
+  "category": "party",
+  "prompt": "Who can balance their drink on the back of their hand the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-19hz679",
+  "category": "party",
+  "prompt": "Who can hold their drink at arm’s length the longest?",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-118k1u0",
+  "category": "party",
+  "prompt": "Name beer brands.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-1r7ekll",
+  "category": "party",
+  "prompt": "Name cocktails.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-1mo44g8",
+  "category": "party",
+  "prompt": "One beer-pong shot each — closest to sinking it wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-01nlqju",
   "category": "party",
   "prompt": "What is the typical alcohol % of wine?",
   "type": "SPOKEN_CLOSEST",
@@ -4695,56 +5883,35 @@ export const BANK: Question[] = [
   "numericAnswer": 12
  },
  {
-  "id": "party-014",
+  "id": "party-0p58dc7",
   "category": "party",
   "prompt": "Never Have I Ever face-off: take turns making statements — first to have done 3 loses.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-015",
+  "id": "party-145rvwm",
   "category": "party",
   "prompt": "Who can stack empty cups or cans the highest in 30 seconds?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-016",
-  "category": "party",
-  "prompt": "Hold a mouthful of your drink while the room tries to crack you — first to laugh loses.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "party-017",
+  "id": "party-1b7nire",
   "category": "party",
   "prompt": "Who can balance a coaster on their forehead the longest?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-018",
-  "category": "party",
-  "prompt": "Coaster flip: flick a coaster off the table edge and catch it — most in a row wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "party-019",
+  "id": "party-1i9k8uj",
   "category": "party",
   "prompt": "Name drinking games.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
  {
-  "id": "party-020",
-  "category": "party",
-  "prompt": "Name things you can find in a bar.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
- },
- {
-  "id": "party-021",
+  "id": "party-1qqb2pa",
   "category": "party",
   "prompt": "What is the typical alcohol % of vodka?",
   "type": "SPOKEN_CLOSEST",
@@ -4753,23 +5920,7 @@ export const BANK: Question[] = [
   "numericAnswer": 40
  },
  {
-  "id": "party-022",
-  "category": "party",
-  "prompt": "Which grain is Scotch whisky mostly made from?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Barley"
- },
- {
-  "id": "party-023",
-  "category": "party",
-  "prompt": "Which country does Guinness come from?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "E",
-  "answer": "Ireland"
- },
- {
-  "id": "party-024",
+  "id": "party-0upkqw4",
   "category": "party",
   "prompt": "What is the main ingredient in sake?",
   "type": "SPOKEN_EXACT",
@@ -4777,268 +5928,147 @@ export const BANK: Question[] = [
   "answer": "Rice"
  },
  {
-  "id": "party-025",
-  "category": "party",
-  "prompt": "How many bottles of champagne fit in a giant “Nebuchadnezzar” bottle?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "20",
-  "numericAnswer": 20
- },
- {
-  "id": "party-026",
-  "category": "party",
-  "prompt": "Best impression of the most tipsy person you know — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-027",
-  "category": "party",
-  "prompt": "Most convincing “I’m totally sober” speech — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-028",
+  "id": "party-15db1mn",
   "category": "party",
   "prompt": "Blind taste test: eyes closed, the room hands you a drink — first to name it wins.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-029",
+  "id": "party-08ozbd3",
   "category": "party",
   "prompt": "Flick a bottle cap into a cup from across the table — most in 5 tries wins.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-030",
+  "id": "party-1xlov2n",
   "category": "party",
   "prompt": "Tell a story where every sentence includes the word “cheers” — first to stall loses.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-031",
-  "category": "party",
-  "prompt": "Keep a straight face while the room tells terrible jokes — first to laugh loses.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-032",
+  "id": "party-0pwrb2w",
   "category": "party",
   "prompt": "Who can balance a full cup on their head the longest?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-033",
-  "category": "party",
-  "prompt": "Best drinking toast that rhymes — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-034",
+  "id": "party-0pmc2jg",
   "category": "party",
   "prompt": "Who can say \"Toy boat\" 5 times fast after a sip of their drink?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-035",
+  "id": "party-0nf9bgq",
   "category": "party",
   "prompt": "Rock, Paper, Scissors, best of 5 — the loser of each throw takes a sip.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-036",
-  "category": "party",
-  "prompt": "Quarters: bounce a coin into a glass — first to land 2 wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "party-037",
-  "category": "party",
-  "prompt": "Who can do the best impression of a bartender taking an order? The room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-038",
+  "id": "party-1swvp8n",
   "category": "party",
   "prompt": "Who can hold a drink on their head while sitting down and standing up 3 times?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-039",
+  "id": "party-1ai9bg6",
   "category": "party",
   "prompt": "Name that tune: the room hums a song — first to name it wins.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-040",
-  "category": "party",
-  "prompt": "Best dance move with a drink in hand (no spilling!) — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-041",
+  "id": "party-1frq02q",
   "category": "party",
   "prompt": "Who can guess the exact number of sips left in the other's drink? Closest guess wins.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-042",
-  "category": "party",
-  "prompt": "Blindfolded pour: pour a drink to the halfway line with eyes closed. Closest wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "party-043",
+  "id": "party-02kgd2w",
   "category": "party",
   "prompt": "Who can tell the best \"this one time at a party…\" story in 30 seconds? The room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-044",
-  "category": "party",
-  "prompt": "Cheers in the most languages — take turns, first to run out loses.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-045",
+  "id": "party-1clgoh3",
   "category": "party",
   "prompt": "Who can hold a coaster flat on an outstretched palm while spinning around 3 times?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-046",
+  "id": "party-1eu3nfy",
   "category": "party",
   "prompt": "Who can hold their drink with just their pinky and thumb the longest?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-047",
-  "category": "party",
-  "prompt": "Best karaoke chorus of a song the room picks — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-048",
+  "id": "party-0t4ecjy",
   "category": "party",
   "prompt": "Straight face: the room tries to make you laugh while you sip slowly. First to laugh loses.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-049",
-  "category": "party",
-  "prompt": "Who can stack the most coasters on their elbow and catch them?",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "party-050",
+  "id": "party-0cp3mur",
   "category": "party",
   "prompt": "Guess the drink: the room makes a mystery mix — first to name 2 ingredients wins.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-051",
-  "category": "party",
-  "prompt": "Most dramatic slow-motion \"cheers\" — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-052",
+  "id": "party-10k8vqz",
   "category": "party",
   "prompt": "Who can keep a bottle cap on their nose the longest?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-053",
+  "id": "party-07qor6n",
   "category": "party",
   "prompt": "Speed spelling: spell a cocktail name the room picks, backwards. Fastest correct wins.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-054",
-  "category": "party",
-  "prompt": "Best bar-fight-style trash talk (all friendly!) in 15 seconds — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "E"
- },
- {
-  "id": "party-055",
+  "id": "party-0wc7w3q",
   "category": "party",
   "prompt": "Who can flip a coaster and catch it the most times in 20 seconds?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "party-056",
-  "category": "party",
-  "prompt": "Bottle spin: spin a bottle — whoever gets it to point at a player the room picked wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "party-057",
+  "id": "party-0z1t8a4",
   "category": "party",
   "prompt": "Name cocktails with fruit in them.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
  {
-  "id": "party-058",
-  "category": "party",
-  "prompt": "Name famous party songs.",
-  "type": "TURN_BASED",
-  "difficulty": "E"
- },
- {
-  "id": "party-059",
+  "id": "party-19bwp7a",
   "category": "party",
   "prompt": "Name things people say when they're tipsy.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
  {
-  "id": "party-060",
-  "category": "party",
-  "prompt": "Name brands of whisky, vodka, gin or rum.",
-  "type": "TURN_BASED",
-  "difficulty": "H"
- },
- {
-  "id": "party-061",
+  "id": "party-1tp209u",
   "category": "party",
   "prompt": "Name drinking songs or chants.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
  {
-  "id": "party-062",
+  "id": "party-1a520d0",
   "category": "party",
   "prompt": "What spirit is the main ingredient in a Mojito?",
   "type": "SPOKEN_EXACT",
@@ -5046,7 +6076,7 @@ export const BANK: Question[] = [
   "answer": "Rum"
  },
  {
-  "id": "party-063",
+  "id": "party-1nnlhar",
   "category": "party",
   "prompt": "What is the main spirit in a Margarita?",
   "type": "SPOKEN_EXACT",
@@ -5054,15 +6084,7 @@ export const BANK: Question[] = [
   "answer": "Tequila"
  },
  {
-  "id": "party-064",
-  "category": "party",
-  "prompt": "What is the main spirit in a Negroni (besides vermouth and Campari)?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Gin"
- },
- {
-  "id": "party-065",
+  "id": "party-111rgbp",
   "category": "party",
   "prompt": "Which country is famous for Champagne?",
   "type": "SPOKEN_EXACT",
@@ -5070,15 +6092,7 @@ export const BANK: Question[] = [
   "answer": "France"
  },
  {
-  "id": "party-066",
-  "category": "party",
-  "prompt": "What fruit is used to make Calvados?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Apples"
- },
- {
-  "id": "party-067",
+  "id": "party-0zpnup8",
   "category": "party",
   "prompt": "Which beer is famously brewed at St. James's Gate in Dublin?",
   "type": "SPOKEN_EXACT",
@@ -5086,15 +6100,7 @@ export const BANK: Question[] = [
   "answer": "Guinness"
  },
  {
-  "id": "party-068",
-  "category": "party",
-  "prompt": "What plant is tequila made from?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "Blue agave"
- },
- {
-  "id": "party-069",
+  "id": "party-1vmrx9h",
   "category": "party",
   "prompt": "Which drink is made by mixing beer and lemonade?",
   "type": "SPOKEN_EXACT",
@@ -5102,15 +6108,7 @@ export const BANK: Question[] = [
   "answer": "A shandy"
  },
  {
-  "id": "party-070",
-  "category": "party",
-  "prompt": "What does IPA stand for in beer?",
-  "type": "SPOKEN_EXACT",
-  "difficulty": "H",
-  "answer": "India Pale Ale"
- },
- {
-  "id": "party-071",
+  "id": "party-00bm1nl",
   "category": "party",
   "prompt": "Which Italian drink is made with Aperol, prosecco and soda?",
   "type": "SPOKEN_EXACT",
@@ -5118,7 +6116,7 @@ export const BANK: Question[] = [
   "answer": "An Aperol Spritz"
  },
  {
-  "id": "party-072",
+  "id": "party-06zo9h5",
   "category": "party",
   "prompt": "How many standard drinks are in a bottle of wine?",
   "type": "SPOKEN_CLOSEST",
@@ -5127,25 +6125,7 @@ export const BANK: Question[] = [
   "numericAnswer": 5
  },
  {
-  "id": "party-073",
-  "category": "party",
-  "prompt": "What is the alcohol % of most beers?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 5%",
-  "numericAnswer": 5
- },
- {
-  "id": "party-074",
-  "category": "party",
-  "prompt": "How many bubbles are in a bottle of champagne (millions)?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 49 million (estimate)",
-  "numericAnswer": 49
- },
- {
-  "id": "party-075",
+  "id": "party-1wk3wzu",
   "category": "party",
   "prompt": "How many shots are in a standard 750 ml bottle?",
   "type": "SPOKEN_CLOSEST",
@@ -5154,16 +6134,7 @@ export const BANK: Question[] = [
   "numericAnswer": 17
  },
  {
-  "id": "party-076",
-  "category": "party",
-  "prompt": "How many pounds of grapes does it take to make one bottle of wine?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 2.5–3 pounds",
-  "numericAnswer": 2.75
- },
- {
-  "id": "party-077",
+  "id": "party-0a8gli8",
   "category": "party",
   "prompt": "What is the legal drinking age in the USA?",
   "type": "SPOKEN_CLOSEST",
@@ -5172,25 +6143,7 @@ export const BANK: Question[] = [
   "numericAnswer": 21
  },
  {
-  "id": "party-078",
-  "category": "party",
-  "prompt": "How many beers does the average German drink per year?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 90–100 liters (~190 pints)",
-  "numericAnswer": 190
- },
- {
-  "id": "party-079",
-  "category": "party",
-  "prompt": "How old is the oldest known beer recipe, in years?",
-  "type": "SPOKEN_CLOSEST",
-  "difficulty": "H",
-  "answer": "About 3,800+ years (Sumerian Hymn to Ninkasi)",
-  "numericAnswer": 3800
- },
- {
-  "id": "party-080",
+  "id": "party-1pmr55w",
   "category": "party",
   "prompt": "How many ounces are in a standard shot (US)?",
   "type": "SPOKEN_CLOSEST",
@@ -5199,7 +6152,226 @@ export const BANK: Question[] = [
   "numericAnswer": 1.5
  },
  {
-  "id": "party-081",
+  "id": "party-047h1t8",
+  "category": "party",
+  "prompt": "Bottle-cap shuffleboard: flick a cap along the table. Closest to the edge without falling off wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-08kkivk",
+  "category": "party",
+  "prompt": "Using only a straw, move 5 small scraps of paper from one cup to another. First to finish wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-0pvs95m",
+  "category": "party",
+  "prompt": "Bartender pitch: invent a cocktail from things in the room and sell it to the host in 20 seconds. The host picks.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-0fqlivo",
+  "category": "party",
+  "prompt": "Describe a famous drink without saying its name. Whoever the room guesses first wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-07z87n5",
+  "category": "party",
+  "prompt": "Name words that rhyme with \"beer\".",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "party-02w9phe",
+  "category": "party",
+  "prompt": "Which country does Prosecco come from?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Italy"
+ },
+ {
+  "id": "party-1bhj1uh",
+  "category": "party",
+  "prompt": "What is the main spirit in a Cosmopolitan?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "M",
+  "answer": "Vodka"
+ },
+ {
+  "id": "party-1lmeemt",
+  "category": "party",
+  "prompt": "How many cups does each side usually start with in beer pong?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "10",
+  "numericAnswer": 10
+ },
+ {
+  "id": "party-0ejltjg",
+  "category": "party",
+  "prompt": "What is the legal age to buy alcohol in the UK?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "M",
+  "answer": "18",
+  "numericAnswer": 18
+ },
+ {
+  "id": "party-06sqtcz",
+  "category": "party",
+  "prompt": "Bounce a coin into a cup — first to land it wins!",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "party-06ol5er",
+  "category": "party",
+  "prompt": "Hold a mouthful of your drink while the room tries to crack you — first to laugh loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "party-16gueao",
+  "category": "party",
+  "prompt": "Coaster flip: flick a coaster off the table edge and catch it — most in a row wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "party-1aw3gqi",
+  "category": "party",
+  "prompt": "Which grain is Scotch whisky mostly made from?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Barley"
+ },
+ {
+  "id": "party-0vs7txa",
+  "category": "party",
+  "prompt": "How many bottles of champagne fit in a giant “Nebuchadnezzar” bottle?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "20",
+  "numericAnswer": 20
+ },
+ {
+  "id": "party-1p4j99e",
+  "category": "party",
+  "prompt": "Quarters: bounce a coin into a glass — first to land 2 wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "party-1qhcwt9",
+  "category": "party",
+  "prompt": "Blindfolded pour: pour a drink to the halfway line with eyes closed. Closest wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "party-0zwxdio",
+  "category": "party",
+  "prompt": "Who can stack the most coasters on their elbow and catch them?",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "party-1ocm6lx",
+  "category": "party",
+  "prompt": "Bottle spin: spin a bottle — whoever gets it to point at a player the room picked wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "party-0mnfpw4",
+  "category": "party",
+  "prompt": "Name brands of whisky, vodka, gin or rum.",
+  "type": "TURN_BASED",
+  "difficulty": "H"
+ },
+ {
+  "id": "party-0mzrjt5",
+  "category": "party",
+  "prompt": "What is the main spirit in a Negroni (besides vermouth and Campari)?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Gin"
+ },
+ {
+  "id": "party-1wvndpv",
+  "category": "party",
+  "prompt": "What fruit is used to make Calvados?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Apples"
+ },
+ {
+  "id": "party-0efxcm3",
+  "category": "party",
+  "prompt": "What plant is tequila made from?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Blue agave"
+ },
+ {
+  "id": "party-19l3iq1",
+  "category": "party",
+  "prompt": "What does IPA stand for in beer?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "India Pale Ale"
+ },
+ {
+  "id": "party-1df1akd",
+  "category": "party",
+  "prompt": "What is the alcohol % of most beers?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 5%",
+  "numericAnswer": 5
+ },
+ {
+  "id": "party-0xl3t1d",
+  "category": "party",
+  "prompt": "How many bubbles are in a bottle of champagne (millions)?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 49 million (estimate)",
+  "numericAnswer": 49
+ },
+ {
+  "id": "party-0hateuj",
+  "category": "party",
+  "prompt": "How many pounds of grapes does it take to make one bottle of wine?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 2.5–3 pounds",
+  "numericAnswer": 2.75
+ },
+ {
+  "id": "party-01g56wx",
+  "category": "party",
+  "prompt": "How many beers does the average German drink per year?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 90–100 liters (~190 pints)",
+  "numericAnswer": 190
+ },
+ {
+  "id": "party-15bchpx",
+  "category": "party",
+  "prompt": "How old is the oldest known beer recipe, in years?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "About 3,800+ years (Sumerian Hymn to Ninkasi)",
+  "numericAnswer": 3800
+ },
+ {
+  "id": "party-102rroe",
   "category": "party",
   "prompt": "How many years must Scotch whisky be aged, at minimum?",
   "type": "SPOKEN_CLOSEST",
@@ -5208,570 +6380,735 @@ export const BANK: Question[] = [
   "numericAnswer": 3
  },
  {
-  "id": "spicy-001",
-  "category": "spicy",
-  "prompt": "Best pickup line, delivered to a player the room picks — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
+  "id": "party-1u0z3fu",
+  "category": "party",
+  "prompt": "What is the main spirit in a Moscow Mule?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Vodka"
  },
  {
-  "id": "spicy-002",
-  "category": "spicy",
-  "prompt": "Most embarrassing drunk story in 30 seconds — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
+  "id": "party-1hu0380",
+  "category": "party",
+  "prompt": "Which berry gives gin its main flavor?",
+  "type": "SPOKEN_EXACT",
+  "difficulty": "H",
+  "answer": "Juniper"
  },
  {
-  "id": "spicy-003",
-  "category": "spicy",
-  "prompt": "Read your last sent text out loud — funnier one wins. Refusing = drink 3.",
+  "id": "party-1djqehe",
+  "category": "party",
+  "prompt": "In what year did Prohibition end in the USA?",
+  "type": "SPOKEN_CLOSEST",
+  "difficulty": "H",
+  "answer": "1933",
+  "numericAnswer": 1933
+ },
+ {
+  "id": "party-1cys6ow",
+  "category": "party",
+  "prompt": "Steady hand: carry a plastic cup filled to the brim across the room and back. Least spilled wins.",
   "type": "HOST_JUDGED",
   "difficulty": "H"
  },
  {
-  "id": "spicy-004",
-  "category": "spicy",
-  "prompt": "Who has had more relationships? Both reveal — higher number wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-005",
+  "id": "spicy-17q8fc2",
   "category": "spicy",
   "prompt": "Describe your worst date ever in 5 words — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-006",
+  "id": "spicy-0x794p0",
   "category": "spicy",
   "prompt": "Best “smolder” for 5 seconds — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-007",
-  "category": "spicy",
-  "prompt": "Make the other person blush first — compliments only.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-008",
+  "id": "spicy-0c781ib",
   "category": "spicy",
   "prompt": "Most creative excuse for ghosting someone — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-009",
+  "id": "spicy-0o7vrw8",
   "category": "spicy",
   "prompt": "Slow dance with an imaginary partner — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-010",
-  "category": "spicy",
-  "prompt": "Write your dating-app bio on the spot and read it out — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-011",
-  "category": "spicy",
-  "prompt": "Show the 5th most recent photo in your camera roll — more embarrassing one wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-012",
-  "category": "spicy",
-  "prompt": "Truth-off: each answers “What’s the most awkward thing you’ve done on a date?” Refusing = loss.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-013",
-  "category": "spicy",
-  "prompt": "Flirty celebrity impression — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-014",
+  "id": "spicy-1138dby",
   "category": "spicy",
   "prompt": "Cheesiest compliment to a player of the room’s choice — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-015",
+  "id": "spicy-16g6irm",
   "category": "spicy",
   "prompt": "Who is more likely to text an ex tonight? The room votes — the “winner” loses.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-016",
+  "id": "spicy-1yjvfll",
   "category": "spicy",
   "prompt": "Describe your type in 3 words — the room votes for the best description.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-017",
-  "category": "spicy",
-  "prompt": "Most convincing fake marriage proposal to a player the room picks — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-018",
-  "category": "spicy",
-  "prompt": "Rate your own kissing skills out of 10 and defend it for 20 seconds — most convincing wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-019",
+  "id": "spicy-1ec29ql",
   "category": "spicy",
   "prompt": "Serenade the other challenger for 15 seconds — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-020",
+  "id": "spicy-0ke953a",
   "category": "spicy",
   "prompt": "Most dramatic fake breakup speech to the other challenger — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-021",
+  "id": "spicy-0u1b2yf",
   "category": "spicy",
   "prompt": "Read a grocery list in your most seductive voice — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-022",
-  "category": "spicy",
-  "prompt": "Best pickup line using only food puns — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-023",
+  "id": "spicy-19216rs",
   "category": "spicy",
   "prompt": "Describe your celebrity hall pass and defend your choice — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-024",
-  "category": "spicy",
-  "prompt": "Truth-off: “What’s your biggest red flag?” Most honest answer wins. Refusing = loss.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-025",
-  "category": "spicy",
-  "prompt": "Boldest DM you’ve ever sent — best story wins. Refusing = loss.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-026",
-  "category": "spicy",
-  "prompt": "Who’s more likely to have a secret crush in this room? The room votes — the “winner” loses.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-027",
+  "id": "spicy-0seg5wd",
   "category": "spicy",
   "prompt": "Strut your best runway walk across the room — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-028",
-  "category": "spicy",
-  "prompt": "Write the flirtiest text you can in 30 seconds and read it out — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-029",
-  "category": "spicy",
-  "prompt": "Act out your “type” walking into a bar — best performance wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-030",
-  "category": "spicy",
-  "prompt": "Recreate your best first-date opening line on the other challenger — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-031",
-  "category": "spicy",
-  "prompt": "Guess how many exes the other challenger has — closer guess wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-032",
-  "category": "spicy",
-  "prompt": "Name sex positions. Repeat one or stall and you lose.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-033",
-  "category": "spicy",
-  "prompt": "Name places you've actually had sex. No lying — the room can call you out!",
-  "type": "TURN_BASED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-034",
-  "category": "spicy",
-  "prompt": "Name places you'd LIKE to have sex.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-035",
-  "category": "spicy",
-  "prompt": "Name things that turn you on.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-036",
+  "id": "spicy-0bwt3n7",
   "category": "spicy",
   "prompt": "Name dating apps.",
   "type": "TURN_BASED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-037",
-  "category": "spicy",
-  "prompt": "Name sexy songs.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-038",
-  "category": "spicy",
-  "prompt": "Name slang words for sex.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-039",
-  "category": "spicy",
-  "prompt": "Name celebrities you'd sleep with.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-040",
-  "category": "spicy",
-  "prompt": "Name things you'd find in someone's bedside drawer.",
-  "type": "TURN_BASED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-041",
-  "category": "spicy",
-  "prompt": "Name famous sex symbols.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-042",
+  "id": "spicy-06oavtg",
   "category": "spicy",
   "prompt": "Name romantic or steamy movies.",
   "type": "TURN_BASED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-043",
-  "category": "spicy",
-  "prompt": "Name terrible first-date ideas.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-044",
-  "category": "spicy",
-  "prompt": "Name body parts you find attractive.",
-  "type": "TURN_BASED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-045",
-  "category": "spicy",
-  "prompt": "Name red flags on a first date.",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-046",
-  "category": "spicy",
-  "prompt": "Name pickup lines (they must be real lines, not made up on the spot).",
-  "type": "TURN_BASED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-047",
-  "category": "spicy",
-  "prompt": "Who has kissed more people? Both reveal — higher number wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-048",
-  "category": "spicy",
-  "prompt": "Body count face-off: both secretly tell the host — higher number wins. The host only says who won.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-049",
-  "category": "spicy",
-  "prompt": "Describe your last hookup in exactly 3 words — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-050",
-  "category": "spicy",
-  "prompt": "Best moan impression — the room votes. 😳",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-051",
+  "id": "spicy-1ym168d",
   "category": "spicy",
   "prompt": "Most seductive way to eat a banana (or any snack) — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-052",
-  "category": "spicy",
-  "prompt": "Give the other challenger a lap-dance-style dance move for 10 seconds (clothes on!) — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-053",
-  "category": "spicy",
-  "prompt": "Show your most recent DM conversation with a crush — juicier one wins. Refusing = loss.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-054",
-  "category": "spicy",
-  "prompt": "Kiss the back of your own hand like it's your celebrity crush — most passionate wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-055",
-  "category": "spicy",
-  "prompt": "What's the wildest place you've hooked up? Best story wins (refusing = loss).",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-056",
+  "id": "spicy-0hom012",
   "category": "spicy",
   "prompt": "Flirt with an object in the room for 20 seconds — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-057",
-  "category": "spicy",
-  "prompt": "Whisper the dirtiest (but non-explicit) thing you can into the host's ear — the host picks the winner.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-058",
-  "category": "spicy",
-  "prompt": "Truth-off: \"What's your biggest fantasy?\" Most honest answer wins. Refusing = loss.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-059",
-  "category": "spicy",
-  "prompt": "Describe your perfect night in, in 15 seconds — sexiest one wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-060",
-  "category": "spicy",
-  "prompt": "Text your last ex \"hey\" — whoever gets a reply first wins. Refusing = loss.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-061",
+  "id": "spicy-1fau96r",
   "category": "spicy",
   "prompt": "Best striptease… of just ONE sock — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-062",
-  "category": "spicy",
-  "prompt": "Rate everyone in the room's flirting skills out of 10 — most honest (and brave) wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-063",
-  "category": "spicy",
-  "prompt": "Who's done the walk of shame more times? Both reveal — higher wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-064",
-  "category": "spicy",
-  "prompt": "Best \"come to bed\" line in a movie-trailer voice — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-065",
-  "category": "spicy",
-  "prompt": "Most creative way to ask someone in the room on a date — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-066",
+  "id": "spicy-0321im3",
   "category": "spicy",
   "prompt": "Sexiest celebrity impression — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-067",
-  "category": "spicy",
-  "prompt": "Name your top 3 celebrity crushes in 5 seconds — whoever does it fastest wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-068",
-  "category": "spicy",
-  "prompt": "Let the room read your last 3 Google searches. Most embarrassing wins (refusing = loss).",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-069",
-  "category": "spicy",
-  "prompt": "Best impression of someone in the room flirting — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-070",
-  "category": "spicy",
-  "prompt": "Most cringe thing you've ever said during a hookup — best story wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-071",
+  "id": "spicy-1cel5tk",
   "category": "spicy",
   "prompt": "Best air-kiss blown across the room — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-072",
-  "category": "spicy",
-  "prompt": "Who'd be the better one-night stand? Both make their case in 15 seconds — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-073",
-  "category": "spicy",
-  "prompt": "Confess your biggest turn-off — most surprising answer wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-074",
-  "category": "spicy",
-  "prompt": "Hold eye contact with the other challenger as seductively as possible — first to laugh loses.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-075",
-  "category": "spicy",
-  "prompt": "Best sexy dance to a song the room picks, 15 seconds — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-076",
-  "category": "spicy",
-  "prompt": "Rank the other challenger's top 3 most attractive qualities — most flattering wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-077",
-  "category": "spicy",
-  "prompt": "Who's had more one-night stands? Both reveal — higher number wins.",
-  "type": "HOST_JUDGED",
-  "difficulty": "H"
- },
- {
-  "id": "spicy-078",
-  "category": "spicy",
-  "prompt": "Most convincing fake \"I'm into you\" text to someone in the room — the room votes.",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "spicy-079",
+  "id": "spicy-1y4i3k0",
   "category": "spicy",
   "prompt": "Who's the bigger flirt? The room votes — the \"winner\" wins.",
   "type": "HOST_JUDGED",
   "difficulty": "E"
  },
  {
-  "id": "spicy-080",
+  "id": "spicy-0jg5eev",
+  "category": "spicy",
+  "prompt": "Best reaction to \"I just sent that text to the wrong person\". The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "spicy-1axo6bo",
+  "category": "spicy",
+  "prompt": "Wink-off: your most charming wink at the room. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "spicy-10n1lsy",
+  "category": "spicy",
+  "prompt": "Describe your dream date in exactly 10 words. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "spicy-1c71pmc",
+  "category": "spicy",
+  "prompt": "Best first-date small-talk opener, said to the other challenger. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "spicy-03feiu6",
+  "category": "spicy",
+  "prompt": "Say \"good morning\" like it's the first line of a romance movie. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "spicy-0r43jz4",
+  "category": "spicy",
+  "prompt": "Slow-motion entrance: walk into the room like you just spotted your crush. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "E"
+ },
+ {
+  "id": "spicy-01g37n7",
+  "category": "spicy",
+  "prompt": "Best pickup line, delivered to a player the room picks — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1qdemhl",
+  "category": "spicy",
+  "prompt": "Most embarrassing drunk story in 30 seconds — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1sdt0z2",
+  "category": "spicy",
+  "prompt": "Who has had more relationships? Both reveal — higher number wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-04cwi1e",
+  "category": "spicy",
+  "prompt": "Make the other person blush first — compliments only.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1yqrmav",
+  "category": "spicy",
+  "prompt": "Write your dating-app bio on the spot and read it out — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1kgmyds",
+  "category": "spicy",
+  "prompt": "Flirty celebrity impression — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0b6dj8z",
+  "category": "spicy",
+  "prompt": "Most convincing fake marriage proposal to a player the room picks — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0u0voqa",
+  "category": "spicy",
+  "prompt": "Rate your own kissing skills out of 10 and defend it for 20 seconds — most convincing wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0y454um",
+  "category": "spicy",
+  "prompt": "Best pickup line using only food puns — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1il37fy",
+  "category": "spicy",
+  "prompt": "Who’s more likely to have a secret crush in this room? The room votes — the “winner” loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1clfz0d",
+  "category": "spicy",
+  "prompt": "Write the flirtiest text you can in 30 seconds and read it out — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1rtzl0h",
+  "category": "spicy",
+  "prompt": "Act out your “type” walking into a bar — best performance wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-05bk7r0",
+  "category": "spicy",
+  "prompt": "Recreate your best first-date opening line on the other challenger — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0hbnzkp",
+  "category": "spicy",
+  "prompt": "Name sex positions. Repeat one or stall and you lose.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0a6sjjy",
+  "category": "spicy",
+  "prompt": "Name places you'd LIKE to have sex.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-04l0e29",
+  "category": "spicy",
+  "prompt": "Name things that turn you on.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-03k9mqz",
+  "category": "spicy",
+  "prompt": "Name sexy songs.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0yjjkzl",
+  "category": "spicy",
+  "prompt": "Name slang words for sex.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-19jd0se",
+  "category": "spicy",
+  "prompt": "Name celebrities you'd sleep with.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0acsnx0",
+  "category": "spicy",
+  "prompt": "Name famous sex symbols.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1qpmrb8",
+  "category": "spicy",
+  "prompt": "Name terrible first-date ideas.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-08ge4do",
+  "category": "spicy",
+  "prompt": "Name red flags on a first date.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0924hjy",
+  "category": "spicy",
+  "prompt": "Name pickup lines (they must be real lines, not made up on the spot).",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0970144",
+  "category": "spicy",
+  "prompt": "Who has kissed more people? Both reveal — higher number wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1awudtf",
+  "category": "spicy",
+  "prompt": "Describe your last hookup in exactly 3 words — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0o2gt64",
+  "category": "spicy",
+  "prompt": "Best moan impression — the room votes. 😳",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1an7fb3",
+  "category": "spicy",
+  "prompt": "Give the other challenger a lap-dance-style dance move for 10 seconds (clothes on!) — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0zc74c2",
+  "category": "spicy",
+  "prompt": "Kiss the back of your own hand like it's your celebrity crush — most passionate wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0mr9md4",
+  "category": "spicy",
+  "prompt": "What's the wildest place you've hooked up? Best story wins (refusing = loss).",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0cetj7v",
+  "category": "spicy",
+  "prompt": "Whisper the dirtiest (but non-explicit) thing you can into the host's ear — the host picks the winner.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1o653jd",
+  "category": "spicy",
+  "prompt": "Describe your perfect night in, in 15 seconds — sexiest one wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1mau5qk",
+  "category": "spicy",
+  "prompt": "Text your last ex \"hey\" — whoever gets a reply first wins. Refusing = loss.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1cth1dl",
+  "category": "spicy",
+  "prompt": "Rate everyone in the room's flirting skills out of 10 — most honest (and brave) wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-03k9cqo",
+  "category": "spicy",
+  "prompt": "Best \"come to bed\" line in a movie-trailer voice — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1hdzpu6",
+  "category": "spicy",
+  "prompt": "Most creative way to ask someone in the room on a date — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1utxkah",
+  "category": "spicy",
+  "prompt": "Name your top 3 celebrity crushes in 5 seconds — whoever does it fastest wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0v79ylg",
+  "category": "spicy",
+  "prompt": "Best impression of someone in the room flirting — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0fg7zhk",
+  "category": "spicy",
+  "prompt": "Most cringe thing you've ever said during a hookup — best story wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-09sx23g",
+  "category": "spicy",
+  "prompt": "Who'd be the better one-night stand? Both make their case in 15 seconds — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1x560s9",
+  "category": "spicy",
+  "prompt": "Hold eye contact with the other challenger as seductively as possible — first to laugh loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0bwcdge",
+  "category": "spicy",
+  "prompt": "Best sexy dance to a song the room picks, 15 seconds — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0zgntfe",
+  "category": "spicy",
+  "prompt": "Rank the other challenger's top 3 most attractive qualities — most flattering wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-11cknqb",
+  "category": "spicy",
+  "prompt": "Most convincing fake \"I'm into you\" text to someone in the room — the room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-14as2rd",
   "category": "spicy",
   "prompt": "Describe your ideal partner using only food — the room votes.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
  {
-  "id": "spicy-081",
+  "id": "spicy-1dttw3q",
   "category": "spicy",
   "prompt": "Send a flirty emoji-only text to the 3rd person in your chats. Refusing = loss.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
+ },
+ {
+  "id": "spicy-1mxkqpn",
+  "category": "spicy",
+  "prompt": "Narrate the other challenger walking into the room like the cover of a steamy romance novel. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0r5k05d",
+  "category": "spicy",
+  "prompt": "Smoothest way to ask for someone's number without saying \"number\". The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1teupqr",
+  "category": "spicy",
+  "prompt": "Soap-opera scene: a 20-second \"we can't be together\" moment with the other challenger. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0909ob8",
+  "category": "spicy",
+  "prompt": "Best line to win over the host's imaginary crush. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0rh3gil",
+  "category": "spicy",
+  "prompt": "Retell a famous romantic movie with as much innuendo as possible. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-01p5jig",
+  "category": "spicy",
+  "prompt": "Fortune teller: predict the other challenger's love life in 20 seconds. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1f47rkk",
+  "category": "spicy",
+  "prompt": "Truth-off: \"What's the most romantic thing you've ever done for someone?\" Best answer wins. Refusing loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-06wr3b3",
+  "category": "spicy",
+  "prompt": "Name famous celebrity couples.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-1l2ggkf",
+  "category": "spicy",
+  "prompt": "Name songs about love or heartbreak.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0mpjcuf",
+  "category": "spicy",
+  "prompt": "Name famous movie kisses.",
+  "type": "TURN_BASED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0kjgng4",
+  "category": "spicy",
+  "prompt": "Read your last sent text out loud — funnier one wins. Refusing = drink 3.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-1vbmjua",
+  "category": "spicy",
+  "prompt": "Show the 5th most recent photo in your camera roll — more embarrassing one wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-1wuhopp",
+  "category": "spicy",
+  "prompt": "Truth-off: each answers “What’s the most awkward thing you’ve done on a date?” Refusing = loss.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-09pjjlp",
+  "category": "spicy",
+  "prompt": "Truth-off: “What’s your biggest red flag?” Most honest answer wins. Refusing = loss.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-0zmomgp",
+  "category": "spicy",
+  "prompt": "Boldest DM you’ve ever sent — best story wins. Refusing = loss.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-1mn3da2",
+  "category": "spicy",
+  "prompt": "Guess how many exes the other challenger has — closer guess wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-13u89nx",
+  "category": "spicy",
+  "prompt": "Name places you've actually had sex. No lying — the room can call you out!",
+  "type": "TURN_BASED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-1phl3jq",
+  "category": "spicy",
+  "prompt": "Name things you'd find in someone's bedside drawer.",
+  "type": "TURN_BASED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-0biukr3",
+  "category": "spicy",
+  "prompt": "Name body parts you find attractive.",
+  "type": "TURN_BASED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-1ya4att",
+  "category": "spicy",
+  "prompt": "Body count face-off: both secretly tell the host — higher number wins. The host only says who won.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-0jd63xc",
+  "category": "spicy",
+  "prompt": "Show your most recent DM conversation with a crush — juicier one wins. Refusing = loss.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-0j2kixt",
+  "category": "spicy",
+  "prompt": "Truth-off: \"What's your biggest fantasy?\" Most honest answer wins. Refusing = loss.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-1s7r8aa",
+  "category": "spicy",
+  "prompt": "Who's done the walk of shame more times? Both reveal — higher wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-1oqrdll",
+  "category": "spicy",
+  "prompt": "Let the room read your last 3 Google searches. Most embarrassing wins (refusing = loss).",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-14j79f5",
+  "category": "spicy",
+  "prompt": "Confess your biggest turn-off — most surprising answer wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-1p0qhir",
+  "category": "spicy",
+  "prompt": "Who's had more one-night stands? Both reveal — higher number wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-01z9wvu",
+  "category": "spicy",
+  "prompt": "Truth-off: \"What's your most embarrassing moment with a crush?\" Best story wins. Refusing loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-0t8hi9g",
+  "category": "spicy",
+  "prompt": "Truth-off: \"What's the boldest thing you've ever done to get someone's attention?\" Best story wins. Refusing loses.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
+ },
+ {
+  "id": "spicy-0fc9sp6",
+  "category": "spicy",
+  "prompt": "Act out your ideal first kiss with a pillow. The room votes.",
+  "type": "HOST_JUDGED",
+  "difficulty": "H"
  }
 ];

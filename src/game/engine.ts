@@ -217,6 +217,20 @@ function fullBank(state: GameState): Question[] {
   return state.custom?.length ? [...state.bank, ...state.custom] : state.bank;
 }
 
+/**
+ * Questions allowed by the host's difficulty choice. Know Your Friends questions are about
+ * people, not difficulty, so they always count. If the choice would leave none of the
+ * selected categories with a question, the choice is ignored rather than breaking the game.
+ */
+export function playableBank(state: GameState): Question[] {
+  const all = fullBank(state);
+  const d = state.settings.difficulties;
+  if (!d || d.length === 0 || d.length >= 3) return all;
+  const ok = all.filter((q) => q.category === 'kyf' || d.includes(q.difficulty));
+  const cats = state.settings.categories;
+  return cats.some((c) => ok.some((q) => q.category === c)) ? ok : all;
+}
+
 /** A lobby's own questions are a Premium feature (the host's Premium unlocks it for the room). */
 export function lobbyIsPremium(state: GameState): boolean {
   return !!host(state)?.premium;
@@ -344,7 +358,7 @@ function beginRound(state: GameState, number: number, now: number, rng: Rng): Ga
     .map((p) => p.id);
 
   const result = spin(
-    fullBank(state),
+    playableBank(state),
     state.settings.categories,
     state.recentCategories,
     new Set(state.usedQuestions),
@@ -661,7 +675,8 @@ export function reduce(state: GameState, action: Action, rng: Rng = Math.random)
         q.id !== r.question.id && q.difficulty === r.question.difficulty && (r.subjectId ? true : q.type !== 'SUBJECT_JUDGED');
       const anyOther = (q: Question) => q.id !== r.question.id && (r.subjectId ? true : q.type !== 'SUBJECT_JUDGED');
       const q =
-        pickQuestion(fullBank(state).filter(sameLevel), r.category, used, rng, undefined, onlyCustom) ??
+        pickQuestion(playableBank(state).filter(sameLevel), r.category, used, rng, undefined, onlyCustom) ??
+        pickQuestion(playableBank(state).filter(anyOther), r.category, used, rng, undefined, onlyCustom) ??
         pickQuestion(fullBank(state).filter(anyOther), r.category, used, rng, undefined, onlyCustom);
       if (!q) return state;
       return {

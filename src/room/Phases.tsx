@@ -87,7 +87,7 @@ function CategoryLine({ state }: { state: GameState }) {
         </View>
       </PopIn>
       <PopIn delay={120}>
-        <Pill label={DIFFICULTY_LABEL[r.question.difficulty].toUpperCase()} color="rgba(20,4,40,0.55)" />
+        {r.question.category !== 'kyf' && <Pill label={DIFFICULTY_LABEL[r.question.difficulty].toUpperCase()} color="rgba(20,4,40,0.55)" />}
       </PopIn>
       {r.question.custom && (
         // Written by someone in this lobby: make sure the room notices.

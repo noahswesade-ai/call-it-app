@@ -15,8 +15,11 @@
 - After editing the doc, ask Claude to "sync the question bank". Claude reads the doc (read_doc),
   saves the JSON, runs `python3 tools/doc-to-bank.py <saved.json>` and `node tools/build-questions.mjs`,
   runs the tests and redeploys.
-- After editing the text file instead: `node tools/build-questions.mjs`, then
-  `node tools/export-question-doc.mjs` to rebuild the doc layout.
+- After editing the text file instead: `python3 tools/sort-bank.py` (groups each category
+  Easy → Medium → Hard under `### ` sub-headings), `node tools/build-questions.mjs`, then
+  `python3 tools/bank_to_doc.py <tabId> <firstHeadingIndex> <endIndex>` for the Docs
+  requests that rewrite the tab (category = Heading 2, difficulty = Heading 3).
+- Question ids are a hash of the question text, so sorting or moving questions keeps them.
 
 ## Accessory fitting
 

@@ -43,7 +43,8 @@ export function MyQuestionsList({
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
                 <CategoryIcon category={q.category} size={13} />
                 <Text style={styles.meta}>
-                  {cat?.label} · {DIFFICULTY_LABEL[q.difficulty]}
+                  {cat?.label}
+                  {q.category !== 'kyf' ? ` · ${DIFFICULTY_LABEL[q.difficulty]}` : ''}
                   {selectable ? (on ? ' · in this lobby' : ' · not in this lobby') : ''}
                 </Text>
               </View>

@@ -16,6 +16,16 @@ const CATS = {
 const TYPES = { answer: 'SPOKEN_EXACT', number: 'SPOKEN_CLOSEST', turns: 'TURN_BASED', challenge: 'HOST_JUDGED' };
 const DIFF = { easy: 'E', medium: 'M', hard: 'H' };
 
+/** Short, stable hash of a string (FNV-1a, base 36). */
+function hash(str) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(36).padStart(7, '0');
+}
+
 export function parseBank(text) {
   const out = [];
   const problems = [];
@@ -53,7 +63,9 @@ export function parseBank(text) {
     if (seen.has(key)) problems.push(`line ${i + 1}: duplicate question: ${prompt.slice(0, 60)}`);
     seen.add(key);
     counters[cat] = (counters[cat] ?? 0) + 1;
-    const id = `${cat}-${String(counters[cat]).padStart(3, '0')}`;
+    // Id from the question text, so re-ordering or sorting the bank keeps every id (and the
+    // phones' "already seen" memory) the same. Editing a question's wording gives it a new id.
+    const id = `${cat}-${hash(prompt)}`;
     const q = { id, category: cat, prompt };
     if (tag[0] === 'friend' || tag[0] === 'friend number') {
       Object.assign(q, { type: 'SUBJECT_JUDGED', difficulty: 'M', closest: tag[0] === 'friend number' || tag.includes('number') });

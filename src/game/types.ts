@@ -92,4 +92,6 @@ export interface GameSettings {
   onlyCustom?: boolean;
   /** How long betting stays open, in seconds (host setting; longer helps slower or busier rooms). */
   betSeconds?: number;
+  /** Premium: which difficulties can come up (unset = all). Know Your Friends has no difficulty. */
+  difficulties?: Difficulty[];
 }

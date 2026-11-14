@@ -31,13 +31,36 @@ function Floater({ d, w, h, emoji }: { d: (typeof DEVILS)[number]; w: number; h:
   );
 }
 
-/** Full-screen solid background (plus the floating devils in Spicy mode). */
-// Same seven spots either way, so turning Spicy on swaps some drinks for devils instead of
-// adding clutter.
+/** Extra spots for the devils that join the drinks when Spicy is switched on. Mostly near
+ * the edges, between the drinks, so the screen gets a little busier without covering the
+ * buttons. */
+const EXTRA_DEVILS = [
+  { x: 0.13, y: 0.36, size: 32, dur: 2700, delay: 0 },
+  { x: 0.9, y: 0.31, size: 34, dur: 3000, delay: 150 },
+  { x: 0.86, y: 0.7, size: 30, dur: 2600, delay: 300 },
+  { x: 0.12, y: 0.78, size: 34, dur: 3200, delay: 450 },
+  { x: 0.62, y: 0.95, size: 28, dur: 2900, delay: 600 },
+];
+
+/** A devil that pops in (springy scale) when Spicy turns on, then floats like the rest. */
+function PopFloater({ d, w, h, emoji }: { d: (typeof DEVILS)[number]; w: number; h: number; emoji: string }) {
+  const s = useSharedValue(0);
+  useEffect(() => {
+    s.value = withDelay(d.delay, withTiming(1, { duration: 420, easing: Easing.out(Easing.back(2.2)) }));
+  }, [d.delay, s]);
+  const st = useAnimatedStyle(() => ({ transform: [{ scale: s.value }] }));
+  return (
+    <Animated.View style={[StyleSheet.absoluteFill, st]} pointerEvents="none">
+      <Floater d={d} w={w} h={h} emoji={emoji} />
+    </Animated.View>
+  );
+}
+
+// Drinks for Party (the same seven spots every time).
 const FLOATERS: Partial<Record<Tint, string[]>> = {
   spicy: ['😈'],
   drinks: ['🍺', '🍸'],
-  drinksSpicy: ['🍺', '😈', '🍸', '😈', '🍺', '😈', '🍸'],
+  drinksSpicy: ['🍺', '🍸'],
 };
 
 export type Tint = 'red' | 'green' | 'party' | 'spicy' | 'fire' | 'drinks' | 'drinksSpicy';
@@ -50,7 +73,9 @@ export function Background({ tint }: { tint?: Tint }) {
     tint === 'red' ? '#4A0E26' : tint === 'green' ? '#0C3A2C' : tint === 'party' || tint === 'spicy' || tint === 'drinks' || tint === 'drinksSpicy' ? '#3A0B48' : tint === 'fire' ? '#4A1608' : colors.bgBottom;
   return (
     <View style={[StyleSheet.absoluteFill, { backgroundColor: bg }]} pointerEvents="none">
-      {floaters && DEVILS.map((d, i) => <Floater key={i} d={d} w={width} h={height} emoji={floaters[i % floaters.length]} />)}
+      {floaters && DEVILS.map((d, i) => <Floater key={`base-${i}`} d={d} w={width} h={height} emoji={floaters[i % floaters.length]} />)}
+      {/* Party + Spicy: every drink stays exactly where it is; devils pop up in extra spots. */}
+      {tint === 'drinksSpicy' && EXTRA_DEVILS.map((d, i) => <PopFloater key={`devil-${i}`} d={d} w={width} h={height} emoji="😈" />)}
     </View>
   );
 }

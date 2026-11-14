@@ -508,6 +508,18 @@ describe('pause, kick and category odds', () => {
     expect(g.custom!.map((q) => q.id)).toEqual(['m2']);
   });
 
+  it('difficulty choice: only the chosen difficulties come up (Know Your Friends always allowed)', () => {
+    for (const diffs of [['H'], ['E'], ['M', 'H']] as const) {
+      let g = newGame(5, { difficulties: [...diffs] });
+      g = reduce(g, { type: 'start', now: 1 }, seededRng(3));
+      for (let i = 0; i < 40; i++) {
+        const q = g.round!.question;
+        if (q.category !== 'kyf') expect(diffs as readonly string[]).toContain(q.difficulty);
+        g = reduce({ ...g, regens: 0 }, { type: 'regenQuestion', now: 2 + i }, seededRng(100 + i));
+      }
+    }
+  });
+
   it('player questions with slurs are filtered out', () => {
     const bad = { id: 'b', category: 'geography' as const, type: 'HOST_JUDGED' as const, difficulty: 'M' as const, prompt: 'kys loser' };
     const g = reduce(newGame(3, {}, { premium: true }), { type: 'addCustom', question: bad });
