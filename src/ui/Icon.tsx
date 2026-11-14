@@ -6,7 +6,7 @@ import {
   FerrisWheel, Flag, FlaskConical, Flame, Gem, Gift, GlassWater, Hand, Handshake, Hash, House, Lightbulb, Lock, LockOpen,
   Medal, Megaphone, Mic, Palette, PartyPopper, Pause, Pencil, PenLine, Pointer, RefreshCw, Repeat, Scale, Settings, Share2,
   Smartphone, Sparkles, Speech, Star, Swords, Sword, Target, Timer, Tornado, Trash2, Trophy, Users, Vibrate, Volume2, Wine,
-  X, Zap, ArrowUp, Plus, QrCode, ChevronRight,
+  X, Zap, ArrowUp, Plus, QrCode, ChevronRight, TriangleAlert,
 } from 'lucide-react-native';
 import { colors } from './theme';
 
@@ -23,7 +23,7 @@ const ICONS = {
   ear: Ear, scale: Scale, refresh: RefreshCw, flag: Flag, idea: Lightbulb, megaphone: Megaphone, gift: Gift, pause: Pause,
   users: Users, ban: Ban, coins: Coins, swords: Swords, sword: Sword, tap: Pointer, close: X, check: Check, yes: CircleCheck,
   no: CircleX, shot: GlassWater, wine: Wine, number: Hash, drum: Drum, sparkles: Sparkles, up: ArrowUp, test: FlaskConical,
-  award: Award, hand: Hand, party: PartyPopper, share: Share2, speak: Speech, chaos: Tornado, wheel: FerrisWheel, plus: Plus, qr: QrCode, next: ChevronRight,
+  award: Award, hand: Hand, party: PartyPopper, share: Share2, speak: Speech, chaos: Tornado, wheel: FerrisWheel, plus: Plus, qr: QrCode, next: ChevronRight, warning: TriangleAlert,
 } as const;
 
 export type IconName = keyof typeof ICONS | 'devil' | 'shush' | 'dot';

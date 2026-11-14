@@ -11,7 +11,9 @@ RELAY="wss://broker.hivemq.com:8884/mqtt,wss://test.mosquitto.org:8081"
 
 echo "▶ Building…"
 rm -rf dist-web
-EXPO_BASE_URL=/call-it-app EXPO_PUBLIC_RELAY_URL="$RELAY" EXPO_PUBLIC_PLAYTEST=1 \
+# Bug reports go to the Apps Script web app in tools/bug-report-url.txt (see tools/bug-report-script.gs).
+BUG_URL="$(cat tools/bug-report-url.txt 2>/dev/null || true)"
+EXPO_BASE_URL=/call-it-app EXPO_PUBLIC_RELAY_URL="$RELAY" EXPO_PUBLIC_PLAYTEST=1 EXPO_PUBLIC_BUG_REPORT_URL="$BUG_URL" \
   npx expo export -p web --output-dir dist-web
 
 echo "▶ Publishing to the gh-pages branch…"

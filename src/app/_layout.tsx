@@ -10,6 +10,7 @@ import { RoomProvider } from '@/net/RoomProvider';
 import { FollowGame } from '@/room/FollowGame';
 import { colors } from '@/ui/theme';
 import { Logo } from '@/ui/Logo';
+import { BugReportButton } from '@/ui/BugReport';
 
 /**
  * On the web (the preview link), show the app inside a phone-sized frame whenever the
@@ -67,6 +68,8 @@ export default function RootLayout() {
               animation: 'fade_from_bottom',
             }}
           />
+          {/* Report-a-bug triangle, bottom-right on every screen. */}
+          <BugReportButton />
         </RoomProvider>
       </ProfileProvider>
     </SafeAreaProvider>
