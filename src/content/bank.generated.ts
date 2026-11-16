@@ -27,9 +27,9 @@ export const BANK: Question[] = [
   "answer": "The Mariana Trench (Challenger Deep)"
  },
  {
-  "id": "geography-1ouciet",
+  "id": "geography-0m1h046",
   "category": "geography",
-  "prompt": "What is the most populous country in South America?",
+  "prompt": "What is the most populated country in South America?",
   "type": "SPOKEN_EXACT",
   "difficulty": "E",
   "answer": "Brazil"
@@ -4488,13 +4488,6 @@ export const BANK: Question[] = [
   "difficulty": "M"
  },
  {
-  "id": "physical-1iqr7uc",
-  "category": "physical",
-  "prompt": "Who can keep a piece of paper stuck to their forehead the longest without hands while dancing?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
   "id": "physical-03vm0tg",
   "category": "physical",
   "prompt": "Who can toss a coin into a glass from 2 meters away first?",
@@ -4561,13 +4554,6 @@ export const BANK: Question[] = [
   "id": "physical-1x473v9",
   "category": "physical",
   "prompt": "Who can hold a book out at arm's length the longest?",
-  "type": "HOST_JUDGED",
-  "difficulty": "M"
- },
- {
-  "id": "physical-01i7gum",
-  "category": "physical",
-  "prompt": "Who can pick up a coin from the floor without bending their knees first?",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
@@ -4684,9 +4670,9 @@ export const BANK: Question[] = [
   "difficulty": "M"
  },
  {
-  "id": "physical-0qrqfue",
+  "id": "physical-1gyzr11",
   "category": "physical",
-  "prompt": "Cookie face: put a cookie or cracker on your forehead and get it into your mouth without using your hands. First wins.",
+  "prompt": "Cookie face: put a cookie or cracker on your forehead and get it into your mouth without using your hands. First wins, dropping it automatically disqualifies you.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
@@ -4705,9 +4691,9 @@ export const BANK: Question[] = [
   "difficulty": "M"
  },
  {
-  "id": "physical-05tw0wn",
+  "id": "physical-1ob9ik5",
   "category": "physical",
-  "prompt": "Draw an animal the room picks using your other hand in 20 seconds. The room picks the best.",
+  "prompt": "Draw an animal the room picks using your non-dominant hand in 20 seconds. The room picks the best.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
@@ -6720,9 +6706,9 @@ export const BANK: Question[] = [
   "difficulty": "M"
  },
  {
-  "id": "spicy-19jd0se",
+  "id": "spicy-0s397pi",
   "category": "spicy",
-  "prompt": "Name celebrities you'd sleep with.",
+  "prompt": "Name celebrities you'd sleep with. First to receive a majority disagreement loses.",
   "type": "TURN_BASED",
   "difficulty": "M"
  },
@@ -6758,6 +6744,13 @@ export const BANK: Question[] = [
   "id": "spicy-0970144",
   "category": "spicy",
   "prompt": "Who has kissed more people? Both reveal — higher number wins.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-17a35le",
+  "category": "spicy",
+  "prompt": "Who has hooked up with more people? Both reveal — higher number wins.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },
@@ -6800,6 +6793,13 @@ export const BANK: Question[] = [
   "id": "spicy-0cetj7v",
   "category": "spicy",
   "prompt": "Whisper the dirtiest (but non-explicit) thing you can into the host's ear — the host picks the winner.",
+  "type": "HOST_JUDGED",
+  "difficulty": "M"
+ },
+ {
+  "id": "spicy-0ln26j5",
+  "category": "spicy",
+  "prompt": "Reveal your weirdest fantasy — the room votes on which is weirder.",
   "type": "HOST_JUDGED",
   "difficulty": "M"
  },

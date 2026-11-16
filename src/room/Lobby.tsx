@@ -577,7 +577,7 @@ export function Lobby({ state }: { state: GameState }) {
                 );
               })}
             </View>
-            <Dim style={{ fontSize: 12 }}>Turn off Easy, or play only Hard. Know Your Friends questions aren't affected.</Dim>
+            <Dim style={{ fontSize: 12 }}>Turn off Easy, or play only one difficulty. Know Your Friends questions aren't affected.</Dim>
             <HandOver state={state} myId={myId} target={handTo} onPick={setHandTo} onConfirm={() => {
               if (handTo) dispatch({ type: 'transferHost', to: handTo.id });
               setHandTo(undefined);

@@ -24,6 +24,21 @@ function play(cats: Category[], mode: 'classic' | 'party', n: number, seed: numb
 }
 const FUN = ['kyf', 'physical', 'party', 'spicy'];
 describe('category odds over 300 simulated games', () => {
+  it('Know Your Friends is the most frequent category in every mix', () => {
+    const mixes: [Category[], 'classic' | 'party'][] = [
+      [['geography', 'kyf', 'history'], 'classic'],
+      [['physical', 'kyf'], 'classic'],
+      [['geography', 'history', 'basic', 'popculture', 'sports', 'physical', 'kyf'], 'classic'],
+      [['geography', 'history', 'basic', 'popculture', 'sports', 'physical', 'kyf', 'party'], 'party'],
+      [['geography', 'history', 'basic', 'popculture', 'sports', 'physical', 'kyf', 'party', 'spicy'], 'party'],
+      [['kyf', 'party', 'spicy'], 'party'],
+    ];
+    for (const [cats, mode] of mixes) {
+      const r = run(cats, mode, 5);
+      for (const c of cats) if (c !== 'kyf') expect(r.share('kyf')).toBeGreaterThan(r.share(c));
+    }
+  });
+
   const run = (cats: Category[], mode: 'classic' | 'party', n: number) => {
     const c: Record<string, number> = {}; let tot = 0; let maxTrivia = 0;
     for (let s = 1; s <= 300; s++) {

@@ -1,12 +1,7 @@
-# UNDERDOG — QUESTION BANK
-# One question per line, under its category heading (## Category).
-# Format:   [Type · Difficulty] Question => Answer = number
-#   Types:  Answer (one right answer) · Number (closest number wins; put the number after " = ")
-#           Turns (take turns naming things) · Challenge (a task; the host picks the winner)
-#           Friend / Friend number (about {friend}, who secretly types the real answer)
-#           Room game (Know Your Friends games the room runs; these may repeat)
-#   Difficulty: Easy · Medium · Hard (Friend / Room game lines have none)
-# Lines starting with # are notes and are ignored.
+# UNDERDOG — QUESTION BANK (synced from the Google Doc)
+
+
+## Underdog — Question Bank
 
 ## Geography
 
@@ -14,7 +9,7 @@
 [Answer · Easy] What is the capital of Australia? => Canberra
 [Answer · Easy] What is the smallest country in the world? => Vatican City
 [Answer · Easy] What is the deepest point in the ocean? => The Mariana Trench (Challenger Deep)
-[Answer · Easy] What is the most populous country in South America? => Brazil
+[Answer · Easy] What is the most populated country in South America? => Brazil
 [Answer · Easy] What is the capital of Canada? => Ottawa
 [Number · Easy] What percentage of Earth’s surface is covered by water? => About 71% = 71
 [Answer · Easy] Which country is shaped like a boot? => Italy
@@ -600,7 +595,6 @@
 [Challenge · Medium] Who can hold a squat the longest — thighs parallel to the floor?
 [Challenge · Medium] Who can do the most lunges in 30 seconds?
 [Challenge · Medium] Who can do the most star jumps in 20 seconds?
-[Challenge · Medium] Who can keep a piece of paper stuck to their forehead the longest without hands while dancing?
 [Challenge · Medium] Who can toss a coin into a glass from 2 meters away first?
 [Challenge · Medium] Who can hold a hollow body hold (lying on your back, legs and shoulders up) the longest?
 [Challenge · Medium] Who can stand up and sit down on a chair the most times in 30 seconds?
@@ -611,7 +605,6 @@
 [Challenge · Medium] Mirror match: copy every move the host makes. First to mess up loses.
 [Challenge · Medium] Who can crab-walk to the other side of the room and back first?
 [Challenge · Medium] Who can hold a book out at arm's length the longest?
-[Challenge · Medium] Who can pick up a coin from the floor without bending their knees first?
 [Challenge · Medium] Leg wrestling — best of 3!
 [Challenge · Medium] Finger-pull tug-of-war — first to pull the other over the line wins.
 [Challenge · Medium] Who can roll their tongue, wiggle their ears or do the weirdest body trick? The room votes.
@@ -628,10 +621,10 @@
 [Challenge · Medium] Sock toss: take off one sock and throw it. Furthest landing wins.
 [Challenge · Medium] Who can move the most coins (or small items) from one plate to another with two pens as chopsticks in 30 seconds?
 [Challenge · Medium] Who can tie a shoelace (or a string around a bottle) the fastest using only one hand?
-[Challenge · Medium] Cookie face: put a cookie or cracker on your forehead and get it into your mouth without using your hands. First wins.
+[Challenge · Medium] Cookie face: put a cookie or cracker on your forehead and get it into your mouth without using your hands. First wins, dropping it automatically disqualifies you.
 [Challenge · Medium] Build a pyramid of 6 cups (or coasters), knock it down and rebuild it. Fastest wins.
 [Challenge · Medium] Carry a ball of paper on a spoon held in your mouth across the room and back, no hands. First back wins.
-[Challenge · Medium] Draw an animal the room picks using your other hand in 20 seconds. The room picks the best.
+[Challenge · Medium] Draw an animal the room picks using your non-dominant hand in 20 seconds. The room picks the best.
 [Challenge · Medium] Fold a paper airplane in 60 seconds, then fly it. Furthest flight wins.
 
 ### Hard
@@ -921,18 +914,20 @@
 [Turns · Medium] Name things that turn you on.
 [Turns · Medium] Name sexy songs.
 [Turns · Medium] Name slang words for sex.
-[Turns · Medium] Name celebrities you'd sleep with.
+[Turns · Medium] Name celebrities you'd sleep with. First to receive a majority disagreement loses.
 [Turns · Medium] Name famous sex symbols.
 [Turns · Medium] Name terrible first-date ideas.
 [Turns · Medium] Name red flags on a first date.
 [Turns · Medium] Name pickup lines (they must be real lines, not made up on the spot).
 [Challenge · Medium] Who has kissed more people? Both reveal — higher number wins.
+[Challenge · Medium] Who has hooked up with more people? Both reveal — higher number wins.
 [Challenge · Medium] Describe your last hookup in exactly 3 words — the room votes.
 [Challenge · Medium] Best moan impression — the room votes. 😳
 [Challenge · Medium] Give the other challenger a lap-dance-style dance move for 10 seconds (clothes on!) — the room votes.
 [Challenge · Medium] Kiss the back of your own hand like it's your celebrity crush — most passionate wins.
 [Challenge · Medium] What's the wildest place you've hooked up? Best story wins (refusing = loss).
 [Challenge · Medium] Whisper the dirtiest (but non-explicit) thing you can into the host's ear — the host picks the winner.
+[Challenge · Medium] Reveal your weirdest fantasy — the room votes on which is weirder.
 [Challenge · Medium] Describe your perfect night in, in 15 seconds — sexiest one wins.
 [Challenge · Medium] Text your last ex "hey" — whoever gets a reply first wins. Refusing = loss.
 [Challenge · Medium] Rate everyone in the room's flirting skills out of 10 — most honest (and brave) wins.

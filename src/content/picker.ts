@@ -22,6 +22,8 @@ export const FUN_CATEGORIES: Category[] = ['party', 'spicy', 'physical', 'kyf'];
 /** Share of rounds that should land on a fun category. */
 export const CLASSIC_FUN_SHARE = 0.72;
 export const PARTY_FUN_SHARE = 0.8;
+/** Extra weight for Know Your Friends on top of the fun-category boost. */
+export const KYF_BONUS = 1.6;
 /** After this many trivia rounds in a row, the next round is always a fun one. */
 export const MAX_TRIVIA_STREAK = 2;
 /** Each time a category comes up, its weight is multiplied by this for the rest of the game. */
@@ -73,6 +75,9 @@ export function baseWeights(usable: Category[], mode: Mode): Record<string, numb
     // Only ever boost: with few trivia categories selected, fun ones are already most rounds.
     if (boost > 1) for (const c of fun) w[c] = boost;
   }
+  // Know Your Friends is what makes the night personal: it gets extra weight on top, so it's
+  // the category that comes up most, whatever the mix of categories.
+  if ('kyf' in w) w.kyf *= KYF_BONUS;
   return w;
 }
 

@@ -245,7 +245,7 @@ describe('pause, kick and category odds', () => {
     expect(g.players.map((p) => p.id)).toContain('h');
   });
 
-  it('classic: fun categories share ~72% of the first spin; trivia categories are equally likely', () => {
+  it('classic: fun categories share ~75% of the first spin (Know Your Friends most); trivia categories are equally likely', () => {
     const { spin, FUN_CATEGORIES } = jest.requireActual('@/content/picker');
     const cats = availableCategories('classic', false);
     const counts: Record<string, number> = {};
@@ -259,7 +259,7 @@ describe('pause, kick and category odds', () => {
     const trivia = cats.filter((c: string) => !FUN_CATEGORIES.includes(c));
     const funShare = fun.reduce((a: number, c: string) => a + (counts[c] ?? 0), 0) / N;
     expect(funShare).toBeGreaterThan(0.68);
-    expect(funShare).toBeLessThan(0.76);
+    expect(funShare).toBeLessThan(0.82);
     for (const c of trivia) expect(counts[c] / N).toBeCloseTo((1 - funShare) / trivia.length, 1);
   });
 
